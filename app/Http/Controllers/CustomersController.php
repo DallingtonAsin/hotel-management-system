@@ -1,0 +1,541 @@
+<?php
+
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Customer;
+use App\Models\Stock;
+use Helper;
+use App\Imports\ImportCustomers;
+use App\Exports\ExportCustomers;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\LogsController;
+use App\Http\Controllers\LogAfterRequest;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\DataTables\CustomersDataTable;
+use Illuminate\Support\Str;
+use Constant;
+use DataTable;
+use Excel;
+
+class CustomersController extends Controller
+{
+
+  public $controller;
+  public function __construct()
+  {
+   $this->controller = 'CustomersController';
+
+  }
+
+  public function GetCustomers(CustomersDataTable $dataTable)
+  {
+      return $dataTable->render('pages.main.customers');
+  }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+       // $customers = DB::select('select * from customers');
+      $customers = Customer::all();
+      $number_of_customers = Customer::count();
+      $total_credit = DB::table('customers')->sum('credit');
+      $total_debts = DB::table('customers')->sum('debt');
+      return view('pages.main.customers')->with(compact('customers','total_credit','total_debts','number_of_customers'));
+    
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+      return view('pages.main.customers');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $req)
+    {
+
+    //  $req->validate([
+    //    'name' => 'required',
+    //    'contact' => 'required'
+    //  ]);
+
+     $customerId = $req->input('id');
+
+
+     $customer_name = $req->input('name');
+     $contact = $req->input('contact');
+     $item_taken = $req->input('item_taken');
+     $debt = Helper::Numberize($req->input('debt'));
+     $credit = Helper::Numberize($req->input('credit'));
+     $taken_on = $req->input('taken_on');
+     $item_taken_id = Stock::where('item', $item_taken)->value('id');
+
+
+     empty($debt)? $debt = 0 : $debt = $debt;
+     empty($credit)? $credit = 0 : $credit = $credit;
+
+     (empty($customerId)) ? $keyAction = 'registered' : $keyAction = 'updated';
+
+     if(isset($customerId)){
+
+      $response = Customer::where('id', $customerId)
+      ->update([
+       'name' => $customer_name,
+       'contact' => $contact,
+       'item_taken' => $item_taken_id,
+       'debt' => $debt,
+       'credit' => $credit,
+       'taken_on' => $taken_on
+       ]);
+
+      }else{
+
+       $customer = new Customer();
+       $customer->name = $customer_name;
+       $customer->contact = $contact;
+       $customer->item_taken = $item_taken_id;
+       $customer->debt = $debt;
+       $customer->credit = $credit;
+       $customer->taken_on = $taken_on;
+       $customer->added_by = $req->user()->name;
+       $response = $customer->save();
+
+      }
+
+   
+     if($response)
+     {
+
+      // $action = "registered customer ".$name."";
+      // LogsController::logger($req, $action, now());
+      // $dataArr = array("code" => '200',
+      // "message" => $action,
+      // "method" => "CustomersController@store");
+      // LogAfterRequest::LogRequest($req, $dataArr);
+      // return back()->with("success", $this->SuccessMessage($action));
+
+      $action = "".$keyAction." record for customer ".$customer_name."";
+      LogsController::logger($req, $action, now());
+      $dataArr = array("code" => '200',
+       "message" => $action,
+       "method" => "CustomersController@store");
+      LogAfterRequest::LogRequest($req, $dataArr);
+      $sessionVariable = 'success';
+      $responseInfo = $this->SuccessMessage($action);
+
+
+
+    }
+    else
+    {
+
+
+      // $messageErr = "Customer registration failed!";
+      // $dataArr = array("code" => '101',
+      // "message" => $messageErr,
+      // "method" => "CustomersController@store");
+      // LogAfterRequest::LogRequest($req, $dataArr);
+      // return back()->with('fail', $messageErr);
+
+
+      $messageErr = "registering of customer details not failed!";
+      $dataArr = array("code" => '101',
+      "message" => $messageErr,
+      "method" => "CustomersController@store");
+      LogAfterRequest::LogRequest($req, $dataArr);
+      $sessionVariable = 'fail';
+      $responseInfo = $this->FailedMessage($messageErr);
+
+
+    }
+
+    $arr = $this->GetSumupDetails();
+
+    return response()
+    ->json([$sessionVariable => $responseInfo,
+            'totl_no' => $arr['totl_no'],
+            'totl_credit' => $arr['totl_credit'],
+            'totl_debt' => $arr['totl_debt'],
+    ]);
+
+  }
+
+
+  protected function GetSumupDetails()
+  {
+      $number_of_customers = Customer::count();
+      $total_credit = DB::table('customers')->sum('credit');
+      $total_debts = DB::table('customers')->sum('debt');
+      $data = array(
+             'totl_no' => $number_of_customers,
+             'totl_credit' => $total_credit,
+             'totl_debt' => $total_debts
+      );
+
+      return $data;
+  }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+      $customer = Customer::find($id);
+      return response()->json($customer);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+      $customer = Customer::find($id);
+      return response()->json($customer);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $req, $id)
+    {
+     
+
+     $customer = Customer::find($id);
+     $customer_name = $req->input('name');
+     $contact = $req->input('contact');
+     $item_taken = $req->input('item_taken');
+     $debt = Helper::Numberize($req->input('debt'));
+     $credit = Helper::Numberize($req->input('credit'));
+     $taken_on = $req->input('taken_on');
+     $item_taken_id = Stock::where('item', $item_taken)->value('id');
+    
+      empty($debt)? $customer->debt = 0 : $customer->debt = $debt;
+      empty($credit)? $customer->credit = 0 : $customer->credit = $credit;
+
+       $customer->name = $customer_name;
+       $customer->contact = $contact;
+       $customer->item_taken = $item_taken_id;
+       $customer->debt = $debt;
+       $customer->credit = $credit;
+       $customer->taken_on = $taken_on;
+
+
+      $save_status = $customer->save();
+      
+      if($save_status){
+
+        // $action = "updated details of customer ".$name."";
+        // LogsController::logger($req, $action, now());
+        // $dataArr = array("code" => '200',
+        // "message" => $action,
+        // "method" => "CustomersController@update");
+        // LogAfterRequest::LogRequest($req, $dataArr);
+        // return back()->with("success", $this->SuccessMessage($action));
+
+        $action = "updated record for customer ".$name."";
+        LogsController::logger($req, $action, now());
+        $dataArr = array("code" => '200',
+         "message" => $action,
+         "method" => "CustomersController@update");
+        LogAfterRequest::LogRequest($req, $dataArr);
+        $sessionVariable = 'success';
+        $responseInfo = $this->SuccessMessage($action);
+
+      }
+      else
+      {
+        // $messageErr = 'Customer Update failed!';
+        // $dataArr = array("code" => '101',
+        // "message" => $messageErr,
+        // "method" => "CustomersController@update");
+        // LogAfterRequest::LogRequest($req, $dataArr);
+        // return back()->with('fail', $messageErr);
+
+        $messageErr = "editing of customer details not failed!";
+        $dataArr = array("code" => '101',
+        "message" => $messageErr,
+        "method" => "CustomersController@update");
+        LogAfterRequest::LogRequest($req, $dataArr);
+        $sessionVariable = 'fail';
+        $responseInfo = $this->FailedMessage($messageErr);
+
+
+
+      }
+
+      $arr = $this->GetSumupDetails();
+
+         return response()
+         ->json([$sessionVariable => $responseInfo,
+                 'totl_no' => $arr['totl_no'],
+                 'totl_credit' => $arr['totl_credit'],
+                 'totl_debt' => $arr['totl_debt'],
+         ]);
+
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+  //   public function destroy(Request $request, $id){
+
+  //     $customer = Customer::findOrFail($id);
+  //     $customer_name = $customer->name;
+
+  //     $delete_status = $customer->delete();
+  //     if($delete_status){
+
+  //       $action = "removed customer ".$customer_name." from list of customers in the system";
+  //       LogsController::logger($request, $action, now());
+  //       $dataArr = array("code" => '200',
+  //       "message" => $action,
+  //       "method" => "CustomersController@destroy");
+  //       LogAfterRequest::LogRequest($request, $dataArr);
+  //       return back()->with("success", $this->SuccessMessage($action));
+  //     }
+  //     else
+  //     {
+  //       $messageErr = 'Customer not deleted!';
+  //       $dataArr = array("code" => '101',
+  //       "message" => $messageErr,
+  //       "method" => "CustomersController@destroy");
+  //       LogAfterRequest::LogRequest($request, $dataArr);
+  //       return back()->with('fail', $messageErr);
+  //    }
+
+  //  }
+
+
+   public function destroy(Request $request, $id)
+   {
+
+
+       $method = "CustomersController@destroy";
+
+       $customer_name = Customer::where('id', $id)->value('name');
+       $response = Customer::find($id)->delete();
+
+       if($response){
+
+         $action = "removed customer ".$customer_name." from the system";
+         LogsController::logger($request, $action, now());
+         $dataArr = array("code" => '200',
+         "message" => $action,
+         "method" => $method);
+         LogAfterRequest::LogRequest($request, $dataArr);
+         $sessionVariable = 'success';
+         $responseInfo = $this->SuccessMessage($action);
+
+     }
+     else
+     {
+
+         $messageErr = "customer not removed";
+         $dataArr = array("code" => '101',
+         "message" => $messageErr,
+         "method" => $method);
+         LogAfterRequest::LogRequest($request, $dataArr);
+         $sessionVariable = 'fail';
+         $responseInfo = $this->FailedMessage($messageErr);
+
+  }
+
+  $arr = $this->GetSumupDetails();
+
+  return response()
+  ->json([$sessionVariable => $responseInfo,
+          'totl_no' => $arr['totl_no'],
+          'totl_credit' => $arr['totl_credit'],
+          'totl_debt' => $arr['totl_debt'],
+  ]);
+
+}
+
+   public function deleteAllCustomers(Request $request)
+   {
+
+    $result = Customer::truncate();
+    if($result){
+
+      $action = "removed all customers from the system";
+      LogsController::logger($request, $action, now());
+      $dataArr = array("code" => '200',
+      "message" => $action,
+      "method" => "CustomersController@deleteAllCustomers");
+      LogAfterRequest::LogRequest($request, $dataArr);
+      $sessionVariable = 'success';
+      $responseInfo = $this->SuccessMessage($action);
+    //  return back()->with("success", $this->SuccessMessage($action));
+    }
+    else
+    {
+      $messageErr = 'Customers not removed from the system!';
+      $dataArr = array("code" => '101',
+      "message" => $messageErr,
+      "method" => "CustomersController@deleteAllCustomers");
+      LogAfterRequest::LogRequest($request, $dataArr);
+      $sessionVariable = 'fail';
+      $responseInfo = $messageErr;
+    //  return back()->with('fail', $messageErr);
+   }
+
+   $arr = $this->GetSumupDetails();
+
+    return response()
+    ->json([$sessionVariable => $responseInfo,
+            'totl_no' => $arr['totl_no'],
+            'totl_credit' => $arr['totl_credit'],
+            'totl_debt' => $arr['totl_debt'],
+    ]);
+
+ }
+
+
+  public function RemoveSelected(Request $request)
+    {
+        try {
+            $ids =  $request->input('selected_rows');
+            $deletedCustomers= array();
+
+            if (count($ids) > 0) {
+                foreach ($ids as $id) {
+                    $findId = Customer::find($id);
+                    $findId->delete();
+                    array_push($deletedCustomers, $findId->name);
+                }
+            }
+            $sessionVariable = 'success';
+            $deletedCustomerStr = implode(", ", $deletedCustomers);
+            $action = "removed customers ".$deletedCustomerStr." from the system";
+            if (count($ids) == 1) {
+                $action = Str::replaceFirst('customers', 'customer', $action);
+            }
+            $response = $this->SuccessMessage($action);
+
+            $dataArr = array("code" => '200',
+                "message" => $action,
+                "method" => "".$this->controller."@RemoveSelected"
+            );
+            LogsController::logger($request, $action, now());
+            LogAfterRequest::LogRequest($request, $dataArr);
+
+             $arr = $this->GetSumupDetails();
+
+            return response()
+            ->json([$sessionVariable => $response,
+                    'totl_no' => $arr['totl_no'],
+                    'totl_credit' => $arr['totl_credit'],
+                    'totl_debt' => $arr['totl_debt'],
+            ]);
+
+           
+        } catch (\Exception $ex) {
+            $data = array(
+          'username' => auth()->user()->username,
+          'error_code' => $ex->getCode(),
+          'error_message' => $ex->getMessage(),
+          'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
+          'controller' => $this->controller,
+          'method' => 'RemoveSelected'
+        );
+            Helper::logError($data);
+            abort(409, $ex->getMessage());
+        }
+    }
+
+
+
+ public function importCustomers(Request $request)
+ {
+
+   $this->validate($request,
+    ['select_file' => 'required|mimes:xls,xlsx'],
+    ['select_file.mimes' => 'Please select only excel files to import customers']
+  );
+   $importSuccess = Excel::import(new ImportCustomers, request()->file('select_file'));
+
+   if($importSuccess){
+    $action = "imported an excel file of customers into the system";
+    LogsController::logger($request, $action, now());
+    $dataArr = array("code" => '200',
+      "message" => $action,
+      "method" => "CustomersController@importCustomers");
+      LogAfterRequest::LogRequest($request, $dataArr);
+
+    return back()->with('success', $this->SuccessMessage($action));
+  }
+  else
+  {
+    $messageErr = "Excel Customers data not imported!";
+    $dataArr = array("code" => '101',
+      "message" => $messageErr,
+      "method" => "CustomersController@importCustomers");
+      LogAfterRequest::LogRequest($request, $dataArr);
+   return back()->with('fail', $messageErr);
+ }
+
+
+}
+
+   /**
+      * @return \Illuminate\Support\Collection
+      */
+   public function exportCustomers()
+   {
+    return Excel::download(new ExportCustomers, 'customers.xlsx');
+  }
+
+
+  public function downloadCustomersPdf(){
+   $customers = Customer::all();
+   $pdf = PDF::loadView('pages.main.customers' ,compact('customers'));
+   return $pdf->download('customers.pdf');
+ }
+
+
+protected function SuccessMessage($msg)
+{
+  $message = "You have successfully ".$msg."";
+  return $message;
+}
+
+
+protected function FailedMessage($failmsg)
+{
+  $message = "".$failmsg."";
+  return $message;
+}
+
+}

@@ -1,0 +1,120 @@
+<?php
+
+
+namespace App\Http\View\Composers;
+use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\User;
+use App\Models\Stock;
+use App\Models\Sale;
+use App\Models\Damage;
+use App\Models\Supplier;
+use App\Models\Customer;
+use App\Models\Expense;
+use App\Models\Role;
+use App\Models\TopCashier;
+use App\Models\DebtorsCustomer;
+use App\Models\DebtorsSupplier;
+
+class ComposerOverview{
+
+  public function compose(View $view){
+
+    $items_in_stock = Stock::count();
+    $total_sales = Sale::count();
+    $total_damages = Damage::count();
+    $total_suppliers = Supplier::count();
+    $total_customers = Customer::count();
+    $total_expenses = Expense::count();
+    $top_cashiers = TopCashier::paginate(5);
+    $debtorsCustomers = DebtorsCustomer::paginate(4);
+    $total_customersDebts = DebtorsCustomer::sum('debts');
+    $total_suppliersDebts = DebtorsSupplier::sum('debts');
+    $totlSystemUsers = DB::table("users")->count();
+    $totlActiveUsers = DB::table("users")->where('isActive', true)->count();
+    $totlLockedUsers = DB::table("users")->where('isActive', false)->count();
+    $fiveSuperAdmin = User::limit(5)->get();
+
+
+
+
+    $data = array(
+      'num_of_stockItems' => $items_in_stock,
+      'total_sales' => $total_sales,
+      'total_damages' => $total_damages,
+      'total_suppliers' => $total_suppliers,
+      'total_customers' => $total_customers,
+      'total_expenses' => $total_expenses,
+      'top_cashiers' => $top_cashiers,
+      'debtorsCustomers' => $debtorsCustomers,
+      'totalCustomerDebts' => $total_customersDebts,
+      'totalSupplierDebts' => $total_suppliersDebts,
+      'totlSystemUsers' => $totlSystemUsers,
+      'totlActiveUsers' => $totlActiveUsers,
+      'totlLockedUsers' => $totlLockedUsers,
+      'totlSuperAdmin' => $this->getNumberofSuperAdmin(),
+      'superAdminArr' => $fiveSuperAdmin,
+    );
+
+     $response = Gate::inspect('isSuperAdmin');
+        if($response->allowed())
+        { 
+            $view->with('registeredRoles', $this->getRoles());
+
+        }
+
+
+    if(Auth::check())
+    {
+     $id = Auth::user()->id;
+     $view->with('user_role', $this->getUserRole());
+     $view->with('data', $data);
+   }
+   else
+   {
+    return redirect('/home');
+  }
+
+
+
+}
+
+
+
+   public function getRoles()
+   {
+    $roles = DB::table('roles')
+                     ->get();
+    return $roles;
+   }
+
+
+    public function getUserRole()
+    {
+      $userRole = DB::table('roles')
+                 ->where('role_id', Auth::user()->user_role)
+                  ->value('role');
+      return $userRole;
+
+    }
+
+    public function getRoleId($role)
+    {
+      $role_id = Role::where("role", $role)->value("role_id");
+      return $role_id;
+    }
+
+    public function getNumberofSuperAdmin()
+    {
+       $role = "SuperAdministrator";
+       $userRoleId = $this->getRoleId($role);
+       $totl = User::where("user_role", $userRoleId)->count();
+       return $totl;
+    }
+
+    
+
+
+}

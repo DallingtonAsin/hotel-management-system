@@ -1,0 +1,9 @@
+https://www.nicesnippets.com/blog/laravel-7-ajax-crud-using-datatables
+
+https://www.tutsmake.com/laravel-7-6-datatable-ajax-crud-with-modal/
+
+https://datatables.yajrabox.com/service
+
+https://www.w3adda.com/blog/laravel-6-ajax-crud-using-datatables
+
+https://yajrabox.com/docs/laravel-datatables/7.0/buttons-installation

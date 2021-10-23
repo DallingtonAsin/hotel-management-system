@@ -1,0 +1,57 @@
+@extends('layouts.template')
+
+@section('content')
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+   <div class="panel-title nunito-font">
+      <strong>
+        <i class="fa fa-chart-line text-success pr-2"></i> 
+        Monthly sales {{ date('Y')}} as of  {{ date('d-M-Y H:i A')}}
+      </strong>
+  </div>
+</div>
+
+<div class="panel-body poppins">
+  <div class="table table-responsive">
+    <table class="table table-bordered" id="MonthlySales-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <!-- <th>Period</th> -->
+          <th>Month</th>
+          <th>Year</th>
+          <th>Sales</th>
+          <th>Percentage(%) of total sales</th>
+        </tr>
+      </thead>
+  </table>
+</div>
+</div>
+</div>
+
+
+<script>
+
+ const ajaxUrl = @json(route('monthly-sales.ajax'));
+ const cat = 'monthly-sales';
+ const token = "{{ csrf_token() }}";
+ var title = "Monthly Sales";
+ var table = $('#MonthlySales-table');
+ var columns = [0,1,2,3,4];
+
+ var dataColumns = [
+  {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+  // {data: 'period', name:'period'},
+  {data: 'month', name:'month'},
+  {data: 'year', name:'year'},
+  {data: 'sales', name:'sales'},
+  {data: 'percent',name:'percent'},
+  ];
+
+  makeDataTable2(table, title, columns, dataColumns);
+
+</script>
+
+@endsection
+
