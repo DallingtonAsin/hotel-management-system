@@ -33,10 +33,10 @@ class AppServiceProvider extends ServiceProvider
     {
 
 
-        // $company = Company::where('company_name', '!=', null)->first();
+        $company = Company::where('company_name', '!=', null)->first();
  
     //    //Option1: Every single view
-        // View::share('companyData', $company);
+        View::share('companyData', $company);
 
 
        //Option2: View Composer you can attach data to specific views

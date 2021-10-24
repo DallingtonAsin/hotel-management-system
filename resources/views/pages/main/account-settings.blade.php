@@ -20,9 +20,9 @@
 
       <div class="panel-body">
 
-        <form class="profileForm" id="profileForm" enctype='multipart/form-data'>
-          {{-- @method('PATCH') --}}
-          @csrf
+        <form class="profileForm" method="POST" action="{{route('profile.update', Auth::user()->id)}}" id="profileForm" enctype='multipart/form-data'>
+           @csrf
+            @method('put')
 
           <div class="form-group">
             <span class="text-muted">Username</span>
@@ -56,13 +56,12 @@
           <input type="file" class="form-control-file" name="image" >
         </div>
 
-
         <div class="form-group">
             <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
               Need to change your password? click here
             </button>
         </div>
-
+        
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 
           <div class="form-group">
@@ -194,27 +193,24 @@
 
 
 
-    $('.addProfileBtn').click(function (e) {
-        var id = $(".user_id").val();
-        e.preventDefault();
-        var Errors = validateForm();
-        if(Errors.length == 0){
-            if(id){
-                UpdateProfile(id);
-            }
-        }else
-        {
-            var i;
-            var message ="";
-            for(i=0; i<Errors.length; i++){
-                message += Errors[i] + "<br>";
-            }
-            //ShowResponse('.response', resp, 'error');
-            $('.errors_section').html(message);
-
-        }
-
-    });
+    // $('.addProfileBtn').click(function (e) {
+    //     var id = $(".user_id").val();
+    //     e.preventDefault();
+    //     var Errors = validateForm();
+    //     if(Errors.length == 0){
+    //         if(id){
+    //             UpdateProfile(id);
+    //         }
+    //     }else
+    //     {
+    //         var i;
+    //         var message ="";
+    //         for(i=0; i<Errors.length; i++){
+    //             message += Errors[i] + "<br>";
+    //         }
+    //         $('.errors_section').html(message);
+    //     }
+    // });
 
      function UpdateProfile(user_id){
     $('.errors_section').html('');

@@ -106,7 +106,6 @@
     </div>
   </div>
 
-@can()
   <form action="{{ Route('filtersales') }}" method="POST"> 
    <div class="row nunito-font">
     <div class=" form-group col-md-3">
