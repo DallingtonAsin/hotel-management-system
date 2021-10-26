@@ -341,11 +341,11 @@ class ComposerStaticInit2753733da02a46ae8484ea9ba2760088
         ),
         'Yajra\\DataTables\\' => 
         array (
-            0 => __DIR__ . '/..' . '/yajra/laravel-datatables-buttons/src',
-            1 => __DIR__ . '/..' . '/yajra/laravel-datatables-editor/src',
-            2 => __DIR__ . '/..' . '/yajra/laravel-datatables-fractal/src',
-            3 => __DIR__ . '/..' . '/yajra/laravel-datatables-html/src',
-            4 => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src',
+            0 => __DIR__ . '/..' . '/yajra/laravel-datatables-fractal/src',
+            1 => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src',
+            2 => __DIR__ . '/..' . '/yajra/laravel-datatables-editor/src',
+            3 => __DIR__ . '/..' . '/yajra/laravel-datatables-buttons/src',
+            4 => __DIR__ . '/..' . '/yajra/laravel-datatables-html/src',
         ),
         'XdgBaseDir\\' => 
         array (

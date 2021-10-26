@@ -53,9 +53,8 @@
     var linechartTitle = "Areachart showing the growth of sales generated over months";
     $('.reportTitle').html(barchartTitle);
 
-    $(window).on('load', function(){
          getSalesData('bar');
-    });
+   
 
     detectGraphChange();
 
