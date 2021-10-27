@@ -71,7 +71,7 @@
                   <input class="form-check-input" type="checkbox"
                   name="remember" id="remember" {{ old("remember") ? 'checked' : '' }}>
                   <label class="form-check-label nunito-font" for="remember">
-                    <small>{{ __('Keep me signed in') }}</small>
+                    <small>{{ __('Remember me') }}</small>
                   </label>
                 </div>
               </div>
