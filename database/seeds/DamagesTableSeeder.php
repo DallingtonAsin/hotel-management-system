@@ -11,6 +11,7 @@ class DamagesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Damage::class, 100)->create();
+
+        factory(App\Models\Damage::class, 10)->create();
     }
 }

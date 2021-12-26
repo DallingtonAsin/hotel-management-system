@@ -84,10 +84,11 @@
          <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
           Suppliers
         </a></li>
-        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link"> Customers</a></li>
         <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
           Expenses
         </a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
+      
       </ul>
       @endcan
 

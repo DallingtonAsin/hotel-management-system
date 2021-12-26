@@ -450,6 +450,7 @@ class CartController extends Controller
             $method = "CartController@recordSale";
             $cashier = $req->user()->name;
             $data = $req->input('tabledata');
+            $customer = $req->input('customer');
             $dataArr = json_decode($data, true);
 
             if(is_array($dataArr) && count($dataArr) > 0){
@@ -464,6 +465,27 @@ class CartController extends Controller
                     $subtotal = floatval(str_replace(',', '', $key['subtotal']));
                     $discount = floatval(str_replace(',', '', $key['discount']));
                     $total = floatval(str_replace(',', '', $key['total']));
+                    $paid_amount = floatval(str_replace(',', '', $key['paid']));
+
+
+                    $isCredit = filter_var($key['is_credit'], FILTER_VALIDATE_BOOLEAN);
+
+                    if( $isCredit == true && $total == $paid_amount){
+                        $amount_paid = 0;
+                        $balance = $paid_amount;
+                    }else{
+                        $amount_paid = $paid_amount;
+                        $balance = $total-$paid_amount;
+                    }
+
+                    if( $isCredit == true){
+                        $is_credit = 1;
+                        $fully_paid = 0;
+                    }else{
+                        $is_credit = 0;
+                        $fully_paid = 1;
+                    }
+
                     $date_of_sale = $key['date_of_sale'];
 
                     $arr = $this->getPrices($item);
@@ -486,6 +508,11 @@ class CartController extends Controller
                         'selling_price' => $price,
                         'discount' => $discount,
                         'amount' => $total,
+                        'paid_amount' => $amount_paid,
+                        'is_credit' => $is_credit,
+                        'fully_paid' => $fully_paid,
+                        'balance' => $balance,
+                        'customer' => $customer,
                         'tax' => $taxAmount,
                         'date' => $date,
                         'time' => $time,

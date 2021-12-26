@@ -11,6 +11,6 @@ class StockCategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\StockCat::class, 100)->create();
+        factory(App\Models\StockCat::class, 10)->create();
     }
 }

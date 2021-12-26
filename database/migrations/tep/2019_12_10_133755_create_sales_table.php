@@ -43,9 +43,12 @@ class CreateSalesTable extends Migration
             $table->double('total_cost')->storedAs('quantity * selling_price');
             $table->double('discount');
             $table->double('amount');
-            $table->double('tax')->default('0');
-            $table->boolean('taken_on_credit')->default(false);
+            $table->double('paid_amount');
+            $table->double('balance')->default(0);
+            $table->boolean('is_credit')->default('0');
+            $table->boolean('fully_paid')->default('1');
             $table->string('customer')->nullable();
+            $table->double('tax')->default('0');
             $table->date('date');
             $table->time('time');
             $table->string('cashier',45);

@@ -42,9 +42,7 @@ Route::get('roles/fetch','UserController@fetchRolesAjax')->name('roles.ajax.fetc
 Route::get('reports/ajax/monthly-sales','ReportsController@GetMonthlySalesDT')->name('monthly-sales.ajax');
 Route::get('reports/ajax/low-running-stock/{qty?}','ReportsController@GetLowStockDT')->name('low-stock.ajax');
 Route::get('reports/ajax/best-selling-items','ReportsController@GetBestSellingItemsDT')->name('best-selling-items.ajax');
-Route::get('reports/ajax/top-customers','ReportsController@GetTopCustomersDT')->name('top-customers.ajax');
 Route::get('reports/ajax/cashiers-performance','ReportsController@GetCashiersReportDT')->name('top-cashiers.ajax');
-Route::get('reports/ajax/debtors/customers','ReportsController@GetCustomerDebtorsDT')->name('debtors-customers.ajax');
 Route::get('reports/ajax/debtors/suppliers','ReportsController@GetSupplierDebtorsDT')->name('debtors-suppliers.ajax');
 
 
@@ -54,9 +52,21 @@ Route::get('users/active/fetch', 'UserController@ActiveUsersAjax')->name('active
 Route::get('users/locked/fetch', 'UserController@LockedUsersAjax')->name('locked_user.ajax.fetch');
 
 
+Route::get('reports/ajax/top-customers','ReportsController@GetTopCustomersDT')->name('top-customers.ajax');
+Route::get('reports/ajax/debtors/customers','ReportsController@GetCustomerDebtorsDT')->name('debtors-customers.ajax');
+Route::get('/customers/with-debts/ajax', 'CustomersController@GetCustomersWithDebts')->name('customers.with.debts.ajax');
+
+
 Route::match(['get', 'post'], '/botman', 'ChatBotController@handle');
 
 Route::group(["middleware" => "restricted"], function(){
+
+Route::get('/customers/with-debts/{id}', 'CustomersController@showCustomerWithDebt');
+Route::post('update/customer/debts', 'CustomersController@updateCustomerDebts')->name('customer.debt.update');
+
+
+
+
 
 Route::get('/stock/get-data', 'StockController@GetStock')->name('get-stock');
 Route::get('/suppliers/home', 'SuppliersController@GetSuppliers')->name('suppliers.home');
@@ -151,6 +161,9 @@ Route::post("/users/remove/selected", "UserController@RemoveSelected")->name("se
 Route::get('/customers/home', 'CustomersController@GetCustomers')->name('customers.home');
 Route::post('/customers/import-customers','CustomersController@importCustomers')->name('customers.import');
 Route::get('/customers/export-customers','CustomersController@exportCustomers')->name('customers.export');
+Route::get('/customers/with-debts', 'CustomersController@customersWithDebtsIndex')->name('customers.with.debts');
+
+
 
 
 Route::post('suppliers/import-suppliers','SuppliersController@importSuppliers')->name('suppliers.import');

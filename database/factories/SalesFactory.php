@@ -14,6 +14,7 @@ $factory->define(Sale::class, function (Faker $faker) {
         'selling_price' => $faker->numberBetween($min = 4000, $max = 9000),
          'discount' => $faker->numberBetween($min = 100, $max = 700),
          'amount' => $faker->numberBetween($min = 25400, $max = 45000),
+         'paid_amount' => $faker->numberBetween($min = 25400, $max = 45000),
          'customer' => $faker->lastName,
          'date' => $faker->date($format='Y-m-d', $max='now'),
          'time' => $faker->time($format = 'H:i:s', $max = 'now'),
