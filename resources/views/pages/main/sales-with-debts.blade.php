@@ -2,11 +2,6 @@
 
 @section('content')
 
-
-
-
-
-
 <div class="panel panel-success">
   <div class="panel-heading">
    <div class="panel-title nunito-font">
@@ -14,8 +9,8 @@
       <span class="response"></span>
 
       @can('isAdmin')
-      <div class="col-lg-3">
-        <label>Sales</label>
+      <div class="col-lg-5">
+        <label>Outstanding sales on credit</label>
         <span class="badge nunito-font totl_no">
          @isset($totl_no)
          {{ number_format($totl_no) }}
@@ -30,11 +25,11 @@
 
      @can('isCashier')
      @isset($volume_of_todaysales)
-     <div class="col-lg-3 today-amount">
+     <div class="col-lg-6 today-amount">
        <span>
          <h5>
-          Today: shs.
-          <strong class="text-success volume">{{ number_format($volume_of_todaysales) }}</strong>
+          <strong> Amount in debts (Today): shs.</strong>
+          <strong class="text-danger volume">{{ number_format($volume_of_todaysales) }}</strong>
         </h5>
       </span>
     </div>
@@ -51,36 +46,14 @@
 
   @isset($total_sales)
   <div class="col-lg-3 amount">
-    <label>Sales made: shs.</label>
-    <strong class="text-success totl_sales">{{ number_format($total_sales) }}</strong>
+    <label>Amount in debts: shs.</label>
+    <strong class="text-danger totl_sales volume">{{ number_format($total_sales) }}</strong>
   </div>
   @endisset
-
-
-
-
-  @isset($netValue)
-
-  <div class="col-lg-3 amount">
-   <label>Net Value:</label>
-   <strong class="net_value">
-    {{ number_format($netValue) }}
-  </strong>
-</div>
-
-@endisset
 @endcan
 
-@cannot('isCashier')
-<div class="col-lg-3">
- <small>
-   <a href="{{ Route('sales.index')}}" class="text-info bolded">Load all</a>
- </small>
-</div>
-@endcannot
 
 </div>
-
 </div>
 </div>
 
@@ -106,7 +79,7 @@
     </div>
   </div>
 
-  <form action="{{ Route('filtersales') }}" method="POST"> 
+  <form> 
    <div class="row nunito-font">
     <div class=" form-group col-md-3">
      <input type="date" name="start_date" class="form-control start_date custom-family">
@@ -115,13 +88,13 @@
     <input type="date" name="end_date" class="form-control end_date  custom-family">
   </div>
   <div class="col-md-4">
-   <button type="button" class="btn btn-sm btn-success filterSalesBtn">Filter sales</button>
+   <button type="button" class="btn btn-sm btn-success filterSalesBtn" id="filterSalesBtn">Filter sales</button>
  </div>
 </div>
 </form>
 
 <div class="table-responsive custom-family">
-  <table class="table table-bordered sales-table" id="sales-table">
+  <table class="table table-bordered sales-with-debts-table" id="sales-with-debts-table">
     <thead>
       <tr>
         @can('isAdmin') 
@@ -131,18 +104,18 @@
         <th>No</th>
         @endcan
         <th>Item</th>
-        <th>Qty</th>
-        <th>Selling price</th>
+        <th class="td-md">Qty</th>
+        <th>S. price</th>
         <th>Discount</th>
         <th>Total</th>
-        <th>Paid Amt</th>
+        <th>Paid Amount</th>
         <th>Balance</th>
-        <th>Customer</th>
         <th>Date</th>
+        <th>Customer</th>
         @can('isAdmin') 
         <th>Action</th>
         @endcan
-        
+
 
       </tr>
     </thead>
@@ -310,7 +283,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    var table = $(".sales-table");
+    var table = $(".sales-with-debts-table");
     var title = "List of filtered sales";
     var columns = [0,1,2,3,4,5,6,7,8];
     smartTable(table, title,columns);
@@ -331,7 +304,7 @@
  const cat = 'sales';
  const token = "{{ csrf_token() }}";
 
- var table = $('.sales-table');
+ var table = $('.sales-with-debts-table');
  var title = "List of sales items in the system";
  var columns = [0,1,2,3,4,5,6,7, 8];
 
@@ -339,12 +312,9 @@
 
 @can('isAdmin')
 <script>
- const ajaxUrl =   @json(route('get-sales'));
+ const ajaxUrl =   @json(route('get-sales-with-debts'));
  var dataColumns = [
  {data: 'checkbox', name:'checkbox'},
-        //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-         // {data: 'id', name:'id'},
-        //  {data: 'item_id', name:'item_id'},
         {data: 'item', name:'item'},
         {data: 'quantity', name:'quantity'},
         {data: 'selling_price', name:'selling_price'},
@@ -352,8 +322,8 @@
         {data: 'amount', name:'amount'},
         {data: 'paid_amount', name:'paid_amount'},
         {data: 'balance', name:'balance'},
-        {data: 'customer', name:'customer'},
         {data: 'date', name:'date'},
+        {data: 'customer', name:'customer'},
         {data: 'action', name:'action',orderable: false,searchable: false},
         ];
         makeDataTable(table, title, columns, dataColumns);
@@ -362,7 +332,7 @@
 
       @can('isCashier')
       <script>
-       const ajaxUrl =   @json(route('get-daily-sales'));
+       const ajaxUrl =   @json(route('get-daily-sales-with-debts'));
        var dataColumns = [
         {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
         {data: 'item', name:'item'},
@@ -415,12 +385,12 @@
        }
 
 
-       $('.filterSalesBtn').on('click', function(){
+       $('#filterSalesBtn').on('click', function(){
 
-        var datatable = $('.sales-table').DataTable();
+        var datatable = $('.sales-with-debts-table').DataTable();
         var from = $('.start_date').val();
         var to = $('.end_date').val();
-        var Url = "{{ route('filtersales') }}";
+        var Url = "{{ route('sales.debts.filter') }}";
         $.ajax({
 
           url: Url,
@@ -435,16 +405,15 @@
           var data = resp.data;
           var totl_filtered = resp.totl_filtered;
           var totl_volume = resp.volume;
-          var netValue = resp.netValue;
 
           $('.totl_no').html(FormatNumber(totl_filtered));
-          $('.totl_sales').html(FormatNumber(totl_volume));
-          $('.net_value').html(FormatNumber(netValue));
+          $('.volume').html(FormatNumber(totl_volume));
+      
           changeNetValueClass();
           console.log("Data", data);
           console.log("Total filtered", totl_filtered);
           console.log("Total volume", totl_volume);
-          console.log("Net value", netValue);
+ 
 
           datatable.clear();
           datatable.rows.add(data);
@@ -558,7 +527,7 @@
         var resp = data.success;
         ShowResponse('.response', resp, 'success');
         ResetTblInfo(data);
-        var tbl = $('#sales-table').DataTable();
+        var tbl = $('#sales-with-debts-table').DataTable();
         tbl.ajax.reload();
 
       },
@@ -634,7 +603,7 @@
       $('#deleteSaleModal').modal("hide");
       ShowResponse('.response', resp, 'success');
       ResetTblInfo(data);
-      var tbl = $('.sales-table').DataTable();
+      var tbl = $('.sales-with-debts-table').DataTable();
       tbl.ajax.reload();
     },
     error: function (data) {

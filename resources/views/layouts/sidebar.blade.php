@@ -94,10 +94,13 @@
 
       @can('isCashier')
       <ul class="nav-sub">
-        <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
+
         <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link">Customers</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Items</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damages</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales Review</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales With Debts</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link">Customers with debts</a></li>
+       
         {{-- <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Stock Categories</a></li> --}}
       </ul>
       @endcan
@@ -135,19 +138,22 @@
              </ul>
            </li>
 
+           
+           <li class="nav-item">
+            <a href="" class="nav-link with-sub"><i class="fa fa-shopping-cart"></i>Sales</a>
+            <ul class="nav-sub">
+              <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales Review</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales With Debts</a></li>
+              <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly Sales Review</a></li>
+          
+            </ul>
+          </li>
+
 
            <li class="nav-item">
             <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
             <ul class="nav-sub">
               {{-- <li class="nav-sub-item"><a href="{{ Route('overview') }}" class="nav-sub-link">Overview</a></li> --}}
-
-              <li class="nav-item">
-                <a href="" class="nav-link with-sub">Sales</a>
-                <ul class="nav-sub">
-                  <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly sales</a></li>
-                  <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Financial Review</a></li>
-                </ul>
-              </li>
 
               <li class="nav-sub-item"><a href="{{ route('top-cashiers')}}" class="nav-sub-link">Cashiers report</a></li>
 

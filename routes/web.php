@@ -73,11 +73,18 @@ Route::get('/suppliers/home', 'SuppliersController@GetSuppliers')->name('supplie
 Route::get('/expenses/get-data', 'ExpensesController@GetExpenses')->name('get-expenses');
 Route::get('/logs/get-data', 'LogsController@GetLogs')->name('get-logs');
 Route::get('/damages/get-data', 'DamagesController@GetDamages')->name('get-damages');
+
+
 Route::get('/sales/get-data', 'SalesController@GetSales')->name('get-sales');
 Route::get('/sales/fetch/today', 'SalesController@GetTodaySales')->name('get-daily-sales');
 Route::get('/sales/today', 'SalesController@salesForToday')->name('dailysales.index');
-
 Route::get('/sales/item/{id}', 'SalesController@GetItem')->name('getItemName');
+
+Route::get('/sales/debts', 'SalesController@salesWithDebtsIndex')->name('sales.debts');
+Route::get('/sales/debts/ajax', 'SalesController@GetSalesWithDebts')->name('get-sales-with-debts');
+Route::get('/sales/today/debts/ajax', 'SalesController@GetTodaySalesWithDebts')->name('get-daily-sales-with-debts');
+
+
 Route::get('/events/get', 'EventsController@GetEvents')->name('get-events');
 Route::get('/events/getTitle/{id}', 'EventsController@GetEventTitle')->name('getEventTitle');
 Route::get('purchases/get/', 'PurchasesController@GetPurchases')->name('get-purchases');
@@ -128,7 +135,11 @@ Route::post('cart/search','CartController@searchItem')->name('item.search');
 Route::post('cart/searchprice','CartController@getItemPrice')->name('cart.searchprice');
 Route::post('users/search/role','UserController@searchRole')->name('user.searchrole');
 
-Route::post('/sales/filtered-sales','SalesController@filterSales')->name('filtersales');  
+Route::post('/sales/filtered-sales','SalesController@filterSales')->name('filtersales'); 
+Route::post('/sales/debts/search','SalesController@filterSalesWithDebts')->name('sales.debts.filter'); 
+
+
+
 Route::put('/sales/records/update/','SalesController@updateSaleRecord')
 ->name('sales.records.update');
 Route::get('sales/export-sales','SalesController@exportSales')->name('sales.export');

@@ -15,8 +15,10 @@ use App\Http\Controllers\LogsController;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\LogAfterRequest;
 use App\DataTables\SalesDataTable;
-use App\Exports\DailySalesReport;
+use App\DataTables\SalesWithDebtsDataTable;
 use App\DataTables\TodaySalesDataTable;
+use App\DataTables\TodaySalesWithDebtsDataTable;
+use App\Exports\DailySalesReport;
 use Illuminate\Support\Str;
 use Constant;
 use Excel;
@@ -48,7 +50,7 @@ class SalesController extends Controller
 
    
       $value1 = Sale::whereBetween('date', [$startDate, $endDate])->sum('total_buying_cost');
-      $total_sales = $value2 = Sale::whereBetween('date', [$startDate, $endDate])->sum('amount');
+      $total_sales = $value2 = Sale::whereBetween('date', [$startDate, $endDate])->sum('paid_amount');
 
       $total_expenses = Expense::whereBetween('date_of_expenditure', [$startDate, $endDate])->sum('amount');
       $cost_of_damages = Damage::whereBetween('recordedOn', [$startDate, $endDate])->sum('total_cost');
@@ -91,7 +93,7 @@ class SalesController extends Controller
 
           $volume_of_filteredsales = DB::table('sales')
           ->whereBetween('date', [$startDate, $endDate])
-          ->sum('amount');
+          ->sum('paid_amount');
 
           $netValue = $this->GetCustomSalesReview($startDate, $endDate);
 
@@ -99,7 +101,19 @@ class SalesController extends Controller
                     ->addColumn('checkbox', function ($sale) {
                             $checkBox = '<input type="checkbox" id="'.$sale->id.'"/>';
                           return $checkBox;
-                      })->addColumn('action', function ($sale) {
+                      })->editColumn('quantity', function ($data) {
+                        return Helper::convertNumber($data->quantity);
+                    })->editColumn('selling_price', function ($data) {
+                        return Helper::convertNumber($data->selling_price);
+                    })->editColumn('amount', function ($data) {
+                        return Helper::convertNumber($data->amount);
+                    })->editColumn('paid_amount', function ($data) {
+                        return Helper::convertNumber($data->paid_amount);
+                    })->editColumn('balance', function ($data) {
+                        return Helper::convertNumber($data->balance);
+                    })->editColumn('discount', function ($data) {
+                        return Helper::convertNumber($data->discount);
+                    })->addColumn('action', function ($sale) {
 
             $btn = "";
 
@@ -131,22 +145,111 @@ class SalesController extends Controller
 
 }
 
+public function filterSalesWithDebts(Request $request){
+ 
+  if($request->input('to')){
 
-public function GetSales(SalesDataTable $dataTable)
-{
+       $startDate = $request->input('from');
+       $endDate = $request->input('to');
+ 
+        $data = DB::table('sales')
+        ->whereBetween('date', [$startDate, $endDate])
+        ->where('is_credit', 1)
+        ->where('fully_paid', 0)
+        ->where('balance', '>', 0)
+        ->orderBy('date', 'desc')->get();
+
+        $totl_filtered = DB::table('sales')
+        ->whereBetween('date', [$startDate, $endDate])
+        ->where('is_credit', 1)
+        ->where('fully_paid', 0)
+        ->where('balance', '>', 0)
+        ->count();
+
+        $volume_of_filteredsales = DB::table('sales')
+        ->whereBetween('date', [$startDate, $endDate])
+        ->where('is_credit', 1)
+        ->where('fully_paid', 0)
+        ->where('balance', '>', 0)
+        ->sum('balance');
+
+        $netValue = $this->GetCustomSalesReview($startDate, $endDate);
+
+        return DataTable::of($data)->addIndexColumn()
+                  ->addColumn('checkbox', function ($sale) {
+                          $checkBox = '<input type="checkbox" id="'.$sale->id.'"/>';
+                        return $checkBox;
+                    })->editColumn('quantity', function ($data) {
+                      return Helper::convertNumber($data->quantity);
+                  })->editColumn('selling_price', function ($data) {
+                      return Helper::convertNumber($data->selling_price);
+                  })->editColumn('amount', function ($data) {
+                      return Helper::convertNumber($data->amount);
+                  })->editColumn('paid_amount', function ($data) {
+                      return Helper::convertNumber($data->paid_amount);
+                  })->editColumn('balance', function ($data) {
+                      return Helper::convertNumber($data->balance);
+                  })->editColumn('discount', function ($data) {
+                      return Helper::convertNumber($data->discount);
+                  })->addColumn('action', function ($sale) {
+
+          $btn = "";
+
+          $btn .= '<a href="javascript:void(0);" id="view-sale"
+          data-toggle="tooltip" data-original-title="View"
+           data-id="'.$sale->id.'" class="text-info bolded pl-4">
+          <i class="fa fa-eye" ></i></a>';
+          
+          if(Gate::allows('isAdmin')){
+
+          $btn .= '<a href="javascript:void(0);" id="delete-sale"
+          data-toggle="tooltip" data-original-title="Delete"
+           data-id="'.$sale->id.'" class="trash-btn pl-4">
+          <span class="fa fa-trash-alt"></span></a>';
+
+          }
+
+         return $btn;
+
+      })->rawColumns(['action', 'checkbox'])->with(["totl_filtered" => $totl_filtered,
+                "volume" => $volume_of_filteredsales,
+                "netValue" => $netValue,
+                   ])->make(true);
+      
+      
+    }
+        return view('pages.main.sales-with-debts');
+
+
+}
+
+
+
+public function GetSales(SalesDataTable $dataTable){
    return $dataTable->render('pages.main.sales');
 }
-public function GetTodaySales(TodaySalesDataTable $dataTable)
-{
-   return $dataTable->render('pages.main.sales');
+
+public function GetTodaySales(TodaySalesDataTable $dataTable){
+  return $dataTable->render('pages.main.sales-with-debts');
 }
+
+public function GetSalesWithDebts(SalesWithDebtsDataTable $dataTable){
+  return $dataTable->render('pages.main.sales-with-debts');
+ }
+
+public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
+  return $dataTable->render('pages.main.sales');
+}
+
+
+
 
   protected function GetDailySalesReview()
     {
 
       $total_number_of_sales = Sale::where('date', Date('Y-m-d'))->count(); 
       $value1 = Sale::where('date', Date('Y-m-d'))->sum('total_buying_cost');
-      $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('amount');
+      $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('paid_amount');
       $total_expenses = Expense::where('date_of_expenditure', Date('Y-m-d'))->sum('amount');
       $cost_of_damages = Damage::whereDate('recordedOn', Date('Y-m-d'))->sum('total_cost');
       $value3 = (Supplier::whereDate('created_at', Date('Y-m-d'))->sum('credit')) -(Supplier::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
@@ -173,7 +276,7 @@ public function GetTodaySales(TodaySalesDataTable $dataTable)
       $all_sales = Sale::where('date', Date('Y-m-d'))->get();
 
       $volume_of_todaysales = Sale::whereDate('date' ,$today)
-                              ->sum('amount');
+                              ->sum('paid_amount');
 
       $totl_no =  $arr['totl_no'];
       $total_sales =  $arr['totl_sales'];
@@ -209,10 +312,10 @@ public function GetTodaySales(TodaySalesDataTable $dataTable)
       $today = Date('Y-m-d');
 
       $today_sales = Sale::whereDate('date' ,$today)->get();
-      $all_sales = Sale::all();
+      $all_sales = Sale::where('fully_paid', 1)->where('balance', 0)->get();
 
       $volume_of_todaysales = Sale::whereDate('date' ,$today)
-                              ->sum('amount');
+                              ->sum('paid_amount');
 
       $totl_no = $arr['totl_no'];
       $total_sales = $arr['totl_sales'];
@@ -231,22 +334,89 @@ public function GetTodaySales(TodaySalesDataTable $dataTable)
          'volume_of_todaysales', 'total_sales')
       );
 
+    }
+
+
+
+    public function salesWithDebtsIndex(Request $request)
+    {
+
+      $request->session()->forget('filtered_sales');  
+      $arr = $this->GetSalesWithDebtsReview();
+      $today = Date('Y-m-d');
+
+      $today_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->whereDate('date' ,$today)->get();
+      $all_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance','>', 0)->get();
+
+      $volume_of_todaysales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->whereDate('date' ,$today)
+                              ->sum('balance');
+
+      $totl_no = $arr['totl_no'];
+      $total_sales = $arr['totl_sales'];
+      $netValue = $arr['NetWorth'];
+
+      ($netValue > 0)
+       ? $net_title = "Net Profit made: shs"
+       : $net_title = "Losses made: shs";
+      
+       if($request->ajax()){
+         $this->GetSales();
+       }
+
+      return view('pages.main.sales-with-debts')->with(
+        compact('today_sales','totl_no', 'all_sales', 'netValue',
+         'volume_of_todaysales', 'total_sales')
+      );
 
     }
 
-    protected function GetSalesReview()
+
+
+
+    private function GetSalesReview()
     {
 
-      $total_number_of_sales = Sale::count(); 
-      $value1 = Sale::sum('total_buying_cost');
-      $total_sales = $value2 = Sale::sum('amount');
+      $total_number_of_sales = Sale::where('fully_paid', 1)->where('balance', 0)->count(); 
+      $total_sales= Sale::sum('paid_amount');
       $total_expenses = Expense::sum('amount');
       $cost_of_damages = Damage::sum('total_cost');
-      $value3 = (Supplier::sum('credit')) -(Supplier::sum('debt'));
-      $value4 = (Customer::sum('credit')) -(Customer::sum('debt'));
+      $total_initial_cost = Sale::sum('total_buying_cost');
+      $supplier_debts = (Supplier::sum('credit')) -(Supplier::sum('debt'));
+      $customer_debts = Sale::where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+      $netValue = (($total_sales - $total_initial_cost) - ($total_expenses+ $cost_of_damages) + ($supplier_debts + $customer_debts) );
 
-      $netValue = (($value2 - $value1) - ($total_expenses+ $cost_of_damages) + ($value3 + $value4) );
+      $data = array(
+          'totl_no' => $total_number_of_sales,
+          'totl_sales' => $total_sales,
+          'NetWorth' => $netValue
+      );
+      return $data;
+    }
 
+    private function GetSalesWithDebtsReview()
+    {
+
+      $today = Date('Y-m-d');  
+      if(Gate::allows('isAdmin')){
+
+        $total_number_of_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->count(); 
+        $total_sales= Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+        $total_expenses = Expense::sum('amount');
+        $cost_of_damages = Damage::sum('total_cost');
+        $total_initial_cost = Sale::sum('total_buying_cost');
+        $supplier_debts = (Supplier::sum('credit')) -(Supplier::sum('debt'));
+        $customer_debts = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+        $netValue = (($total_sales - $total_initial_cost) - ($total_expenses+ $cost_of_damages) + ($supplier_debts + $customer_debts) );
+
+
+      }else{
+
+        $total_number_of_sales = Sale::whereDate('date' ,$today)->where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->count(); 
+        $total_sales= Sale::whereDate('date' ,$today)->where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+        $netValue = 0;
+      }
+
+    
       $data = array(
           'totl_no' => $total_number_of_sales,
           'totl_sales' => $total_sales,

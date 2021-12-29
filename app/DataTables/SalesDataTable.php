@@ -54,6 +54,10 @@ class SalesDataTable extends DataTable
             return Helper::convertNumber($data->selling_price);
         })->editColumn('amount', function ($data) {
             return Helper::convertNumber($data->amount);
+        })->editColumn('paid_amount', function ($data) {
+            return Helper::convertNumber($data->paid_amount);
+        })->editColumn('balance', function ($data) {
+            return Helper::convertNumber($data->balance);
         })->editColumn('discount', function ($data) {
             return Helper::convertNumber($data->discount);
         })->rawColumns(['action', 'checkbox']);
@@ -62,7 +66,7 @@ class SalesDataTable extends DataTable
 
     public function query(Sale $model)
     {
-        return $model->newQuery()->select('*');
+        return $model->newQuery()->select('*')->where('fully_paid', 1)->where('balance', 0);
     }
 
     /**

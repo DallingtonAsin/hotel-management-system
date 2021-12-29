@@ -7,7 +7,7 @@ use App\Models\Sale;
 use Illuminate\Support\Facades\Gate;
 use Helper;
 
-class TodaySalesDataTable extends DataTable
+class TodaySalesWithDebtsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -66,7 +66,7 @@ class TodaySalesDataTable extends DataTable
 
     public function query(Sale $model)
     {
-        return $model->newQuery()->select('*')->where('fully_paid', 1)->where('balance', 0)->where("date", Date('Y-m-d'));
+        return $model->newQuery()->select('*')->where('fully_paid', 0)->where('balance', '>', 0)->where("date", Date('Y-m-d'));
     }
 
     /**

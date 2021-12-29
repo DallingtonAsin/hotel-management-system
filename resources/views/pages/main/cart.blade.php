@@ -542,6 +542,7 @@
                           },
                           success: function(data){
                             EmptyCartTable();
+                            $("#customer").val('');
                             var message = data.response;
                             $('.print-btn-text').html("Print Receipt");
                             updateSubTotal();
