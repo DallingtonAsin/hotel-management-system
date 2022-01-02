@@ -25,7 +25,7 @@ $factory->define(App\User::class, function (Faker $faker) {
     'username' => $faker->unique()->lastName,
     'gender' => 'Male',
     'email' => $faker->unique()->safeEmail,
-    'user_role' => 2,
+    'user_role' => $faker->randomElement([1, 2]),
     'tel_no' => $faker->e164phoneNumber,
     'alt_telno' => $faker->e164phoneNumber,
     'address' => $faker->state,

@@ -43,7 +43,7 @@ class CreateMonthlysalesTable extends Migration
                 year(`date`) AS SalesYear,
                 month(`date`) AS month_int,
                 monthname(`date`) AS SalesMonth, 
-                sum(`amount`) AS TotalSales from `sales` 
+                sum(`paid_amount`) AS TotalSales from `sales` 
                 group by month_year,month_int, SalesMonth, SalesYear order by SalesYear desc");
 
 
