@@ -18,7 +18,8 @@ class MonthlySalesDataTable extends DataTable
     {
         return datatables($query)
         ->addIndexColumn()->order(function($query){
-               $query->orderBy('month_int', 'asc');
+               $query->orderBy('SalesYear', 'desc');
+               $query->orderBy('month_int', 'desc');
         })->addColumn('period', function ($data){
             $month = date("F", mktime(0, 0, 0, $data->month_int, 10)); 
             return $month ." ".$data->SalesYear;
@@ -45,7 +46,7 @@ class MonthlySalesDataTable extends DataTable
      */
     public function query(MonthlySale $model)
     {
-        return $model->newQuery()->select('*')->where("SalesYear", Date('Y'));;
+        return $model->newQuery()->select('*'); // ->where("SalesYear", Date('Y'));;
     }
 
     /**
