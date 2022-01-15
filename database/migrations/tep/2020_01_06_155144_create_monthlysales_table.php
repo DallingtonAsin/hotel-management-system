@@ -46,6 +46,21 @@ class CreateMonthlysalesTable extends Migration
                 sum(`paid_amount`) AS TotalSales from `sales` 
                 group by month_year,month_int, SalesMonth, SalesYear order by SalesYear desc");
 
+// DB::statement("CREATE OR REPLACE VIEW monthlysales AS
+// select 
+// date_format(sales.date,'%m-%Y') AS month_year, 
+// year(sales.date) AS SalesYear,
+// month(sales.date) AS month_int,
+// monthname(sales.date) AS SalesMonth, 
+// sum(paid_amount) AS TotalSales
+// ,sum(purchases.total_cost_price) AS TotalPurchases
+// from sales, purchases
+// group by month_year,month_int, SalesMonth, SalesYear order by SalesYear desc");
+
+
+
+
+
 
 }
 

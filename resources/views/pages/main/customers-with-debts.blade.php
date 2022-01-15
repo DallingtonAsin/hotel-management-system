@@ -8,7 +8,7 @@
           <div class="panel-tile">
 
             <div class="row nunito-font">
-
+              <span class="response"></span>
               <div class="col-lg-4">
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
@@ -93,7 +93,7 @@ role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-      <form name="customers" id="SaleDetailsForm">
+      <form name="customers" id="DebtSaleDetailsForm">
           @csrf
        <div class="modal-header text-center">
         <h5 class="modal-title w-100 font-weight-bold" id="modalHeading">Debt Details for the customer</h5>
@@ -131,19 +131,30 @@ role="dialog" aria-labelledby="myModalLabel">
         </div>
 
         <div class="form-group col-md-6">
+          <span>Taken on</span>
+          <input type="date" value="" class="form-control taken_on bg-white" id="taken_on" name="taken_on">
+        </div>
+
+        <div class="form-group col-md-6">
           <span>Amount</span>
           <input type="text" class="form-control amount bg-white" name="amount">
         </div>
-      </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-6">
           <span>Paid Amount</span>
           <input type="text" class="form-control paid_amount bg-white" name="paid_amount">
         </div>
+      </div>
+
 
         <div class="form-group received-div">
           <span>Received now</span>
           <input type="text" class="form-control received bg-white" placeholder="Enter amount the customer has just paid now" name="received">
+        </div>
+
+        <div class="form-group date">
+          <span>Date of repayment</span>
+          <input type="date" class="form-control date bg-white" name="date" value="{{date('Y-m-d')}}">
         </div>
 
         <div class="form-group">
@@ -151,10 +162,7 @@ role="dialog" aria-labelledby="myModalLabel">
           <input type="text" class="form-control balance bg-white text-danger" name="balance" required>
         </div>
 
-        <div class="form-group">
-          <span>Taken on</span>
-          <input type="date" value="" class="form-control taken_on bg-white" id="taken_on" name="taken_on">
-        </div>
+       
 
         <div class="form-group">
           <button type="submit" class="btn btn-primary submitBtn"  name="submitBtn">Save</button>
@@ -338,14 +346,15 @@ if(Errors.length == 0){
 $(this).html('Updating..');
 
 $.ajax({
-  data: $('#SaleDetailsForm').serialize(),
+  data: $('#DebtSaleDetailsForm').serialize(),
   url: "{{ route('customer.debt.update') }}",
   type: "POST",
   dataType: 'json',
   success: function (data) {
-      $('#SaleDetailsForm').trigger("reset");
+      $('#DebtSaleDetailsForm').trigger("reset");
       $('#CustomerDebtDetailsModel').modal("hide");
       var resp = data.success;
+      console.log("Got this message for you", resp);
       ShowResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#customers-with-debts-table').DataTable();

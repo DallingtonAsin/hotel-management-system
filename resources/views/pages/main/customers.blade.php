@@ -8,7 +8,7 @@
           <div class="panel-tile">
 
             <div class="row nunito-font">
-
+              <span class="response"></span>
 
               <div class="col-lg-2">
                 <h6 class="text-dark">

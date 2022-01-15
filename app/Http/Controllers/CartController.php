@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
 use Illuminate\Support\Carbon;
+use App\Services\ReceiptGenerator;
 
 class CartController extends Controller
 {
@@ -564,6 +565,18 @@ class CartController extends Controller
                             } // end of foreach
 
                             return $response;
+                        }
+                    }
+
+
+
+
+                    public function getReceipt(ReceiptGenerator $rg){
+                        try{
+                            $rg = new ReceiptGenerator();
+                            return $rg->generateReceipt();
+                        }catch(\Exception $ex){
+                            throw $ex;
                         }
                     }
 

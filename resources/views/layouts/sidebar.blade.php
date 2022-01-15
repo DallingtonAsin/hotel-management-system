@@ -88,6 +88,7 @@
           Expenses
         </a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
       
       </ul>
       @endcan
@@ -100,7 +101,10 @@
         <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales Review</a></li>
         <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales With Debts</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link">Customers with debts</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
        
+
+        
         {{-- <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Stock Categories</a></li> --}}
       </ul>
       @endcan

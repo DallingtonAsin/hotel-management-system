@@ -94,13 +94,13 @@ return [
 
             'mongodb' => [
             'driver'   => 'mongodb',
-            'host'     => env('DB_HOST', 'localhost'),
-            'port'     => env('DB_PORT', 27017),
-            'database' => env('DB_DATABASE', 'collection_hub'),
-            'username' => env('DB_USERNAME','Dallington'),
-            'password' => env('DB_PASSWORD','Dallington100'),
+            'host'     => env('MONGO_DB_HOST', 'localhost'),
+            'port'     => env('MONGO_DB_PORT', 27017),
+            'database' => env('MONGO_DB_DATABASE', 'collectionhub'),
+            'username' => env('MONGO_DB_USERNAME',''),
+            'password' => env('MONGO_DB_PASSWORD',''),
             'options'  => [
-                'database' => env('DB_AUTHENTICATION_DATABASE', 'admin')
+                'database' => env('MONGO_DB_AUTH', 'admin')
             ]
         ],
 

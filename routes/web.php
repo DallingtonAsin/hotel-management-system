@@ -32,6 +32,9 @@ Route::group(["middleware" =>"OTPlayer"], function(){
 
 Route::get("/export/excel", "SalesController@GetSalesExcelFileReport");
 
+Route::get("/sale/make-receipt", "CartController@getReceipt");
+
+
 // Route::get("/users/active", "UserController@ActiveUsersIndex")->name('user-account.active');
 // Route::get("/users/locked", "UserController@LockedUsersIndex")->name('user-account.locked');
 Route::get('/fetch/company-details', 'SettingsController@GetCompanies')->name('companies.home');
@@ -55,6 +58,10 @@ Route::get('users/locked/fetch', 'UserController@LockedUsersAjax')->name('locked
 Route::get('reports/ajax/top-customers','ReportsController@GetTopCustomersDT')->name('top-customers.ajax');
 Route::get('reports/ajax/debtors/customers','ReportsController@GetCustomerDebtorsDT')->name('debtors-customers.ajax');
 Route::get('/customers/with-debts/ajax', 'CustomersController@GetCustomersWithDebts')->name('customers.with.debts.ajax');
+
+Route::get('/customers/debt-payments', 'CustomersController@customerDebtPaymentsIndex')->name('customers.debts.payments.index');
+Route::get('/customers/debt-payments/ajax', 'CustomersController@GetCustomerDebtPayments')->name('customers.debts.payments.ajax');
+
 
 
 Route::match(['get', 'post'], '/botman', 'ChatBotController@handle');

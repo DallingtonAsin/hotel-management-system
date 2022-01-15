@@ -17,6 +17,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\CustomersDataTable;
 use App\DataTables\CustomersWithDebtsDataTable;
+use App\DataTables\CustomerDebtPaymentRecordsDataTable;
+use App\Services\CustomerDebtPaymentService;
 use Illuminate\Support\Str;
 use Constant;
 use DataTable;
@@ -52,6 +54,16 @@ class CustomersController extends Controller
   {
     return $dataTable->render('pages.main.customers');
   }
+
+  public function customerDebtPaymentsIndex(){
+    return view('pages.main.customer-debt-payment-records');
+  }
+
+  public function GetCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable)
+  {
+    return $dataTable->render('pages.main.customer-debt-payment-records');
+  }
+  
   
   public function customersWithDebtsIndex(){
     $total_debtors = Sale::where('balance', '>', 0)->where('fully_paid', 0)->count();
@@ -542,16 +554,19 @@ protected function FailedMessage($failmsg)
   return $message;
 }
 
-public function updateCustomerDebts(Request $req)
+public function updateCustomerDebts(CustomerDebtPaymentService $debtPaymentService, Request $req)
 {
   
   
   $id = $req->input('id');
   
+  
   if(!empty($id)){
     
     $sale = Sale::find($id);
     $received =  $req->input('received'); 
+    $date =  $req->input('date'); 
+
     $balance = $sale->amount - ($sale->paid_amount + $received);
 
     if($balance == 0){
@@ -572,16 +587,22 @@ public function updateCustomerDebts(Request $req)
     if($response)
     {
       
-      $action = "updated sale debt details for customer ".$sale->customer."";
-      LogsController::logger($req, $action, now());
-      $dataArr = array("code" => '200',
-      "message" => $action,
-      "method" => "CustomersController@updateCustomerDebts");
-      LogAfterRequest::LogRequest($req, $dataArr);
-      $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
-      
-      
+      $paymentDetails = [
+        'sale_id' => $id,
+        'amount_paid' => $paid_amount,
+        'balance' => $balance,
+        'date' => $date,
+      ];
+        $debtPaymentService->recordPayment($paymentDetails);
+        $action = "updated sale debt details for customer ".$sale->customer."";
+        LogsController::logger($req, $action, now());
+        $dataArr = array("code" => '200',
+        "message" => $action,
+        "method" => "CustomersController@updateCustomerDebts");
+        LogAfterRequest::LogRequest($req, $dataArr);
+        $sessionVariable = 'success';
+        $responseInfo = $this->SuccessMessage($action);
+ 
     }
     else{
       $messageErr = "Unable to update customer debt!";

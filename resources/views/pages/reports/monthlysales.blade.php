@@ -21,6 +21,7 @@
           <!-- <th>Period</th> -->
           <th>Month</th>
           <th>Year</th>
+          <th>Purchases</th>
           <th>Sales</th>
           <th>Percentage(%) of total sales</th>
         </tr>
@@ -45,6 +46,7 @@
   // {data: 'period', name:'period'},
   {data: 'month', name:'month'},
   {data: 'year', name:'year'},
+  {data: 'TotalPurchases', name:'TotalPurchases'},
   {data: 'sales', name:'sales'},
   {data: 'percent',name:'percent'},
   ];
