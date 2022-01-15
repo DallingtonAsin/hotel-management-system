@@ -20,12 +20,6 @@ class MonthlySalesDataTable extends DataTable
     {
         return datatables($query)
         ->addIndexColumn()
-        
-        // ->order(function($query){
-        //        $query->orderBy('SalesYear', 'desc');
-        //        $query->orderBy('month_int', 'desc');
-        // })
-        
         ->addColumn('period', function ($data){
             $month = date("F", mktime(0, 0, 0, $data->month_int, 10)); 
             return $month ." ".$data->SalesYear;
@@ -56,7 +50,6 @@ class MonthlySalesDataTable extends DataTable
         $monthly_sales = MonthlySale::orderBy('SalesYear', 'desc');
         $monthly_sales = $monthly_sales->orderBy('month_int', 'desc');
         $monthly_sales = $monthly_sales->get();
-
         foreach($monthly_sales as $item){
             $total_purchases = MonthlyPurchase::where('month_int', $item->month_int)->value('total_purchases');
             if(!empty($total_purchases)){
@@ -67,15 +60,7 @@ class MonthlySalesDataTable extends DataTable
           
         
         }
-        // dd($monthly_sales);
          return $monthly_sales;
-
-        //  foreach($monthly_purchases as $purchase){
-        //     $collection->push($purchase);
-        //  }
- 
-
-       // return $model->newQuery()->select('*'); // ->where("SalesYear", Date('Y'));;
     }
 
     /**
