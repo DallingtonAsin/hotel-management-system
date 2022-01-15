@@ -57,8 +57,6 @@ class MonthlySalesDataTable extends DataTable
             }else{
                 $item->TotalPurchases = 0;
             }
-          
-        
         }
          return $monthly_sales;
     }
