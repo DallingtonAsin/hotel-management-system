@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="panel panel-success" id="panel">
-  <div class="panel-heading" id="panel-heading">
+  <div class="panel-heading cartPanelHeader" id="panel-heading">
     <div class="panel-title nunito-font">
       
       <div class="row">
@@ -15,42 +15,104 @@
             <span id="num">0</span>
           </span>
         </div>
-        
-        <div class="col-lg-3 mt-2 amount">
-          <strong>
-            Amount to Pay: shs.
-            <strong class="text-danger amountToPay" id="amountToPay">0</strong>
-            <input type ="hidden" value="@isset($item_total) {{ $item_total }} @endisset" class="payment">
-          </strong>
-        </div>
-        
-        
-        
-        <div class="form-group col-lg-2">
-          <!-- <span>Tendered</span>  -->
-          <input type="text" class="form-control tendered" id='tendered' placeholder="Tendered amount">
-        </div>
-        
-        <div class="form-group col-lg-2">
-          <!-- <span>Balance</span> -->
-          <input type="text" class="form-control bg-white balance" readonly  placeholder="Customer balance">
-        </div>
-        
-        
-        <div class="col-lg-3 text-center text-right">
-          
-          <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
-            <i class="fa f-10 fa-minus-circle pr-1"></i>Empty cart</a>
-            
-            <a  id="printBtn" class="btn btn-sm btn-info text-white">
-              <i class="fa fa-print"></i> <strong class="f-15 print-btn-text">Print Receipt</strong>
-            </a>
-          </div>
-          
+         
         </div>
         
       </div>
     </div>
+
+    <header class="mt-3 ml-2">
+      <form id="CartForm" class="form">
+        @csrf
+
+        <div class="row">
+        <div class="col-lg-2 mt-2 amount">
+          <strong>Amount: </strong>
+          <strong class="text-danger amountToPay" id="amountToPay">0</strong>
+          <input type ="hidden" value="@isset($item_total) {{ $item_total }} @endisset" class="payment">
+        </div>
+        
+        
+        
+        <div class="form-group col-lg-2">
+          <input type="text" class="form-control tendered" id='tendered' placeholder="Tendered amount">
+        </div>
+        
+        <div class="form-group col-lg-2">
+          <input type="text" class="form-control bg-white balance" readonly  placeholder="Customer balance">
+        </div>
+        
+        <div class="form-group col-lg-2">
+          <input type="text" class="form-control bg-white workedon_by" value="{{Auth::user()->name}}"  placeholder="WorkedOn By">
+        </div>
+
+        <div class="col-lg-2">
+          <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
+            <i class="fa f-10 fa-minus-circle pr-1"></i>Empty cart
+          </a>
+        </div>
+            
+        <div class="col-lg-2">
+            <a  id="printBtn" class="btn btn-sm btn-success text-white">
+              <i class="fa fa-print"></i> <strong class="f-15 print-btn-text">Print Receipt</strong>
+            </a>
+          </div>
+
+
+        </div>
+        
+        <div class="row nunito-font">
+          <div class="form-group col">
+            <label>Barcode</label>
+            
+            <input type="text" id="barcode" name="barcode" class="form-control barcode"
+            placeholder="Barcode"  autocomplete="off" spellcheck="false" required autofocus>
+            
+          </div>
+          
+          <div class="form-group col">
+            <label>Item name</label>
+            <input type="text" id="item-name" name="item-name" class="form-control item-name"
+            placeholder="Item name" autocomplete="off" spellcheck="false" required>
+          </div>
+          <div class="form-group col">
+            <label>Quantity</label>
+            <input type="text" name="qty" id="qty" class="form-control" val="" placeholder="Qty">
+          </div>
+          
+          <div class="form-group col">
+            <label>Discount</label>
+            <input type="text" name="discount" id="discount" class="form-control" placeholder="discount">
+          </div>
+          
+          <div class="form-group col">
+            <label>Customer</label>
+            <input type="text" name="customer" id="customer" class="form-control" placeholder="customer">
+          </div>
+          
+          <div class="form-group col">
+            <label>Price category</label>
+            <select name="priceCategory" class="form-control" id="priceCategory">
+              <option value="retail">retail</option>
+              <option value="wholesale">wholesale</option>
+            </select>
+          </div>
+          
+          <div class="form-group col">
+            <label>Date of sale</label>
+            <input type="date" name="date_of_sale" id="date_of_sale" class="form-control date_of_sale" value="{{date('Y-m-d')}}">
+          </div>
+          
+          
+          
+          <div class="form-group col mt-4 pt-2">
+            <label></label>
+            <button type="button" id="addToCartBtn"
+            class="btn btn-sm btn-info pb-2 custom-family" name="AddToCart">Add to cart</button>
+          </div>   
+        </div>
+      </form>
+      </header>
     
     <div class="panel-body">
       
@@ -76,64 +138,13 @@
             </div>
             
           </div>
-          
-          <form id="CartForm" class="form">
-            @csrf
-            <div class="row nunito-font">
-              <div class="form-group col">
-                <label>Barcode</label>
-                
-                <input type="text" id="barcode" name="barcode" class="form-control barcode"
-                placeholder="Barcode"  autocomplete="off" spellcheck="false" required autofocus>
-                
-              </div>
-              
-              <div class="form-group col">
-                <label>Item name</label>
-                <input type="text" id="item-name" name="item-name" class="form-control item-name"
-                placeholder="Item name" autocomplete="off" spellcheck="false" required>
-              </div>
-              <div class="form-group col">
-                <label>Quantity</label>
-                <input type="text" name="qty" id="qty" class="form-control" val="" placeholder="Qty">
-              </div>
-              
-              <div class="form-group col">
-                <label>Discount</label>
-                <input type="text" name="discount" id="discount" class="form-control" placeholder="discount">
-              </div>
-              
-              <div class="form-group col">
-                <label>Customer</label>
-                <input type="text" name="customer" id="customer" class="form-control" placeholder="customer">
-              </div>
-              
-              <div class="form-group col">
-                <label>Price category</label>
-                <select name="priceCategory" class="form-control" id="priceCategory">
-                  <option value="retail">retail</option>
-                  <option value="wholesale">wholesale</option>
-                </select>
-              </div>
-              
-              <div class="form-group col">
-                <label>Date of sale</label>
-                <input type="date" name="date_of_sale" id="date_of_sale" class="form-control date_of_sale" value="{{date('Y-m-d')}}">
-              </div>
-              
-              
-              
-              <div class="form-group col mt-4 pt-2">
-                <label></label>
-                <button type="button" id="addToCartBtn"
-                class="btn btn-sm btn-info pb-2 custom-family" name="AddToCart">Add to cart</button>
-              </div>   
-            </div>
-          </form>
+
+         <main>
+       
           
           
-          <div class="table table-responsive" id="cart-div">
-            <table id="cart-table" class="table table-bordered">
+          <div class="table table-responsive fixedTableHead" id="cart-div">
+            <table id="cart-table" class="table table-bordered cart-table">
               <thead>
                 <tr class="warning">
                   <th>Item</th>
@@ -155,7 +166,7 @@
               
             </table>
           </div>
-          
+         </main>
           {{-- @include('pages.receipt.index') --}}
         </div>
       </div>
@@ -209,9 +220,9 @@
               
               var itemName = $('.item-name').val();
               var isBarcode = 0;
-              if(itemName.length >= 3){
+              // if(itemName.length >= 3){
                 PopulateCartBag(isBarcode, itemName);
-              }
+              // }
               $('.item-name').val("");
             });
             
@@ -299,15 +310,15 @@
                           $('#qty').val("");
                           $('#discount').val("");
                           var newQty = Convert2Num(itemQty);
-                          if(tblItemId == row.item_id){
+                          // if(tblItemId == row.item_id){
                             
-                            var newSubTotal = newQty*Convert2Num(ItemPrice);
-                            $(this).children(":eq(2)").text(FormatNumber(newQty));
-                            $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
-                            updateSubTotal();
-                            ComputeBalance();
-                            inc += 1;
-                          }
+                          //   var newSubTotal = newQty*Convert2Num(ItemPrice);
+                          //   $(this).children(":eq(2)").text(FormatNumber(newQty));
+                          //   $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
+                          //   updateSubTotal();
+                          //   ComputeBalance();
+                          //   inc += 1;
+                          // }
                           
                           
                         });

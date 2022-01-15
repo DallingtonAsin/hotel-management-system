@@ -93,6 +93,34 @@
     tbody > tr > td {
        font-weight: normal !important;
     }
+    main{
+      padding: 0;
+    }
+    header{
+      position: sticky;
+      top: 0;
+    }
+
+    .cartPanelHeader{
+      position: sticky;
+      top: 0;
+    }
+
+    .fixedTableHead{
+      overflow-y:auto;
+      height: 350px;
+    }
+
+    .fixedTableHead thead th{
+      position: sticky;
+      top:0;
+    }
+
+    .cart-table{
+       border-collapse: collapse;
+       width:100%;
+    }
+
 </style>
 </head>
 
