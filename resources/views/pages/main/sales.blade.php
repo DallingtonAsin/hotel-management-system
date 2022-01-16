@@ -2,11 +2,6 @@
 
 @section('content')
 
-
-
-
-
-
 <div class="panel panel-success">
   <div class="panel-heading">
    <div class="panel-title nunito-font">
@@ -132,12 +127,13 @@
         @endcan
         <th>Item</th>
         <th>Qty</th>
-        <th>Selling price</th>
-        <th>Discount</th>
+        <th>S. Price</th>
+        <th>Disc</th>
         <th>Total</th>
-        <th>Paid Amt</th>
-        <th>Balance</th>
+        <th>Amount</th>
+        <th>Bal.</th>
         <th>Customer</th>
+        <th>Workedon By</th>
         <th>Date</th>
         @can('isAdmin') 
         <th>Action</th>
@@ -353,6 +349,7 @@
         {data: 'paid_amount', name:'paid_amount'},
         {data: 'balance', name:'balance'},
         {data: 'customer', name:'customer'},
+        {data: 'workedon_by', name:'workedon_by'},
         {data: 'date', name:'date'},
         {data: 'action', name:'action',orderable: false,searchable: false},
         ];
@@ -373,6 +370,7 @@
         {data: 'paid_amount', name:'paid_amount'},
         {data: 'balance', name:'balance'},
         {data: 'customer', name:'customer'},
+        {data: 'workedon_by', name:'workedon_by'},
         {data: 'date', name:'date'},
          ];
          makeDataTable2(table, title, columns, dataColumns);

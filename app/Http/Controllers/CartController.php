@@ -452,6 +452,13 @@ class CartController extends Controller
             $cashier = $req->user()->name;
             $data = $req->input('tabledata');
             $customer = $req->input('customer');
+            $workedon_by = $req->input('workedon_by');
+            $extra_money = $req->input('extra_money');
+            if(!empty($extra_money)){
+                $extra_money = floatval($extra_money);
+            }else{
+                $extra_money = 0;
+            }
             $dataArr = json_decode($data, true);
 
             if(is_array($dataArr) && count($dataArr) > 0){
@@ -513,11 +520,15 @@ class CartController extends Controller
                         'is_credit' => $is_credit,
                         'fully_paid' => $fully_paid,
                         'balance' => $balance,
+                        'extra_money' => $extra_money,
                         'customer' => $customer,
                         'tax' => $taxAmount,
                         'date' => $date,
                         'time' => $time,
                         'cashier' => $cashier,
+                        'workedon_by' => $workedon_by,
+
+
 
                     ]);
 

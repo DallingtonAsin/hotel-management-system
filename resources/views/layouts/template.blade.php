@@ -120,6 +120,9 @@
        border-collapse: collapse;
        width:100%;
     }
+    .tr-exists{
+      background-color: red;
+    }
 
 </style>
 </head>

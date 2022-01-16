@@ -19,5 +19,6 @@ $factory->define(Sale::class, function (Faker $faker) {
          'date' => $faker->date($format='Y-m-d', $max='now'),
          'time' => $faker->time($format = 'H:i:s', $max = 'now'),
          'cashier' => $faker->firstName,
+         'workedon_by' => $faker->firstName,
     ];
 });

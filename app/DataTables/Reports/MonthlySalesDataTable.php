@@ -51,7 +51,7 @@ class MonthlySalesDataTable extends DataTable
         $monthly_sales = $monthly_sales->orderBy('month_int', 'desc');
         $monthly_sales = $monthly_sales->get();
         foreach($monthly_sales as $item){
-            $total_purchases = MonthlyPurchase::where('month_int', $item->month_int)->value('total_purchases');
+            $total_purchases = MonthlyPurchase::where('purchase_year', $item->SalesYear)->where('month_int', $item->month_int)->value('total_purchases');
             if(!empty($total_purchases)){
               $item->TotalPurchases = number_format($total_purchases);
             }else{

@@ -98,8 +98,8 @@
 
         <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
         <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damages</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales Review</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales With Debts</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales with debts</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link">Customers with debts</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
        
@@ -146,9 +146,9 @@
            <li class="nav-item">
             <a href="" class="nav-link with-sub"><i class="fa fa-shopping-cart"></i>Sales</a>
             <ul class="nav-sub">
-              <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales Review</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales With Debts</a></li>
-              <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly Sales Review</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales with debts</a></li>
+              <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly statistics</a></li>
           
             </ul>
           </li>

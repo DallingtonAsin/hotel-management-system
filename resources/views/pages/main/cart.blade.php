@@ -9,11 +9,17 @@
       
       <div class="row">
         <span class='response'></span>
-        <div class="col-lg-2">
+        <div class="col-lg-4">
           <i class="typcn typcn-shopping-cart"></i> cart
           <span class="badge">
             <span id="num">0</span>
           </span>
+        </div>
+
+        <div class="col-lg-4 mt-2 amount">
+          <strong>Amount: </strong>
+          <strong class="text-danger amountToPay" id="amountToPay">0</strong>
+          <input type ="hidden" value="@isset($item_total) {{ $item_total }} @endisset" class="payment">
         </div>
          
         </div>
@@ -21,39 +27,40 @@
       </div>
     </div>
 
-    <header class="mt-3 ml-2">
+    <header class="mt-3 mx-4">
       <form id="CartForm" class="form">
         @csrf
 
         <div class="row">
-        <div class="col-lg-2 mt-2 amount">
-          <strong>Amount: </strong>
-          <strong class="text-danger amountToPay" id="amountToPay">0</strong>
-          <input type ="hidden" value="@isset($item_total) {{ $item_total }} @endisset" class="payment">
-        </div>
-        
-        
-        
+      
         <div class="form-group col-lg-2">
+          <label>Tendered Amount</label>
           <input type="text" class="form-control tendered" id='tendered' placeholder="Tendered amount">
         </div>
         
         <div class="form-group col-lg-2">
+          <label>Balance</label>
           <input type="text" class="form-control bg-white balance" readonly  placeholder="Customer balance">
+        </div>
+
+        <div class="form-group col-lg-2">
+          <label>Extra Money Paid</label>
+          <input type="text" class="form-control bg-white extra_money" value="" id="extra_money" 
+           placeholder="0">
         </div>
         
         <div class="form-group col-lg-2">
-          <input type="text" class="form-control bg-white workedon_by" value="{{Auth::user()->name}}"  placeholder="WorkedOn By">
+          <label>Workedon By</label>
+          <input type="text" class="form-control bg-white workedon_by" id="workedon_by"
+           name="workedon_by" value="{{Auth::user()->name}}"  placeholder="WorkedOn By">
         </div>
 
-        <div class="col-lg-2">
+        <div class="form-group col-lg-4 mt-4 pt-3">
           <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
-            <i class="fa f-10 fa-minus-circle pr-1"></i>Empty cart
+            <i class="fa f-10 fa-minus-circle"></i>Empty cart
           </a>
-        </div>
-            
-        <div class="col-lg-2">
-            <a  id="printBtn" class="btn btn-sm btn-success text-white">
+   
+            <a  id="printBtn" class="btn btn-sm btn-success text-white ml-3">
               <i class="fa fa-print"></i> <strong class="f-15 print-btn-text">Print Receipt</strong>
             </a>
           </div>
@@ -239,6 +246,8 @@
             Numberize("#discount");
             Numberize(".edit_quantity");
             Numberize(".edit_discount");
+            Numberize(".extra_money");
+
             
             function PopulateCartBag(searchId, item){
               
@@ -310,6 +319,14 @@
                           $('#qty').val("");
                           $('#discount').val("");
                           var newQty = Convert2Num(itemQty);
+
+                          if(tblItemId == row.item_id){
+                            // alert("Yes it exists");
+                            // $(this).addClass('tr-exists');
+                            $(this).css({'background': '#ffa500', 'color': '#fff'});
+
+                          }
+
                           // if(tblItemId == row.item_id){
                             
                           //   var newSubTotal = newQty*Convert2Num(ItemPrice);
@@ -479,7 +496,7 @@
                     
                     $(document).keydown(function(event){
                       var key = event.keyCode || event.charCode;
-                      if(key == 32 || key == '32' ){
+                      if(key == 13 || key == '13' ){
                         var table = document.getElementById('cart-table');
                         var rowCount = (table.rows.length - 1);
                         if(rowCount > 0){
@@ -535,8 +552,17 @@
                       });
                       
                       let customer = $("#customer").val();
+                      let workedon_by = $("#workedon_by").val();
+                      let extra_money = $("#extra_money").val();
+
+                      if(extra_money){
+                        extra_money = parseFloat(extra_money.replace(/,/g, ''));
+                      }
+
                       if(credit_arr.includes(true) && !customer){
                          alert("Enter the customer name to cater for the items being taken on credit.");
+                      }else if(!workedon_by){
+                        alert("Enter the person who has worked on the sale");
                       }else{
 
                         var cart_data = JSON.stringify(TableData);
@@ -550,10 +576,15 @@
                           data: {
                             tabledata:cart_data,
                             customer: customer,
+                            workedon_by: workedon_by,
+                            extra_money: extra_money,
                           },
                           success: function(data){
                             EmptyCartTable();
                             $("#customer").val('');
+                            $("#extra_money").val('');
+                            var worker = "{{ Auth::user()->name }}";
+                            $("#workedon_by").val(worker);
                             var message = data.response;
                             $('.print-btn-text').html("Print Receipt");
                             updateSubTotal();

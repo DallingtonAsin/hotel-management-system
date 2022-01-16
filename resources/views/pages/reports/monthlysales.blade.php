@@ -7,7 +7,7 @@
    <div class="panel-title nunito-font">
       <strong>
         <i class="fa fa-chart-line text-success pr-2"></i> 
-        Monthly sales {{ date('Y')}} as of  {{ date('d-M-Y H:i A')}}
+        Monthly statistics as of  {{ date('d-M-Y H:i A')}}
       </strong>
   </div>
 </div>

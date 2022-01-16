@@ -45,13 +45,15 @@ class CreateSalesTable extends Migration
             $table->double('amount');
             $table->double('paid_amount');
             $table->double('balance')->default(0);
+            $table->double('extra_money')->default(0);
             $table->boolean('is_credit')->default('0');
             $table->boolean('fully_paid')->default('1');
             $table->string('customer')->nullable();
             $table->double('tax')->default('0');
             $table->date('date');
             $table->time('time');
-            $table->string('cashier',45);
+            $table->string('cashier', 45);
+            $table->string('workedon_by')->nullable();
         });
        
 
@@ -65,7 +67,8 @@ class CreateSalesTable extends Migration
      */
     public function down()
     {
-        DB::statement('DROP TABLE IF EXISTS sales');
-       // Schema::dropIfExists('sales');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::dropIfExists('sales');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
