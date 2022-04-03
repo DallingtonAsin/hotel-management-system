@@ -23,7 +23,8 @@
           <th>Year</th>
           <th>Purchases</th>
           <th>Sales</th>
-          <th>Percentage(%) of total sales</th>
+          <th>% of total sales</th>
+          <th>Profits</th>
         </tr>
       </thead>
   </table>
@@ -49,6 +50,7 @@
   {data: 'TotalPurchases', name:'TotalPurchases'},
   {data: 'sales', name:'sales'},
   {data: 'percent',name:'percent'},
+  {data: 'profits', name:'profits'},
   ];
 
   makeDataTable2(table, title, columns, dataColumns);

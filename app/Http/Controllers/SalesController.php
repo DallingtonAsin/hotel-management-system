@@ -371,11 +371,8 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
     }
 
 
-
-
     private function GetSalesReview()
     {
-
       $total_number_of_sales = Sale::where('fully_paid', 1)->where('balance', 0)->count(); 
       $total_sales= Sale::sum('paid_amount');
       $total_expenses = Expense::sum('amount');

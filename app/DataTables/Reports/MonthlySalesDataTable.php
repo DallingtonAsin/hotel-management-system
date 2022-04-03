@@ -6,6 +6,7 @@ use App\User;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\MonthlySale;
 use App\Models\MonthlyPurchase;
+use Helper;
 
 
 class MonthlySalesDataTable extends DataTable
@@ -33,8 +34,14 @@ class MonthlySalesDataTable extends DataTable
         })->addColumn('percent', function ($data){
              $total  = MonthlySale::sum('TotalSales');
              return round(($data->TotalSales/$total)*100, 2);
-         });
+         })->addColumn('profits', function ($data){
+            $profits = Helper::getProfitsForAGivenMonth($data->SalesYear, $data->month_int);
+            $profits = number_format($profits);
+            return $profits;
+        });
     }
+
+ 
 
 
 
@@ -52,6 +59,7 @@ class MonthlySalesDataTable extends DataTable
         $monthly_sales = $monthly_sales->get();
         foreach($monthly_sales as $item){
             $total_purchases = MonthlyPurchase::where('purchase_year', $item->SalesYear)->where('month_int', $item->month_int)->value('total_purchases');
+         
             if(!empty($total_purchases)){
               $item->TotalPurchases = number_format($total_purchases);
             }else{
