@@ -188,7 +188,8 @@
           <li class="nav-item">
             <a href="" class="nav-link with-sub"><i class="typcn typcn-chart-line"></i>Graphs</a>
             <ul class="nav-sub">
-              <li class="nav-sub-item"><a href="{{ url('/reports') }}" class="nav-sub-link">View graphs </a></li>
+              <li class="nav-sub-item"><a href="{{ url('/reports') }}" class="nav-sub-link">Sales</a></li>
+              <li class="nav-sub-item"><a href="{{ url('/reports/charts/purchases') }}" class="nav-sub-link">Purchases</a></li>
             </ul>
           </li>
 

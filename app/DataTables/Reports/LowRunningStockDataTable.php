@@ -36,7 +36,7 @@ class LowRunningStockDataTable extends DataTable
        
         return $model->newQuery()->select(
             'id',
-            'item_id',
+            'item_code',
             'item',
             'quantity',
             'threshold_qty',

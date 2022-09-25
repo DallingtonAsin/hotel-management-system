@@ -17,13 +17,13 @@ class ImportStock implements ToModel, WithHeadingRow
     {
 
       //  dd($row);
-       $item_id = $row['barcode'];
+       $item_code = $row['barcode'];
        $item = $row['item'];
        $stock = $this->getStock();
 
-       (isset($item_id))
-       ? $item_id = $item_id
-       : $item_id = null;
+       (isset($item_code))
+       ? $item_code = $item_code
+       : $item_code = null;
 
        if(in_array($item, $stock)){
         
@@ -37,7 +37,7 @@ class ImportStock implements ToModel, WithHeadingRow
        else
        {
          return new Stock([
-          'item_id' => $item_id,
+          'item_code' => $item_code,
           'item' => $item,
           'quantity' => floatval($row['quantity']),
           'buying_price' => floatval($row['cost_price']),

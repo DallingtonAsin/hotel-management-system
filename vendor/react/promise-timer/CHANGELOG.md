@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.9.0 (2022-06-13)
+
+*   Feature: Improve forward compatibility with upcoming Promise v3 API.
+    (#54 and #55 by @clue)
+
+*   Minor documentation improvements for upcoming Promise v3.
+    (#58 by @clue and #56 by @SimonFrings)
+
+*   Improve test suite, fix legacy HHVM build by downgrading Composer.
+    (#57 by @SimonFrings)
+
+## 1.8.0 (2021-12-06)
+
+*   Feature: Add new `sleep()` function and deprecate `resolve()` and `reject()` functions.
+    (#51 by @clue)
+
+    ```php
+    // deprecated
+    React\Promise\Timer\resolve($time);
+    React\Promise\Timer\reject($time);
+
+    // new
+    React\Promise\Timer\sleep($time);
+    ```
+
+*   Feature: Support PHP 8.1 release.
+    (#50 by @Thomas-Gelf, #52 by @clue and #48 by @SimonFrings)
+
+*   Improve API documentation and add parameter types and return types.
+    (#49 by @clue and #47 by @SimonFrings)
+
 ## 1.7.0 (2021-07-11)
 
 A major new feature release, see [**release announcement**](https://clue.engineering/2021/announcing-reactphp-default-loop).

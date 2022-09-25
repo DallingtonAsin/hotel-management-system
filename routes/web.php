@@ -132,6 +132,8 @@ Route::get('/email','MailController@MailWelcome');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/overview', 'HomeController@overview')->name('overview');
 Route::get('/reports', 'ReportsController@index')->name('reports');
+Route::get('/reports/charts/purchases', 'ReportsController@purchaseReports')->name('reports.charts.purchases');
+
 
 Route::post('cart/session/update','CartController@updateItemInSession')->name('session.update');
 Route::post('cart/record','CartController@MakeSaleGateway')->name('sale.transact');

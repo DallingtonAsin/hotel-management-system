@@ -72,7 +72,7 @@ class PurchasesController extends Controller
       $purchase_id = $request->input('id');
       $serial_no = $request->input('serial_no');
       $receipt_no = $request->input('receipt_no');
-      $item_id = $request->input('item_id');
+      $item_code = $request->input('item_code');
       $item = $request->input('item');
       $quantity = floatval($request->input('quantity'));
       $cost_price_per_item = floatval(Helper::Numberize($request->input('cost_price')));
@@ -99,7 +99,7 @@ try {
           'id' => $purchase_id,
           'sno' => $serial_no,
           'receipt_no' => $receipt_no,
-          'item_id' => $item_id,
+          'item_code' => $item_code,
           'item' => $item,
           'qty' => $quantity,
           'price_per_item' => $cost_price_per_item,
@@ -110,7 +110,7 @@ try {
           'date_of_purchase' => $date_of_purchase,
         ];
   
-         $result = Helper::createOrUpdatePurchase($purchase_data);
+         $result = Helper::insertOrUpdatePurchase($purchase_data);
          if($result){
 
               $sessionVariable = 'success';
@@ -119,7 +119,7 @@ try {
                 : $message .= 'added purchased item in purchases collection';
 
               $stock_data = [
-              'item_id' => $item_id,
+              'item_code' => $item_code,
               'item' => $item,
               'qty' => $quantity,
               'price_per_item' => $cost_price_per_item,
@@ -221,7 +221,7 @@ try {
       $purchase_id = $request->input('id');
       $serial_no = $request->input('serial_no');
       $receipt_no = $request->input('receipt_no');
-      $item_id = $request->input('item_id');
+      $item_code = $request->input('item_code');
       $item = $request->input('item');
       $quantity = floatval($request->input('quantity'));
       $cost_price_per_item = floatval(Helper::Numberize($request->input('cost_price')));
@@ -244,7 +244,7 @@ try {
           'id' => $purchase_id,
           'sno' => $serial_no,
           'receipt_no' => $receipt_no,
-          'item_id' => $item_id,
+          'item_code' => $item_code,
           'item' => $item,
           'qty' => $quantity,
           'price_per_item' => $cost_price_per_item,
@@ -256,7 +256,7 @@ try {
           'date_of_purchase' => $date_of_purchase,
         ];
   
-         $result = Helper::createOrUpdatePurchase($purchase_data);
+         $result = Helper::insertOrUpdatePurchase($purchase_data);
          $sessionVariable = 'success'; 
          isset($purchase_id)
                 ? $message .= 'updated purchased item in purchases collection'
@@ -266,7 +266,7 @@ try {
 
               $sessionVariable = 'success';
               $stock_data = [
-              'item_id' => $item_id,
+              'item_code' => $item_code,
               'item' => $item,
               'qty' => $quantity,
               'price_per_item' => $cost_price_per_item,
@@ -480,6 +480,7 @@ try {
     ['select_file' => 'required|mimes:xls,xlsx'],
     ['select_file.mimes' => 'Please select only excel files to import purchases']
   );
+ 
    $importSuccess = Excel::import(new ImportPurchases, request()->file('select_file'));
 
    if($importSuccess){

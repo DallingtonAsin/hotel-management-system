@@ -8,22 +8,20 @@
         "Web"
     ],
     "homepage": "http://github.com/botman/driver-web",
-    "authors": [
-        {
-            "name": "Marcel Pociot",
-            "email": "m.pociot@gmail.com"
-        }
-    ],
+    "authors": [{
+        "name": "Marcel Pociot",
+        "email": "m.pociot@gmail.com"
+    }],
     "require": {
         "php": ">=7.0",
-        "botman/botman": "~2.0"
+        "botman/botman": ">=2.0"
     },
     "require-dev": {
         "botman/studio-addons": "~1.0",
-        "illuminate/contracts": "~5.5.0",
+        "illuminate/support": "~5.5.0",
         "phpunit/phpunit": "~5.0",
-        "mockery/mockery": "dev-master",
-        "botman/driver-facebook": "dev-master",
+        "mockery/mockery": "^1.1",
+        "botman/driver-facebook": "~2.0",
         "ext-curl": "*"
     },
     "autoload": {
@@ -41,10 +39,15 @@
         "cs": "php-cs-fixer fix"
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        },
         "laravel": {
             "providers": [
                 "BotMan\\Drivers\\Web\\Providers\\WebServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

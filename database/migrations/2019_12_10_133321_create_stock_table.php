@@ -19,7 +19,7 @@ class CreateStockTable extends Migration
 
         // DB::statement("CREATE TABLE stock(
         //    id BIGINT PRIMARY KEY IDENTITY,
-        //    item_id NVARCHAR(255),
+        //    item_code NVARCHAR(255),
         //    item NVARCHAR(255),
         //    category NVARCHAR(255),
         //    quantity FLOAT NOT NULL,
@@ -36,7 +36,7 @@ class CreateStockTable extends Migration
 
         Schema::create('stock', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('item_id')->nullable();
+            $table->string('item_code')->nullable();
             $table->string('item')->nullable();
             $table->string('category')->nullable();
             $table->double('quantity');

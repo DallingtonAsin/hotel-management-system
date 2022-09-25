@@ -99,7 +99,7 @@ class StockDataTable extends DataTable
 
         return [
             'id',
-            'item_id',
+            'item_code',
             'item',
             'quantity',
             'threshold_qty',

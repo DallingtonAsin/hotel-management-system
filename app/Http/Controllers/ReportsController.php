@@ -29,6 +29,12 @@ public function index(Request $request)
      ['chartdata' => Helper::getMonthlySalesData()]);
 }
 
+public function purchaseReports(Request $request)
+{
+     return view('pages.reports.purchases_charts',
+     ['chartdata' => Helper::getMonthlyPurchasesData()]);
+}
+
     public function GetLowStockDT(LowRunningStockDataTable $dataTable)
     {
         return $dataTable->render('pages.reports.lowstock');

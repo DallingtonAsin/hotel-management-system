@@ -84,7 +84,7 @@ class PurchasesDataTable extends DataTable
     {
         return [
             'id',
-            'item_id',
+            'item_code',
             'item',
             'quantity',
             'cost_price_per_item',
