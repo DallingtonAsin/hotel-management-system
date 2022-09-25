@@ -1,3 +1,21 @@
+# 2.10.0
+
+### Fixed
+
+* PHPUnit tests now no longer throw `prophesize()` depreciation notices
+
+### Changed
+
+* Maintainer and Contribution documents changed to reflect current ownership
+* All test cases now extend off a the new `VonageTestCase` class that implements the `ProphesizeTrait`
+
+# 2.9.3
+
+### Fixed
+
+* Removed the automatic unicode detection to allow for intentional selection.
+* Changed Readme to include how to fire test suite from composer
+
 # 2.9.2
 
 ### Fixed

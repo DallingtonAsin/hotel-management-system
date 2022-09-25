@@ -10,7 +10,7 @@ class Purchase extends Model
     protected $fillable = [
         'serial_no',
         'receipt_no',
-        'item_id',
+        'item_code',
         'item',
         'quantity',
         'cost_price_per_item',
@@ -21,5 +21,5 @@ class Purchase extends Model
         'recorded_by',
         'date',      
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 }

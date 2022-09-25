@@ -35,7 +35,7 @@ class CartController extends Controller
           $isBarcode = $request->input('isBarcode');
 
           if($isBarcode == 1){
-              $itemData = Stock::where('item_id', $itemId)->get();
+              $itemData = Stock::where('item_code', $itemId)->get();
           }
           else{
               $itemData = Stock::where('item', $itemId)->get();

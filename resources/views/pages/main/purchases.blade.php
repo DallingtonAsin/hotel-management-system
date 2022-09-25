@@ -104,6 +104,7 @@
           {{-- <th>ID</th> --}}
           {{-- <th>ItemId</th> --}}
           <th>Item</th>
+          <th>Item Code</th>
           <th>Qty</th>
           <th>C.Price</th>
           <th>T.Cost</th>
@@ -154,7 +155,7 @@
 
            <div class="form-group">
             <span>Item ID</span>
-            <input type="text" class="form-control bg-white item_id" name="item_id"
+            <input type="text" class="form-control bg-white item_code" name="item_code"
              placeholder="Enter item ID">
           </div>
 
@@ -332,8 +333,9 @@
          {data: 'checkbox', name:'checkbox'},
         //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
          // {data: 'id', name:'id'},
-        //  {data: 'item_id', name:'item_id'},
+        //  {data: 'item_code', name:'item_code'},
          {data: 'item', name:'item'},
+         {data: 'item_code', name:'item_code'},
          {data: 'quantity', name:'quantity'},
          {data: 'cost_price_per_item', name:'cost_price_per_item'},
          {data: 'total_cost_price', name:'total_cost_price'},
@@ -394,7 +396,7 @@ function Numberize(i){
           $('.purchaseId').val(purchase_id);
            $('.serial_no').val(data.serial_no);
           $('.receipt_no').val(data.receipt_no);
-          $('.item_id').val(data.item_id);
+          $('.item_code').val(data.item_code);
           $('.item-name').val(data.item);
           $('.quantity').val(data.quantity);
           $('.cost_price').val(data.cost_price_per_item);
@@ -500,7 +502,7 @@ function Numberize(i){
            $('.purchaseId').val(purchase_id);
            $('.serial_no').val(data.serial_no);
           $('.receipt_no').val(data.receipt_no);
-          $('.item_id').val(data.item_id);
+          $('.item_code').val(data.item_code);
           $('.item-name').val(data.item);
           $('.quantity').val(data.quantity);
           $('.cost_price').val(data.cost_price_per_item);
@@ -597,7 +599,7 @@ function Numberize(i){
 
  function NullifyFields(){
 
-          $('.item_id').val('');
+          $('.item_code').val('');
           $('.item-name').val('');
           $('.quantity').val('');
           $('.cost_price').val('');
@@ -611,7 +613,7 @@ function Numberize(i){
   function DisableFormFields(bool){
 
           $('.purchaseId').attr('disabled', bool);
-          $('.item_id').attr('disabled', bool);
+          $('.item_code').attr('disabled', bool);
           $('.item-name').attr('disabled', bool);
           $('.quantity').attr('disabled', bool);
           $('.cost_price').attr('disabled', bool);

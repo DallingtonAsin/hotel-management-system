@@ -102,6 +102,7 @@
           <th>No</th>
           @endcan
           <th>Item</th>
+          <th>Item Code</th>
           <th>Qty</th>
           @can('isAdmin')
           <th>Buying Price</th>
@@ -135,7 +136,7 @@
           <div class="form-group">
             <span>Item ID</span>
             <input type="hidden" class="stockId" name="id">
-            <input type="text" class="form-control bg-white item_id" name="item_id"
+            <input type="text" class="form-control bg-white item_code" name="item_code"
             placeholder="Enter item ID">
           </div>
 
@@ -317,8 +318,10 @@
     {data: 'checkbox', name:'checkbox'},
       // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
          // {data: 'id', name:'id'},
-        //  {data: 'item_id', name:'item_id'},
+        //  {data: 'item_code', name:'item_code'},
         {data: 'item', name:'item'},
+        {data: 'item_code', name:'item_code'},
+
         {data: 'quantity', name:'quantity'},
         //  {data: 'threshold_qty', name:'threshold_qty'},
         {data: 'buying_price', name:'buying_price'},
@@ -341,6 +344,7 @@
         //  {data: 'id', name:'id'},
         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
         {data: 'item', name:'item'},
+        {data: 'item_code', name:'item_code'},
         {data: 'quantity', name:'quantity'},
         {data: 'selling_price', name:'selling_price'},
         {data: 'wholesale_price', name:'wholesale_price'},
@@ -411,7 +415,7 @@ $('body').on('click', '#edit-stock', function (event) {
 
       $('#modalHeading').html("Edit details of stock item " + data.item + "");
       $('.stockId').val(data.id);
-      $('.item_id').val(data.item_id);
+      $('.item_code').val(data.item_code);
       $('.item-name').val(data.item);
       if(data.category){
         $('#category').val(data.category);
@@ -513,7 +517,7 @@ function recordStock(){
       $('#modalHeading').html("Details of stock " + data.item + "");
       $('#addStockModal').modal('show');
       $('.stockId').val(stock_id);
-      $('.item_id').val(data.item_id);
+      $('.item_code').val(data.item_code);
       $('.item-name').val(data.item);
       $('.category').val(data.category);
       $('#supplier').val(data.supplier);
@@ -597,7 +601,7 @@ function recordStock(){
 
   function NullifyFields(){
     $('.stockId').val('');
-    $('.item_id').val('');
+    $('.item_code').val('');
     $('.item-name').val('');
     $('.category').val('');
     $('#supplier').val('');
@@ -613,7 +617,7 @@ function recordStock(){
   function DisableFormFields(bool){
 
     $('.stockId').attr('disabled', bool);
-    $('.item_id').attr('disabled', bool);
+    $('.item_code').attr('disabled', bool);
     $('.item-name').attr('disabled', bool);
     $('.category').attr('disabled', bool);
     $('#supplier').attr('disabled', bool);

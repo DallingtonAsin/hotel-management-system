@@ -26,37 +26,23 @@ use DateTime;
 
 class ImportPurchases extends DefaultValueBinder implements ToCollection, WithHeadingRow,WithCustomValueBinder
 {
-    
-
+  
+  
   public function collection(Collection $rows){
-        
+    
     foreach ($rows as $row){
-
-      // dd($row);
- 
-        if(!empty($row['date_of_purchase'])){
+      
+      if(!empty($row['date_of_purchase'])){
         $date =  intval($row['date_of_purchase']); 
         $row['date_of_purchase']  = Date::excelToDateTimeObject($date)->format('Y-m-d');
-        }else{
-           $row['date_of_purchase']  = '1970-01-01'; 
-        }
+      }else{
+        $row['date_of_purchase']  = date('Y-m-d'); 
+      }
 
-       $row['id'] = null;
-       $item = $row['item'];
-       if(Helper::isItemInStock($item)){
-        $insertPurchase = Helper::createOrUpdatePurchase($row);
-        $qty = Helper::getItemQty($item);
-        $newQty = $qty + floatval($row['qty']);
-         Stock::where('item', $item)
-          ->update(['quantity' => $newQty]);
-       }
-       else {
-         $insertPurchase = Helper::createOrUpdatePurchase($row);
-         $insertStock =  Helper::createStock($row);
-       }
-
-       }
+      Helper::insertPurchaseAndUpdateStock($row);
+      
+    }
   }
   
-
+  
 }

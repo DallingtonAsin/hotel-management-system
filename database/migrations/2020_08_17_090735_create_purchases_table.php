@@ -18,7 +18,7 @@ class CreatePurchasesTable extends Migration
 
         // DB::statement("CREATE TABLE purchases(
         //     id BIGINT PRIMARY KEY IDENTITY,
-        //     item_id NVARCHAR(255),
+        //     item_code NVARCHAR(255),
         //     item NVARCHAR(255),
         //     quantity FLOAT NOT NULL,
         //     cost_price_per_item money NOT NULL,
@@ -32,7 +32,7 @@ class CreatePurchasesTable extends Migration
             $table->bigIncrements('id');
             $table->string('serial_no')->nullable();
             $table->string('receipt_no')->nullable();
-            $table->string('item_id')->nullable();
+            $table->string('item_code')->nullable();
             $table->string('item')->nullable();
             $table->float('quantity');
             $table->double('cost_price_per_item');

@@ -53,7 +53,7 @@
 
  var dataColumns = [
   {data: 'id', name:'id'},
-  {data: 'item_id', name:'item_id'},
+  {data: 'item_code', name:'item_code'},
   {data: 'item', name:'item'},
   {data: 'quantity', name:'quantity'},
   {data: 'threshold_qty',name:'threshold_qty'},

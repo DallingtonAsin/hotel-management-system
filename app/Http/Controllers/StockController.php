@@ -69,19 +69,17 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-      $request->validate([
 
+      $request->validate([
         'item' => 'required',
         'quantity' => 'required',
         'original_price' => 'required',
-        'selling_price' => 'required',
-
+        'selling_price' => 'required'
       ]);
 
       $stock = new Stock;
-      $purchase = new Purchase;
-
-      $item_id = $request->input('item_id');
+  
+      $item_code = $request->input('item_code');
       $item = $request->input('item');
       $category = $request->input('category');
       $supplier = $request->input('supplier');
@@ -97,7 +95,7 @@ class StockController extends Controller
       $wholesale_price = Helper::Numberize($request->input('wholesale_price'));
 
 
-      $stock->item_id = $item_id;
+      $stock->item_code = $item_code;
       $stock->item = $item;
       $stock->category = $category;
       $stock->supplier = $supplier;
@@ -107,22 +105,21 @@ class StockController extends Controller
       $stock->buying_price = $buying_price;
       $stock->selling_price = $selling_price;
       $stock->wholesale_price = $wholesale_price;
-
-      $purchase->item_id = $item_id;
-      $purchase->item = $item;
-      $purchase->quantity = $quantity;
-      $purchase->cost_price_per_item = $buying_price;
-      $purchase->supplier = $supplier;
-      $purchase->recorded_by =  $request->user()->name;
-      $purchase->date = now();
-
-      (empty($expiry_date))? $stock->expiry_date = "" : $stock->expiry_date =$expiry_date;
-      ($expiry_date == "mm/dd/yyyy")? $stock->expiry_date = "" : $stock->expiry_date =$expiry_date;
-
+      $stock->expiry_date = empty($expiry_date) ? "" : $expiry_date;
       $saveStockResponse = $stock->save();
-      $savePurchaseResponse = $purchase->save();
 
-      if($saveStockResponse && $savePurchaseResponse)
+    // $purchase = new Purchase;
+    //   $purchase->item_code = $item_code;
+    //   $purchase->item = $item;
+    //   $purchase->quantity = $quantity;
+    //   $purchase->cost_price_per_item = $buying_price;
+    //   $purchase->supplier = $supplier;
+    //   $purchase->recorded_by =  $request->user()->name;
+    //   $purchase->date = now();
+    //  ($expiry_date == "mm/dd/yyyy")? $stock->expiry_date = "" : $stock->expiry_date =$expiry_date;
+    //   $savePurchaseResponse = $purchase->save();
+
+      if($saveStockResponse)
       {
 
        $action = "recorded stock item ".$item." in the system";
@@ -216,7 +213,7 @@ class StockController extends Controller
     ]);
 
      $stock = Stock::find($id);
-     $stock->item_id = $request->input('item_id');
+     $stock->item_code = $request->input('item_code');
      $stock->item = $item = $request->input('item');
 
      $stock->category = $request->input('category');
