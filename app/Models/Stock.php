@@ -9,7 +9,7 @@ class Stock extends Model
 	protected $table = 'stock';
 
 	protected $fillable = [
-		'item_id',
+		'item_code',
 		'item',
 		'category',
 		'quantity',  
@@ -20,5 +20,5 @@ class Stock extends Model
 		'expiry_date',
 	];
 
-	public $timestamps = false; 
+	public $timestamps = true; 
 }

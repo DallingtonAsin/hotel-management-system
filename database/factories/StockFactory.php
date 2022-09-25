@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 $factory->define(Stock::class, function (Faker $faker) {
     return [
-      'item_id' => Str::random(3),
+      'item_code' => Str::random(3),
       'item' => Str::random(7),
       'category' => Str::random(6),
       'quantity' => $faker->randomDigitNot(0),

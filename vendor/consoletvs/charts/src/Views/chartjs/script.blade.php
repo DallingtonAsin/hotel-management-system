@@ -1,6 +1,6 @@
 
 @foreach ($chart->plugins as $plugin)
-    @include($chart->pluginsViews[$plugin]);
+    @include($chart->pluginsViews[$plugin])
 @endforeach
 
 <script {!! $chart->displayScriptAttributes() !!}>

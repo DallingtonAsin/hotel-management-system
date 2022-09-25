@@ -132,61 +132,128 @@ class Helper
         
       }
       
-      public static function createOrUpdatePurchase($row){
+
+      public static function insertPurchaseAndUpdateStock($row){
+        
+        try{
+          //  dd($row);
+          if(Helper::array_key_isset('selling_price', $row)){
+            $sellingPrice = Helper::Numberize($row['selling_price']);
+          }else{
+            $sellingPrice = Helper::array_key_isset('retail_price', $row) ? Helper::Numberize($row['retail_price']) : null;
+          }
+
+          if(Helper::array_key_isset('quantity', $row)){
+            $quantity = Helper::Numberize($row['quantity']);
+          }else{
+             $quantity = Helper::array_key_isset('qty', $row) ? Helper::Numberize($row['qty']) : null;
+          }
+          
+          $purchase = new Purchase();
+          $purchase->serial_no =  Helper::array_key_isset('sno', $row) ? $row['sno'] : null;
+          $purchase->receipt_no = Helper::array_key_isset('receipt_no', $row) ? $row['receipt_no']: null;
+          $purchase->item_code = $row['item_code'];
+          $purchase->item = $row['item'];
+          $purchase->quantity = $quantity;
+          $purchase->cost_price_per_item = Helper::Numberize($row['buying_price']);
+          $purchase->retail_price = $sellingPrice;
+          $purchase->wholesale_price = Helper::array_key_isset('wholesale_price', $row) ? Helper::Numberize($row['wholesale_price']) : null;
+          $purchase->supplier =  Helper::array_key_isset('supplier', $row) ? $row['supplier'] : null; 
+          $purchase->supplier_contact = Helper::array_key_isset('suppliers_contact', $row) ? $row['suppliers_contact'] : null; 
+          $purchase->recorded_by = Auth::user()->name;
+          $purchase->date_of_purchase = Helper::array_key_isset('date_of_purchase', $row) ? $row['date_of_purchase'] : date('Y-m-d'); 
+          
+          $isSaved = $purchase->save();
+          if($isSaved){
+            Helper::insertOrUpdateStock($row);
+          }else{
+            dd("What is not right?");
+          }
+          return true;
+          
+        }catch(Exception $ex){
+          throw $ex;
+        }
+        
+      }
+      
+      public static function insertOrUpdateStock($row){
         
         try{
           
-          $id = $row['id'];
-          if(isset($id)){
-            
-            $purchaseArr = [
-              'serial_no' => $row['sno'],
-              'receipt_no' => $row['receipt_no'],
-              'item_id' => $row['item_id'],
+          $item_code = $row['item_code'];
+          $category = Helper::array_key_isset('category', $row) ? $row['category'] : null;
+          $supplier = Helper::array_key_isset('supplier', $row) ? $row['supplier'] : null;
+          $thresholdQty = Helper::array_key_isset('thresholdQty', $row) ? Helper::Numberize($row['thresholdQty']) : null;
+          $expiryDate = Helper::array_key_isset('expiry_date', $row) ? $row['expiry_date'] : null;
+          $wholeSalePrice = Helper::array_key_isset('wholesale_price', $row) ? Helper::Numberize($row['wholesale_price']) : null;
+
+          if(Helper::array_key_isset('selling_price', $row)){
+            $sellingPrice = Helper::Numberize($row['selling_price']);
+          }else{
+            $sellingPrice = Helper::array_key_isset('retail_price', $row) ? Helper::Numberize($row['retail_price']) : null;
+          }
+
+          if(Helper::array_key_isset('quantity', $row)){
+            $quantity = Helper::Numberize($row['quantity']);
+          }else{
+             $quantity = Helper::array_key_isset('qty', $row) ? Helper::Numberize($row['qty']) : null;
+          }
+
+          $findStock = Stock::where('item_code', $item_code);
+          if(isset($item_code) && $findStock->exists()){
+
+            $newQuantity = Helper::Numberize($findStock->value('quantity')) + $quantity;
+            $stock = [
+              'item_code' => $item_code,
               'item' => $row['item'],
-              'quantity' => Helper::Numberize($row['qty']),
-              'cost_price_per_item' => Helper::Numberize($row['price_per_item']),
-              'retail_price' => Helper::Numberize($row['retail_price']),
-              'wholesale_price' => Helper::Numberize($row['wholesale_price']),
-              'supplier' => $row['supplier'],
-              'supplier_contact' => $row['suppliers_contact'],
-              'recorded_by' => Auth::user()->name,
-              'date_of_purchase' =>  $row['date_of_purchase'],
+              'category' => $category,
+              'supplier' => $supplier,
+              'quantity' => $newQuantity,
+              'threshold_qty' => $thresholdQty,
+              'expiry_date' => $expiryDate,
+              'buying_price' => $row['buying_price'],
+              'selling_price' => $sellingPrice,
+              'wholesale_price' => $wholeSalePrice
             ];
             
-            Purchase::where('id', $id)
-            ->update($purchaseArr);
+            Stock::where('item_code', $item_code)
+            ->update($stock);
             
           }else{
+           
+            $stock = new Stock();
+         
+            $stock->item_code = $item_code;
+            $stock->item = $row['item'];
+            $stock->category = $category;
+            $stock->supplier =  $supplier;
+            $stock->quantity = $quantity;
+            $stock->threshold_qty = $thresholdQty;
+            $stock->expiry_date = $expiryDate;
+            $stock->buying_price = $row['buying_price'];
+            $stock->selling_price = $sellingPrice;
+            $stock->wholesale_price = $wholeSalePrice;
+            $stock->save();
             
-            $purchase = new Purchase();
-            $purchase->serial_no = $row['sno'];
-            $purchase->receipt_no = $row['receipt_no'];
-            $purchase->item_id = $row['item_id'];
-            $purchase->item = $row['item'];
-            $purchase->quantity = Helper::Numberize($row['qty']);
-            $purchase->cost_price_per_item = Helper::Numberize($row['price_per_item']);
-            $purchase->retail_price = Helper::Numberize($row['retail_price']);
-            $purchase->wholesale_price = Helper::Numberize($row['wholesale_price']);
-            $purchase->supplier = $row['supplier'];
-            $purchase->supplier_contact = $row['suppliers_contact'];
-            $purchase->recorded_by = Auth::user()->name;
-            $purchase->date_of_purchase = $row['date_of_purchase'];
-            $purchase->save();
             
           }
           return true;
         }catch(Exception $ex){
-          dd($ex->getMessage());
+          throw $ex;
         }
         
+      }
+      
+      private static function array_key_isset($k, $a){
+        return isset($a[$k]); // || array_key_exists($k, $a);
       }
       
       
       public static function createStock($row){
         try{
           $insertStock =  Stock::create([
-            'item_id' => $row['item_id'],
+            'item_code' => $row['item_code'],
             'item' => $row['item'],
             'quantity' => floatval(Helper::Numberize($row['qty'])),
             'buying_price' => floatval(Helper::Numberize($row['price_per_item'])),
@@ -220,11 +287,12 @@ class Helper
       
       public static function isItemInStock($item){
         try{
+          
           $stock = Helper::getStock();
-          in_array($item, $stock) ? $res = true : $res = false;
-          return $res;
+          return in_array($item, $stock);
+          
         }catch(\Exception $ex){
-          dd($ex->getMessage());
+          throw $ex;
         }
       }
       
@@ -309,7 +377,7 @@ class Helper
           ->whereMonth('date', $month)->sum('balance');
           
           $netProfitPerMonth = (($totalSales - $totalBuyingCost) - ($totalExpenses+ $totalDamages) + ($supplierDebts + $customerDebts) );
-        
+          
           return $netProfitPerMonth;
           
         }catch(Exception $ex){

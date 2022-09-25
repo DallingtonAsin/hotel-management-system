@@ -112,7 +112,11 @@ class LaravelChart
                 }
 
                 if (isset($this->options['withoutGlobalScopes']) && $this->options['withoutGlobalScopes']) {
-                    $collection = $query->withoutGlobalScopes()->get();
+                    $scopesToExclude = is_array($this->options['withoutGlobalScopes'])
+                        ? $this->options['withoutGlobalScopes']
+                        : null;
+
+                    $collection = $query->withoutGlobalScopes($scopesToExclude)->get();
                 } else {
                     $collection = $query->get();
                 }
@@ -137,7 +141,7 @@ class LaravelChart
                                 return $entry->{$this->options['group_by_field']}
                                     ->format($this->options['date_format'] ?? self::GROUP_PERIODS[$this->options['group_by_period']]);
                             } else {
-                                if ($entry->{$this->options['group_by_field']} && $this->options['group_by_field_format']) {
+                                if ($entry->{$this->options['group_by_field']} && isset($this->options['group_by_field_format'])) {
                                     return \Carbon\Carbon::createFromFormat(
                                         $this->options['group_by_field_format'],
                                         $entry->{$this->options['group_by_field']}
@@ -174,6 +178,24 @@ class LaravelChart
                     $data = collect([]);
                 }
 
+
+                if (
+                    (isset($this->options['date_format']) || isset($this->options['group_by_period'])) &&
+                    isset($this->options['filter_days']) &&
+                    @$this->options['show_blank_data']
+                ) {
+                    $newData = collect([]);
+                    $format = $this->options['date_format'] ?? self::GROUP_PERIODS[$this->options['group_by_period']];
+
+                    CarbonPeriod::since(now()->subDays($this->options['filter_days']))
+                        ->until(now())
+                        ->forEach(function (Carbon $date) use ($data, &$newData, $format) {
+                            $key = $date->format($format);
+                            $newData->put($key, $data[$key] ?? 0);
+                        });
+
+                    $data = $newData;
+                }
 
                 if (@$this->options['continuous_time']) {
                     $dates = $data->keys();

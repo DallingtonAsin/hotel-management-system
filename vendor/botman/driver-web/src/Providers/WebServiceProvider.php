@@ -2,10 +2,10 @@
 
 namespace BotMan\Drivers\Web\Providers;
 
-use BotMan\Drivers\Web\WebDriver;
-use Illuminate\Support\ServiceProvider;
 use BotMan\BotMan\Drivers\DriverManager;
+use BotMan\Drivers\Web\WebDriver;
 use BotMan\Studio\Providers\StudioServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class WebServiceProvider extends ServiceProvider
 {
@@ -28,6 +28,9 @@ class WebServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/../Laravel/routes.php');
         $this->loadViewsFrom(__DIR__.'/../Laravel/views', 'botman-web');
+        $this->publishes([
+            __DIR__.'/../Laravel/views' => resource_path('views/vendor/botman-web'),
+        ]);
     }
 
     /**
