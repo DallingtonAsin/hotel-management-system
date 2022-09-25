@@ -27,7 +27,7 @@ class ChangeWholesalePriceInStock extends Migration
     public function down()
     {
         Schema::table('stock', function (Blueprint $table) {
-            DB::statement('alter table stock modify wholesale_price DOUBLE(15,2) DEFAULT NULL');
+            DB::statement('alter table stock modify wholesale_price DOUBLE DEFAULT NULL');
         });
     }
 }

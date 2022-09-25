@@ -412,6 +412,33 @@ class Helper
         }
         
       }
+
+
+      public static function getMonthlyPurchasesData()
+      {
+        $year = date('Y');
+
+        $result = DB::select(DB::raw("SELECT MONTHNAME(created_at) as month, sum(cost_price_per_item) as purchases
+        FROM purchases GROUP BY MONTH(created_at), MONTHNAME(created_at) ORDER BY MONTH(created_at)"));
+        // dd($result);
+
+        $data = $months = $purchases = array();
+     
+        foreach($result as $row){
+          
+          array_push($months, $row->month);
+          array_push($purchases, $row->purchases);
+        }
+        $data = array('months' => $months,
+                      'purchases' => $purchases
+                    );
+     
+        if(!empty($data))
+        {
+          return $data;
+        }
+        
+      }
       
       public static function convertNumber($number){
         Helper::is_decimal($number)

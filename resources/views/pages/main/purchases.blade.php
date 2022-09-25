@@ -104,6 +104,7 @@
           {{-- <th>ID</th> --}}
           {{-- <th>ItemId</th> --}}
           <th>Item</th>
+          <th>Item Code</th>
           <th>Qty</th>
           <th>C.Price</th>
           <th>T.Cost</th>
@@ -334,6 +335,7 @@
          // {data: 'id', name:'id'},
         //  {data: 'item_code', name:'item_code'},
          {data: 'item', name:'item'},
+         {data: 'item_code', name:'item_code'},
          {data: 'quantity', name:'quantity'},
          {data: 'cost_price_per_item', name:'cost_price_per_item'},
          {data: 'total_cost_price', name:'total_cost_price'},

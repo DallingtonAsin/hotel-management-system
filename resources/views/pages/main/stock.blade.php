@@ -102,6 +102,7 @@
           <th>No</th>
           @endcan
           <th>Item</th>
+          <th>Item Code</th>
           <th>Qty</th>
           @can('isAdmin')
           <th>Buying Price</th>
@@ -319,6 +320,8 @@
          // {data: 'id', name:'id'},
         //  {data: 'item_code', name:'item_code'},
         {data: 'item', name:'item'},
+        {data: 'item_code', name:'item_code'},
+
         {data: 'quantity', name:'quantity'},
         //  {data: 'threshold_qty', name:'threshold_qty'},
         {data: 'buying_price', name:'buying_price'},
@@ -341,6 +344,7 @@
         //  {data: 'id', name:'id'},
         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
         {data: 'item', name:'item'},
+        {data: 'item_code', name:'item_code'},
         {data: 'quantity', name:'quantity'},
         {data: 'selling_price', name:'selling_price'},
         {data: 'wholesale_price', name:'wholesale_price'},

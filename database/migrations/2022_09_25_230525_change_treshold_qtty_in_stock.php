@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 
-class ChangeTresholdQtyInStock extends Migration
+class ChangeTresholdQttyInStock extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,7 @@ class ChangeTresholdQtyInStock extends Migration
     public function up()
     {
         Schema::table('stock', function (Blueprint $table) {
-            DB::statement('alter table stock modify threshold_qty DOUBLE(15,2) DEFAULT NULL');
+            DB::statement('alter table stock modify threshold_qty DOUBLE DEFAULT NULL');
         });
     }
 
