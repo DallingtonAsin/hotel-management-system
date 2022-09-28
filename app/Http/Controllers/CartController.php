@@ -138,17 +138,17 @@ class CartController extends Controller
 
                     if($refId == 'name')
                     {
-                        $item_id = $dataCheck['ref'];
+                        $item_code = $dataCheck['ref'];
                         $item_name = $item;
                     }
                     else if($refId == 'id')
                     {
-                        $item_id = $item;
+                        $item_code = $item;
                         $item_name =  $dataCheck['ref'];
                     }
 
 
-                    $cart->item_id = $item_id;
+                    $cart->item_code = $item_code;
                     $cart->item = $item_name;
                     $cart->quantity = $quantity;
                     $cart->price = $price;
@@ -285,17 +285,17 @@ class CartController extends Controller
 
                             if($refId == 'name')
                             {
-                                $item_id = $dataCheck['ref'];
+                                $item_code = $dataCheck['ref'];
                                 $item_name = $item;
                             }
                             else if($refId == 'id')
                             {
-                                $item_id = $item;
+                                $item_code = $item;
                                 $item_name =  $dataCheck['ref'];
                             }
 
 
-                            $cart->item_id = $item_id;
+                            $cart->item_code = $item_code;
                             $cart->item = $item_name;
                             $cart->quantity = $quantity;
                             $cart->price = $price;
@@ -368,7 +368,7 @@ class CartController extends Controller
               $soldOn = $data[5];
 
               $tracker = new SalesTaxTracker;
-              $tracker->item_id = $this->customCrypt($itemId);
+              $tracker->item_code = $this->customCrypt($itemId);
               $tracker->item = $this->customCrypt($item);
               $tracker->quantity = $this->customCrypt($qty);
               $tracker->amount = $this->customCrypt($amount);
@@ -390,7 +390,7 @@ class CartController extends Controller
           {
 
             $cart = new Cart;
-            $cart->item_id = $data['item_id'];
+            $cart->item_code = $data['item_code'];
             $cart->item = $data['item_name'];
             $cart->quantity = $data['quantity'];
             $cart->price = $data['price'];
@@ -425,14 +425,14 @@ class CartController extends Controller
 
             for($i=0; $i<count($dataArr); $i++){
 
-                $item_id = $dataArr[$i]['barcode'];
+                $item_code = $dataArr[$i]['barcode'];
                 $item_name = $dataArr[$i]['item'];
                 $quantity = $dataArr[$i]['quantity'];
                 $price = $dataArr[$i]['price'];
                 $subtotal = $dataArr[$i]['subtotal'];
 
                 $data = array(
-                    'item_id' => $item_id,
+                    'item_code' => $item_code,
                     'item_name' => $item_name,
                     'quantity' => $quantity,
                     'price' => $price,
@@ -465,7 +465,7 @@ class CartController extends Controller
 
                 foreach($dataArr as $key){
 
-                    $item_id = $key['barcode'];
+                    $item_code = $key['barcode'];
                     $item = $key['item'];
                     $this->sold_items[] = $item;
                     $quantity = floatval(str_replace(',', '', $key['quantity']));
@@ -509,7 +509,7 @@ class CartController extends Controller
                     $taxAmount = $this->GetTax($total);
                             // insert cart data into database
                     $hasInsertedInSalesTbl = DB::table('sales')->insert([
-                        'item_id' => $item_id,
+                        'item_code' => $item_code,
                         'item' => $item,
                         'quantity' => $quantity,
                         'original_price' => $original_price,
@@ -533,7 +533,7 @@ class CartController extends Controller
                     ]);
 
                     $datetime = $date." ".$time;
-                    $taxArr = array($item_id,$item,$quantity,$subtotal,$taxAmount,$datetime);
+                    $taxArr = array($item_code,$item,$quantity,$subtotal,$taxAmount,$datetime);
                     $this->DoTaxMathTracking($taxArr);
 
                                 //If insertion is OK, reduce stock levels and clear cart
@@ -632,7 +632,7 @@ class CartController extends Controller
                     {
 
                         $data = DB::select('select buying_price, selling_price
-                            from stock where item = ? or item_id = ?',[$item, $item]);
+                            from stock where item = ? or item_code = ?',[$item, $item]);
                         foreach ($data as $value) {
                             $bprice = $value->buying_price;
                             $sprice = $value->selling_price;
@@ -651,7 +651,7 @@ class CartController extends Controller
 
                         if(in_array($item, $stockArr) || in_array($item, $stockIdArr)){
                             $data = DB::table("stock")
-                            ->where("item_id", "like", "%".$item."%")
+                            ->where("item_code", "like", "%".$item."%")
                             ->orWhere("item", "like", "%".$item."%")
                             ->get();
                         //$data = DB::select('select quantity from stock where item = ?',[$item]);
@@ -690,13 +690,13 @@ class CartController extends Controller
                             $query = $request->input('query');
                             $data = array();
                             $items = DB::table("stock")
-                            ->where("item_id", "like", "%".$query."%")
+                            ->where("item_code", "like", "%".$query."%")
                             ->orWhere("item", "like", "%".$query."%")
                             ->get();
 
                             foreach($items as $item){
                                 $data[] = $item->item;
-                                $data[] = $item->item_id;
+                                $data[] = $item->item_code;
                             }
                             echo json_encode($data);
                         }
@@ -709,7 +709,7 @@ class CartController extends Controller
                             $query = $request->input('item');
                             $data = array();
                             $items = DB::table("stock")
-                            ->where("item_id", "like", "%".$query."%")
+                            ->where("item_code", "like", "%".$query."%")
                             ->orWhere("item", "like", "%".$query."%")
                             ->get();
                             foreach($items as $item){
@@ -733,7 +733,7 @@ class CartController extends Controller
                         foreach($items as $item)
                         {
                             array_push($itemsArr, $item->item);
-                            array_push($itemsIdArr, $item->item_id);
+                            array_push($itemsIdArr, $item->item_code);
                         }
 
                         return array(
@@ -752,12 +752,12 @@ class CartController extends Controller
 
                         if(in_array($item, $stockList)){
                             $ref = DB::table("stock")
-                            ->where('item', $item)->value('item_id');
+                            ->where('item', $item)->value('item_code');
                             $refId = 'name';
                         }
                         else if(in_array($item, $stockIdsList)){
                             $ref = DB::table("stock")
-                            ->where('item_id', $item)->value('item');
+                            ->where('item_code', $item)->value('item');
                             $refId = 'id';
                         }
                         else{
