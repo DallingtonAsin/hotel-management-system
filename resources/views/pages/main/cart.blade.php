@@ -155,7 +155,7 @@
               <thead>
                 <tr class="warning">
                   <th>Item</th>
-                  <th>Barcode</th>
+                  <th>Item Code</th>
                   <th>Qty</th>
                   <th>Price</th>
                   <th>total</th>
@@ -305,7 +305,7 @@
                     var paid = total;
                     
                     bodyData+="<tr data-name='"+row.item+"' data-quantity='"+quantity+"' data-discount='"+discount+"' data-paid='"+paid+"' data-sprice='"+selling_price+"' data-date='"+date_of_sale+"'>"
-                      bodyData+="<td>"+row.item+"</td><td>"+row.item_id+"</td><td>"+quantity+"</td>"
+                      bodyData+="<td>"+row.item+"</td><td>"+row.item_code+"</td><td>"+quantity+"</td>"
                       +"<td>"+sellingPrice+"</td><td>"+subTotal+"</td><td>"+discount+"</td><td>"+total+"</td><td>"+paid+"</td><td><input type='checkbox' name='is_credit' id='is_credit'/> Is credit</td><td>"+date_of_sale+"</td><td><button class='btn btn-info btn-xs btn-edit edit-row' style='margin-left:20px;'>Edit</button>"
                         +"<button class='btn btn-danger btn-xs btn-delete delete-row' style='margin-left:20px;'>Delete</button></td>";
                         bodyData+="</tr>";
@@ -320,14 +320,14 @@
                           $('#discount').val("");
                           var newQty = Convert2Num(itemQty);
 
-                          if(tblItemId == row.item_id){
+                          if(tblItemId == row.item_code){
                             // alert("Yes it exists");
                             // $(this).addClass('tr-exists');
                             $(this).css({'background': '#ffa500', 'color': '#fff'});
 
                           }
 
-                          // if(tblItemId == row.item_id){
+                          // if(tblItemId == row.item_code){
                             
                           //   var newSubTotal = newQty*Convert2Num(ItemPrice);
                           //   $(this).children(":eq(2)").text(FormatNumber(newQty));
@@ -616,7 +616,7 @@
                             }));
                           },
                           error:function(data){
-                            console.log('am not getting anything');
+                            console.log(data);
                           },
                         });
                       }
