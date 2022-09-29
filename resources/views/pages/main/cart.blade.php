@@ -148,8 +148,6 @@
 
          <main>
        
-          
-          
           <div class="table table-responsive fixedTableHead" id="cart-div">
             <table id="cart-table" class="table table-bordered cart-table">
               <thead>
