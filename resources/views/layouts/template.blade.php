@@ -112,7 +112,7 @@
     }
 
     .fixedTableHead thead th{
-      position: sticky;
+      /* position: sticky; */
       top:0;
     }
 
