@@ -1,5 +1,6 @@
 <?php
 
+// namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 class StockTableSeeder extends Seeder
@@ -11,6 +12,7 @@ class StockTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Stock::class, 10)->create();
+        \App\Models\Stock::factory()->count(10)->create();
+
     }
 }

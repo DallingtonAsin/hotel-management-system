@@ -1,5 +1,6 @@
 <?php
 
+// namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 class SalesTableSeeder extends Seeder
@@ -11,6 +12,7 @@ class SalesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Sale::class, 250)->create();
+        \App\Models\Sale::factory()->count(200)->create();
+
     }
 }
