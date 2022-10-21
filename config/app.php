@@ -184,7 +184,6 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
-        Bmatovu\MtnMomo\MtnMomoServiceProvider::class,
         Jorijn\LaravelSecurityChecker\ServiceProvider::class,
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
         Nexmo\Laravel\NexmoServiceProvider::class,

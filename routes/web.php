@@ -259,7 +259,7 @@ Route::post('chatbox/commands/import', "ChatBotController@importChatBotCommands"
 Route::get('chatbox/commands/truncate', "ChatBotController@truncateChatBotCommands")
                                ->name("command.truncate")->middleware("password.confirm");
 
-Route::put('/profile/update/{id}', 'ProfileController@update')->name('profile.update');
+// Route::put('/profile/update/{id}', 'ProfileController@update')->name('profile.update');
 					   
 
 });

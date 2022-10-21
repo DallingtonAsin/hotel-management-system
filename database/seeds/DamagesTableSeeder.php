@@ -1,5 +1,6 @@
 <?php
 
+// namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 class DamagesTableSeeder extends Seeder
@@ -12,6 +13,7 @@ class DamagesTableSeeder extends Seeder
     public function run()
     {
 
-        factory(App\Models\Damage::class, 10)->create();
+        \App\Models\Damage::factory()->count(10)->create();
+
     }
 }
