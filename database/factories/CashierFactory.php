@@ -5,9 +5,8 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\User;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 
-class UserFactory extends Factory
+class CashierFactory extends Factory
 {
   /**
   * The name of the factory's corresponding model.
@@ -26,19 +25,21 @@ class UserFactory extends Factory
     return [
       'first_name' => $this->faker->firstName,
       'last_name' => $this->faker->lastName,
-      'name' => $this->faker->name,
-      'username' => $this->faker->unique()->lastName,
+      'name' => $this->faker->lastName,
+      'username'=> $this->faker->firstName,
       'gender' => 'Male',
       'email' => $this->faker->unique()->safeEmail,
-      'user_role' => $this->faker->randomElement([1, 2]),
-      'tel_no' => $this->faker->phoneNumber,
-      'alt_telno' => $this->faker->phoneNumber,
+      'user_role' => 2,
+      'tel_no' => $this->faker->e164phoneNumber,
+      'alt_telno' => $this->faker->e164phoneNumber,
       'address' => $this->faker->state,
-      'nationalID_no' => strtoupper(Str::random(14)),
+      'nationalID_no'  => Str::random(12),
       'email_verified_at' => now(),
       'image' => NULL,
-      'password' => Hash::make('12345678'),
+      'password' => '$2y$10$A1pLQHR5m8gomliymOCsgeBQKXJdCNDINoHioC3pdlg47ldxwimv2',
       'remember_token' => Str::random(10),
     ];
   }
 }
+
+

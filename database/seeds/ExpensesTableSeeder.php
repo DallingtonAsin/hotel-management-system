@@ -1,5 +1,6 @@
 <?php
 
+// namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 class ExpensesTableSeeder extends Seeder
@@ -11,6 +12,7 @@ class ExpensesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Expense::class, 10)->create();
+        \App\Models\Expense::factory()->count(10)->create();
+
     }
 }

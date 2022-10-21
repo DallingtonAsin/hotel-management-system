@@ -15,7 +15,7 @@
         "botman/botman": "^2.6",
         "botman/driver-web": "^1.5",
         "consoletvs/charts": "^6.5",
-        "doctrine/dbal": "^2.6",
+        "doctrine/dbal": "^3.4",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": ">=6.3",
         "h4cc/wkhtmltoimage-amd64": "0.12.x",
@@ -38,7 +38,7 @@
     },
     "require-dev": {
         "facade/ignition": "^2.0",
-        "fzaninotto/faker": "^1.4",
+        "fakerphp/faker": "^1.20",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^4.1",
         "phpunit/phpunit": "^8.5"
@@ -59,7 +59,9 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         },
         "classmap": [
             "database/seeds",
