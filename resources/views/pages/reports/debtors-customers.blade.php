@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="panel panel-default">
-  <div class="panel-heading">
+<div class="card">
+  <div class="card-header">
    <div class="panel-title nunito-font">
 
     <div class="row">
@@ -15,7 +15,7 @@
    </div>
  </div>
  
- <div class="panel-body">
+ <div class="card-body">
   <div class="table-responsive poppins">
     <table class="table table-bordered" id="CustomerDebtors-table">
       <thead>

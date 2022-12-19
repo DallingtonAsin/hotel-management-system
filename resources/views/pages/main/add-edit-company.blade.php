@@ -13,9 +13,9 @@
 </div>
 
   <div class="card-body pt-3">
-    <div class="panel panel-default">
+    <div class="card">
 
-      <div class="panel-body">
+      <div class="card-body">
 
         <form class="form" method="post" action="{{ route('companies.register', isset($company)?$company['id']:0) }}"
           enctype='multipart/form-data'>

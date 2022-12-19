@@ -24,12 +24,12 @@ class User extends Authenticatable
       'username',
       'gender',
       'email',
-      'user_role', 
+      'department_id', 
       'tel_no',
       'alt_telno',
       'address',
-      'nationalID_no',
-      'isActive',
+      'nin',
+      'is_active',
       'password',
     ];
 

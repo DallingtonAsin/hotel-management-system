@@ -2,8 +2,8 @@
 
 @section('content')
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
+      <div class="card">
+        <div class="card-header">
           <div class="panel-tile">
 
             <div class="row nunito-font">
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="panel-body">
+      <div class="card-body">
 
     
 
@@ -81,8 +81,8 @@
 
 
 <!--Add user -->
-<div class="modal fade nunito-font" id="addusersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+<div class="modal fade nunito-font" id="addusersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form mname="user" id="userForm">
@@ -90,7 +90,7 @@
 
        <div class="modal-header text-center">
         <h5 class="modal-title w-100 font-weight-bold modalHeading" id="modalHeading">Add new user</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -160,7 +160,7 @@
         <div class="form-group">
           <button type="button" class="btn btn-primary AdduserBtn" id="AdduserBtn"  name="AdduserBtn">Save</button>
           <button type="reset" class="btn btn-danger">Clear</button>
-          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
         </div>
 
       </div>
@@ -171,8 +171,8 @@
 
 
 <!--Import users -->
-<div class="modal fade nunito-font" id="importusers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+<div class="modal fade nunito-font" id="importusers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form action="" method="post"
@@ -182,7 +182,7 @@
       <div class="modal-header text-center">
         <h5 class="modal-title w-100 font-weight-bold">
         Import an excel file of users </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -207,7 +207,7 @@
 
           <div class="form-group">
             <button type="submit" class="btn btn-primary">Upload</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </form>
@@ -217,12 +217,12 @@
 
 
  <!--Modal Deleteusers -->
- <div class="modal fade" id="deleteusersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+ <div class="modal fade" id="deleteusersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete user</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -242,7 +242,7 @@
 
          <div class="form-group">
             <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-            <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
         </div>
       </div>
     </div>
@@ -283,7 +283,7 @@
          {data: 'gender', name:'gender'},
          {data: 'address', name:'address'},
          {data: 'tel_no', name:'tel_no'},
-         {data: 'isActive', name:'isActive'},
+         {data: 'is_active', name:'is_active'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
 
@@ -313,9 +313,9 @@ function PopulateRoles(){
             success: function(resp){
                 var obj = JSON.parse(resp);
                 for(var i = 0; i < obj.length; i++) {
-                    let role_id = obj[i]['role_id'];
+                    let id = obj[i]['id'];
                     let role_name = obj[i]['role'];
-                    $('.role_section').append('<option value=' + role_id + '>' + role_name + '</option>');
+                    $('.role_section').append('<option value=' + id + '>' + role_name + '</option>');
                 }
             }
         });
@@ -349,7 +349,7 @@ function Numberize(i){
           $('.national_id').val(data.nationalID_no);
           $('.tel_no').val(data.tel_no);
           $('.alt_telno').val(data.alt_telno);
-          $('.role_section').val(data.user_role);
+          $('.role_section').val(data.department_id);
           $('.gender').val(data.gender);
           DisableTableFields(false);
           ShowBtns();
@@ -374,7 +374,7 @@ function Numberize(i){
           $('.national_id').val(data.nationalID_no);
           $('.tel_no').val(data.tel_no);
           $('.alt_telno').val(data.alt_telno);
-          $('.role_section').val(data.user_role);
+          $('.role_section').val(data.department_id);
           $('.gender').val(data.gender);
           DisableTableFields(true);
           HideBtns();

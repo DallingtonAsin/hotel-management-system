@@ -128,9 +128,9 @@ class UserController extends Controller
       try{
         $response = Gate::inspect('isSuperAdmin');
         if($response->allowed()){
-           $users = User::where('isActive', true)
+           $users = User::where('is_active', true)
                          ->where('id', "!=", $request->user()->id)->get();
-           $number_of_users = User::where('isActive', true)->count();
+           $number_of_users = User::where('is_active', true)->count();
            return view('pages.users.active-users')
            ->with(compact('users', 'number_of_users'));
            
@@ -152,8 +152,8 @@ class UserController extends Controller
         $response = Gate::inspect('isSuperAdmin');
 
         if($response->allowed()){
-           $users = User::where('isActive', false)->get();
-           $number_of_users = User::where('isActive', false)->count();
+           $users = User::where('is_active', false)->get();
+           $number_of_users = User::where('is_active', false)->count();
            return view('pages.users.inactive-users')
            ->with(compact('users', 'number_of_users'));
        }
@@ -181,7 +181,7 @@ class UserController extends Controller
 
           case ($status == true):
           $deactivated = User::where('id', $id)
-          ->update(['isActive' => false, 'inactivated_by' => $admin]);
+          ->update(['is_active' => false, 'inactivated_by' => $admin]);
           if($deactivated){
 
             $action = "deactivated user ".$name."'s account";
@@ -208,7 +208,7 @@ class UserController extends Controller
 
           case ($status == false):
           $activated = User::where('id', $id)
-          ->update(['isActive' => true, 'loginAttempts' => 0,
+          ->update(['is_active' => true, 'loginAttempts' => 0,
                     'otpAttempts' => 0,  'inactivated_by' => $admin]);
           if($activated){
 
@@ -263,7 +263,7 @@ class UserController extends Controller
 
           case ($status == true):
           $deactivated = User::where('id', $id)
-          ->update(['isActive' => false, 'inactivated_by' => $admin]);
+          ->update(['is_active' => false, 'inactivated_by' => $admin]);
           if($deactivated){
 
             $action = "deactivated user ".$name."'s account";
@@ -290,7 +290,7 @@ class UserController extends Controller
 
           case ($status == false):
           $activated = User::where('id', $id)
-          ->update(['isActive' => true, 'loginAttempts' => 0,
+          ->update(['is_active' => true, 'loginAttempts' => 0,
                     'otpAttempts' => 0,  'inactivated_by' => $admin]);
           if($activated){
 
@@ -336,7 +336,7 @@ class UserController extends Controller
     protected function getRole($id)
     {
 
-      $role = DB::table('roles')->where('role_id', $id)
+      $role = DB::table('departments')->where('id', $id)
                      ->value('role');
       return $role;
     }
@@ -352,7 +352,7 @@ class UserController extends Controller
            try{
                   if(!empty($role)){
                   $id = Helper::getRoleId($role);
-                    $number_of_users = User::where('user_role', '=', $id)->count();
+                    $number_of_users = User::where('department_id', '=', $id)->count();
                   }else {
                     $number_of_users = User::count();
                   }
@@ -380,8 +380,8 @@ class UserController extends Controller
           $user_alt_telno = trim($request->input('alt_telno'));
           $user_nin = trim($request->input('NationalIDNo'));
           $user_gender = trim($request->input('gender'));
-          $user_role = $request->input('role');
-          $user_position= Helper::getRole($user_role);
+          $department_id = $request->input('role');
+          $user_position= Helper::getRole($department_id);
           $registra = $request->user()->name;
           $name = $user_fname." ".$user_lname;
           $defaultPwd = '12345678';
@@ -419,13 +419,13 @@ class UserController extends Controller
           $user->username = $username;
           $user->gender = $user_gender;
           $user->email = $user_email;
-          $user->user_role = $user_role;
+          $user->department_id = $department_id;
           $user->tel_no = $user_telno;
           $user->alt_telno = $user_alt_telno;
           $user->address = $user_address;
           $user->nationalID_no = $user_nin;
           $user->password = $password;
-          $user->isActive = 1;
+          $user->is_active = 1;
           $user->inactivated_by = $registra;
 
           $save_status = $user->save();
@@ -434,7 +434,7 @@ class UserController extends Controller
 
             $subject = 'User Registration';
             $userEmail = $request->email;
-            $registraPosition = $this->getRole($request->user()->user_role);
+            $registraPosition = $this->getRole($request->user()->department_id);
             $registraEmail = $request->user()->email;
             $default_password = $defaultPwd;
             $now = now();
@@ -618,9 +618,9 @@ class UserController extends Controller
 
     protected function getUserRoleId($role)
     {
-      $roleId = DB::table('roles')
+      $roleId = DB::table('departments')
                  ->where('role', $role)
-                  ->value('role_id');
+                  ->value('id');
       return $roleId;
 
     }
@@ -681,12 +681,12 @@ class UserController extends Controller
         $user->tel_no = $primary_telno;
         $user->alt_telno = $alt_telno;
         $user->email = $email;
-        $user->user_role = $roleId;
+        $user->department_id = $roleId;
 
         $registra = $request->user()->name;
         $userEmail = $request->email;
         $user_position = $this->getRole($roleId);
-        $registraPosition = $this->getRole($request->user()->user_role);
+        $registraPosition = $this->getRole($request->user()->department_id);
         $registraEmail = $request->user()->email;
         $default_password = "didn't change your password";
         $now = now();
@@ -757,7 +757,7 @@ class UserController extends Controller
         $hasRights = Gate::inspect('isSuperAdmin');
         $hasRights1 = Gate::inspect('isAdmin');
         $user = User::find($id);
-        $user_position = Helper::getRole($user->user_role);
+        $user_position = Helper::getRole($user->department_id);
         if($hasRights->allowed() || $hasRights1->allowed()){
        
         $method = "UserController@destroy";
@@ -803,7 +803,7 @@ class UserController extends Controller
         if($response->allowed()){
 
     $method = "UserController@RemoveAllActiveUsers";
-    $isTruncated = User::where('isActive', true)->delete();
+    $isTruncated = User::where('is_active', true)->delete();
     if($isTruncated)
     {
 
@@ -839,7 +839,7 @@ class UserController extends Controller
 
         if($response->allowed()){
     $method = "UserController@RemoveAllLockedUsers";
-    $isTruncated = User::where('isActive', false)->delete();
+    $isTruncated = User::where('is_active', false)->delete();
     if($isTruncated)
     {
 
@@ -877,7 +877,7 @@ class UserController extends Controller
 
             if (count($ids) > 0) {
               $extUser = User::find($ids[0]);
-              $user_position = Helper::getRole($extUser->user_role);
+              $user_position = Helper::getRole($extUser->department_id);
                 foreach ($ids as $id) {
                     $user = User::find($id);
                     $user->delete();
@@ -932,8 +932,8 @@ protected function ActionMessage($action)
 
 private function getUserRole($userRoleId)
     {
-      $userRole = DB::table('roles')
-                 ->where('role_id', $userRoleId)
+      $userRole = DB::table('departments')
+                 ->where('id', $userRoleId)
                   ->value('role');
       return $userRole;
 

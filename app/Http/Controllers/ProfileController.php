@@ -91,13 +91,13 @@ class ProfileController extends Controller
 
     protected function getUserRoleId($role)
     {
-      $roleId = Role::where('role', $role)->value('role_id');
+      $roleId = Role::where('role', $role)->value('id');
       return $roleId;
   }
 
   protected function getRole($id)
   {
-      $role = Role::where('role_id', $id)->value('role');
+      $role = Role::where('id', $id)->value('role');
       return $role;
   }
 
@@ -132,7 +132,7 @@ public function updates(Request $request, $id)
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension(); //getting image extension
             $filename = time().'.'.$extension;
-            $file->move("uploads/images/".$this->getRole(Auth::user()->user_role)."",$filename);
+            $file->move("uploads/images/".$this->getRole(Auth::user()->department_id)."",$filename);
             $user->image = $filename;
         }
         else
@@ -258,7 +258,7 @@ return response()
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension(); //getting image extension
                 $filename = time().'.'.$extension;
-                $file->move("uploads/images/".$this->getRole(Auth::user()->user_role)."",$filename);
+                $file->move("uploads/images/".$this->getRole(Auth::user()->department_id)."",$filename);
                 $user->image = $filename;
 
 

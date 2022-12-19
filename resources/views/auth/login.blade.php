@@ -85,7 +85,7 @@
             </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-sm btn-block text-white bg-success bolded">
+        <button type="submit" class="btn btn-sm btn-block text-white btn-primary bolded">
           <strong>{{ __('Sign in') }}</strong>
         </button>
       </div>

@@ -121,7 +121,7 @@
       </form>
       </header>
     
-    <div class="panel-body">
+    <div class="card-body">
       
       <span class="response"></span>
       <div class="row">

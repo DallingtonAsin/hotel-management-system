@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="panel panel-default">
-  <div class="panel-heading">
+<div class="card">
+  <div class="card-header">
     <div class="panel-title">
       <span class="pl-0 mt-4 response"></span>
       <div class="row nunito-font">
@@ -21,7 +21,7 @@
 
       @can('isAdmin')
       <div class="col-lg-3">
-        <span><h5>
+        <span><h6>
           Current stock value:
           <span class="text-success text-center">shs.
             <strong class="stock-value">
@@ -30,20 +30,20 @@
               @endisset
             </strong>
           </span>
-        </h5>
+        </h6>
       </span>
     </div>
     @endcan
     <div class="col-lg-2">
-     <h5>
+     <h6>
       <a class="add-link text-info text-decoration-none"
       href="javascript:void(0)"
       id="createNewStock"><strong>Add Stock</strong> </a>
-    </h5>
+    </h6>
   </div>
 
   <div class="col-lg-2">
-   <h5><a href=""  class="add-link text-info text-decoration-none" data-toggle="modal" data-target="#importStock"><strong>Import stock</strong></a></h5>
+   <h6><a href=""  class="add-link text-info text-decoration-none" data-bs-toggle="modal" data-bs-target="#importStock"><strong>Import stock</strong></a></h6>
  </div>
 
  @can('isAdmin')
@@ -69,7 +69,7 @@
 </div>
 </div>
 
-<div class="panel-body">
+<div class="card-body">
   <div class="row">
     <div class="col-lg-10 text-center nunito-font">
       @if(session()->get('success'))
@@ -117,16 +117,16 @@
 
 
   <!--Add new Stock -->
-  <div class="modal fade nunito-font" id="addStockModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade nunito-font" id="addStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
 
         <form name="StockForm" id="StockForm">
          @csrf
          <div class="modal-header text-center">
-          <h5 class="modal-title w-100 font-weight-bold custom-family" id="modalHeading">
-          Add new stock item</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h6 class="modal-title w-100 font-weight-bold custom-family" id="modalHeading">
+          Add new stock item</h6>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -206,7 +206,7 @@
           <div class="form-group">
             <button type="submit" class="btn btn-primary addStockBtn"  name="AddItemBtn">Save</button>
             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-            <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
           </div>
 
           <div class="form-group">
@@ -220,8 +220,8 @@
 </div>
 
 <!--Import Stock -->
-<div class="modal fade nunito-font" id="importStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+<div class="modal fade nunito-font" id="importStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
       <form action="{{ Route('stock.import') }}" method="post"
@@ -229,9 +229,9 @@
       @csrf
 
       <div class="modal-header text-center">
-        <h5 class="modal-title w-100 font-weight-bold custom-family">
-        Import an excel file of stock items</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h6 class="modal-title w-100 font-weight-bold custom-family">
+        Import an excel file of stock items</h6>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -256,7 +256,7 @@
 
         <div class="form-group">
           <button type="submit" class="btn btn-primary"  name="AddItemBtn">Upload</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </form>
@@ -265,12 +265,12 @@
 </div>
 
 <!--Modal DeleteStock -->
-<div class="modal fade" id="deleteStockModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="deleteStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h5 class="modal-title w-100 font-weight-bold">Delete Item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h6 class="modal-title w-100 font-weight-bold">Delete Item</h6>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -289,7 +289,7 @@
 
       <div class="form-group">
         <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-        <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
       </div>
     </div>
   </div>

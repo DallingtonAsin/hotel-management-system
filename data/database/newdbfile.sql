@@ -718,7 +718,7 @@ INSERT INTO `error_logs` (`id`, `username`, `error_code`, `error_message`, `erro
 (5, 'Schumm', 0, 'Undefined variable: sessionVariable', 'ERROR', 'CashiersController', 'RemoveSelectedCashiers', '2021-03-11 13:30:09'),
 (6, 'Schumm', 0, 'Undefined variable: stats', 'ERROR', 'CashiersController', 'ChangeAccountStatus', '2021-03-11 13:39:45'),
 (7, 'Schumm', 0, 'Undefined variable: importSuccs', 'ERROR', 'CashiersController', 'importCashiers', '2021-03-11 13:45:16'),
-(8, 'Schumm', 23000, 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'256774014727\' for key \'users_tel_no_unique\' (SQL: insert into `users` (`first_name`, `last_name`, `name`, `username`, `gender`, `email`, `user_role`, `tel_no`, `alt_telno`, `address`, ', 'ERROR', 'CashiersController', 'importCashiers', '2021-03-11 13:46:38');
+(8, 'Schumm', 23000, 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'256774014727\' for key \'users_tel_no_unique\' (SQL: insert into `users` (`first_name`, `last_name`, `name`, `username`, `gender`, `email`, `department_id`, `tel_no`, `alt_telno`, `address`, ', 'ERROR', 'CashiersController', 'importCashiers', '2021-03-11 13:46:38');
 
 -- --------------------------------------------------------
 
@@ -18018,7 +18018,7 @@ INSERT INTO `requests` (`id`, `request`, `response`, `method`, `url`, `ip_addres
 --
 
 CREATE TABLE `roles` (
-  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Administrator',
   `is_admin` tinyint(1) NOT NULL DEFAULT 1,
   `is_SuperAdmin` tinyint(1) NOT NULL DEFAULT 0
@@ -18028,7 +18028,7 @@ CREATE TABLE `roles` (
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`role_id`, `role`, `is_admin`, `is_SuperAdmin`) VALUES
+INSERT INTO `roles` (`id`, `role`, `is_admin`, `is_SuperAdmin`) VALUES
 (1, 'Cashier', 0, 0),
 (2, 'SuperAdministrator', 1, 1),
 (3, 'Administrator', 1, 0);
@@ -20285,11 +20285,11 @@ CREATE TABLE `users` (
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_role` bigint(20) UNSIGNED NOT NULL DEFAULT 1,
+  `department_id` bigint(20) UNSIGNED NOT NULL DEFAULT 1,
   `tel_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alt_telno` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nationalID_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nin` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '$2y$10$7JYAPfh5r2yk71rIV1U9pOv4kbuwwrH0xMi/81hGQOQbUGNk/0ZKW',
@@ -20297,7 +20297,7 @@ CREATE TABLE `users` (
   `otpAttempts` int(11) NOT NULL DEFAULT 0,
   `OTPcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `isVerified` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `isActive` tinyint(1) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
   `inactivated_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -20308,7 +20308,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `name`, `username`, `gender`, `email`, `user_role`, `tel_no`, `alt_telno`, `address`, `nationalID_no`, `email_verified_at`, `image`, `password`, `loginAttempts`, `otpAttempts`, `OTPcode`, `isVerified`, `isActive`, `inactivated_by`, `remember_token`, `created_at`, `updated_at`) VALUES
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `name`, `username`, `gender`, `email`, `department_id`, `tel_no`, `alt_telno`, `address`, `nationalID_no`, `email_verified_at`, `image`, `password`, `loginAttempts`, `otpAttempts`, `OTPcode`, `isVerified`, `is_active`, `inactivated_by`, `remember_token`, `created_at`, `updated_at`) VALUES
 (8, 'Lina', 'Hilpert', 'Adrien Krajcik', 'Nader', 'Male', 'qlang@example.net', 1, '+7222070061564', '+1872399496906', 'Alaska', '8TWSNFLNXF7NHI', '2021-03-07 12:50:42', NULL, '$2y$10$xfSuZ10z1oQaqzS8yjnwQOdkgiLW52mpPqF8eiEG6CfhVGkT3gRoK', 0, 0, NULL, '0', 1, NULL, 'WQdCuxOxkAVVDXx6yFlpoFCDAfVlzqsWWdQuTWEfpLKuZGXEhGgOAASIso2S', '2021-03-07 12:51:04', '2021-03-07 12:51:04'),
 (9, 'Arvilla', 'Schowalter', 'Ebba Metz', 'Murray', 'Male', 'alfred33@example.com', 2, '+7310161058568', '+8991391639060', 'Virginia', 'BJLQGL4GDWO0X9', '2021-03-07 12:50:42', NULL, '$2y$10$3V0NtDtEqXlo.khFQm9RSenBJbXQgmTpw6Pa7XlU8lkUouOma3uVS', 0, 0, NULL, '0', 0, NULL, 'GiU8xDi6B7', '2021-03-07 12:51:05', '2021-03-07 12:51:05'),
 (10, 'Mckayla', 'Huel', 'Prof. Meagan Greenholt', 'Schumm', 'Male', 'njacobson@example.org', 3, '+6681499278700', '+8643964928890', 'Maryland', 'MGRQALHG7BIHTY', '2021-03-07 12:50:42', '1618338426.jpg', '$2y$10$nj1HjoWBF.PaYmUWXeX4RuWZRmwu.vaxos5.6CG.X0phXDoJ1nGOe', 0, 0, NULL, '0', 1, NULL, 'IdtOa16up9yNFQzFhHn7OmEpKuT8qf1DiLWlAuHtumLdVbcKLYrDx5xiCGBs', '2021-03-07 12:51:05', '2021-04-21 21:24:19'),
@@ -20640,7 +20640,7 @@ ALTER TABLE `requests`
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
-  ADD PRIMARY KEY (`role_id`),
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `roles_role_unique` (`role`);
 
 --
@@ -20686,7 +20686,7 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_username_unique` (`username`),
   ADD UNIQUE KEY `users_tel_no_unique` (`tel_no`),
-  ADD KEY `users_user_role_foreign` (`user_role`);
+  ADD KEY `users_department_id_foreign` (`department_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -20804,7 +20804,7 @@ ALTER TABLE `requests`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `role_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sales`
@@ -20862,7 +20862,7 @@ ALTER TABLE `customers`
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_user_role_foreign` FOREIGN KEY (`user_role`) REFERENCES `roles` (`role_id`);
+  ADD CONSTRAINT `users_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `roles` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

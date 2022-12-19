@@ -22,23 +22,23 @@ class CreateUsersTable extends Migration
                 $table->string('username')->unique();
                 $table->string('gender');
                 $table->string('email')->nullable();
-                $table->unsignedBigInteger('user_role')->default(1);
-                $table->string('tel_no')->unique();
-                $table->string('alt_telno')->nullable();
+                $table->unsignedBigInteger('department_id')->default(1);
+                $table->string('phone_number')->unique();
+                $table->string('other_phone_number')->nullable();
                 $table->string('address');
-                $table->string('nationalID_no');
+                $table->string('nin')->nullable();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('image')->nullable();
                 $table->string('password', 255)->default(Hash::make('12345678'));
-                $table->integer('loginAttempts')->default(0);
-                $table->integer('otpAttempts')->default(0);
-                $table->string('OTPcode')->nullable();
-                $table->string('isVerified')->default(true);
-                $table->boolean('isActive')->default(true);
-                $table->string('inactivated_by')->nullable();
+                $table->integer('login_attempts')->default(0);
+                $table->integer('otp_attempts')->default(0);
+                $table->string('otp_code')->nullable();
+                $table->string('is_verified')->default(true);
+                $table->boolean('is_active')->default(true);
+                $table->string('acc_changed_by')->nullable();
                 $table->rememberToken()->nullable();
                 $table->timestamps();
-                $table->foreign('user_role')->references('role_id')->on('roles');
+                $table->foreign('department_id')->references('id')->on('departments');
         });
     }
 

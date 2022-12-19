@@ -2,8 +2,8 @@
 
 @section('content')
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
+      <div class="card">
+        <div class="card-header">
           <div class="panel-tile">
 
             <div class="row nunito-font">
@@ -22,32 +22,32 @@
               </div>
 
               <div class="col-lg-3">
-                <h5>
+                <h6>
                   Credit: shs.<strong class="text-success totl_credit">
                       @isset($total_credit)
                       {{ number_format($total_credit) }}
                       @endisset
 
                     </strong>
-                </h5>
+                </h6>
               </div>
 
               <div class="col-lg-3">
-                <h5>
+                <h6>
                   Debts: shs.<label class="text-danger totl_debt">
                       @isset($total_debts)
                       {{ number_format($total_debts) }}
                       @endisset
 
                     </label>
-                </h5>
+                </h6>
               </div>
 
               <div class="col-lg-2">
-                <h5>
+                <h6>
                     <a class="text-info bolded" href="javascript:void(0)"
                      id="createNewSupplier"> Add supplier</a>
-                </h5>
+                </h6>
               </div>
 
               <div class="col-lg-2">
@@ -60,7 +60,7 @@
 
 
                    <li><a href=""  class="add-link text-dark text-decoration-none"
-                     data-toggle="modal" data-target="#importSuppliers"><strong>Import suppliers</strong>
+                     data-bs-toggle="modal" data-bs-target="#importSuppliers"><strong>Import suppliers</strong>
                    </a></li>
 
                  <li>
@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="panel-body">
+      <div class="card-body">
 
         <div class="col-lg-8 text-center nunito-font">
 
@@ -128,16 +128,16 @@
 
 
 <!--Add suppliers -->
-<div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1"
+<div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
       <form name="suppliers" id="SuppliersForm">
           @csrf
        <div class="modal-header text-center">
-        <h5 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new supplier</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new supplier</h6>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -187,7 +187,7 @@ role="dialog" aria-labelledby="myModalLabel">
         <div class="form-group">
           <button type="submit" class="btn btn-primary addsupplierBtn"  name="AddsupplierBtn">Save</button>
           <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
         </div>
 
         <div class="form-group">
@@ -201,8 +201,8 @@ role="dialog" aria-labelledby="myModalLabel">
 </div>
 
 <!--Import Suppliers -->
-<div class="modal fade nunito-font" id="importSuppliers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+<div class="modal fade nunito-font" id="importSuppliers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
       <form action="{{ Route('suppliers.import') }}" method="post"
@@ -210,9 +210,9 @@ role="dialog" aria-labelledby="myModalLabel">
       @csrf
 
       <div class="modal-header text-center">
-        <h5 class="modal-title w-100 font-weight-bold">
-        Import an excel file of suppliers </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h6 class="modal-title w-100 font-weight-bold">
+        Import an excel file of suppliers </h6>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -237,7 +237,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
           <div class="form-group">
             <button type="submit" class="btn btn-primary">Upload</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </form>
@@ -247,12 +247,12 @@ role="dialog" aria-labelledby="myModalLabel">
 
 
  <!--Modal Deletesuppliers -->
- <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+ <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier</h6>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -272,7 +272,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
          <div class="form-group">
             <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-            <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
         </div>
       </div>
     </div>

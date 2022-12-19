@@ -4,13 +4,13 @@
 @section('content')
 {{-- <div class="card-table"> --}}
     <div class="panel panel-default nunito-font">
-        <div class="panel-heading">
+        <div class="card-header">
             <strong class="panel-title f-13">
                 <i class="fa fa-envelope pr-2"></i> 
                 Compose and send email
             </strong>
         </div>
-      <div class="panel-body">
+      <div class="card-body">
         <form class="form" method="post" action="{{ route('mail.store') }}"
         enctype='multipart/form-data'>
         @csrf

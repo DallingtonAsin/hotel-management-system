@@ -5,6 +5,8 @@
 }
 }
 
+html, body { margin: 0; padding: 0; }
+
 body{
   font-family: 'Montserrat', sans-serif !important;
 }
@@ -467,9 +469,9 @@ td {
 	font-family: 'Nunito' !important;
 }
 
-.body{
+/* .body{
 	background: #25383C !important;
-}
+} */
 
 #azSidebarToggle{
 	color: #f4f4f4 !important;
@@ -577,18 +579,19 @@ td {
 	margin-left: 20px !important;
 }
 .az-sidebar{
-	background: #253C40 !important;
+	background: #233444 !important;
+	 /* #253C40 !important;  */
 }
 .az-sidebar-body > ul > li > a {
 	color: silver !important;
-	background: #253C40 !important;
+	/* background: #253C40 !important; */
 }
 
 .az-sidebar-body > ul > li  > ul > li > a {
 	color: silver !important;
 }
 .az-header{
-	background: #253C40 !important;
+	background: #233444 !important;
 	color: #fff !important;
 }
 .fa-comments, .fa-info{
@@ -702,4 +705,9 @@ td {
 	margin-top: 30px !important;
 	margin-left: 40px !important;
 	margin-right: 40px !important;
+}
+
+.btn-primary{
+	background-color: #362950 !important;
+	border-color: #362950 !important;
 }

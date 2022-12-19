@@ -6,7 +6,7 @@ SELECT TOP (1000) [id]
       ,[username]
       ,[gender]
       ,[email]
-      ,[user_role]
+      ,[department_id]
       ,[tel_no]
       ,[alt_telno]
       ,[address]
@@ -14,7 +14,7 @@ SELECT TOP (1000) [id]
       ,[email_verified_at]
       ,[image]
       ,[password]
-      ,[isActive]
+      ,[is_active]
       ,[inactivated_by]
       ,[remember_token]
       ,[created_at]
@@ -22,7 +22,7 @@ SELECT TOP (1000) [id]
   FROM [posdb].[dbo].[users]
 
     UPDATE users SET password='$2y$10$WFuuNkT.xHbfXrHOmSiQEeXEU.rHa1HL8hw5YzD9v9Pg7LQKrf/d.',
-  isActive=1 where id>0
+  is_active=1 where id>0
 
-    UPDATE users SET user_role=1 where id=1
-	UPDATE users SET user_role=3 where id=3
+    UPDATE users SET department_id=1 where id=1
+	UPDATE users SET department_id=3 where id=3

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ErrorLog;
 use App\Models\Stock;
 use App\Models\Purchase;
-use App\Models\Role;
+use App\Models\Department;
 use App\Models\Sale;
 use App\Models\Expense;
 use App\Models\Damage;
@@ -68,27 +68,27 @@ class Helper
     }
   }
   
-  public static function getRoleId($role){
+  public static function getDepartmentId($role){
     try{
-      $roleId = Role::where('role', 'like', '%'.$role.'%')->value('role_id');
-      return $roleId;
+      $departmentId = Department::where('role', 'like', '%'.$role.'%')->value('id');
+      return $departmentId;
     }catch(\Exception $ex){
       dd($ex->getMessage());
     }
   }
   
-  public static function getRole($roleId){
+  public static function getDepartment($departmentId){
     try{
-      $role = Role::where('role_id', $roleId)->value('role');
-      return $role;
+      $department = Department::where('id', $departmentId)->value('role');
+      return $department;
     }catch(\Exception $ex){
       dd($ex->getMessage());
     }
   }
   
-  public static function getRoles(){
+  public static function getDepartments(){
     try{
-      $roles = Role::get();
+      $roles = Department::get();
       return $roles;
     }catch(\Exception $ex){
       dd($ex->getMessage());
@@ -297,12 +297,12 @@ class Helper
       }
       
       
-      public static function getUserRoleId($role)
+      public static function getUserDepartmentId($role)
       {
         try {
-          $roleId = Role::where('role', 'like', '%'.$role.'%')
-          ->value('role_id');
-          return $roleId;
+          $departmentId = Department::where('role', 'like', '%'.$role.'%')
+          ->value('id');
+          return $departmentId;
         } catch (\Exception $ex) {
           $data = array(
             'username' => auth()->user()->username,
@@ -310,7 +310,7 @@ class Helper
             'error_message' => $ex->getMessage(),
             'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
             'controller' => 'Helper',
-            'method' => 'getRole'
+            'method' => 'getDepartment'
           );
           Helper::logError($data);
           abort(409, $ex->getMessage());
@@ -321,9 +321,9 @@ class Helper
       public static function GetUserStats($role)
       {
         try {
-          $role_id = Helper::getUserRoleId($role);
-          $users_list = User::where('user_role', $role_id)->get();
-          $number_of_users = User::where('user_role', $role_id)->count();
+          $id = Helper::getUserDepartmentId($role);
+          $users_list = User::where('department_id', $id)->get();
+          $number_of_users = User::where('department_id', $id)->count();
           $data = array(
             'totl' => $number_of_users,
             'list' => $users_list

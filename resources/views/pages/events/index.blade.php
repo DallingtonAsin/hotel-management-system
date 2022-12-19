@@ -2,9 +2,9 @@
 
 @section('content')
 
-<div class="panel panel-default">
+<div class="card">
 
-  <div class="panel-heading">
+  <div class="card-header">
     <div class="panel-title">
       <div class="row nunito-font">
         <div class="col-lg-4 text-dark">
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <span class="response"></span>
     <div class="row">
       <div class="col-lg-8 text-center nunito-font">
@@ -64,7 +64,7 @@
 
 
         <!-- View Event Details -->
-        <div class="modal fade" id="viewEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="viewEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog modal-dialog-centered modal-md" role="document">
 
             <div class="modal-content nunito-font border border-custom-dark rounded-0">
@@ -73,7 +73,7 @@
                   <i class="fa fa-info-circle "></i>
                   Details of an event 
                 </h5>
-                <button type="button" class="close view-close text-white" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close view-close text-white" data-bs-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -118,7 +118,7 @@
                     <div class="form-group">
                       <button type="submit" class="btn btn-primary addEventBtn"  name="AddItemBtn">Save</button>
                       <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                      <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
                     </div>
 
                     <div class="form-group">
@@ -137,12 +137,12 @@
 
         
         <!--Modal DeleteEvent -->
-        <div class="modal fade" id="deleteEventModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-          <div class="modal-dialog" role="document">
+        <div class="modal fade" id="deleteEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+          <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header text-center">
                 <h5 class="modal-title w-100 font-weight-bold">Delete Event</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -162,7 +162,7 @@
 
                <div class="form-group">
                 <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-                <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
               </div>
             </div>
           </div>

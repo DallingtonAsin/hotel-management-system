@@ -5,8 +5,8 @@
 
   <div class="card card-dashboard-table-six">
     <div class="card-body">
-      <div class="panel panel-default">
-        <div class="panel-heading">
+      <div class="card">
+        <div class="card-header">
           <div class="panel-tile">
             <div class="row nunito-font">
               <div class="col-lg-2">
@@ -21,10 +21,10 @@
                 </h6>
               </div>
               <div class="col-lg-2">
-                <h5>
+                <h6>
                     <a class="text-info bolded" href="javascript:void(0)"
                      id="createNewCompany"> Add company</a>
-                </h5>
+                </h6>
               </div>
               <div class="col-lg-2">
                <div class="btn-group">
@@ -48,7 +48,7 @@
       </div>
 
 
-      <div class="panel-body">
+      <div class="card-body">
         <div class="col-lg-8 text-center nunito-font">
             @if(session()->get('success'))
             <div class='alert alert-success alert-dismissible' role='alert'>
@@ -90,16 +90,16 @@
 
 
 <!--Add company -->
-<div class="modal fade nunito-font addCompanyModal" id="addCompanyModal" tabindex="-1"
+<div class="modal fade nunito-font addCompanyModal" id="addCompanyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
       <form name="company" id="CompanyForm">
           @csrf
        <div class="modal-header text-center">
-        <h5 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new company</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new company</h6>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -146,7 +146,7 @@ role="dialog" aria-labelledby="myModalLabel">
         <div class="form-group">
           <button type="submit" class="btn btn-primary AddcompanyBtn"  name="AddcompanyBtn">Save</button>
           <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
         </div>
 
         <div class="form-group">
@@ -161,12 +161,12 @@ role="dialog" aria-labelledby="myModalLabel">
 
 
  <!--Modal Deletecompany -->
- <div class="modal fade" id="deleteCompanyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+ <div class="modal fade" id="deleteCompanyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete company</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete company</h6>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -187,7 +187,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
          <div class="form-group">
             <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-            <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
         </div>
       </div>
     </div>

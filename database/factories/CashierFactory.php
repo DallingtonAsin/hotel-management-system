@@ -29,7 +29,7 @@ class CashierFactory extends Factory
       'username'=> $this->faker->firstName,
       'gender' => 'Male',
       'email' => $this->faker->unique()->safeEmail,
-      'user_role' => 2,
+      'department_id' => 2,
       'tel_no' => $this->faker->e164phoneNumber,
       'alt_telno' => $this->faker->e164phoneNumber,
       'address' => $this->faker->state,

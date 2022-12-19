@@ -48,11 +48,11 @@ class InactiveUserAccountsDataTable extends DataTable
         })->addColumn('checkbox', function ($user) {
               $checkBox = '<input type="checkbox" id="'.$user->id.'"/>';
              return $checkBox;
-        })->editColumn('isActive', function ($data) {
-           return ($data->isActive)
+        })->editColumn('is_active', function ($data) {
+           return ($data->is_active)
              ? '<span class="text-success">active</span>' 
              : '<span class="text-danger">inactive</span>';
-        })->rawColumns(['action', 'isActive', 'checkbox']);
+        })->rawColumns(['action', 'is_active', 'checkbox']);
 
 
     }
@@ -62,7 +62,7 @@ class InactiveUserAccountsDataTable extends DataTable
                $adminRoleId = Helper::getRoleId('Administrator');
                return $model->newQuery()
                ->select('*')
-               ->where('isActive', false)
+               ->where('is_active', false)
                ->where('id', '!=', Auth::user()->id);
     }
 
@@ -98,7 +98,7 @@ class InactiveUserAccountsDataTable extends DataTable
             'username',
             'gender',
             'email',
-            'user_role',
+            'department_id',
             'tel_no',
             'alt_telno',
             'address',

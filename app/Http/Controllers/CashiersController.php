@@ -36,7 +36,7 @@ class CashiersController extends Controller
     {
         try {
             $roleId = Role::where('role', 'like', '%'.$role.'%')
-                     ->value('role_id');
+                     ->value('id');
             return $roleId;
         } catch (\Exception $ex) {
             $data = array(
@@ -55,7 +55,7 @@ class CashiersController extends Controller
     protected function getRole($id)
     {
         try {
-            $role = Role::where('role_id', $id)
+            $role = Role::where('id', $id)
                    ->value('role');
             return $role;
         } catch (\Exception $ex) {
@@ -76,9 +76,9 @@ class CashiersController extends Controller
     {
         try {
             $role = 'Cashier';
-            $role_id = $this->getUserRoleId($role);
-            $cashiers_list = User::where('user_role', $role_id)->get();
-            $number_of_cashiers = User::where('user_role', $role_id)->count();
+            $id = $this->getUserRoleId($role);
+            $cashiers_list = User::where('department_id', $id)->get();
+            $number_of_cashiers = User::where('department_id', $id)->count();
             $data = array(
         'totl' => $number_of_cashiers,
         'list' => $cashiers_list
@@ -202,20 +202,20 @@ class CashiersController extends Controller
                 $cashier->username = $username;
                 $cashier->gender = $cashier_gender;
                 $cashier->email = $cashier_email;
-                $cashier->user_role = $this->getUserRoleId($role);
+                $cashier->department_id = $this->getUserRoleId($role);
                 $cashier->tel_no = $cashier_telno;
                 $cashier->alt_telno = $cashier_alt_telno;
                 $cashier->address = $cashier_address;
                 $cashier->nationalID_no = $cashier_nin;
                 $cashier->password = Hash::make($defaultPwd, ['rounds' => 12]);
-                $cashier->isActive = 1;
+                $cashier->is_active = 1;
                 $cashier->inactivated_by = $registra;
 
                 $save_status = $cashier->save();
                 if ($save_status) {
                     $subject = 'User Registration';
                     $CashierEmail = $request->email;
-                    $registraPosition = $this->getRole($request->user()->user_role);
+                    $registraPosition = $this->getRole($request->user()->department_id);
                     $registraEmail = $request->user()->email;
                     $default_password = $defaultPwd;
                     $now = now();
@@ -523,7 +523,7 @@ class CashiersController extends Controller
             if ($res) {
                 $subject = 'Update about User Details Change';
                 $CashierEmail = $request->email;
-                $registraPosition = $this->getRole($request->user()->user_role);
+                $registraPosition = $this->getRole($request->user()->department_id);
                 $registraEmail = $request->user()->email;
                 $now = now();
 
@@ -668,7 +668,7 @@ class CashiersController extends Controller
     {
         try {
             $CashierRoleId = $this->getUserRoleId('Cashier');
-            $result = User::where('user_role', $CashierRoleId)->delete();
+            $result = User::where('department_id', $CashierRoleId)->delete();
 
             if ($result) {
                 $action = "removed all cashiers from the system";
@@ -777,7 +777,7 @@ class CashiersController extends Controller
             switch (true) {
 
                 case ($status == true):
-                $deactivated = User::where('id', $id)->update(['isActive' => false]);
+                $deactivated = User::where('id', $id)->update(['is_active' => false]);
                 if ($deactivated) {
                     $action = "deactivated cashier ".$name."'s account";
                     LogsController::logger($request, $action, now());
@@ -800,7 +800,7 @@ class CashiersController extends Controller
                 break;
 
                 case ($status == false):
-                $activated = User::where('id', $id)->update(['isActive' => true]);
+                $activated = User::where('id', $id)->update(['is_active' => true]);
                 if ($activated) {
                     $action = "activated cashier ".$name."'s account";
                     LogsController::logger($request, $action, now());
