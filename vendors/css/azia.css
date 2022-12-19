@@ -15904,7 +15904,7 @@ body {
 }
 
 .az-header-menu-icon {
-  color: #fff !important;
+  color: #000 !important;
   margin-right: 10px;
   width: 20px;
   height: 30px;
@@ -15923,7 +15923,7 @@ body {
   position: relative;
   width: 15px;
   height: 2px;
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 3px;
   transition: all 0.2s ease-in-out;
 }
@@ -26680,11 +26680,11 @@ body {
 .az-header-primary .az-header-center .btn:focus,
 .az-header-primary .az-header-center .sp-container button:focus,
 .sp-container .az-header-primary .az-header-center button:focus {
-  color: #fff;
+  color: #000;
 }
 
 .az-header-primary .az-logo {
-  color: #fff;
+  color: #000;
   font-weight: 600;
   letter-spacing: -1.2px;
 }

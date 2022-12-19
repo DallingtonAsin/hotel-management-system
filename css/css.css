@@ -485,7 +485,7 @@ td {
 } */
 
 #azSidebarToggle{
-	color: #f4f4f4 !important;
+	color: #000 !important;
 }
 
 .login-container{
@@ -590,7 +590,7 @@ td {
 	margin-left: 20px !important;
 }
 .az-sidebar{
-	background: #233444 !important;
+	background: #2f3541 !important;
 	 /* #253C40 !important;  */
 }
 .az-sidebar-body > ul > li > a {
@@ -602,7 +602,7 @@ td {
 	color: silver !important;
 }
 .az-header{
-	background: #233444 !important;
+	background: #fff !important;
 	color: #fff !important;
 }
 .fa-comments, .fa-info{
