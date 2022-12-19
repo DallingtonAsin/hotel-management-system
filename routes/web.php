@@ -107,6 +107,7 @@ Route::get('/users/managers/ajax', 'UserController@GetManagers')->name('managers
 Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.home');
 Route::get('/users/cashiers/ajax', 'UserController@GetCashiers')->name('cashiers.index.ajax');
 Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.ajax');
+Route::get('/rooms/fetch/ajax', 'RoomController@RoomsDataTable')->name('rooms.index.ajax');
 
 Route::resources([
 	'stock' => 'StockController',
@@ -126,6 +127,11 @@ Route::resources([
     'calendar' => 'CalendarController',
     'command' => 'ChatBotController',
 	'company' => 'SettingsController',
+	'departments' => 'DepartmentController',
+	'guest_types' => 'GuestTypeController',
+	'room_types' => 'RoomTypeController',
+	'rooms' => 'RoomController',
+	'bookings' => 'BookingController',
 ]);
 
 Route::get('/email','MailController@MailWelcome');

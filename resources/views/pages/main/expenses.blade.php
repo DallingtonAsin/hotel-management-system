@@ -33,7 +33,7 @@
 
               <div class="col-lg-2">
                 <h6>
-                    <a class="text-info bolded" href="javascript:void(0)"
+                    <a class=" bolded" href="javascript:void(0)"
                      id="createNewExpense"> Add expense</a>
                 </h6>
               </div>
@@ -44,7 +44,7 @@
 
               <div class="col-lg-2">
                <div class="btn-group">
-                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  Action
                </button>
                <ul class="dropdown-menu">

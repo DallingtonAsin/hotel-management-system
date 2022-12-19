@@ -65,7 +65,7 @@
   <script src="{{ asset('vendors/js/azia.js') }}"></script>
   
   <script src="{{ asset('js/external.min.js') }}"></script>
-  <script src="{{ asset('vendors/custom/js.js') }}"></script>
+  <script src="{{ asset('vendors/custom/custom-datatables.js') }}"></script>
 
 
   <link rel="stylesheet" href="{{ asset('vendors/fonts/montserrat/css.css') }}">

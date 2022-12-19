@@ -33,16 +33,16 @@
                                 <div class="btn-group">
                                     <button type="button"
                                         class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Action
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="" class="text-info text-decoration-none" data-toggle="modal"
+                                            <a href="" class=" text-decoration-none" data-toggle="modal"
                                         data-target="#importCommands">Import Commands</a>
                                         </li>
                                         <li>
-                                            <a href="{{ Route("command.truncate") }}" class="text-info text-decoration-none">Delete all Commands</a>
+                                            <a href="{{ Route("command.truncate") }}" class=" text-decoration-none">Delete all Commands</a>
                                         </li>
                                     </ul>
                                 </div>

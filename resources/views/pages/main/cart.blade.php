@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="panel panel-success" id="panel">
+<div class="card" id="panel">
   <div class="panel-heading cartPanelHeader" id="panel-heading">
     <div class="panel-title nunito-font">
       

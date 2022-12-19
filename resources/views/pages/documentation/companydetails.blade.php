@@ -6,7 +6,7 @@
             <h6 class="card-title">
               
              <i class="glyphicon glyphicon-th text-warning"></i> 
-                About / <span class="text-info">  Code solution Technologies
+                About / <span class="">  Code solution Technologies
               </h6>
             <div class="card-body ">
               <form class="form-group" > 

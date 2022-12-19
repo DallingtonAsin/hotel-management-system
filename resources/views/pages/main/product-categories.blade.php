@@ -19,7 +19,7 @@
 
         <div class="col-lg-3">
           <h6>
-            <a class="add-link text-info text-decoration-none"
+            <a class="add-link  text-decoration-none"
             href="javascript:void(0)"
             id="createNewPdtCategory"><strong>Add Stock Category</strong> </a>
           </h6>
@@ -27,20 +27,20 @@
 
         <div class="col-lg-3">
           <h6>
-            <a href=""  class="add-link text-info text-decoration-none" data-bs-toggle="modal" data-bs-target="#importCategories"><strong>Import Categories</strong></a>
+            <a href=""  class="add-link  text-decoration-none" data-bs-toggle="modal" data-bs-target="#importCategories"><strong>Import Categories</strong></a>
           </h6>
         </div>
 
 
         <div class="col-lg-2">
          <div class="btn-group">
-          <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
            Action
          </button>
          <ul class="dropdown-menu">
                 <!-- <li>
                   <a href="{{ Route('categories.export') }}"
-                  class="text-info text-decoration-none
+                  class=" text-decoration-none
                   ">Export Categories</a>
                 </li> -->
 

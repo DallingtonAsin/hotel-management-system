@@ -16,7 +16,7 @@
 
              <div class="d-flex justify-content-center">
               <div class="form-group">
-                <p><i class="text-info">1. User login page</i><br>
+                <p><i class="">1. User login page</i><br>
                   Here the user enters credentials i.e username and password
                   to login to able able to access the system.
                 </p>
@@ -25,7 +25,7 @@
                 </div>
 
               <div class="form-group">
-                <p><i class="text-info">2. Dashboard</i><br>
+                <p><i class="">2. Dashboard</i><br>
                 The dashboard page welcomes the system user to perform tasks which can
                 be selected from the left dashboard.
                 </p>
@@ -38,7 +38,7 @@
 
             <div class="d-flex justify-content-center">
               <div class="form-group">
-                <p><i class="text-info">3. Overview</i><br>
+                <p><i class="">3. Overview</i><br>
                   This page shows statistics about business transactions like numbers of available
                   sales,stock,expenses,customers etc.
                 </p>
@@ -47,7 +47,7 @@
                 </div>
 
               <div class="form-group">
-                <p><i class="text-info">4. Stock</i><br>
+                <p><i class="">4. Stock</i><br>
                 The stock page allows the manager to add stock by adding item by item or importing
                 an excel file containing stock.The manager can also edit & delete stock items.
                 Manager can also export current stock items in an excel file.
@@ -62,7 +62,7 @@
             <div class="d-flex justify-content-center">
 
               <div class="form-group">
-                <p><i class="text-info">5. Suppliers</i><br>
+                <p><i class="">5. Suppliers</i><br>
                 The suppliers page allows the manager to register  a supplier or importing
                 an excel file containing suppliers.The manager can also edit & delete suppliers.Manager
                 can also export list of suppliers in an excel file.
@@ -72,7 +72,7 @@
             </div>
 
               <div class="form-group">
-                <p><i class="text-info">6. Cashiers</i><br>
+                <p><i class="">6. Cashiers</i><br>
                   The cashiers page allows the manager to register a cashier or importing
                   an excel file containing cashiers.The manager can also edit & delete cashiers.Manager
                   can also export list of cashiers in an excel file.

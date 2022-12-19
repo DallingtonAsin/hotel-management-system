@@ -69,7 +69,7 @@
 @cannot('isCashier')
 <div class="col-lg-3">
  <small>
-   <a href="{{ Route('sales.index')}}" class="text-info bolded">Load all</a>
+   <a href="{{ Route('sales.index')}}" class=" bolded">Load all</a>
  </small>
 </div>
 @endcannot

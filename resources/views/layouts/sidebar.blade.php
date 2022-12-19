@@ -162,8 +162,8 @@
           <li class="nav-item">
             <a href="" class="nav-link with-sub">Rooms</a>
             <ul class="nav-sub">
-            <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">All rooms</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Room types</a></li>
+            <li class="nav-sub-item"><a href="{{ Route('rooms.index') }}" class="nav-sub-link">All rooms</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('room_types.index') }}" class="nav-sub-link">Room types</a></li>
             </ul>
           </li>
 

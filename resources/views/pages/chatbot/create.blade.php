@@ -5,7 +5,7 @@
   <div class="card card-dashboard-table-six">
 
     <div>
-      <h5 class="card-title text-info">Create new command</h5>
+      <h5 class="card-title ">Create new command</h5>
     </div>
 
     <div class="card-body">
