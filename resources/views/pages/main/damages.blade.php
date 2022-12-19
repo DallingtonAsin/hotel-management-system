@@ -2,8 +2,8 @@
 
 @section('content')
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
+      <div class="card">
+        <div class="card-header">
           <div class="panel-title">
             <span class="pl-0 mt-4 response"></span>
             <div class="row nunito-font">
@@ -20,27 +20,27 @@
               </div>
               @can('isAdmin')
               <div class="col-lg-3">
-                <h5>
+                <h6>
                   <strong>Cost of damage: shs.</strong>
                   <label class="text-danger totl_cost">
                     @isset($cost_of_damages)
                     {{ number_format($cost_of_damages) }}
                     @endisset
                   </label>
-                </h5>
+                </h6>
               </div>
               @endcan
 
               <div class="col-lg-2">
-                <h5>
+                <h6>
                   <a class="text-info bolded" href="javascript:void(0)"
                   id="createNewDamage"> Add damage</a>
-                </h5>
+                </h6>
               </div>
 
 
               <div class="col-lg-2">
-                <h5><a href=""  class="add-link text-decoration-none" data-toggle="modal" data-target="#importDamages"><strong>Import Damages</strong></a></h5>
+                <h6><a href=""  class="add-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#importDamages"><strong>Import Damages</strong></a></h6>
               </div>
 
             @can('isAdmin')
@@ -63,7 +63,7 @@
           </div>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
 
           <div class="col-lg-8 text-center">
             @if(session()->get('success'))
@@ -114,20 +114,20 @@
 
 
               <!-- Add Damage Details -->
-              <div class="modal fade" id="addDamagesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+              <div class="modal fade" id="addDamagesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md">
 
                   <div class="modal-content nunito-font rounded-0">
                     <form name="damagesForm" id="damagesForm">
                       @csrf
                       <div class="modal-header text-center">
-                        <h5 class="modal-title w-100 nunito-font font-weight-bold" id="modalHeading">
+                        <h6 class="modal-title w-100 nunito-font font-weight-bold" id="modalHeading">
                           <i class="fa fa-info-circle"></i>
                           Add damaged item
-                        </h5>
+                        </h6>
 
                         <button type="button" class="close view-close text-dark"
-                        data-dismiss="modal" aria-label="Close">
+                        data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
@@ -174,7 +174,7 @@
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary addDamageBtn"  name="AdddamageBtn">Save</button>
                         <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                        <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
                       </div>
 
                       <div class="form-group">
@@ -194,13 +194,13 @@
 
 
             <!--Modal DeleteDamage -->
-            <div class="modal fade" id="deleteDamageModal" tabindex="-1" role="dialog"
+            <div class="modal fade" id="deleteDamageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
             aria-labelledby="ModalLabel">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header text-center">
-                  <h5 class="modal-title w-100 font-weight-bold">Delete damaged item</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <h6 class="modal-title w-100 font-weight-bold">Delete damaged item</h6>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -217,7 +217,7 @@
                   </div>
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-                    <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
                   </div>
                 </div>
               </div>
@@ -225,8 +225,8 @@
           </div> <!-- end of modal Deletedamage-->
 
           <!--Import Damaged Items -->
-          <div class="modal fade nunito-font" id="importDamages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
+          <div class="modal fade nunito-font" id="importDamages" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
 
                 <form action="{{ Route('damages.import') }}" method="post"
@@ -234,8 +234,8 @@
                 @csrf
 
                 <div class="modal-header text-center">
-                  <h5 class="modal-title w-100 font-weight-bold">Import damaged items from Excel file</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <h6 class="modal-title w-100 font-weight-bold">Import damaged items from Excel file</h6>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -260,7 +260,7 @@
 
                     <div class="form-group">
                       <button type="submit" class="btn btn-primary">Upload</button>
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </form>

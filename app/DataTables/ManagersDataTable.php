@@ -48,16 +48,16 @@ class ManagersDataTable extends DataTable
         })->addColumn('checkbox', function ($user) {
               $checkBox = '<input type="checkbox" id="'.$user->id.'"/>';
              return $checkBox;
-        })->editColumn('isActive', function ($data) {
-           return ($data->isActive)
+        })->editColumn('is_active', function ($data) {
+           return ($data->is_active)
              ? '<span class="text-success">active</span>' 
              : '<span class="text-danger">inactive</span>';
         })->editColumn('accountAction', function ($data) {
-            $status = $data->isActive;
+            $status = $data->is_active;
            return ($status)
              ? '<button class="bg-danger py-0 text-white changeAccountBtn" data-id="'.$data->id.'" data-name="'.$data->name.'" data-status="'.$status.'" id="changeAccountBtn" style="font-size: 0.8em;"  >Deactive</button>' 
              : '<button class="bg-success py-0 text-white changeAccountBtn" data-id="'.$data->id.'" data-name="'.$data->name.'"  data-status="'.$status.'" id="changeAccountBtn" style="font-size: 0.8em;" >Activate</button>';
-        })->rawColumns(['action', 'isActive', 'accountAction', 'checkbox']);
+        })->rawColumns(['action', 'is_active', 'accountAction', 'checkbox']);
 
 
     }
@@ -67,7 +67,7 @@ class ManagersDataTable extends DataTable
                $adminRoleId = Helper::getRoleId('Administrator');
                $res = $model->newQuery()
                ->select('*')
-               ->where('user_role', '=', intval($adminRoleId))
+               ->where('department_id', '=', intval($adminRoleId))
                ->where('id', '!=', Auth::user()->id);
                return $res;
     }
@@ -104,7 +104,7 @@ class ManagersDataTable extends DataTable
             'username',
             'gender',
             'email',
-            'user_role',
+            'department_id',
             'tel_no',
             'alt_telno',
             'address',

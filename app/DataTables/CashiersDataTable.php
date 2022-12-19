@@ -47,16 +47,16 @@ class CashiersDataTable extends DataTable
         })->addColumn('checkbox', function ($user) {
               $checkBox = '<input type="checkbox" id="'.$user->id.'"/>';
              return $checkBox;
-        })->editColumn('isActive', function ($data) {
-           return ($data->isActive)
+        })->editColumn('is_active', function ($data) {
+           return ($data->is_active)
              ? '<span class="text-success">active</span>' 
              : '<span class="text-danger">inactive</span>';
         })->editColumn('accountAction', function ($data) {
-            $status = $data->isActive;
+            $status = $data->is_active;
            return ($status)
              ? '<a class="bg-danger text-white changeAccountBtn" data-id="'.$data->id.'" data-name="'.$data->name.'" data-status="'.$status.'" id="changeAccountBtn"   >Deactive</a>' 
              : '<a class="bg-success text-white changeAccountBtn" data-id="'.$data->id.'" data-name="'.$data->name.'"  data-status="'.$status.'" id="changeAccountBtn" >Activate</a>';
-        })->rawColumns(['action', 'isActive', 'accountAction', 'checkbox']);
+        })->rawColumns(['action', 'is_active', 'accountAction', 'checkbox']);
 
 
 
@@ -67,7 +67,7 @@ class CashiersDataTable extends DataTable
                $CashierRoleId = Helper::getRoleId('cashier');
                return $model->newQuery()
                ->select('*')
-               ->where('user_role', '=', intval($CashierRoleId));
+               ->where('department_id', '=', intval($CashierRoleId));
     }
 
     /**
@@ -102,7 +102,7 @@ class CashiersDataTable extends DataTable
             'username',
             'gender',
             'email',
-            'user_role',
+            'department_id',
             'tel_no',
             'alt_telno',
             'address',

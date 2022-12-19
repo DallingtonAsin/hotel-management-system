@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="panel panel-success">
-  <div class="panel-heading">
+  <div class="card-header">
    <div class="panel-title nunito-font">
     <div class="row">
       <div class="col-lg-6 text-left graph-view nunito-font">
@@ -31,7 +31,7 @@
 </div>
 
 
-<div class="panel-body">
+<div class="card-body">
   <div class="panel-canvas">
    <canvas id="canvas" height="250" width="600" class="nunito-font"></canvas>
  </div>

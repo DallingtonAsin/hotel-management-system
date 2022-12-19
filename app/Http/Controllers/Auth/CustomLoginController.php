@@ -120,7 +120,7 @@ class CustomLoginController extends Controller
 	public function findAccountStatus($id){
 
 		$accountStatus = DB::table($this->tbl)
-		->where('email', $id)->value('isActive');
+		->where('email', $id)->value('is_active');
 		return $accountStatus;
 
 	}

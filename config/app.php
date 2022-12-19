@@ -19,6 +19,7 @@ return [
     'companyEmail' => env('CO_EMAIL '),
     'MinimumQty' => env('STOCK_MIN_QTY'),
     'cipherKey' => env('APP_CIPHER'),
+    
 
 
     /*
@@ -33,6 +34,9 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'DEVELOPER_NAME' => env('DEVELOPER_NAME', 'PivoSoft Venture Ltd'),
+    'DEVELOPER_WEBSITE' => env('DEVELOPER_WEBSITE', 'https://pivosoftltd.com/'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -184,7 +188,6 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
-        Bmatovu\MtnMomo\MtnMomoServiceProvider::class,
         Jorijn\LaravelSecurityChecker\ServiceProvider::class,
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
         Nexmo\Laravel\NexmoServiceProvider::class,

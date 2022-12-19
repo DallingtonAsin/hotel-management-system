@@ -4,8 +4,8 @@
 
 
 
-<div class="panel panel-default">
-  <div class="panel-heading">
+<div class="card">
+  <div class="card-header">
     <div class="panel-title">
       <span class="pl-0 mt-4 response"></span>
       <div class="row nunito-font">
@@ -18,17 +18,17 @@
         </div>
 
         <div class="col-lg-3">
-          <h5>
+          <h6>
             <a class="add-link text-info text-decoration-none"
             href="javascript:void(0)"
             id="createNewPdtCategory"><strong>Add Stock Category</strong> </a>
-          </h5>
+          </h6>
         </div>
 
         <div class="col-lg-3">
-          <h5>
-            <a href=""  class="add-link text-info text-decoration-none" data-toggle="modal" data-target="#importCategories"><strong>Import Categories</strong></a>
-          </h5>
+          <h6>
+            <a href=""  class="add-link text-info text-decoration-none" data-bs-toggle="modal" data-bs-target="#importCategories"><strong>Import Categories</strong></a>
+          </h6>
         </div>
 
 
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
       <div class="col-lg-10 nunito-font text-center">
 
         @if(session()->get('success'))
@@ -98,12 +98,12 @@
       </div>
 
       <!--Modal DeleteItemCategory -->
-      <div class="modal fade" id="deletePdtCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
-        <div class="modal-dialog" role="document">
+      <div class="modal fade" id="deletePdtCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="deleteModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header text-center">
-              <h5 class="modal-title w-100 font-weight-bold">Delete Category</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <h6 class="modal-title w-100 font-weight-bold">Delete Category</h6>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -124,7 +124,7 @@
 
             <div class="form-group">
               <button type="submit" class="btn btn-primary delete-ok-btn" id="delete-ok-btn"  name="ConfirmBtn">Yes</button>
-              <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
 
             </div>
           </div>
@@ -133,15 +133,15 @@
     </div> <!-- end of modal DeleteItemCategory-->
 
     <!--Add product category -->
-    <div class="modal fade nunito-font" id="addItemCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
+    <div class="modal fade nunito-font" id="addItemCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
           <form  name="categories" id="PdtCategoryForm">
            @csrf
            <div class="modal-header text-center">
-            <h5 class="modal-title w-100 font-weight-bold" id="modalHeading">Add item category</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add item category</h6>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -157,7 +157,7 @@
             <div class="form-group">
               <button type="submit" class="btn btn-primary addPdtCategoryBtn"  name="AddCategoryBtn">Save</button>
               <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-              <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
             </div>
 
             <div class="form-group">
@@ -171,8 +171,8 @@
   </div>
 
   <!--Import PdtCategory Categories -->
-  <div class="modal fade nunito-font" id="importCategories" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade nunito-font" id="importCategories" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
 
         <form action="{{ Route('categories.import') }}" method="post"
@@ -180,9 +180,9 @@
         @csrf
 
         <div class="modal-header text-center">
-          <h5 class="modal-title w-100 font-weight-bold">
-          Import an excel file of product category categories </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h6 class="modal-title w-100 font-weight-bold">
+          Import an excel file of product category categories </h6>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -207,7 +207,7 @@
 
           <div class="form-group">
             <button type="submit" class="btn btn-primary">Upload</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </form>

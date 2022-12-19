@@ -121,7 +121,7 @@
       </form>
       </header>
     
-    <div class="panel-body">
+    <div class="card-body">
       
       <span class="response"></span>
       <div class="row">
@@ -148,8 +148,6 @@
 
          <main>
        
-          
-          
           <div class="table table-responsive fixedTableHead" id="cart-div">
             <table id="cart-table" class="table table-bordered cart-table">
               <thead>

@@ -12,7 +12,7 @@
 
    <div class="card-body">
 
-    <div class="panel panel-default">
+    <div class="card">
 
       <div class="panel-body nunito-font">
 

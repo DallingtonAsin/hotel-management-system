@@ -3,12 +3,11 @@
     <div class="az-img-user user-img">
 
       @isset(Auth::user()->image)
-      <img src="{{ asset('uploads/images/'.$user_role.'/'.Auth::user()->image.'') }}" alt="">
+      <img src="{{ asset('uploads/images/'.$department_id.'/'.Auth::user()->image.'') }}" alt="">
       @endisset
 
       @empty(Auth::user()->image)
-      <img src="{{ asset('uploads/images/'.$user_role.'/default/user.png') }}"
-      alt="{{Auth::user()->first_name}}" >
+      <img src="{{ asset('uploads/images/default/user.png') }}" alt="{{Auth::user()->first_name}}">
       @endempty
 
     </div>
@@ -37,14 +36,14 @@
   </div>
 
   @php
-  ($user_role == "Administrator" || $user_role == "SuperAdministrator")
-  ?  $show = ""
-  :  $show = "show";
+  ($department_id == "Administrator" || $department_id == "SuperAdministrator")
+  ? $show = ""
+  : $show = "";
   @endphp
 
   @php
-  ($user_role == "SuperAdministrator")
-  ? $active = "show"
+  ($department_id == "SuperAdministrator")
+  ? $active = ""
   : $active = "";
   @endphp
 
@@ -52,331 +51,266 @@
     <ul class="nav">
       <li class="nav-label">Main Menu</li>
 
-      @can('isAdmin')
-      <li><a href="{{ route('home') }}" class="nav-link"><i class="fa fa-home"></i>Home</a></li>
-      @endcan
 
+      <li><a href="{{ route('home') }}" class="nav-link"><i class="fa fa-home"></i>Home</a></li>
+  
 
       <li class="nav-item {{ $show }} ">
         <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Dashboard</a>
 
-        @can('isSuperAdmin')
         <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ Route('users.index') }}" class="nav-sub-link">
-            <i class="fa fa-users pl-3 pr-2"></i>List of users
-          </a></li>
-        </ul>
-        @endcan
+          <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
+              Expenses
+            </a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
 
-        @can('isAdmin')
+        </ul>
+    
+      </li>
+
+      <li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="fa fa-shopping-cart"></i>Restaurant & Bar</a>
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales with debts</a></li>
+          <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly statistics</a></li>
+
+        </ul>
+      </li>
+
+      <!-- <li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="typcn typcn-location"></i>Events</a>
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ Route('events.index') }}" class="nav-sub-link">Events</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('calendar.index') }}" class="nav-sub-link">Calendar</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('events.create') }}" class="nav-sub-link">Add Event</a></li>
+        </ul>
+      </li> -->
+
+      <li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="fa fa-balance-scale"></i>Accounting</a>
+
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Cash In flow</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">General Ledger</a></li>
+
+        </ul>
+      </li>
+     
+
+      <li class="nav-item {{ $show }} ">
+        <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Store & Procurement</a>
+
         <ul class="nav-sub">
           <li class="nav-item">
             <a href="" class="nav-link with-sub">Stock</a>
             <ul class="nav-sub">
 
-             <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
-             <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
-             <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
-             <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Product Categories</a></li>
-           </ul>
-         </li>
-
-         <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
-          Suppliers
-        </a></li>
-        <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
-          Expenses
-        </a></li>
-        <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
-      
-      </ul>
-      @endcan
-
-      @can('isCashier')
-      <ul class="nav-sub">
-
-        <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damages</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales with debts</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link">Customers with debts</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
-       
-
-        
-        {{-- <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Stock Categories</a></li> --}}
-      </ul>
-      @endcan
-    </li>
-
-    @can('isCashier')
-    <li><a href="{{ Route('cart.index') }}" class="nav-link">
-      <i class="typcn typcn-shopping-bag"></i>Transaction</a></li>
-      @endcan
-
-
-      @can('isSuperAdmin')
-      <li class="nav-item {{ $active }}">
-        <a href="" class="nav-link with-sub">
-          <i class="fa fa-user-cog"></i>Manage Users</a>
-          <ul class="nav-sub">
-            <li class="nav-sub-item"><a href="{{ Route('user.account.active') }}" class="nav-sub-link">
-              <i class="fa fa-user pr-2"></i>Active users</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('user.account.locked') }}" class="nav-sub-link">
-                <i class="fa fa-user pr-2"></i>Locked users</a></li>
-              </ul>
-            </li>
-            @endcan
-
-
-
-            @can('isAdmin')
-
-            <li class="nav-item">
-              <a href="" class="nav-link with-sub"><i class="fa fa-user-circle"></i>Users</a>
-              <ul class="nav-sub">
-               <li class="nav-sub-item"><a href="{{ Route('cashiers.home') }}" class="nav-sub-link">Cashiers</a></li>
-               <li class="nav-sub-item"><a href="{{ Route('managers.home') }}" class="nav-sub-link">Managers</a></li>
-               <li class="nav-sub-item"><a href="{{ Route('users.create') }}" class="nav-sub-link">Register user</a></li>
-             </ul>
-           </li>
-
-           
-           <li class="nav-item">
-            <a href="" class="nav-link with-sub"><i class="fa fa-shopping-cart"></i>Sales</a>
-            <ul class="nav-sub">
-              <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales with debts</a></li>
-              <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly statistics</a></li>
-          
+              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Product Categories</a></li>
             </ul>
           </li>
 
+          <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
+              Vendors
+            </a></li>
+          <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
+              Expenses
+            </a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
 
-           <li class="nav-item">
-            <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
+        </ul>
+    
+      </li>
+
+      <li class="nav-item {{ $show }} ">
+        <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>House Keeping</a>
+
+        <ul class="nav-sub">
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub">Stock</a>
             <ul class="nav-sub">
-              {{-- <li class="nav-sub-item"><a href="{{ Route('overview') }}" class="nav-sub-link">Overview</a></li> --}}
 
-              <li class="nav-sub-item"><a href="{{ route('top-cashiers')}}" class="nav-sub-link">Cashiers report</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Product Categories</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
+              Vendors
+            </a></li>
+          <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
+              Expenses
+            </a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
+
+        </ul>
+    
+      </li>
+
+      <li class="nav-item {{ $show }} ">
+        <a href="" class="nav-link with-sub"><i class="fa fa-landmark"></i>Accomodation</a>
+
+        <ul class="nav-sub">
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub">Rooms</a>
+            <ul class="nav-sub">
+            <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">All rooms</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Room types</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub">Guests</a>
+            <ul class="nav-sub">
+              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Guest types</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub">Bookings</a>
+            <ul class="nav-sub">
+            <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">All bookings</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Add booking</a></li>
+            </ul>
+          </li>
+
+    
+        </ul>
+    
+      </li>
+ 
+      <li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="fa fa-users"></i>Human Resource</a>
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Departments</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Staff members</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Salary Payments</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Other Staff Payments</a></li>
 
 
-              <li class="nav-item">
-                <a href="" class="nav-link with-sub">Debtors</a>
-                <ul class="nav-sub">
-                  <li class="nav-sub-item"><a href="{{ route('debtors-suppliers') }}" class="nav-sub-link">Suppliers</a></li>
-                  <li class="nav-sub-item"><a href="{{ route('debtors-customers') }}" class="nav-sub-link">Customers</a></li>
-                </ul>
-              </li>
+        </ul>
+      </li>
 
-              <li class="nav-sub-item"><a href="{{ route('top-customers')}}" class="nav-sub-link">Top Customers</a></li>
+      <li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ route('top-cashiers')}}" class="nav-sub-link">Cashiers report</a></li>
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub">Debtors</a>
+            <ul class="nav-sub">
+              <li class="nav-sub-item"><a href="{{ route('debtors-suppliers') }}" class="nav-sub-link">Suppliers</a></li>
+              <li class="nav-sub-item"><a href="{{ route('debtors-customers') }}" class="nav-sub-link">Customers</a></li>
+            </ul>
+          </li>
 
-              <li class="nav-item">
-                <a href="" class="nav-link with-sub">Stock</a>
-                <ul class="nav-sub">
-                  <li class="nav-sub-item"><a href="{{ route('best-selling-items') }}" class="nav-sub-link">Best selling products</a></li>
-                  <li class="nav-sub-item"><a href="{{ route('low-stock',':quantity') }}" class="nav-sub-link">
+          <li class="nav-sub-item"><a href="{{ route('top-customers')}}" class="nav-sub-link">Top Customers</a></li>
+
+          <li class="nav-item">
+            <a href="" class="nav-link with-sub">Stock</a>
+            <ul class="nav-sub">
+              <li class="nav-sub-item"><a href="{{ route('best-selling-items') }}" class="nav-sub-link">Best selling products</a></li>
+              <li class="nav-sub-item"><a href="{{ route('low-stock',':quantity') }}" class="nav-sub-link">
                   Low running stock</a></li>
-                </ul>
-              </li>
-              
-
             </ul>
           </li>
 
-          <li class="nav-item">
-            <a href="" class="nav-link with-sub"><i class="typcn typcn-chart-line"></i>Graphs</a>
-            <ul class="nav-sub">
-              <li class="nav-sub-item"><a href="{{ url('/reports') }}" class="nav-sub-link">Sales</a></li>
-              <li class="nav-sub-item"><a href="{{ url('/reports/charts/purchases') }}" class="nav-sub-link">Purchases</a></li>
-            </ul>
-          </li>
+          <li class="nav-sub-item"><a href="{{ url('/reports') }}" class="nav-sub-link">Sales</a></li>
+          <li class="nav-sub-item"><a href="{{ url('/reports/charts/purchases') }}" class="nav-sub-link">Purchases</a></li>
 
 
-          @endcan
-
-          @can('isSuperAdmin')
-          <li class="nav-item">
-            <a href="" class="nav-link with-sub"><i class="fa fa-comments"></i>Manage chatbot</a>
-            <ul class="nav-sub">
-              <li class="nav-sub-item"><a href="{{ route('command.index') }}" class="nav-sub-link">commands</a></li>
-            </ul>
-          </li>
-          @endcan
-
-
-          @cannot('isSuperAdmin')
-          <li class="nav-item">
-            <a href="" class="nav-link with-sub"><i class="typcn typcn-location"></i>Events</a>
-            <ul class="nav-sub">
-               <li class="nav-sub-item"><a href="{{ Route('events.index') }}" class="nav-sub-link">Events</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('calendar.index') }}" class="nav-sub-link">Calendar</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('events.create') }}" class="nav-sub-link">Add Event</a></li>
-             
-
-            </ul>
-          </li>
-
-
-     <!--  <li class="nav-item">
-        <a href="" class="nav-link with-sub"><i class="fa fa-money"></i>Payments</a>
-        <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('payments') }}" class="nav-sub-link">MoMo</a></li>
-        </ul>
-      </li> -->
-
-      @can('isAdmin')
-      <li class="nav-item">
-        <a href="" class="nav-link with-sub"><i class="typcn typcn-cog"></i>Settings</a>
-        
-        {{-- <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('company.index') }}" class="nav-sub-link">Company details</a></li>
-        </ul> --}}
-        <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Company details</a></li>
         </ul>
       </li>
-      @endcan
-
-
-      @can('isAdmin')
+  
       <li class="nav-item">
-        <a href="" class="nav-link with-sub"><i class="typcn typcn-cloud-storage-outline"></i>System Audit</a>
+        <a href="" class="nav-link with-sub"><i class="typcn typcn-cog"></i>Others</a>
+
         <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link">Activity logs</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Settings</a></li>
+        </ul>
+
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ route('mail.index') }}" class="nav-sub-link">Send Email</a></li>
+        </ul>
+
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link"> System audit</a></li>
         </ul>
       </li>
-      @endcan
-
-      <li class="nav-item">
-        <a href="" class="nav-link with-sub"><i class="fa fa-comments"></i>Communication</a>
-        <ul class="nav-sub">
-         <!-- <li class="nav-sub-item"><a href="{{ route('sms') }}" class="nav-sub-link">Send SMS</a></li> -->
-         <li class="nav-sub-item"><a href="{{ route('mail.index') }}" class="nav-sub-link">Send Email</a></li>
-       </ul>
-     </li>
-     @endcannot
-
-     <li class="nav-item">
-      <a href="" class="nav-link with-sub"><i class="typcn typcn-info"></i>Information desk</a>
-      <ul class="nav-sub">
-        @can('isAdmin')
-        <li class="nav-sub-item"><a href="{{ route('userguide' )}}" class="nav-sub-link">Help</a></li>
-        @endcan
-        @can('isCashier')
-        <li class="nav-sub-item"><a href="{{ route('userguide' )}}" class="nav-sub-link">Help Desk</a></li>
-        @endcan
-        <li class="nav-sub-item"><a href="{{ route('aboutCST') }}" class="nav-sub-link">About CST</a></li>
-      </ul>
-    </li>
-
-  </ul>
-</div>
+    </ul>
+  </div>
 </div>
 
 
 <div class="az-content az-content-dashboard-five">
 
- <div class="az-header">
-  <div class="container-fluid">
+  <div class="az-header">
+    <div class="container-fluid">
 
-    <div class="az-header-left">
-      <a href="" id="azSidebarToggle" class="az-header-menu-icon"><span></span></a>
-    </div>
+      <div class="az-header-left">
+        <a href="" id="azSidebarToggle" class="az-header-menu-icon"><span></span></a>
+      </div>
 
-    <div class="az-header-center nunito-font">
-      <h5 class="nav-label colored-icon-1">
-        @if(isset($companyData))
-        {{ $companyData['company_name'] }}
-        @else
-        {{ env('APP_NAME') }}
-        @endif
-      </h5>
-    </div>
+      <div class="az-header-center nunito-font">
+        <h5 class="nav-label colored-icon-1">
+          @if(isset($companyData))
+          {{ $companyData['company_name'] }}
+          @else
+          {{ env('APP_NAME') }}
+          @endif
+        </h5>
+      </div>
 
-          <!-- <smsnotification v-bind:smsnotifications="smsnotifications"></smsnotification>
-          <Emailnotification v-bind:emailnotifications="emailnotifications"></Emailnotification>
-          <notification v-bind:notifications="notifications"></notification> -->
+      <div class="dropdown az-profile-menu">
+        <a href="" class="text-decoration-none nunito-font username text-cap">
+          <span class="mt-5">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}} </span>
+          <i class="dropdown-toggle"></i></a>
+        <div class="dropdown-menu">
+          <div class="az-dropdown-header d-sm-none">
+            <a href="" class="az-header-arrow">
+              <i class="icon ion-md-arrow-back"></i>
+            </a>
+          </div>
 
+          <div class="az-header-profile nunito-font">
+            <div class="az-img-user ">
+              @isset(Auth::user()->image)
+              <img src="{{ asset('uploads/images/'.$department_id.'/'.Auth::user()->image.'') }}" alt="">
+              @endisset
 
-
-
-          <!-- <div class="noti__item js-item-menu nunito-font" v-if="notifications.length > 0">
-            <i class="zmdi zmdi-notifications icon-white"></i>
-            <span class="quantity">9</span>
-            <div class="email-dropdown js-dropdown">
-              <div class="email__title">
-                <p>You have new notifications</p>
-              </div>
-
-              <div class="email__item" v-for="notification in notifications">
-                <div class="image img-cir bg-warning img-40">
-                  <i class="ml-3 mt-3 pb-4 zmdi zmdi-email text-white"></i>
-                </div>
-                <div class="content">
-                 <p><a href="">9090</a></p>
-                  <span>bbbbbbbbbbbbb
-                       </span>
-                </div>
-              </div>
-              <div class="email__footer">
-                <a href="#">See all notifications</a>
-              </div>
+              @empty(Auth::user()->image)
+              <img src="{{ asset('uploads/images/default/user.png') }}" alt="{{Auth::user()->name}}" class="az-img-user pull-right">
+              @endempty
             </div>
-          </div> -->
-
-          <div class="dropdown az-profile-menu">
-            <a href="" class="text-decoration-none nunito-font username text-cap">
-              <span class="mt-5">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}} </span>
-              <i class="dropdown-toggle"></i></a>
-              <div class="dropdown-menu">
-                <div class="az-dropdown-header d-sm-none">
-                  <a href="" class="az-header-arrow">
-                    <i class="icon ion-md-arrow-back"></i>
-                  </a>
-                </div>
-
-                <div class="az-header-profile nunito-font">
-                  <div class="az-img-user ">
-                    @isset(Auth::user()->image)
-                    <img src="{{ asset('uploads/images/'.$user_role.'/'.Auth::user()->image.'') }}" alt="">
-                    @endisset
-
-                    @empty(Auth::user()->image)
-                    <img src="{{ asset('uploads/images/'.$user_role.'/default/user.png') }}"
-                    alt="{{Auth::user()->name}}" class="az-img-user pull-right" >
-                    @endempty
-                  </div>
-                  <div class="text-center">
-                    <label class="text-cap">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</label>
-                    <span>{{{ $user_role }}}</span>
-                  </div>
-                </div>
-
-                <a href="{{ Route('profile.index') }}" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
-                <a href="{{route('account-settings')}}" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
-                <a href="{{ route('logs.index' )}}" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>
-                <a href="{{route('account-settings')}}" class="dropdown-item">
-                  <i class="typcn typcn-cog-outline"></i> Account Settings</a>
-                  <a class="dropdown-item" href="{{ route('signout') }}">
-                    <i class="typcn typcn-power-outline"></i>{{ __('Sign Out') }}
-                  </a>
-
-                </div>
-              </div>
+            <div class="text-center">
+              <label class="text-cap">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</label>
+              <span>{{{ $department_id }}}</span>
             </div>
           </div>
 
+          <a href="{{ Route('profile.index') }}" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
+          <a href="{{route('account-settings')}}" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
+          <a href="{{ route('logs.index' )}}" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>
+          <a href="{{route('account-settings')}}" class="dropdown-item">
+            <i class="typcn typcn-cog-outline"></i> Account Settings</a>
+          <a class="dropdown-item" href="{{ route('signout') }}">
+            <i class="typcn typcn-power-outline"></i>{{ __('Sign Out') }}
+          </a>
 
-          <!-- main content that is filled by other external sections -->
-          <div class="az-content-body nunito-font">
-            @yield('content')
-          </div>
-          @include('layouts.footer')
         </div>
+      </div>
+    </div>
+  </div>
 
-
-
-
-
+  <div class="az-content-body nunito-font">
+    @yield('content')
+  </div>
+  @include('layouts.footer')
+</div>

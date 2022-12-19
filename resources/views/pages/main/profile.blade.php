@@ -18,16 +18,16 @@
       <div class="table table-responsive">
         <div class="wrapper">
           <div class="wrapper-div-1">
-            <h5 class="text-success custom-green">Personal details</h5>
+            <h6 class="text-success custom-green">Personal details</h6>
           </div>
           <!-- <div class="wrapper-div-1">
           @isset(Auth::user()->image)
-          <img src="{{ asset('uploads/images/'.$user_role.'/'.Auth::user()->image.'') }}" class="profile-avatar " alt="">
+          <img src="{{ asset('uploads/images/'.$department_id.'/'.Auth::user()->image.'') }}" class="profile-avatar " alt="">
           @endisset
 
 
           @empty(Auth::user()->image)
-          <img src="{{ asset('uploads/images/'.$user_role.'/default/user.png') }}" class="profile-avatar"
+          <img src="{{ asset('uploads/images/'.$department_id.'/default/user.png') }}" class="profile-avatar"
           alt="{{Auth::user()->first_name}}" >
           @endempty
         </div> -->
@@ -63,7 +63,7 @@
 
             <tr>
               <td class="text-muted">Position</td>
-              <td class="text-right">{{ $user_role }}</td>
+              <td class="text-right">{{ $department_id }}</td>
             </tr>
 
 

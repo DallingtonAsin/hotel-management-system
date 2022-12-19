@@ -2,8 +2,8 @@
 
 @section('content')
 
-          <div class="panel panel-default">
-            <div class="panel-heading">
+          <div class="card">
+            <div class="card-header">
               <div class="panel-tile">
 
                 <div class="row nunito-font">
@@ -21,25 +21,25 @@
               </div>
 
               <div class="col-lg-3">
-                <h5>
+                <h6>
                   Total expenses: shs.
                   <label class="text-danger totl_amt">
                       @isset($total_expenses)
                     {{ number_format($total_expenses) }}
                       @endisset
                   </label>
-                </h5>
+                </h6>
               </div>
 
               <div class="col-lg-2">
-                <h5>
+                <h6>
                     <a class="text-info bolded" href="javascript:void(0)"
                      id="createNewExpense"> Add expense</a>
-                </h5>
+                </h6>
               </div>
 
                <div class="col-lg-2">
-                <h5><a href=""  class="add-link text-decoration-none" data-toggle="modal" data-target="#importExpenses"><strong>Import Expenses</strong></a></h5>
+                <h6><a href=""  class="add-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#importExpenses"><strong>Import Expenses</strong></a></h6>
               </div>
 
               <div class="col-lg-2">
@@ -63,7 +63,7 @@
             </div>
 
 
-  <div class="panel-body">
+  <div class="card-body">
     <div class="col-lg-8 text-center">
       @if(session()->get('success'))
       <div class='alert alert-success alert-dismissible' role='alert'>
@@ -104,15 +104,15 @@
 
 
             <!--Add expenses -->
-            <div class="modal fade nunito-font" id="addExpensesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
+            <div class="modal fade nunito-font" id="addExpensesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
 
                   <form name="expenses" id="ExpensesForm">
                     @csrf
                     <div class="modal-header text-center">
-                      <h5 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new expense</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new expense</h6>
+                      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
@@ -144,7 +144,7 @@
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary" id="addExpensesBtn"  name="AddExpenseBtn">Save</button>
                         <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                        <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
                       </div>
 
                       <div class="form-group">
@@ -158,8 +158,8 @@
             </div>
 
             <!--Import Expenses -->
-            <div class="modal fade nunito-font" id="importExpenses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
+            <div class="modal fade nunito-font" id="importExpenses" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
 
                   <form action="{{ Route('expenses.import') }}" method="post"
@@ -167,8 +167,8 @@
                   @csrf
 
                   <div class="modal-header text-center">
-                    <h5 class="modal-title w-100 font-weight-bold">Import an excel file of expenses</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h6 class="modal-title w-100 font-weight-bold">Import an excel file of expenses</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -193,7 +193,7 @@
 
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary"  name="AddItemBtn">Upload</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                       </div>
 
 
@@ -205,12 +205,12 @@
 
 
             <!--Modal Deleteexpenses -->
- <div class="modal fade" id="deleteExpensesModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+ <div class="modal fade" id="deleteExpensesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete expense</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete expense</h6>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -227,7 +227,7 @@
 
          <div class="form-group">
             <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-            <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
         </div>
       </div>
     </div>

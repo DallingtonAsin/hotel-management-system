@@ -37,25 +37,25 @@ class ImportCashiers implements ToModel, WithHeadingRow
             'username'=> $username,
             'gender' => $row["gender"],
             'email' => $email,
-            'user_role' => $this->getUserRoleId("Cashier"), 
+            'department_id' => $this->getUserRoleId("Cashier"), 
             'tel_no' => $row["contact1"],
             'alt_telno' => $row["contact2"],
             'address' => $row["address"],
             'nationalID_no'=> $row["nationalidno"],
-            'isActive' => true,
+            'is_active' => true,
             'password' => Hash::make("12345678"),
         ]);
     }
 
     protected function getUserRoleId($role)
     {
-        $roleId = Role::where('role', $role)->value('role_id');
+        $roleId = Role::where('role', $role)->value('id');
         return $roleId;
     }
 
     protected function getRole($id)
     {
-        $role = Role::where('role_id', $id)->value('role');
+        $role = Role::where('id', $id)->value('role');
         return $role;
     }
 

@@ -13,10 +13,10 @@ use App\Models\Damage;
 use App\Models\Supplier;
 use App\Models\Customer;
 use App\Models\Expense;
-use App\Models\Role;
 use App\Models\TopCashier;
 use App\Models\DebtorsCustomer;
 use App\Models\DebtorsSupplier;
+use App\Models\Department;
 
 class ComposerOverview{
 
@@ -33,8 +33,8 @@ class ComposerOverview{
     $total_customersDebts = DebtorsCustomer::sum('debts');
     $total_suppliersDebts = DebtorsSupplier::sum('debts');
     $totlSystemUsers = DB::table("users")->count();
-    $totlActiveUsers = DB::table("users")->where('isActive', true)->count();
-    $totlLockedUsers = DB::table("users")->where('isActive', false)->count();
+    $totlActiveUsers = DB::table("users")->where('is_active', true)->count();
+    $totlLockedUsers = DB::table("users")->where('is_active', false)->count();
     $fiveSuperAdmin = User::limit(5)->get();
 
 
@@ -61,7 +61,7 @@ class ComposerOverview{
      $response = Gate::inspect('isSuperAdmin');
         if($response->allowed())
         { 
-            $view->with('registeredRoles', $this->getRoles());
+            $view->with('registeredDepartments', $this->getDepartments());
 
         }
 
@@ -69,7 +69,7 @@ class ComposerOverview{
     if(Auth::check())
     {
      $id = Auth::user()->id;
-     $view->with('user_role', $this->getUserRole());
+     $view->with('department_id', $this->getUserDepartment());
      $view->with('data', $data);
    }
    else
@@ -83,34 +83,34 @@ class ComposerOverview{
 
 
 
-   public function getRoles()
+   public function getDepartments()
    {
-    $roles = DB::table('roles')
+    $departments = DB::table('departments')
                      ->get();
-    return $roles;
+    return $departments;
    }
 
 
-    public function getUserRole()
+    public function getUserDepartment()
     {
-      $userRole = DB::table('roles')
-                 ->where('role_id', Auth::user()->user_role)
-                  ->value('role');
-      return $userRole;
+      $userDepartment = DB::table('departments')
+                 ->where('id', Auth::user()->department_id)
+                  ->value('name');
+      return $userDepartment;
 
     }
 
-    public function getRoleId($role)
+    public function getDepartmentId($name)
     {
-      $role_id = Role::where("role", $role)->value("role_id");
-      return $role_id;
+      $id = Department::where("name", $name)->value("id");
+      return $id;
     }
 
     public function getNumberofSuperAdmin()
     {
-       $role = "SuperAdministrator";
-       $userRoleId = $this->getRoleId($role);
-       $totl = User::where("user_role", $userRoleId)->count();
+       $department = "SuperAdministrator";
+       $userDepartmentId = $this->getDepartmentId($department);
+       $totl = User::where("department_id", $userDepartmentId)->count();
        return $totl;
     }
 

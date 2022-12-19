@@ -16,9 +16,9 @@
 </div>
 
   <div class="card-body pt-3">
-    <div class="panel panel-default">
+    <div class="card">
 
-      <div class="panel-body">
+      <div class="card-body">
 
         <form class="profileForm" method="POST" action="{{route('profile.update', Auth::user()->id)}}" id="profileForm" enctype='multipart/form-data'>
            @csrf
@@ -57,7 +57,7 @@
         </div>
 
         <div class="form-group">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
               Need to change your password? click here
             </button>
         </div>

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="panel panel-success">
-  <div class="panel-heading">
+  <div class="card-header">
    <div class="panel-title nunito-font">
     <div class="row nunito-font">
       <span class="response"></span>
@@ -27,10 +27,10 @@
      @isset($volume_of_todaysales)
      <div class="col-lg-6 today-amount">
        <span>
-         <h5>
+         <h6>
           <strong> Amount in debts (Today): shs.</strong>
           <strong class="text-danger volume">{{ number_format($volume_of_todaysales) }}</strong>
-        </h5>
+        </h6>
       </span>
     </div>
     <div class="col-lg-3 amount hidden">
@@ -57,7 +57,7 @@
 </div>
 </div>
 
-<div class="panel-body">
+<div class="card-body">
   <div class="row">
     <div class="col-lg-8 text-center nunito-font">
      @if(session()->get('success'))
@@ -127,12 +127,12 @@
 
 
 <!--Modal DeleteSale -->
-<div class="modal fade" id="deleteSaleModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="deleteSaleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h5 class="modal-title w-100 font-weight-bold">Delete sold item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h6 class="modal-title w-100 font-weight-bold">Delete sold item</h6>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -148,7 +148,7 @@
        </div>
        <div class="form-group">
         <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-        <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
       </div>
     </div>
   </div>
@@ -158,16 +158,16 @@
 
 
 <!-- View Sold Item Details -->
-<div class="modal fade" id="SalesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+<div class="modal fade" id="SalesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
 
     <div class="modal-content nunito-font border border-custom-dark rounded-0">
       <div class="modal-header main-color-bg text-center">
-        <h5 class="modal-title w-100 nunito-font text-white modalHeading  font-weight-bold">
+        <h6 class="modal-title w-100 nunito-font text-white modalHeading  font-weight-bold">
           <i class="fa fa-info-circle"></i>
           Details of the sale
-        </h5>
-        <button type="button" class="close view-close text-white" data-dismiss="modal" aria-label="Close">
+        </h6>
+        <button type="button" class="close view-close text-white" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -236,7 +236,7 @@
           <div class="form-group">
             <button type="submit" class="btn btn-primary addSaleBtn"  name="AddItemBtn">Save</button>
             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-            <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
           </div>
 
           <div class="form-group">

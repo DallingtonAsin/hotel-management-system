@@ -3,8 +3,8 @@
 @section('content')
 
 
-          <div class="panel panel-default">
-            <div class="panel-heading">
+          <div class="card">
+            <div class="card-header">
               <div class="panel-tile">
                 <div class="row nunito-font">
             <div class="col-lg-10">
@@ -34,7 +34,7 @@
               </div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
 
         <div class="col-lg-8 text-center">
          @if(session()->get('log-deleted'))
@@ -72,13 +72,13 @@
       </div>
 
   <!--Modal DeleteLog -->
-<div class="modal fade pt-5" id="deleteLogsModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+<div class="modal fade pt-5" id="deleteLogsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content nunito-font border border-custom-dark rounded-0">
         <div class="modal-header main-color-bg  text-center">
           <h5 class="modal-title w-100 text-white font-weight-bold">
              Delete Log</h5>
-          <button type="button" class="close view-close" data-dismiss="modal" aria-label="Close ">
+          <button type="button" class="close view-close" data-bs-dismiss="modal" aria-label="Close ">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -96,7 +96,7 @@
          <form>
           @csrf
           <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
         </form>
       </div>
     </div>
@@ -108,7 +108,7 @@
 
 
         <!-- View Log Details -->
-        <div class="modal fade" id="LogsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="LogsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog modal-dialog-centered modal-md" role="document">
 
             <div class="modal-content nunito-font border border-custom-dark rounded-0">
@@ -117,7 +117,7 @@
                   <i class="fa fa-info-circle"></i>
                   Details of a logged activity
                 </h5>
-                <button type="button" class="close view-close text-white" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close view-close text-white" data-bs-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>

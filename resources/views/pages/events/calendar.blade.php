@@ -5,12 +5,12 @@
 <div class="card-table nunito-font">
     <div class="card card-dashboard-table-six">
         <div class="card-body">
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="card">
+                <div class="card-header">
                     <div class="panel-title">
                         <h4>Calender of Events</h4>
                     </div>
-                        <div class="panel-body">
+                        <div class="card-body">
                             <div id='calendar'></div>
                         </div>
                 </div>
