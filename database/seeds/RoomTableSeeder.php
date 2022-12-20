@@ -45,7 +45,7 @@ class RoomTableSeeder extends Seeder
     public function run()
     {
         Room::create([
-            'room_type_id' => $this->faker->randomElement([1,2,3,4]),
+            'room_type_id' => $this->faker->randomElement([1,2,3,4,5,6,7]),
             'room_number' => $this->faker->randomElement(['A', 'B', 'C','D', 'E']).''.$this->faker->numberBetween(500, 700),
             'floor_number' => $this->faker->randomElement([1,2,3,4, 5, 6, 7]),
             'description' => 'Double room with 5x6 nice bed',

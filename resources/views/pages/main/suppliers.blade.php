@@ -4,11 +4,8 @@
 
       <div class="card">
         <div class="card-header">
-          <div class="panel-tile">
 
             <div class="row nunito-font">
-
-
               <div class="col-lg-2">
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
@@ -75,8 +72,6 @@
             </div>
 
           </div>
-
-        </div>
       </div>
 
       <div class="card-body">
@@ -101,18 +96,18 @@
 
           </div>
 
-      <div class="table table-sm table-responsive custom-family" >
+      <div class="table-responsive">
 
         <table class="table table-bordered table-hover suppliers-table" id="suppliers-table">
 
             <thead>
               <tr>
                 <th></th>
-               <th class="td-sm">No</th> --}}
+               <th class="td-sm">No</th> 
                 <th>Supplier</th>
                 <th>Mobile No</th>
-               <th>Address</th> --}}
-               <th>Email</th> --}}
+               <th>Address</th> 
+               <th>Email</th> 
                 <th>Credit</th>
                 <th>Debt</th>
                 <th>Action</th>
@@ -145,7 +140,7 @@ role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-body">
 
         <div class="form-group">
-           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
+           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> 
             <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
              placeholder="Enter supplier id"  Required autofocus>
           </div>
@@ -280,10 +275,6 @@ role="dialog" aria-labelledby="myModalLabel">
 </div> <!-- end of modal Deletesuppliers-->
 
 
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
-<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script> --}}
-<script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-<script src="{{ asset('vendors/notify/notify.js') }}"></script>
 <script>
   $.ajaxSetup({
           headers: {
@@ -307,11 +298,11 @@ role="dialog" aria-labelledby="myModalLabel">
     var dataColumns = [
          {data: 'checkbox', name:'checkbox'},
         //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-         // {data: 'id', name:'id'},
+         {data: 'id', name:'id'},
          {data: 'name', name:'name'},
          {data: 'contact', name:'contact'},
-        //  {data: 'address', name:'address'},
-        //  {data: 'email', name:'email'},
+         {data: 'address', name:'address'},
+         {data: 'email', name:'email'},
          {data: 'credit', name:'credit'},
          {data: 'debt', name:'debt'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
