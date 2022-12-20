@@ -170,7 +170,7 @@
           <li class="nav-item">
             <a href="" class="nav-link with-sub">Guests</a>
             <ul class="nav-sub">
-              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Guest types</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('guest_types.index') }}" class="nav-sub-link">Guest types</a></li>
             </ul>
           </li>
 

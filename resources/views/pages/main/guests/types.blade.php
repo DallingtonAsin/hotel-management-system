@@ -12,7 +12,7 @@
               <div class="col-lg-2">
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
-                  <strong>Room Types</strong>
+                  <strong>Guest Types</strong>
                   <span class="badge nunito-font  totl_suppliers">
                       @isset($number_of_suppliers)
                       {{ number_format($number_of_suppliers) }}
@@ -24,7 +24,7 @@
               <div class="col-lg-2">
                 <h6>
                     <a class=" bolded" href="javascript:void(0)"
-                     id="createNewSupplier"> Add room type</a>
+                     id="createNewSupplier"> Add guest type</a>
                 </h6>
               </div>
 
@@ -86,10 +86,9 @@
             <thead>
               <tr>
                 <th></th>
-                <th>Room Type</th>
-                <th>Single Occupancy Rate($)</th>
-                <th>Double Occupancy Rate($)</th>
-                <th>Added By</th>
+                <th>Guest Type</th>
+                <th>Is Regular</th>
+                <th>Is Corporate</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -102,7 +101,7 @@
 
 
 
-<!--Add rooms -->
+<!--Add guest types -->
 <div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-dialog-centered">
@@ -265,7 +264,7 @@ role="dialog" aria-labelledby="myModalLabel">
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            }
          });
-  const ajaxUrl = @json(route('roomstypes.index.ajax'));
+  const ajaxUrl = @json(route('guesttypes.index.ajax'));
   const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
   const cat = 'supplier';
   const token = "{{ csrf_token() }}";
@@ -282,9 +281,8 @@ role="dialog" aria-labelledby="myModalLabel">
     var dataColumns = [
          {data: 'checkbox', name:'checkbox'},
          {data: 'name', name:'name'},
-         {data: 'single_occupancy_rate', name:'single_occupancy_rate'},
-         {data: 'double_occupancy_rate', name:'double_occupancy_rate'},
-         {data: 'added_by', name:'added_by'},
+         {data: 'is_regular', name:'is_regular'},
+         {data: 'is_corporate', name:'is_corporate'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
     

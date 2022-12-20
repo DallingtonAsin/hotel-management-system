@@ -97,9 +97,6 @@ Route::get('/events/getTitle/{id}', 'EventsController@GetEventTitle')->name('get
 Route::get('purchases/get/', 'PurchasesController@GetPurchases')->name('get-purchases');
 Route::get('StockCats/load/', 'StockCatsController@StockCatAjaxIndex')->name('get-stockItems');
 
-
-
-
 Route::get('/create/company', 'SettingsController@showCreateCoForm')->name('companies.create');
 Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
 Route::get('/users/managers', 'UserController@fetchManagers')->name('managers.home');
@@ -108,6 +105,10 @@ Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.ho
 Route::get('/users/cashiers/ajax', 'UserController@GetCashiers')->name('cashiers.index.ajax');
 Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.ajax');
 Route::get('/rooms/fetch/ajax', 'RoomController@RoomsDataTable')->name('rooms.index.ajax');
+Route::get('/rooms-types/fetch/ajax', 'RoomTypeController@RoomTypesDataTable')->name('roomstypes.index.ajax');
+Route::get('/guests-types/fetch/ajax', 'GuestTypeController@getGuestTypesDataTable')->name('guesttypes.index.ajax');
+
+
 
 Route::resources([
 	'stock' => 'StockController',

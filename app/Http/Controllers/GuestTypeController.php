@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DataTables\guests\GuestTypesDatatable;
 
 class GuestTypeController extends Controller
 {
@@ -13,7 +14,12 @@ class GuestTypeController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.main.guests.types');
+    }
+
+    public function getGuestTypesDataTable(GuestTypesDatatable $dataTable)
+    {
+        return $dataTable->render('pages.main.guests.types');
     }
 
     /**

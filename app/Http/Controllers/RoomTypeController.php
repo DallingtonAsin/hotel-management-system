@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DataTables\rooms\RoomTypesDatatable;
+
 
 class RoomTypeController extends Controller
 {
@@ -13,7 +15,12 @@ class RoomTypeController extends Controller
      */
     public function index()
     {
-        //
+     return view('pages.main.rooms.types');
+    }
+
+    public function RoomTypesDataTable(RoomTypesDatatable $dataTable)
+    {
+        return $dataTable->render('pages.main.rooms.types');
     }
 
     /**
