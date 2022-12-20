@@ -79,7 +79,7 @@
 
           </div>
 
-      <div class="table table-sm table-responsive custom-family" >
+      <div class="custom-family" >
 
         <table class="table table-bordered table-hover room-types-table" id="room-types-table">
 
@@ -119,7 +119,7 @@ role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-body">
 
         <div class="form-group">
-            {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
+           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
             <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
              placeholder="Enter supplier id"  Required autofocus>
           </div>
@@ -254,10 +254,6 @@ role="dialog" aria-labelledby="myModalLabel">
 </div> <!-- end of modal Deletesuppliers-->
 
 
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
-<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script> --}}
-<script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-<script src="{{ asset('vendors/notify/notify.js') }}"></script>
 <script>
   $.ajaxSetup({
           headers: {

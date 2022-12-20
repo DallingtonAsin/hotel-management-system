@@ -253,8 +253,10 @@
 
 @include('layouts.header')
 
-  <div class="az-content-body nunito-font">
-    @yield('content')
+  <div class="az-content-body  nunito-font">
+   <!-- <div class="container"> -->
+   @yield('content')
+   <!-- </div> -->
   </div>
   @include('layouts.footer')
 </div>

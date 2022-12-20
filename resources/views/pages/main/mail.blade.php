@@ -75,7 +75,7 @@
         @enderror
       </div >
 
-         {{-- <div class="form-group">
+        <div class="form-group">
           <span class="text-muted">Sender's email</span>
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-envelope" ></i></span>
@@ -131,7 +131,7 @@
 
 
   
-          {{-- @if(session()->get('success'))
+         @if(session()->get('success'))
           <div class="form-group text-center">
           <div class='alert alert-success alert-dismissible' role='alert'>
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>

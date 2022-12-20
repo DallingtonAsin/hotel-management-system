@@ -98,7 +98,7 @@
                         @endcan
                       <th>item code</th>
                       <th>Item</th>
-                      {{-- <th>Category</th> --}}
+                     <th>Category</th> --}}
                       <th>Qty</th>
                       <th>Cost price</th>
                       <th>Total Cost</th>

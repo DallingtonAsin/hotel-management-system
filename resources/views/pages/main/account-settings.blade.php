@@ -3,7 +3,7 @@
 @section('content')
 
 
-  {{-- <div class="card-table nunito-font"> --}}
+ <div class="card-table nunito-font"> --}}
    <div class="card card-dashboard-table-six">
 
   <div class="card-title">
@@ -109,7 +109,7 @@
         <div class="row form-group">
          <div class="col-lg-3">
          <button type="submit" class="btn btn-primary addProfileBtn"  name="addProfileBtn">Update Profile</button>
-           {{-- <input type="button" 
+          <input type="button" 
            class="btn overview-item--c4 text-white addProfileBtn"
             id="addProfileBtn" value="Update Profile"> --}}
          </div>

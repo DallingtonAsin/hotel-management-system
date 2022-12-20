@@ -91,8 +91,8 @@
   </div>
 
 
-  <div class="table table-responsive custom-family">
-    <table class="table stock-table table-bordered table-hover" id="stock-table">
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover" id="stock-table">
       <thead>
         <tr>
           @can('isAdmin')

@@ -104,6 +104,21 @@
 
   
   <style>
+   html, body {
+  max-width: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;  
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
     /* tbody > tr > td {
        font-weight: normal !important;
     }

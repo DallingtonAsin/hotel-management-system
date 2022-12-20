@@ -86,7 +86,7 @@
           <thead>
             <tr class="text-center">
               <th style="width:10%"></th>
-              {{-- <th style="width:20%">No</th> --}}
+             <th style="width:20%">No</th> --}}
               <th style="width:50%">Item Category</th>
               <th style="width:20%">Action</th>
             </tr>

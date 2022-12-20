@@ -3,7 +3,7 @@
   @section('content')
 
 
-  {{-- <div class="card-table"> --}}
+ <div class="card-table"> --}}
     <div class="card card-dashboard-table-six">
 
      <div class="card-title nunito-font mg-b-0">

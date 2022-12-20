@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="col-md-10">
-            {{-- Log Details --}}
+           Log Details --}}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Log info :
@@ -84,7 +84,7 @@
                     </table>
                 </div>
                 <div class="panel-footer">
-                    {{-- Search --}}
+                   Search --}}
                     <form action="{{ route('log-viewer::logs.search', [$log->date, $level]) }}" method="GET">
                         <div class=form-group">
                             <div class="input-group">
@@ -105,7 +105,7 @@
                 </div>
             </div>
 
-            {{-- Log Entries --}}
+           Log Entries --}}
             <div class="panel panel-default">
                 @if ($entries->hasPages())
                     <div class="panel-heading">
@@ -205,7 +205,7 @@
 @endsection
 
 @section('modals')
-    {{-- DELETE MODAL --}}
+   DELETE MODAL --}}
     <div id="delete-log-modal" class="modal fade">
         <div class="modal-dialog">
             <form id="delete-log-form" action="{{ route('log-viewer::logs.delete') }}" method="POST">

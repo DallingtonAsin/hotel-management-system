@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('content')
-     {{-- <div class="card-table"> --}}
+    <div class="card-table"> --}}
           <div class="card card-dashboard-table-six">
             <h6 class="card-title">
               <i class="glyphicon glyphicon-th text-success"></i> 
@@ -86,7 +86,7 @@
               </form>
             </div>
           </div>
-        {{-- </div> --}}
+       </div> 
 
 
 

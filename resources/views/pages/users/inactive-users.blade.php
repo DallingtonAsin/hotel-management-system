@@ -64,7 +64,7 @@
             <thead>
               <tr>
                 <th></th>
-                {{-- <th class="td-sm">No</th> --}}
+               <th class="td-sm">No</th> --}}
                 <th>Name</th>
                 <th>Username</th>
                 <th>Gender</th>

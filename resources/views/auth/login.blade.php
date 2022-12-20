@@ -111,7 +111,7 @@
 
      </div>
 
-     {{-- <div class="form-group">
+    <div class="form-group">
       <span>{{ __('Need assistance?') }}<a class="text-primary"><i class="fa fa-phone ml-1"></i> +256700477421</a></span>
     </div> --}}
 
@@ -126,7 +126,7 @@
       }
     </style> --}}
 
-    {{-- <button type="button" class="btn btn-sm btn-block btn-register text-dark bg-white bolded">
+   <button type="button" class="btn btn-sm btn-block btn-register text-dark bg-white bolded">
       <strong>{{ __('New to Quickbook?') }}<a href=""> Create an account</a></strong>
     </button> --}}
 

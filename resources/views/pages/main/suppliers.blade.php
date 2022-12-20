@@ -108,11 +108,11 @@
             <thead>
               <tr>
                 <th></th>
-                {{-- <th class="td-sm">No</th> --}}
+               <th class="td-sm">No</th> --}}
                 <th>Supplier</th>
                 <th>Mobile No</th>
-                {{-- <th>Address</th> --}}
-                {{-- <th>Email</th> --}}
+               <th>Address</th> --}}
+               <th>Email</th> --}}
                 <th>Credit</th>
                 <th>Debt</th>
                 <th>Action</th>
@@ -145,7 +145,7 @@ role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-body">
 
         <div class="form-group">
-            {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
+           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
             <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
              placeholder="Enter supplier id"  Required autofocus>
           </div>

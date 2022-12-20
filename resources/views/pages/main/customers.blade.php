@@ -114,7 +114,7 @@
                 @can('isCashier') 
                 <th>No</th>
                 @endcan
-                {{-- <th class="td-sm">No</th> --}}
+               <th class="td-sm">No</th> --}}
                 <th>Name</th>
                 <th>Contact</th>
                 <th>Item taken</th>
@@ -154,7 +154,7 @@ role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-body">
 
         <div class="form-group">
-            {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
+           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
             <input type="hidden" class="form-control customerId bg-white customerId" name="id"
              placeholder="Enter customer id"  Required autofocus>
           </div>

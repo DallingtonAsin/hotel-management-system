@@ -26,7 +26,7 @@
     </head>
 
     <body>
-        {{-- Header --}}
+       Header --}}
         <table class="table mt-5">
             <tbody>
                 <tr>
@@ -43,7 +43,7 @@
             </tbody>
         </table>
 
-        {{-- Seller - Buyer --}}
+       Seller - Buyer --}}
         <table class="table">
             <thead>
                 <tr>
@@ -137,7 +137,7 @@
             </tbody>
         </table>
 
-        {{-- Table --}}
+       Table --}}
         <table class="table">
             <thead>
                 <tr>
@@ -182,7 +182,7 @@
                     </td>
                 </tr>
                 @endforeach
-                {{-- Summary --}}
+               Summary --}}
                 @if($invoice->hasItemOrInvoiceDiscount())
                     <tr>
                         <td colspan="{{ $invoice->table_columns - 2 }}" class="border-0"></td>

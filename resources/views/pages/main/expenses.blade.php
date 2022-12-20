@@ -89,7 +89,7 @@
                         <thead>
                           <tr>
                             <th></th>
-                            {{-- <th class="td-md">No</th> --}}
+                           <!-- <th class="td-md">No</th>  -->
                             <th>expense</th>
                             <th>Amount</th>
                             <th>Date of Expenditure</th>
@@ -120,7 +120,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
+                           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                             <input type="hidden" class="form-control expenseId bg-white expenseId" name="id"
                              placeholder="Enter expense id"  Required autofocus>
                           </div>

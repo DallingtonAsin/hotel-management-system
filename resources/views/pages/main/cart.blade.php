@@ -172,7 +172,7 @@
             </table>
           </div>
          </main>
-          {{-- @include('pages.receipt.index') --}}
+         @include('pages.receipt.index') --}}
         </div>
       </div>
       

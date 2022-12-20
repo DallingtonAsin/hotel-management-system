@@ -21,7 +21,7 @@
               </h6>
             </div>
 
-            {{-- @can('isAdmin')
+           @can('isAdmin')
             <div class="col-lg-2">
 
              <a class="text-decoration-none text-danger

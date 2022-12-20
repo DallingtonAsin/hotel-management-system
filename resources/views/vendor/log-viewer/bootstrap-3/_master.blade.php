@@ -279,7 +279,7 @@
     <![endif]-->
 </head>
 <body>
-    {{-- Navbar --}}
+   Navbar --}}
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -310,12 +310,12 @@
         </div>
     </nav>
 
-    {{-- Main container --}}
+   Main container --}}
     <main class="container-fluid">
         @yield('content')
     </main>
 
-    {{-- Footer --}}
+   Footer --}}
     <footer class="main-footer">
         <div class="container">
             <p class="text-muted pull-left">
@@ -327,7 +327,7 @@
         </div>
     </footer>
 
-    {{-- Scripts --}}
+   Scripts --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
