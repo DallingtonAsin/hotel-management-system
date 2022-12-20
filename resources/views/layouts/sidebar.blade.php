@@ -78,15 +78,6 @@
         </ul>
       </li>
 
-      <!-- <li class="nav-item">
-        <a href="" class="nav-link with-sub"><i class="typcn typcn-location"></i>Events</a>
-        <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ Route('events.index') }}" class="nav-sub-link">Events</a></li>
-          <li class="nav-sub-item"><a href="{{ Route('calendar.index') }}" class="nav-sub-link">Calendar</a></li>
-          <li class="nav-sub-item"><a href="{{ Route('events.create') }}" class="nav-sub-link">Add Event</a></li>
-        </ul>
-      </li> -->
-
       <li class="nav-item">
         <a href="" class="nav-link with-sub"><i class="fa fa-balance-scale"></i>Accounting</a>
 
@@ -94,11 +85,12 @@
           <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Cash In flow</a></li>
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">General Ledger</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
 
         </ul>
       </li>
      
-
       <li class="nav-item {{ $show }} ">
         <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Store & Procurement</a>
 
@@ -115,14 +107,12 @@
           </li>
 
           <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
-              Vendors
+              Suppliers
             </a></li>
           <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
               Expenses
             </a></li>
-          <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
-          <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
-
+         
         </ul>
     
       </li>
@@ -235,14 +225,8 @@
 
         <ul class="nav-sub">
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Settings</a></li>
-        </ul>
-
-        <ul class="nav-sub">
           <li class="nav-sub-item"><a href="{{ route('mail.index') }}" class="nav-sub-link">Send Email</a></li>
-        </ul>
-
-        <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link"> System audit</a></li>
+          <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link"> Audit Trail</a></li>
         </ul>
       </li>
     </ul>
