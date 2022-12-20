@@ -520,6 +520,8 @@ class CashiersController extends Controller
             $cashier->nationalID_no = $cashier_nin;
             $res = $cashier->save();
 
+            $action = "updated cashier ".$names."'s details";
+
             if ($res) {
                 $subject = 'Update about User Details Change';
                 $CashierEmail = $request->email;
@@ -527,7 +529,7 @@ class CashiersController extends Controller
                 $registraEmail = $request->user()->email;
                 $now = now();
 
-                $action = "updated cashier ".$names."'s details";
+              
 
                 LogsController::logger($request, $action, now());
                 $password = "didn't change your password";

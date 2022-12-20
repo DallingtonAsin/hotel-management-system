@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\GuestType;
 
 class BookingController extends Controller
 {
@@ -23,7 +24,8 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $guest_types = GuestType::all();
+        return view('pages.main.bookings.add', ['guest_types' => $guest_types]);
     }
 
     /**

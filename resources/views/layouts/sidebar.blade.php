@@ -178,7 +178,7 @@
             <a href="" class="nav-link with-sub">Bookings</a>
             <ul class="nav-sub">
             <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">All bookings</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Add booking</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('bookings.create') }}" class="nav-sub-link">Add booking</a></li>
             </ul>
           </li>
 
@@ -190,8 +190,9 @@
       <li class="nav-item">
         <a href="" class="nav-link with-sub"><i class="fa fa-users"></i>Human Resource</a>
         <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Departments</a></li>
+          <li class="nav-sub-item"><a href="{{ route('departments.index') }}" class="nav-sub-link">Departments</a></li>
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Staff members</a></li>
+          <li class="nav-sub-item"><a href="{{ route('designations.index') }}" class="nav-sub-link">Designations</a></li>
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Salary Payments</a></li>
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Other Staff Payments</a></li>
 

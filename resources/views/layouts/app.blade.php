@@ -4,13 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title> 
-        @if(isset($companyData))
-        {{ $companyData['company_name'] }}
-        @else
-        {{ env('APP_NAME') }}
-        @endif
-    </title>
+    <title><?= isset($companyData) ? $companyData['company_name']:  env('APP_NAME') ?></title>
     <script src="{{ asset('js/app.js') }}"></script> 
     <link href="{{ asset('css/css.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/fontawesome/css/all.min.css') }}" rel="stylesheet">

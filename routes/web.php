@@ -107,6 +107,7 @@ Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.aj
 Route::get('/rooms/fetch/ajax', 'RoomController@RoomsDataTable')->name('rooms.index.ajax');
 Route::get('/rooms-types/fetch/ajax', 'RoomTypeController@RoomTypesDataTable')->name('roomstypes.index.ajax');
 Route::get('/guests-types/fetch/ajax', 'GuestTypeController@getGuestTypesDataTable')->name('guesttypes.index.ajax');
+Route::get('/departments/fetch/ajax', 'DepartmentController@getDepartmentsDataTable')->name('departments.index.ajax');
 
 
 
@@ -133,6 +134,7 @@ Route::resources([
 	'room_types' => 'RoomTypeController',
 	'rooms' => 'RoomController',
 	'bookings' => 'BookingController',
+	'designations' => 'DesignationController',
 ]);
 
 Route::get('/email','MailController@MailWelcome');
@@ -230,10 +232,6 @@ Route::get('reports/debtors/suppliers','ReportsController@debtorsSuppliersList')
 Route::post('notifications/get','NotificationController@GetOtherNotifications')->name('unreadNotifications');
 Route::post('notification/unreadEmailNotifications','NotificationController@GetUnReadEmailNotifications')->name('unreadEmailNotifications');
 Route::get('notifications','NotificationController@markAllRead')->name('readAll');
-
-
-Route::get('user-guide','DocumentationController@index')->name('userguide');
-Route::get('about-CodeSolutionTech','DocumentationController@CompanyDetails')->name('aboutCST');
 
 Route::get('sms','SmsController@index')->name('sms');
 Route::post('send-sms','SmsController@SendSMS')->name('sms.store');

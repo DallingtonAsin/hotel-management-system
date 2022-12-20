@@ -276,7 +276,7 @@ class CustomersController extends Controller
       // LogAfterRequest::LogRequest($req, $dataArr);
       // return back()->with("success", $this->SuccessMessage($action));
       
-      $action = "updated record for customer ".$name."";
+      $action = "updated record for customer ".$customer_name."";
       LogsController::logger($req, $action, now());
       $dataArr = array("code" => '200',
       "message" => $action,

@@ -28,10 +28,11 @@ class LogicHandler extends Controller
 		                        $dataX, $dataY){
 
 		$mailState = 0; 
+		$senderEmail = config('app.companyEmail');
 		
 		if($this->is_connectedToInternet() == 1)
 		 {
-			$senderEmail = config('app.companyEmail');
+			
 			Mail::send($mailContentPage, $dataX, 
 				   function($message) use ($dataY)
 			{   

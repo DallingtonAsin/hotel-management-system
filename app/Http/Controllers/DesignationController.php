@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\DataTables\HR\DepartmentsDatatable;
 
-class DepartmentController extends Controller
+class DesignationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +13,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        return view('pages.main.hr.departments');
-    }
-
-    public function getDepartmentsDataTable(DepartmentsDatatable $dataTable)
-    {
-        return $dataTable->render('pages.main.hr.departments');
+        return view('pages.main.hr.designations');
     }
 
     /**
@@ -29,7 +23,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.main.hr.designations');
     }
 
     /**

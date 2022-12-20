@@ -22,7 +22,9 @@ class CreateUsersTable extends Migration
                 $table->string('username')->unique();
                 $table->string('gender');
                 $table->string('email')->nullable();
+                $table->string('staff_id');
                 $table->unsignedBigInteger('department_id')->default(1);
+                $table->unsignedBigInteger('designation_id')->default(1);
                 $table->string('phone_number')->unique();
                 $table->string('other_phone_number')->nullable();
                 $table->string('address');
@@ -38,6 +40,7 @@ class CreateUsersTable extends Migration
                 $table->string('acc_changed_by')->nullable();
                 $table->rememberToken()->nullable();
                 $table->timestamps();
+                $table->foreign('designation_id')->references('id')->on('designations');
                 $table->foreign('department_id')->references('id')->on('departments');
         });
     }

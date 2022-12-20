@@ -30,6 +30,8 @@ class UserFactory extends Factory
       'username' => $this->faker->unique()->lastName,
       'gender' => 'Male',
       'email' => $this->faker->unique()->safeEmail,
+      'staff_id' => 'SID_'.''.$this->faker->numberBetween(100, 700),
+      'designation_id' => $this->faker->randomElement([1, 2, 3]),
       'department_id' => $this->faker->randomElement([1, 2]),
       'phone_number' => $this->faker->phoneNumber,
       'other_phone_number' => $this->faker->phoneNumber,
