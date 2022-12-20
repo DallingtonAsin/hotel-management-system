@@ -83,12 +83,12 @@
 
   ::-webkit-scrollbar {
     width: 0;
-    background: transparent;
+    /* background: transparent; */
   }
 
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
     background: #FF0000;
-}
+} */
 
 .table-responsive{
   overflow: auto !important;

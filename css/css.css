@@ -1,4 +1,3 @@
-
 @media only screen and (min-width: 768px){
 .table-responsive{
   overflow-x: hidden !important;
@@ -33,7 +32,7 @@ tbody > tr > td {
 	cursor: pointer !important
 }
 .panel-canvas {
-	width: 99% !important;
+	width: 100% !important;
 }
 .profile-avatar {
   vertical-align: middle;
