@@ -108,6 +108,7 @@ Route::get('/rooms/fetch/ajax', 'RoomController@RoomsDataTable')->name('rooms.in
 Route::get('/rooms-types/fetch/ajax', 'RoomTypeController@RoomTypesDataTable')->name('roomstypes.index.ajax');
 Route::get('/guests-types/fetch/ajax', 'GuestTypeController@getGuestTypesDataTable')->name('guesttypes.index.ajax');
 Route::get('/departments/fetch/ajax', 'DepartmentController@getDepartmentsDataTable')->name('departments.index.ajax');
+Route::get('/staff/fetch/ajax', 'StaffMemberController@GetStaffMemebers')->name('staff.index.ajax');
 
 
 
@@ -135,6 +136,7 @@ Route::resources([
 	'rooms' => 'RoomController',
 	'bookings' => 'BookingController',
 	'designations' => 'DesignationController',
+	'staff' => 'StaffMemberController',
 ]);
 
 Route::get('/email','MailController@MailWelcome');

@@ -90,6 +90,10 @@
     background: #FF0000;
 }
 
+.table-responsive{
+  overflow: auto !important;
+}
+
   </style>
 </head>
 

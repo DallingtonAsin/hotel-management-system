@@ -58,7 +58,24 @@ class UsersDataTable extends DataTable
 
     public function query(User $model)
     {
-               return $model->newQuery()
+               return $model->newQuery()->select(
+                'id',
+                'first_name',
+                'last_name',
+                'name',
+                'username',
+                'gender',
+                'email',
+                'staff_id',
+                'department_id',
+                'designation_id',
+                'phone_number',
+                'other_phone_number',
+                'address',
+                'nin',
+                'image',
+                'password'
+               )
                ->select('*');
     }
 
@@ -94,11 +111,13 @@ class UsersDataTable extends DataTable
             'username',
             'gender',
             'email',
+            'staff_id',
             'department_id',
-            'tel_no',
-            'alt_telno',
+            'designation_id',
+            'phone_number',
+            'other_phone_number',
             'address',
-            'nationalID_no',
+            'nin',
             'image',
             'password'
         ];

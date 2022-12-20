@@ -86,13 +86,13 @@ img {
 }
 
 th{
-	white-space: nowrap !important;
-	overflow: hidden !important;
+	white-space: nowrap;
+	overflow: hidden;
 }
 td {
-	white-space: nowrap !important;
-	overflow: hidden !important;
-	text-overflow: ellipsis !important;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .txt-gray{
 	color: #fff !important;
