@@ -64,26 +64,6 @@
         @enderror
       </div>
 
-
-      <div class="form-group row">
-              <div class="col-md-6">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox"
-                  name="remember" id="remember" {{ old("remember") ? 'checked' : '' }}>
-                  <label class="form-check-label nunito-font" for="remember">
-                    <small>{{ __('Remember me') }}</small>
-                  </label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                @if (Route::has('password.request'))
-                <a class="nunito-font" href="{{ route('password.request') }}">
-                  <small >{{ __('Forgot Password?') }}</small>
-                </a>
-                @endif
-              </div>
-            </div>
-
       <div class="form-group">
         <button type="submit" class="btn btn-sm btn-block text-white btn-primary bolded">
           <strong>{{ __('Sign in') }}</strong>
@@ -111,32 +91,18 @@
 
      </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <span>{{ __('Need assistance?') }}<a class="text-primary"><i class="fa fa-phone ml-1"></i> +256700477421</a></span>
-    </div> --}}
+    </div>  -->
 
 </form>
 </div>
     </div>
-{{-- 
-    <style>
-      .panel {
-        background-color:'#ffffff' !important;
-        padding: 50px !important;
-      }
-    </style> --}}
+
 
    <button type="button" class="btn btn-sm btn-block btn-register text-dark bg-white bolded">
-      <strong>{{ __('New to Quickbook?') }}<a href=""> Create an account</a></strong>
-    </button> --}}
-
-
-{{-- <div class="card">
-<div class="card-body bg-white">
-  <span>New to Quickbook?</span><a href=""> Create an account</a>
-</div>
-</div> --}}
-     
+      <strong>{{ __('Need a Hotel Quickbook?') }}<a href="https://pivosoftltd.com" target="_blank"> Contact us</a></strong>
+    </button> 
 
 <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
 <script src="{{ asset('js/login/login.js') }}"></script>

@@ -20295,7 +20295,7 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '$2y$10$7JYAPfh5r2yk71rIV1U9pOv4kbuwwrH0xMi/81hGQOQbUGNk/0ZKW',
   `loginAttempts` int(11) NOT NULL DEFAULT 0,
   `otpAttempts` int(11) NOT NULL DEFAULT 0,
-  `OTPcode` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `otp_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `isVerified` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `is_active` tinyint(1) NOT NULL DEFAULT 0,
   `inactivated_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -20308,7 +20308,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `name`, `username`, `gender`, `email`, `department_id`, `tel_no`, `alt_telno`, `address`, `nationalID_no`, `email_verified_at`, `image`, `password`, `loginAttempts`, `otpAttempts`, `OTPcode`, `isVerified`, `is_active`, `inactivated_by`, `remember_token`, `created_at`, `updated_at`) VALUES
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `name`, `username`, `gender`, `email`, `department_id`, `tel_no`, `alt_telno`, `address`, `nationalID_no`, `email_verified_at`, `image`, `password`, `loginAttempts`, `otpAttempts`, `otp_code`, `isVerified`, `is_active`, `inactivated_by`, `remember_token`, `created_at`, `updated_at`) VALUES
 (8, 'Lina', 'Hilpert', 'Adrien Krajcik', 'Nader', 'Male', 'qlang@example.net', 1, '+7222070061564', '+1872399496906', 'Alaska', '8TWSNFLNXF7NHI', '2021-03-07 12:50:42', NULL, '$2y$10$xfSuZ10z1oQaqzS8yjnwQOdkgiLW52mpPqF8eiEG6CfhVGkT3gRoK', 0, 0, NULL, '0', 1, NULL, 'WQdCuxOxkAVVDXx6yFlpoFCDAfVlzqsWWdQuTWEfpLKuZGXEhGgOAASIso2S', '2021-03-07 12:51:04', '2021-03-07 12:51:04'),
 (9, 'Arvilla', 'Schowalter', 'Ebba Metz', 'Murray', 'Male', 'alfred33@example.com', 2, '+7310161058568', '+8991391639060', 'Virginia', 'BJLQGL4GDWO0X9', '2021-03-07 12:50:42', NULL, '$2y$10$3V0NtDtEqXlo.khFQm9RSenBJbXQgmTpw6Pa7XlU8lkUouOma3uVS', 0, 0, NULL, '0', 0, NULL, 'GiU8xDi6B7', '2021-03-07 12:51:05', '2021-03-07 12:51:05'),
 (10, 'Mckayla', 'Huel', 'Prof. Meagan Greenholt', 'Schumm', 'Male', 'njacobson@example.org', 3, '+6681499278700', '+8643964928890', 'Maryland', 'MGRQALHG7BIHTY', '2021-03-07 12:50:42', '1618338426.jpg', '$2y$10$nj1HjoWBF.PaYmUWXeX4RuWZRmwu.vaxos5.6CG.X0phXDoJ1nGOe', 0, 0, NULL, '0', 1, NULL, 'IdtOa16up9yNFQzFhHn7OmEpKuT8qf1DiLWlAuHtumLdVbcKLYrDx5xiCGBs', '2021-03-07 12:51:05', '2021-04-21 21:24:19'),

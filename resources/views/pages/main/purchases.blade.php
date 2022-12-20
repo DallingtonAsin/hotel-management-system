@@ -7,7 +7,7 @@
           <div class="panel-title">
             <span class="pl-0 mt-4 response"></span>
                 <div class="row nunito-font">
-                 <span class="response"></span> --}}
+                 <span class="response"></span> 
                   <div class="col-lg-3 text-dark">
                    <h6>
                     <i class="fa fa-home text-success"> /</i>
@@ -101,16 +101,15 @@
       <thead>
         <tr>
           <th></th>
-         <th>ID</th> --}}
-         <th>ItemId</th> --}}
+         <th>ID</th> 
+         <th>Item Code</th>
           <th>Item</th>
-          <th>Item Code</th>
           <th>Qty</th>
           <th>C.Price</th>
           <th>T.Cost</th>
-          <th>BoughtOn</th>
-          <th>Supplier</th>
-         <th>RecordedBy</th> --}}
+          <!-- <th>BoughtOn</th> -->
+          <!-- <th>Supplier</th> -->
+         <!-- <th>RecordedBy</th>  -->
           <th>Action</th>
         </tr>
       </thead>
@@ -332,15 +331,14 @@
     var dataColumns = [
          {data: 'checkbox', name:'checkbox'},
         //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-         // {data: 'id', name:'id'},
-        //  {data: 'item_code', name:'item_code'},
+         {data: 'id', name:'id'},
          {data: 'item', name:'item'},
          {data: 'item_code', name:'item_code'},
          {data: 'quantity', name:'quantity'},
          {data: 'cost_price_per_item', name:'cost_price_per_item'},
          {data: 'total_cost_price', name:'total_cost_price'},
-          {data: 'date_of_purchase', name:'date_of_purchase'},
-         {data: 'supplier', name:'supplier'},
+          // {data: 'date_of_purchase', name:'date_of_purchase'},
+        //  {data: 'supplier', name:'supplier'},
         //  {data: 'recorded_by', name:'recorded_by'},
          {data: 'action', name:'action',orderable: false,searchable: false},
      ];
