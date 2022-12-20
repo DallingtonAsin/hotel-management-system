@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DataTables\HR\DesignationsDataTable;
 
 class DesignationController extends Controller
 {
@@ -16,6 +17,10 @@ class DesignationController extends Controller
         return view('pages.main.hr.designations');
     }
 
+    public function getDesignationsDataTable(DesignationsDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.hr.designations');
+    }
     /**
      * Show the form for creating a new resource.
      *

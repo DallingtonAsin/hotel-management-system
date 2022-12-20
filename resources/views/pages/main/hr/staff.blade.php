@@ -2,84 +2,6 @@
 
 @section('content')
 
-      <div class="card">
-        <div class="card-header">
-          <div class="panel-tile">
-
-        <div class="row nunito-font">
-
-              <span class="response"></span>
-            <div class="col-lg-6">
-                <h5 class="text-dark">
-                  <i class="fa fa-home text-success"> /</i>
-               <strong>Staff Members</strong>
-                  <span class="badge nunito-font  totl_managers">
-                      @isset($number_of_managers)
-              {{ number_format($number_of_managers) }}
-                      @endisset
-                    </span>
-               </h5>
-              </div>
-
-              <div class="col-lg-3">
-               <h5 class="text-dark">
-                  <a href="javascript:void(0)" id="createNewmanager"
-                 class="add-link text-decoration-none bolded">
-                                    Add staff</a></h5>
-              </div>
-
-          </div>
-
-        </div>
-      </div>
-
-         <div class="card-body">
-
-    
-<div class="row">
-          <div class="col-lg-8 text-center nunito-font">
-            @if(session()->get('success'))
-                <div class='alert alert-success alert-dismissible' role='alert'>
-                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-              <span aria-hidden='true'>&times;</span></button>
-                   <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                </div>
-            @endif
-
-                   @if(session()->get('fail'))
-            <div class='alert alert-danger alert-dismissible' role='alert'>
-                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                 <span aria-hidden='true'>&times;</span></button>
-              <strong>Oops!</strong> {{ session()->get('fail') }}
-              </div>
-               @endif
-          </div>
-            </div>
-
-      <div class="table table-responsive" >
-
-        <table class="table table-bordered table-hover managers-table" id="managers-table">
-        
-            <thead>
-              <tr>
-                <th></th>
-                <th>#</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Staff ID</th>
-                <th>Department</th>
-                <th>Designation</th>
-                <th>Phone Number</th>
-                <th>NIN</th>
-                <!-- <th>A/C status</th> -->
-                <th>Action</th>
-                </tr>
-            </thead>
-            </table>
-        </div>
-    </div>
-</div>
-
 
 <!--Add manager -->
 <div class="modal fade nunito-font" id="addmanagersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -296,6 +218,95 @@
         </div>
     </div>
 </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="panel-tile">
+
+        <div class="row nunito-font">
+
+              <span class="response"></span>
+            <div class="col-lg-6">
+                <h5 class="text-dark">
+                  <i class="fa fa-home text-success"> /</i>
+               <strong>Staff Members</strong>
+                  <span class="badge nunito-font  totl_managers">
+                      @isset($number_of_managers)
+              {{ number_format($number_of_managers) }}
+                      @endisset
+                    </span>
+               </h5>
+              </div>
+
+              <div class="col-lg-3">
+               <h5 class="text-dark">
+                  <a href="javascript:void(0)" id="createNewmanager"
+                 class="add-link text-decoration-none bolded">
+                                    Add staff</a></h5>
+              </div>
+
+          </div>
+
+        </div>
+      </div>
+
+         <div class="card-body">
+
+    
+<div class="row">
+          <div class="col-lg-8 text-center nunito-font">
+            @if(session()->get('success'))
+                <div class='alert alert-success alert-dismissible' role='alert'>
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+              <span aria-hidden='true'>&times;</span></button>
+                   <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
+                </div>
+            @endif
+
+                   @if(session()->get('fail'))
+            <div class='alert alert-danger alert-dismissible' role='alert'>
+                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                 <span aria-hidden='true'>&times;</span></button>
+              <strong>Oops!</strong> {{ session()->get('fail') }}
+              </div>
+               @endif
+          </div>
+            </div>
+
+      <div class="table table-responsive" >
+
+        <table class="table table-bordered table-hover managers-table" id="managers-table">
+        
+            <thead>
+              <tr>
+                <th></th>
+                <th>#</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Staff ID</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Phone Number</th>
+                <th>NIN</th>
+                <!-- <th>A/C status</th> -->
+                <th>Action</th>
+                </tr>
+            </thead>
+            </table>
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
 
 <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
 <script src="{{ asset('vendors/notify/notify.js') }}"></script>

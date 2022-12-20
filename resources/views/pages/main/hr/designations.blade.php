@@ -263,7 +263,7 @@ role="dialog" aria-labelledby="myModalLabel">
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            }
          });
-  const ajaxUrl = @json(route('departments.index.ajax'));
+  const ajaxUrl = @json(route('designations.index.ajax'));
   const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
   const cat = 'supplier';
   const token = "{{ csrf_token() }}";

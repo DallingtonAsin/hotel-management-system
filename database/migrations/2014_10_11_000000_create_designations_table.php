@@ -17,6 +17,7 @@ class CreateDesignationsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('created_by')->nullable();
+            $table->timestamps();
         });
     }
 
