@@ -65,6 +65,7 @@
   <link href="{{ asset('vendors/fontawesome/css/all.min.css') }}" rel="stylesheet">
  
   <link href="{{ asset('vendors/ionicons/docs/css/ionicons.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('vendors/css/themify-icons.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/typicons.font/typicons.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/morris.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/flag-icon.min.css') }}" rel="stylesheet">
@@ -97,8 +98,42 @@
   overflow: auto !important;
 }
 
-.az-header-center div {
-	flex-direction: column;
+.az-header-center > div {
+  text-align: center;
+  display: block;
+  }
+
+  .az-header-center > div > i {
+     font-weight: 'bold'
+  }
+
+  .icon-img{
+    width:40px !important;
+    height:40px !important;
+  }
+
+  .icon-img-1{
+    width:45px !important;
+    height:45px !important;
+  }
+
+  .icon-img-2{
+    width:30px !important;
+    height:30px !important;
+  }
+
+  .header-caption{
+    font-size: 12px !important
+  }
+
+  .az-header-center > div > a > h6 {
+    color: #009688 !important;
+    font-size: 13px !important;
+    font-weight:'bold' !important;
+  }
+
+  .fa-home{
+    font-size: 16px !important;
   }
 
   </style>

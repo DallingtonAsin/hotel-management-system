@@ -19,16 +19,24 @@
       
       <div class="az-header-center row pr-5">
 
-        <div class="col-md-4">
-            <h6 class="text-info"><a href=""><i class="fa fa-receipt pr-1"></i>POS</a></h6>
+        <div class="col-lg-3">
+        <a href=""><img src="{{ asset('vendors/img/pos1.png')}}" class="icon-img-1"/>
+            <h6 class="header-caption">POS</h6></a>
          </div>
 
-         <div class="col-md-4">
-            <h6 class="text-warning"><a href=""><i class="fa fa-shopping-cart pr-1"></i>Orders</a></h6>
+         <div class="col-lg-3">
+         <a href=""><img src="{{ asset('vendors/img/cup-tea.png')}}" class="icon-img"/>
+            <h6 class="header-caption mt-1">KOTs</h6></a>
          </div>
 
-         <div class="col-md-4">
-            <h6 class="text-success"><a href=""><i class="fa fa-balance-scale pr-1"></i>Accounting</a></h6>
+         <div class="col-lg-3">
+         <a href=""><img src="{{ asset('vendors/img/bed.png')}}" class="icon-img-1"/>
+            <h6 class="header-caption">Bookings</h6></a>
+         </div>
+
+         <div class="col-lg-3">
+         <a href=""><img src="{{ asset('vendors/img/finance3.png')}}" class="icon-img-1 text-warning"/>
+            <h6 class="header-caption">Accounting</h6></a>
          </div>
       </div>
 
