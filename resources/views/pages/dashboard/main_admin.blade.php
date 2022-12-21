@@ -1,10 +1,64 @@
-<div class="az-content-header d-block d-md-flex">
-  <div>
-    <!-- <h2 class="az-content-title mg-b-5 mg-b-lg-8">Hi, welcome back!</h2> -->
-    <p class="mg-b-0 nunito-font">Customer service/ Desk monitoring dashboard.</p>
-  </div>
-</div><!-- az-content-header -->
 <div class="az-content-body">
+
+      <div class="row">
+        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+          <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+            <div class="info">
+              <h4>Staff</h4>
+              <p>
+                <b>
+               56
+              </b></p>
+            </div>
+          </div>
+        </a>
+        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+          <div class="widget-small info coloured-icon"><i class="icon fa fa-bed fa-3x"></i>
+            <div class="info">
+              <h4>Rooms</h4>
+              <p><b>67</b></p>
+            </div>
+          </div>
+        </a>
+        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+          <div class="widget-small warning coloured-icon"><i class="icon fa fa-landmark fa-3x"></i>
+            <div class="info">
+              <h4>Bookings</h4>
+              <p><b>88</b></p>
+            </div>
+          </div>
+        </a>
+
+        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+          <div class="widget-small danger coloured-icon"><i class="icon fa fa-shopping-cart fa-3x"></i>
+            <div class="info">
+              <h4>Orders</h4>
+              <p><b>78</b></p>
+            </div>
+          </div>
+        </a>
+
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">Monthly Sales</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">Support Requests</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="pieChartDemo"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
   <div class="row row-sm">
 
     <div class="col-sm-6 col-lg-4 col-xl-3">
