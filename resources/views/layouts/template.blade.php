@@ -46,6 +46,9 @@
   <script src="{{ asset('vendors/js/azia.js') }}"></script>
   <script src="{{ asset('js/external.min.js') }}"></script>
   <script src="{{ asset('vendors/custom/custom-datatables.js') }}"></script>
+  <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
+  <script src="{{ asset('vendors/custom/echarts.js') }}"></script>
+
 
   <link rel="stylesheet" href="{{ asset('vendors/fonts/montserrat/css.css') }}">
   <link href="{{ asset('vendors/calendar/fullcalendar.min.css') }}" rel="stylesheet"/>
@@ -142,6 +145,11 @@
 
   .text-success{
     color: #009688 !important
+  }
+
+  .chart-card{
+    width: 600px;
+    height:400px;
   }
 
   </style>

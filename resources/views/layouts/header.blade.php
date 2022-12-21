@@ -20,7 +20,7 @@
       <div class="az-header-center row pr-5">
 
         <div class="col-lg-3">
-        <a href=""><img src="{{ asset('vendors/img/pos1.png')}}" class="icon-img-1"/>
+        <a href="{{ route('booking_invoice.generate') }}" target="_blank"><img src="{{ asset('vendors/img/pos1.png')}}" class="icon-img-1"/>
             <h6 class="header-caption">POS</h6></a>
          </div>
 

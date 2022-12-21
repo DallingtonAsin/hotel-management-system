@@ -111,7 +111,7 @@ Route::get('/departments/fetch/ajax', 'DepartmentController@getDepartmentsDataTa
 Route::get('/designations/fetch/ajax', 'DesignationController@getDesignationsDataTable')->name('designations.index.ajax');
 Route::get('/staff/fetch/ajax', 'StaffMemberController@GetStaffMemebers')->name('staff.index.ajax');
 
-
+Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
 
 Route::resources([
 	'stock' => 'StockController',
