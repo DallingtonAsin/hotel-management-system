@@ -587,15 +587,15 @@ td {
 	color: #fff !important;
 }
 .fa-comments, .fa-info{
-	color:green !important;
+	color:#009688 !important;
 	font-size: 18px !important;
 }
 
 .typcn{
-	color: green !important;
+	color: #009688 !important;
 }
 .fa-dollar{
-	color: green !important;
+	color: #009688 !important;
 }
 
 .typcn-messages{
@@ -614,7 +614,7 @@ td {
    }
 
    .az-sidebar-body .typcn,  .az-sidebar-body .fa{
-	color: green !important;
+	color: #009688 !important;
    }
 
    .nav-item .nav-item a{

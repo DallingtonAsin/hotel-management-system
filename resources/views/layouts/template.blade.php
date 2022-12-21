@@ -136,6 +136,14 @@
     font-size: 16px !important;
   }
 
+  .btn-success{
+    background: #009688 !important
+  }
+
+  .text-success{
+    color: #009688 !important
+  }
+
   </style>
 </head>
 

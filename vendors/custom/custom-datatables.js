@@ -15,7 +15,7 @@ function makeDataTable(table, title, columnArray, dataColumns) {
          buttons: [
              {
                  text: "<i></i> Select all",
-                 className: "btn btn-primary btn-sm text-white btn-select-all",
+                 className: "btn btn-sm btn-default border-secondary btn-select-all",
                  action: function(e, dt, node, config) {
                      selectAllCheckBoxes();
                  }
@@ -23,7 +23,7 @@ function makeDataTable(table, title, columnArray, dataColumns) {
 
              {
                  text: "<i></i> Deselect all",
-                 className: "btn btn-info btn-sm text-white",
+                 className: "btn btn-sm btn-default border-secondary",
                  action: function(e, dt, node, config) {
                      deselectAllCheckBoxes();
                  }
@@ -35,7 +35,7 @@ function makeDataTable(table, title, columnArray, dataColumns) {
                  {
                      extend: "excelHtml5",
                      text: '<i class="fa fa-download "></i> Excel',
-                     className: "btn btn-default border-secondary btn-sm",
+                     className: "btn btn-sm btn-default border-secondary",
                      title: title,
                      exportOptions: {
                          columns: columnArray
