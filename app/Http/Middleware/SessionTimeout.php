@@ -46,7 +46,7 @@ class SessionTimeout
           $cookie = cookie('intend', $isLoggedIn ? url()->current() : 'dashboard');
           $email = $request->user()->email;
           User::where("id", $request->user()->id)
-               ->update(["otp_code" => null, "isVerified" => false]);
+               ->update(["otp_code" => null, "is_verified" => false]);
 
         $msg = "session timed out after ".$this->timeout/60 ." ".$units." inactive";
         $dataArr = array("code" => '404',
