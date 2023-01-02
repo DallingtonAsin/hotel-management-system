@@ -1,3 +1,5 @@
 node_modules
-.env
 vendor/
+.env
+.env.prod
+.env.local
