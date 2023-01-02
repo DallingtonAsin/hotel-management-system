@@ -1,6 +1,4 @@
-
-
-        <div class="row container h-100 d-flex justify-content-center">
+<div class="row container h-100 d-flex justify-content-center">
             <div class="col-md-12">
         @if(isset($companyData) && isset($companyData['company_logo']))
         <img src="{{ asset('uploads/images/company/logo/'.$companyData['company_logo'].'') }}" class="co-icon-center" alt="">

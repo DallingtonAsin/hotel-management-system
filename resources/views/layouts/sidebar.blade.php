@@ -63,9 +63,9 @@
       </li>
 
       <li class="nav-item">
-  <a href="" class="nav-link with-sub"><i class="fa fa-shopping-cart"></i>Restaurant & Bar</a>
+  <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i class="fa fa-shopping-cart"></i>Restaurant & Bar</a>
         <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Point of Sale</a></li>
+          <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link">Point of Sale</a></li>
   <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Kitchen Order Tickets</a></li>
 
         </ul>
