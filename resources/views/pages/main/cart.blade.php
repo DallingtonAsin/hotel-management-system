@@ -3,21 +3,22 @@
 
 @section('content')
 
-<div class="card" id="panel">
-  <div class="panel-heading cartPanelHeader" id="panel-heading">
-    <div class="panel-title nunito-font">
-      
+<div class="card" id="card">
+  <div class="card-header bg-default" id="card-header">
+    <div class="card-title nunito-font">
+
       <div class="row">
         <span class='response'></span>
         <div class="col-lg-4">
-          <i class="typcn typcn-shopping-cart"></i> cart
+          <i class="typcn typcn-shopping-cart"></i> 
+          <strong class="text-dark">Point of Sale</strong>
           <span class="badge">
-            <span id="num">0</span>
+            <span id="num" class="text-white">0</span>
           </span>
         </div>
 
-        <div class="col-lg-4 mt-2 amount">
-          <strong>Amount: </strong>
+        <div class="col-lg-4 amount">
+          <strong class="text-dark">Amount: </strong>
           <strong class="text-danger amountToPay" id="amountToPay">0</strong>
           <input type ="hidden" value="@isset($item_total) {{ $item_total }} @endisset" class="payment">
         </div>
@@ -40,7 +41,7 @@
         
         <div class="form-group col-lg-2">
           <label>Balance</label>
-          <input type="text" class="form-control bg-white balance" readonly  placeholder="Customer balance">
+          <input type="text" class="form-control bg-white balance" readonly  placeholder="Balance">
         </div>
 
         <div class="form-group col-lg-2">
@@ -52,12 +53,12 @@
         <div class="form-group col-lg-2">
           <label>Workedon By</label>
           <input type="text" class="form-control bg-white workedon_by" id="workedon_by"
-           name="workedon_by" value="{{Auth::user()->name}}"  placeholder="WorkedOn By">
+           name="workedon_by" value="{{Auth::user()->name}}"  placeholder="WorkedOn By" disabled="true">
         </div>
 
-        <div class="form-group col-lg-4 mt-4 pt-3">
+        <div class="form-group col-lg-3 mt-4">
           <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
-            <i class="fa f-10 fa-minus-circle"></i>Empty cart
+            <i class="fa f-10 fa-minus-circle text-white"></i>Empty cart
           </a>
    
             <a  id="printBtn" class="btn btn-sm btn-success text-white ml-3">
@@ -112,10 +113,10 @@
           
           
           
-          <div class="form-group col mt-4 pt-2">
+          <div class="form-group col mt-4 pt-1">
             <label></label>
             <button type="button" id="addToCartBtn"
-            class="btn btn-sm btn-info pb-2 custom-family" name="AddToCart">Add to cart</button>
+            class="btn btn-sm btn-info pb-2 text-white" name="AddToCart">Add to cart</button>
           </div>   
         </div>
       </form>
@@ -149,7 +150,7 @@
          <main>
        
           <div class="table table-responsive fixedTableHead" id="cart-div">
-            <table id="cart-table" class="table table-bordered cart-table">
+            <table id="cart-table" class="table table-borderless cart-table">
               <thead>
                 <tr class="warning">
                   <th>Item</th>
@@ -166,13 +167,12 @@
                 </tr>
               </thead>
               
-              <tbody id="CartTableBody">
-              </tbody>
+             <tbody id="CartTableBody"></tbody> 
               
             </table>
           </div>
          </main>
-         @include('pages.receipt.index') --}}
+         <!-- @include('pages.receipt.index')  -->
         </div>
       </div>
       
@@ -203,39 +203,36 @@
         
         designCartTable();
         function designCartTable(){
-          var rowCount = $('#cart-table tbody tr').length;
+          let rowCount = $('#cart-table tbody tr').length;
           if(rowCount > 0){
-            var table=$("#cart-table");
-            var title = "Receipt";
+            let table=$("#cart-table");
+            let title = "Receipt";
             columns = [0, 1,2, 3, 4, 5, 6];
             cartTable(table, title, columns);
           }
         }
         
         // $('#item-name').on('change',function(){
-          //      var itemName = $('.item-name').val();
-          //      var isBarcode = 0;
+          //      let itemName = $('.item-name').val();
+          //      let isBarcode = 0;
           //      if(itemName.length >= 3){
-            //        PopulateCartBag(isBarcode, itemName);
+            //        AddItemToCart(isBarcode, itemName);
             //      }
             //      $('.item-name').val("");
             // });
             
             $('#addToCartBtn').on('click',function(){
-              
-              var itemName = $('.item-name').val();
-              var isBarcode = 0;
-              // if(itemName.length >= 3){
-                PopulateCartBag(isBarcode, itemName);
-              // }
+              let itemName = $('.item-name').val();
+              let isBarcode = 0;
+              AddItemToCart(isBarcode, itemName);
               $('.item-name').val("");
             });
             
             function getCurrentDate(){
-              var today = new Date();
-              var day = String(today.getDate()).padStart(2, '0');
-              var month = String(today.getMonth() + 1).padStart(2, '0');
-              var year = today.getFullYear();
+              let today = new Date();
+              let day = String(today.getDate()).padStart(2, '0');
+              let month = String(today.getMonth() + 1).padStart(2, '0');
+              let year = today.getFullYear();
               today = month + '/' + day + '/' + year;
               return today;
             }
@@ -247,29 +244,28 @@
             Numberize(".extra_money");
 
             
-            function PopulateCartBag(searchId, item){
+            function AddItemToCart(searchId, item){
               
-              var url = "{{ route('item.get') }}";
+              let url = "{{ route('item.get') }}";
               
-              var quantity = $('#qty').val();
-              var priceCategory = $('#priceCategory').val();
-              var quantity;
+              let quantity = $('#qty').val();
+              let priceCategory = $('#priceCategory').val();
               (quantity)
-              ? quantity = quantity
+              ? quantity = Convert2Num(quantity)
               : quantity = 1;
               
               
-              var discount = $('#discount').val();
+              let discount = $('#discount').val();
               (discount)
               ? discount = discount
               : discount = 0;
               
-              var date_of_sale = $('#date_of_sale').val();
+              let date_of_sale = $('#date_of_sale').val();
               (date_of_sale)
               ? date_of_sale = date_of_sale
               : date_of_sale = getCurrentDate();
               
-              var inc = 0;
+              let inc = 0;
               
               
               $.ajax({
@@ -283,59 +279,63 @@
                 cache: false,
                 dataType: 'json',
                 success: function(dataResult){
-                  console.log(dataResult);
-                  var resultData = dataResult.data;
-                  var bodyData = '';
+                  // console.log(dataResult);
+                  let resultData = dataResult.data;
+                  let bodyData = '';
                   
                   $.each(resultData,function(index, row){
                     
-                    var selling_price;
+                    let selling_price;
                     priceCategory == 'retail' 
                     ? selling_price = row.selling_price
                     : selling_price = row.wholesale_price;
                     
-                    var sub_total = Convert2Num(quantity)*selling_price;
-                    var sellingPrice = FormatNumber(selling_price);
-                    var subTotal = FormatNumber(sub_total);
-                    var total_discount = Convert2Num(quantity)*Convert2Num(discount);
+                    let sub_total = Convert2Num(quantity)*selling_price;
+                    let sellingPrice = FormatNumber(selling_price);
+                    let subTotal = FormatNumber(sub_total);
+                    let total_discount = Convert2Num(quantity)*Convert2Num(discount);
                     
-                    var total = FormatNumber(sub_total-total_discount);
-                    var paid = total;
+                    let total = FormatNumber(sub_total-total_discount);
+                    let paid = total;
                     
-                    bodyData+="<tr data-name='"+row.item+"' data-quantity='"+quantity+"' data-discount='"+discount+"' data-paid='"+paid+"' data-sprice='"+selling_price+"' data-date='"+date_of_sale+"'>"
-                      bodyData+="<td>"+row.item+"</td><td>"+row.item_code+"</td><td>"+quantity+"</td>"
-                      +"<td>"+sellingPrice+"</td><td>"+subTotal+"</td><td>"+discount+"</td><td>"+total+"</td><td>"+paid+"</td><td><input type='checkbox' name='is_credit' id='is_credit'/> Is credit</td><td>"+date_of_sale+"</td><td><button class='btn btn-info btn-xs btn-edit edit-row' style='margin-left:20px;'>Edit</button>"
-                        +"<button class='btn btn-danger btn-xs btn-delete delete-row' style='margin-left:20px;'>Delete</button></td>";
-                        bodyData+="</tr>";
+                       bodyData += "<tr data-name='"+row.item+"' data-quantity='"+quantity+"' data-discount='"+discount+"' data-paid='"+paid+"' data-sprice='"+selling_price+"' data-date='"+date_of_sale+"'>"
+                       bodyData += "<td>"+row.item+"</td><td>"+row.item_code+"</td><td>"+quantity+"</td>"
+                                + "<td>"+sellingPrice+"</td><td>"+subTotal+"</td><td>"+discount+"</td><td>"+total+"</td><td>"+paid+"</td><td><input type='checkbox' name='is_credit' id='is_credit'/> Is credit</td><td>"+date_of_sale+"</td><td><button class='btn btn-info btn-xs text-white btn-edit edit-row' style='margin-left:20px;'>Edit</button>"
+                                + "<button class='btn btn-danger btn-xs btn-delete delete-row' style='margin-left:20px;'>Delete</button></td>";
+                       bodyData += "</tr>";
                         
                         $('#cart-table tbody tr').each(function(i, tr){
-                          var tblItemId =  $(tr).children().eq(1).text();
-                          var itemQty =  $(tr).children().eq(2).text();
-                          var ItemPrice = $(tr).children().eq(3).text();
+
+                          const tblItemId =  $(tr).children().eq(1).text();
+                          const itemQty =  $(tr).children().eq(2).text();
+                          const ItemPrice = $(tr).children().eq(3).text();
+                          const discount = $(tr).children().eq(5).text();
+
                           $('.barcode').val('');
                           $('.item-name').val("");
                           $('#qty').val("");
                           $('#discount').val("");
-                          var newQty = Convert2Num(itemQty);
+                          let newQty = Convert2Num(itemQty);
 
                           if(tblItemId == row.item_code){
-                            // alert("Yes it exists");
-                            // $(this).addClass('tr-exists');
-                            $(this).css({'background': '#ffa500', 'color': '#fff'});
 
+                            newQty = Convert2Num(itemQty) + quantity;
+                            let newSubTotal = newQty*Convert2Num(ItemPrice);
+                            let newTotalDiscount = Convert2Num(newQty)*Convert2Num(discount);
+                            let newTotal = newSubTotal-newTotalDiscount;
+                            newTotal % 1 != 0 ? newTotal = newTotal.toFixed(2) : newTotal =  newTotal;
+
+                            $(this).children(":eq(2)").text(FormatNumber(newQty));
+                            $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
+                            $(this).children(":eq(6)").text(FormatNumber(newTotal));
+                            $(this).children(":eq(7)").text(FormatNumber(newTotal));
+
+                            updateSubTotal();
+                            ComputeBalance();
+
+                            inc += 1;
                           }
 
-                          // if(tblItemId == row.item_code){
-                            
-                          //   var newSubTotal = newQty*Convert2Num(ItemPrice);
-                          //   $(this).children(":eq(2)").text(FormatNumber(newQty));
-                          //   $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
-                          //   updateSubTotal();
-                          //   ComputeBalance();
-                          //   inc += 1;
-                          // }
-                          
-                          
                         });
                         
                         if(inc == 0){
@@ -346,10 +346,8 @@
                           $('#discount').val("");
                           updateSubTotal();
                           ComputeBalance();
-                        }else{
-                          
                         }
-                        
+                       
                       });
                     }
                   });
@@ -357,20 +355,18 @@
                 
                 
                 $(document).on("click", ".btn-edit", function() {
-                  var paid;
-                  var quantity = $(this).parents('tr').attr('data-quantity');
-                  var discount = $(this).parents('tr').attr('data-discount');
-                  
+         
+                  let quantity =  $(this).parents('tr').find('td:eq(2)').html();
+                  let discount = $(this).parents('tr').find('td:eq(5)').html();
+                  let paid = $(this).parents('tr').find('td:eq(7)').html();
+                  let date_of_sale = $(this).parents('tr').attr('data-date');
 
-                  // if(parseFloat(discount) != 0){
-                  //   paid =  $(this).parents('tr').find("input[name='edit_amt_paid']").val();
-                  // }else{
-                    paid = $(this).parents('tr').attr('data-paid');
-                  // }
-                  var date_of_sale = $(this).parents('tr').attr('data-date');
-                  
-                  var $checkbox = $(this).parents('tr').find('input[type="checkbox"]');
-                  var status;
+                  quantity = Convert2Num(quantity);
+                  discount = Convert2Num(discount);
+                  console.log('selected date', date_of_sale);
+
+                  let $checkbox = $(this).parents('tr').find('input[type="checkbox"]');
+                  let status;
                   if($checkbox.length){
                     status = $checkbox.prop('checked');
                   }
@@ -382,7 +378,6 @@
                   $(this).parents('tr').find('td:eq(8)').html('<input type="checkbox" name="is_credit" id="is_credit"> Is credit');
                   $(this).parents('tr').find('td:eq(9)').html('<input type="date" name="edit_date" value="'+date_of_sale+'" style="width:135px">');
                   $(this).parents('tr').find('td:eq(10)').prepend('<button class="btn btn-info btn-xs btn-update">Update</button><button class="btn btn-warning ml-3 btn-xs btn-cancel">Cancel</button>');
-                  // $('#is_credit').prop('checked', status);
                   $(this).parents('tr').find('input[type="checkbox"]').prop('checked', status);
 
                   $(this).hide();
@@ -392,23 +387,21 @@
                 
                 $(document).on("click", ".btn-update", function() {
                   
-                  var name = $(this).parents('tr').attr('data-name');
-                  var quantity = $(this).parents('tr').find("input[name='edit_quantity']").val();
-                  var quantity = $(this).parents('tr').find("input[name='edit_quantity']").val();
-                  var discount =  $(this).parents('tr').find("input[name='edit_discount']").val();
-                  var date_of_sale =  $(this).parents('tr').find("input[name='edit_date']").val();
-                  var paid_amount;
+                  let name = $(this).parents('tr').attr('data-name');
+                  let quantity = $(this).parents('tr').find("input[name='edit_quantity']").val();
+                  let discount =  $(this).parents('tr').find("input[name='edit_discount']").val();
+                  let date_of_sale =  $(this).parents('tr').find("input[name='edit_date']").val();
+                  let paid_amount;
                   
-                  var checkbox = $(this).parents('tr').find('input[type="checkbox"]');
-                  var status;
+                  let checkbox = $(this).parents('tr').find('input[type="checkbox"]');
+                  let status;
                   if(checkbox.length){
                     status = checkbox.prop('checked');
                   }
-                  var sprice =  $(this).parents('tr').find('td:eq(3)').text();
-                  var newSubTotal = Convert2Num(quantity)*Convert2Num(sprice);
-                  var newTotalDiscount = Convert2Num(quantity)*Convert2Num(discount);
-                  var newTotal = newSubTotal-newTotalDiscount;
-                  
+                  let sprice =  $(this).parents('tr').find('td:eq(3)').text();
+                  let newSubTotal = Convert2Num(quantity)*Convert2Num(sprice);
+                  let newTotalDiscount = Convert2Num(quantity)*Convert2Num(discount);
+                  let newTotal = newSubTotal-newTotalDiscount;
                   newTotal % 1 != 0 ? newTotal = newTotal.toFixed(2) : newTotal =  newTotal;
                   
                   $(this).parents('tr').find('td:eq(2)').html(quantity);
@@ -445,9 +438,9 @@
                 
                 $(document).on("click", ".btn-cancel", function() {
                   
-                  var quantity = $(this).parents('tr').attr('data-quantity');
-                  var discount = $(this).parents('tr').attr('data-discount');
-                  var date_of_sale = $(this).parents('tr').attr('data-date');
+                  let quantity = $(this).parents('tr').attr('data-quantity');
+                  let discount = $(this).parents('tr').attr('data-discount');
+                  let date_of_sale = $(this).parents('tr').attr('data-date');
                   
                   $(this).parents('tr').find('td:eq(2)').html(quantity);
                   $(this).parents('tr').find('td:eq(5)').html(discount);
@@ -470,41 +463,33 @@
                   EmptyCartTable();
                   ComputeBalance();
                 });
-                
-                // $('.barcode').on('change',function(){
-                  //        var barcode = $('.barcode').val();
-                  //        var isBarcode = 1;
-                  //        if(barcode.length >= 13){
-                    //          PopulateCartBag(isBarcode, barcode);
-                    //        }
-                    //   });
-                    
-                    
-                    $(document).keypress(function(event){
-                      var keycode = (event.keyCode ? event.keyCode : event.which);
+         
+         
+                    $('#barcode').keypress(function(event){
+                      let keycode = (event.keyCode ? event.keyCode : event.which);
                       if(keycode == 13){
-                        var barcode = $('.barcode').val();
-                        var isBarcode = 1;
-                        if(barcode.length >= 13){
-                          PopulateCartBag(isBarcode, barcode);
+                        let barcode = $('.barcode').val();
+                        let isBarcode = 1;
+                        if(barcode.length >= 6){
+                          AddItemToCart(isBarcode, barcode);
                         }
                       }
                     });
+
                     
                     
-                    $(document).keydown(function(event){
-                      var key = event.keyCode || event.charCode;
-                      if(key == 13 || key == '13' ){
-                        var table = document.getElementById('cart-table');
-                        var rowCount = (table.rows.length - 1);
-                        if(rowCount > 0){
-                          PrintReceipt();
-                        }else{
-                          alert('cart is empty');
-                        }
-                        
-                      }
-                    });
+                    // $(document).keydown(function(event){
+                    //   let key = event.keyCode || event.charCode;
+                    //   if(key == 13 || key == '13' ){
+                    //     let table = document.getElementById('cart-table');
+                    //     let rowCount = (table.rows.length - 1);
+                    //     if(rowCount > 0){
+                    //       PrintReceipt();
+                    //     }else{
+                    //       alert('cart is empty');
+                    //     }
+                    //   }
+                    // });
                     
                     
                     $('#printBtn').on('click', function(){
@@ -524,12 +509,12 @@
                     
                     function PrintReceipt(){
                       
-                      var TableData = new Array();
-                      var credit_arr = [];
+                      let TableData = new Array();
+                      let credit_arr = [];
                       
                       $('#cart-table tbody tr').each(function(row, tr){
-                        var $chkbox = $(this).find('input[type="checkbox"]');
-                        var status;
+                        let $chkbox = $(this).find('input[type="checkbox"]');
+                        let status;
                         if($chkbox.length){
                           status = $chkbox.prop('checked');
                         }
@@ -563,11 +548,11 @@
                         alert("Enter the person who has worked on the sale");
                       }else{
 
-                        var cart_data = JSON.stringify(TableData);
-                        console.log("Table data", cart_data);
+                        let cart_data = JSON.stringify(TableData);
+                        // console.log("Table data", cart_data);
                         $('.print-btn-text').html("saving...");
 
-                        var postUrl = '{{ route("sale.record") }}';
+                        let postUrl = '{{ route("sale.record") }}';
                         $.ajax({
                           type: 'POST',
                           url: postUrl,
@@ -581,16 +566,16 @@
                             EmptyCartTable();
                             $("#customer").val('');
                             $("#extra_money").val('');
-                            var worker = "{{ Auth::user()->name }}";
+                            let worker = "{{ Auth::user()->name }}";
                             $("#workedon_by").val(worker);
-                            var message = data.response;
+                            let message = data.response;
                             $('.print-btn-text').html("Print Receipt");
                             updateSubTotal();
                           },
                           error:function(data){
-                            console.log(data);
-                            var message = data.response;
-                            console.log(message);
+                            // console.log(data);
+                            let message = data.response;
+                            // console.log(message);
                             ShowResponse('.response', message, 'error');
                           }
                         });
@@ -598,14 +583,14 @@
                       
                   }
                     
-                    var query = $('#item-name').val();
+                    let item_name = $('#item-name').val();
                     $("#item-name").typeahead({
-                      source:function(query,result){
+                      source:function(item_name,result){
                         $.ajax({
                           url:"{{ Route('item.search') }}",
                           method:'post',
                           data:{
-                            query:query,
+                            query: item_name,
                           },
                           dataType:'json',
                           success: function(data){
@@ -614,7 +599,7 @@
                             }));
                           },
                           error:function(data){
-                            console.log(data);
+                            // console.log(data);
                           },
                         });
                       }
@@ -636,23 +621,22 @@
                       return false;
                     });
                     
-                    var query = $('#item').val();
-                    
-                    
-                    // var fnf = document.getElementById("tendered");
+                    // let query = $('#item').val();
+                  
+                    // let fnf = document.getElementById("tendered");
                     // fnf.addEventListener('keyup', function(evt){
-                      //  var n = parseInt(this.value.replace(/\D/g,''), 10);
+                      //  let n = parseInt(this.value.replace(/\D/g,''), 10);
                       //  $(this).val(n.toLocaleString());
                       //  ComputeBalance();
                       // });
                       
                       $(document).on("keyup", ".tendered", function(){
                         if(this.value.length > 0){
-                          var n = parseInt(this.value.replace(/\D/g,''), 10);
+                          let n = parseInt(this.value.replace(/\D/g,''), 10);
                           $(this).val(n.toLocaleString());
                           ComputeBalance();
                         }else{
-                          var paymentString = document.getElementById('amountToPay').innerHTML;
+                          let paymentString = document.getElementById('amountToPay').innerHTML;
                           if(paymentString.length > 0 && paymentString != '0'){
                             let letCustomerPay = "-"+paymentString; 
                             $('.balance').val(letCustomerPay);
@@ -668,16 +652,16 @@
                       
                       function ComputeBalance(){
                         
-                        var tenderedMoneyStr = $(".tendered").val();
-                        var paymentStr = document.getElementById('amountToPay').innerHTML;
+                        let tenderedMoneyStr = $(".tendered").val();
+                        let paymentStr = document.getElementById('amountToPay').innerHTML;
                         
                         if(tenderedMoneyStr.length > 0){
                           
-                          var tenderedmoney = tenderedMoneyStr.replace(/,/g , '').trim();
-                          var payment = paymentStr.replace(/,/g , '').trim();
-                          var balance = (parseFloat(tenderedmoney) -  parseFloat(payment));
+                          let tenderedmoney = tenderedMoneyStr.replace(/,/g , '').trim();
+                          let payment = paymentStr.replace(/,/g , '').trim();
+                          let balance = (parseFloat(tenderedmoney) -  parseFloat(payment));
                           (balance < 0)?$('.balance').css("color", "red"):$('.balance').css("color", "blue");
-                          var balanceStr = FormatNumber(balance);
+                          let balanceStr = FormatNumber(balance);
                           $('.balance').val(balanceStr);
                           
                         }else{
@@ -693,14 +677,14 @@
                       //Computation of how much the customer must pay
                       
                       function updateSubTotal(){
-                        var table = document.getElementById('cart-table');
+                        let table = document.getElementById('cart-table');
                         let subTotal = Array.from(table.rows).slice(1).reduce((total, row) => {
-                          var Total =  row.cells[7].innerHTML;
-                          var subTotl =  Total.replace(/,/g , '').trim();
+                          let Total =  row.cells[7].innerHTML;
+                          let subTotl =  Total.replace(/,/g , '').trim();
                           return total + parseFloat(subTotl);
                         }, 0);
                         
-                        var rowCount = (table.rows.length - 1);
+                        let rowCount = (table.rows.length - 1);
                         document.getElementById('num').innerHTML = FormatNumber(rowCount.toFixed(0));
                         document.getElementById('amountToPay').innerHTML = FormatNumber(subTotal.toFixed(2));
                       }
@@ -708,7 +692,7 @@
                       function Numberize(i){
                         // $(document).on("keyup", i , function(){
                           //   if(this.value.length > 0){
-                            //     var n = parseInt(this.value.replace(/\D/g,''), 10);
+                            //     let n = parseInt(this.value.replace(/\D/g,''), 10);
                             //     $(this).val(n.toLocaleString());
                             //   }
                             // });
@@ -725,14 +709,14 @@
                           }
                           
                           function formatString2Number(num){
-                            var number = num.replace(/,/g , '').trim();
-                            var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+                            let number = num.replace(/,/g , '').trim();
+                            let FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
                             return FormattedNumber;
                           }
                           
                           
                           function FormatNum(number){
-                            var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+                            let FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
                             return FormattedNumber;
                           }
                           
@@ -741,18 +725,18 @@
                           }
                           
                           function numberWithCommas(x) {
-                            var parts = x.toString().split(".");
+                            let parts = x.toString().split(".");
                             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                             return parts.join(".");
                           }
                           
                           function SanitizeString(str){
-                            var newStr = str.replace(/,/g , '').trim();
+                            let newStr = str.replace(/,/g , '').trim();
                             return newStr;
                           }
                           
                           function Convert2Num(str){
-                            var numStr;
+                            let numStr;
                             (str.length > 3 ) 
                             ? numStr = str.replace(/,/g , '').trim()
                             : numStr = str;
