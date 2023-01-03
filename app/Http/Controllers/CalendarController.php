@@ -8,15 +8,11 @@ use Helper;
 
 class CalendarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $events = Event::all();
-        return view("pages.events.calendar", compact('events'));
+        return view("pages.events.calendar")->with(compact('events'));
     }
 
     /**

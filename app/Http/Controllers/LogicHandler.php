@@ -27,8 +27,8 @@ class LogicHandler extends Controller
 	protected function sendMail($mailContentPage, $receiverEmail, 
 		                        $dataX, $dataY){
 
-		$mailState = 0; 
-		$senderEmail = config('app.companyEmail');
+		$mailState = 0;
+		$dataY['receiver'] = $receiverEmail;
 		
 		if($this->is_connectedToInternet() == 1)
 		 {
@@ -36,8 +36,8 @@ class LogicHandler extends Controller
 			Mail::send($mailContentPage, $dataX, 
 				   function($message) use ($dataY)
 			{   
-				$message->from($senderEmail, 'Dallington');
-				$message->to($receiverEmail)->subject($subject);
+				$message->from(config('app.companyEmail'), 'Dallington');
+				$message->to($dataY['receiver'])->subject($dataY['subject']);
 			}); 
 
 			(Mail::failures())

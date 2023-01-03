@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\guests\GuestTypesDatatable;
+use App\Models\GuestType;
 
 class GuestTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        return view('pages.main.guests.types');
+        $total_guest_types = GuestType::count();
+        return view('pages.main.guests.types')->with(compact('total_guest_types'));
     }
 
     public function getGuestTypesDataTable(GuestTypesDatatable $dataTable)

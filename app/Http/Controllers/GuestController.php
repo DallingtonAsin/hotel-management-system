@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DataTables\guests\GuestsDataTable;
+use App\Models\Guest;
 
 class GuestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        //
+        $total_guests = Guest::count();
+        return view('pages.main.guests.index')->with(compact('total_guests'));
+    }
+
+    public function getGuests(GuestsDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.guests.index');
     }
 
     /**

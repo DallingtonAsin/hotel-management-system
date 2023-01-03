@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\HR\DesignationsDataTable;
+use App\Models\Designation;
 
 class DesignationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        return view('pages.main.hr.designations');
+        $total_designations = Designation::count();
+        return view('pages.main.hr.designations')->with(compact('total_designations'));
     }
 
     public function getDesignationsDataTable(DesignationsDataTable $dataTable)

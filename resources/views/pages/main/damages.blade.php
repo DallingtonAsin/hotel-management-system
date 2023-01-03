@@ -11,7 +11,7 @@
                 <h6>
                   <i class="fa fa-home text-success"> /</i>
                   <strong>Recorded Damages</strong>
-                  <span class="badge nunito-font  totl_damages">
+                  <span class="badge badge-info  totl_damages">
                     @isset($number_of_damages)
                     {{ number_format($number_of_damages) }}
                     @endisset
@@ -85,7 +85,7 @@
               </div>
 
 
-              <div class="table table-responsive custom-family">
+              <div class="table table-responsive">
                 <table class="table table-bordered" id="damages-table">
 
                   <thead>
@@ -98,7 +98,6 @@
                         @endcan
                       <th>item code</th>
                       <th>Item</th>
-                     <th>Category</th> --}}
                       <th>Qty</th>
                       <th>Cost price</th>
                       <th>Total Cost</th>

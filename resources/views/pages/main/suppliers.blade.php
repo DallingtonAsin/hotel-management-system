@@ -10,7 +10,7 @@
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
                   <strong>Suppliers</strong>
-                  <span class="badge nunito-font  totl_suppliers">
+                  <span class="badge badge-info  totl_suppliers">
                       @isset($number_of_suppliers)
                       {{ number_format($number_of_suppliers) }}
                       @endisset

@@ -57,7 +57,7 @@
 
           </div>
 
-      <div class="table table-sm table-responsive custom-family" >
+      <div class="table table-sm table-responsive" >
 
         <table class="table table-bordered table-hover users-table" id="users-table">
 

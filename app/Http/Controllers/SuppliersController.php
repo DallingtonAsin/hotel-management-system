@@ -35,11 +35,6 @@ class SuppliersController extends Controller
     {
         return $dataTable->render('pages.main.suppliers');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $table ="suppliers";

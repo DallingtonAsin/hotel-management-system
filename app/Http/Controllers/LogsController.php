@@ -24,29 +24,11 @@ class LogsController extends Controller
     }
 
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
      public function index(){
-
-    // $response = Gate::inspect('isCashier');
-    //  if($response->allowed()){
-    //     $logs = Logs::where('name', Auth::user()->name)
-    //     ->get();
-    //     $number_of_logs = Logs::where('name', Auth::user()->name)
-    //     ->count();
-    // }
-    // else
-    // {
         $logs = Logs::all();
-        $number_of_logs = Logs::count();
-    //}
-
-    return view('pages.logs.index')->with(compact('logs','number_of_logs'));
-
-
+        $total_logs = Logs::count();
+        return view('pages.logs.index')->with(compact('total_logs'));
     }
 
     public function GetLogs(LogsDataTable $dataTable)
@@ -80,7 +62,7 @@ class LogsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

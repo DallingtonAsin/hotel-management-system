@@ -11,7 +11,7 @@
          <h6>
           <i class="fa fa-home text-success"> /</i>
           <strong>Stock</strong>
-          <span class="badge nunito-font  totl-stock">
+          <span class="badge badge-info  totl-stock">
             @isset($number_of_stockItems)
             {{ number_format($number_of_stockItems) }}
             @endisset
@@ -124,7 +124,7 @@
         <form name="StockForm" id="StockForm">
          @csrf
          <div class="modal-header text-center">
-          <h6 class="modal-title w-100 font-weight-bold custom-family" id="modalHeading">
+          <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">
           Add new stock item</h6>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -229,7 +229,7 @@
       @csrf
 
       <div class="modal-header text-center">
-        <h6 class="modal-title w-100 font-weight-bold custom-family">
+        <h6 class="modal-title w-100 font-weight-bold">
         Import an excel file of stock items</h6>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>

@@ -94,22 +94,9 @@
         <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>House Keeping</a>
 
         <ul class="nav-sub">
-          <li class="nav-item">
-            <a href="" class="nav-link with-sub">Stock</a>
-            <ul class="nav-sub">
-
-              <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
-      <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Stock Categories</a>
-</li>
-    </ul>
-          </li>
-
-    <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
-              Expenses
-            </a>
-    </li>
+           <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
+              Expenses</a>
+            </li>
         </ul>
     
       </li>

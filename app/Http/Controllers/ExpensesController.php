@@ -26,11 +26,7 @@ class ExpensesController extends Controller
   $this->controller = 'ExpensesController';
 }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
       $expenses = Expense::All();

@@ -26,11 +26,7 @@ class StockController extends Controller
   {
      $this->controller = 'StockController';
   }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
       $stock = Stock::all(); //DB::select('exec GetStockProc');

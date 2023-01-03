@@ -12,21 +12,21 @@
               <div class="col-lg-2">
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
-                  <strong>Reservations</strong>
-                  <span class="badge badge-info  totl_reservations">
-                      @isset($total_reservations)
-                      {{ number_format($total_reservations) }}
+                  <strong>Guests</strong>
+                  <span class="badge badge-info nunito-font  totl_guests">
+                      @isset($total_guests)
+                      {{ number_format($total_guests) }}
                       @endisset
                     </span>
                 </h6>
               </div>
 
-              <div class="col-lg-2">
+              <!-- <div class="col-lg-2">
                 <h6>
                     <a class=" bolded" href="javascript:void(0)"
-                     id="addNewDepartment"> Add reservation</a>
+                     id="addNewDepartment"> Add guest</a>
                 </h6>
-              </div>
+              </div> -->
           </div>
         </div>
       </div>
@@ -60,11 +60,11 @@
             <thead>
               <tr>
                 <th></th>
-                <th>Guest name</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Discount (%)</th>
-                <th>Total Price</th>
+                <th>Name</th>
+                <th>Guest Type</th>
+                <th>Email</th>
+                <th>Phone No.</th>
+                <th>Address</th>
                 <th>Recorded By</th>
                 <th>Action</th>
               </tr>
@@ -241,7 +241,7 @@ role="dialog" aria-labelledby="myModalLabel">
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            }
          });
-  const ajaxUrl = @json(route('reservations.index.ajax'));
+  const ajaxUrl = @json(route('guests.index.ajax'));
   const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
   const cat = 'supplier';
   const token = "{{ csrf_token() }}";
@@ -257,11 +257,11 @@ role="dialog" aria-labelledby="myModalLabel">
     var columns = [1,2,3,4];
     var dataColumns = [
          {data: 'checkbox', name:'checkbox'},
-         {data: 'guest', name:'guest'},
-         {data: 'start_date', name:'start_date'},
-         {data: 'end_date', name:'end_date'},
-         {data: 'discount_percent', name:'discount_percent'},
-         {data: 'total_price', name:'total_price'},
+         {data: 'name', name:'name'},
+         {data: 'guest_type', name:'guest_type'},
+         {data: 'email', name:'email'},
+         {data: 'phone_number', name:'phone_number'},
+         {data: 'address', name:'address'},
          {data: 'recorded_by', name:'recorded_by'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
@@ -462,7 +462,7 @@ function ResetTblInfo(response)
      sum_of_credits = FormatNumber(response.totl_credit);
      sum_of_debts = FormatNumber(response.totl_debt);
 
-     $('.totl_reservations').html(totl_number);
+     $('.totl_guests').html(totl_number);
      $('.totl_credit').html(sum_of_credits);
      $('.totl_debt').html(sum_of_debts);
  }
@@ -522,7 +522,7 @@ function ResetTblInfo(response)
              title: 'Message',
              content: data.success,
          });
-          $(".totl_reservations").text(data.totl_no);
+          $(".totl_guests").text(data.totl_no);
           $(".totl_credit").text(data.totl_credit);
           $(".totl_debt").text(data.totl_debt);
           var tbl = $('#reservations-table').DataTable();

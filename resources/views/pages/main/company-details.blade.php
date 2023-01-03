@@ -13,7 +13,7 @@
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
                   <strong>Company details</strong>
-                  <span class="badge nunito-font  totl_customers">
+                  <span class="badge badge-info  totl_customers">
                       @isset($number_of_companies)
                       {{ number_format($number_of_companies) }}
                       @endisset
@@ -68,7 +68,7 @@
 
           </div>
 
-      <div class="table table-sm table-responsive custom-family" >
+      <div class="table table-sm table-responsive" >
         <table class="table table-bordered table-hover companies-table" id="companies-table">
             <thead>
               <tr>

@@ -299,11 +299,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
     }
 
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index(Request $request)
     {
 

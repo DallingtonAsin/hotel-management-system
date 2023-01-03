@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\LogsController;
 use App\Models\Role;
 use App\User;
-use Helper;
 
 class ProfileController extends Controller
 {
@@ -17,11 +16,6 @@ class ProfileController extends Controller
     public function __construct(){
       
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view('pages.main.profile');

@@ -13,9 +13,9 @@
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
                   <strong>Room Types</strong>
-                  <span class="badge nunito-font  totl_suppliers">
-                      @isset($number_of_suppliers)
-                      {{ number_format($number_of_suppliers) }}
+                  <span class="badge badge-info  totl_room_types">
+                      @isset($total_room_types)
+                      {{ number_format($total_room_types) }}
                       @endisset
                     </span>
                 </h6>
@@ -79,7 +79,7 @@
 
           </div>
 
-      <div class="table table-sm table-responsive custom-family" >
+      <div class="table table-sm table-responsive" >
 
         <table class="table table-bordered table-hover room-types-table" id="room-types-table">
 
@@ -484,7 +484,7 @@ function ResetTblInfo(response)
      sum_of_credits = FormatNumber(response.totl_credit);
      sum_of_debts = FormatNumber(response.totl_debt);
 
-     $('.totl_suppliers').html(totl_number);
+     $('.totl_room_types').html(totl_number);
      $('.totl_credit').html(sum_of_credits);
      $('.totl_debt').html(sum_of_debts);
  }
@@ -544,7 +544,7 @@ function ResetTblInfo(response)
              title: 'Message',
              content: data.success,
          });
-          $(".totl_suppliers").text(data.totl_no);
+          $(".totl_room_types").text(data.totl_no);
           $(".totl_credit").text(data.totl_credit);
           $(".totl_debt").text(data.totl_debt);
           var tbl = $('#room-types-table').DataTable();

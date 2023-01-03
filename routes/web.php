@@ -97,7 +97,7 @@ Route::get('/sales/today/debts/ajax', 'SalesController@GetTodaySalesWithDebts')-
 Route::get('/events/get', 'EventsController@GetEvents')->name('get-events');
 Route::get('/events/getTitle/{id}', 'EventsController@GetEventTitle')->name('getEventTitle');
 Route::get('purchases/get/', 'PurchasesController@GetPurchases')->name('get-purchases');
-Route::get('StockCats/load/', 'StockCatsController@StockCatAjaxIndex')->name('get-stockItems');
+Route::get('StockCats/load/', 'StockCategoryController@StockCatAjaxIndex')->name('get-stockItems');
 
 Route::get('/create/company', 'SettingsController@showCreateCoForm')->name('companies.create');
 Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
@@ -114,6 +114,7 @@ Route::get('/departments/fetch/ajax', 'DepartmentController@getDepartmentsDataTa
 Route::get('/designations/fetch/ajax', 'DesignationController@getDesignationsDataTable')->name('designations.index.ajax');
 Route::get('/staff/fetch/ajax', 'StaffMemberController@GetStaffMemebers')->name('staff.index.ajax');
 Route::get('/reservations/fetch/ajax', 'ReservationController@getReservations')->name('reservations.index.ajax');
+Route::get('/guests/fetch/ajax', 'GuestController@getGuests')->name('guests.index.ajax');
 
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
 
@@ -121,7 +122,7 @@ Route::resources([
 	'stock' => 'StockController',
 	'pos' => 'CartController',
 	'sales' => 'SalesController',
-	'product-categories' => 'StockCatsController',
+	'product-categories' => 'StockCategoryController',
 	'cashiers' => 'CashiersController',
 	'damaged-stock-items' => 'DamagesController',
 	'suppliers'=> 'SuppliersController',
@@ -191,7 +192,7 @@ Route::post("/damages/remove/selected", "DamagesController@RemoveSelected")->nam
 
 Route::post("/purchases/remove/selected", "PurchasesController@RemoveSelected")->name("selected-purchases.remove");
 Route::post("/customers/remove/selected", "CustomersController@RemoveSelected")->name("selected-customers.remove");
-Route::post("/stockcat/remove/selected", "StockCatsController@RemoveSelected")->name("selected-stockcats.remove");
+Route::post("/stockcat/remove/selected", "StockCategoryController@RemoveSelected")->name("selected-stockcats.remove");
 Route::post("/sales/remove/selected", "SalesController@RemoveSelected")->name("selected-sales.remove");
 Route::post("/users/remove/selected", "UserController@RemoveSelected")->name("selected-users.remove");
 
@@ -209,8 +210,8 @@ Route::get('suppliers/export-suppliers','SuppliersController@exportSuppliers')->
 Route::get('suppliers/getSuppliers4DT','SuppliersController@GetSuppliersData')->name('getSuppliers4DT');
 
 
-Route::post('product-categories/import-categories','StockCatsController@importCategories')->name('categories.import');
-Route::get('product-categories/export-categories','StockCatsController@exportCategories')->name('categories.export');
+Route::post('product-categories/import-categories','StockCategoryController@importCategories')->name('categories.import');
+Route::get('product-categories/export-categories','StockCategoryController@exportCategories')->name('categories.export');
 
 Route::post('damaged-stock-items/import-damages','DamagesController@importDamages')->name('damages.import');
 Route::get('damaged-stock-items/export-damages','DamagesController@exportDamages')->name('damages.export');
@@ -255,7 +256,7 @@ Route::post('suppliers/deleteAll','SuppliersController@deleteAllSuppliers')->nam
 Route::post('expenses/deleteAll','ExpensesController@deleteAllExpenses')->name('expenses.truncate');
 Route::post('/cashiers/deleteAll','CashiersController@deleteAllCashiers')->name('cashiers.truncate');
 Route::post('/customers/deleteAll','CustomersController@deleteAllCustomers')->name('customers.truncate');
-Route::post('product-categories/deleteAll','StockCatsController@deleteAllStockCategories')->name('categories.truncate');
+Route::post('product-categories/deleteAll','StockCategoryController@deleteAllStockCategories')->name('categories.truncate');
 Route::post('damaged-stock-items/deleteAll','DamagesController@deleteAllDamages')->name('damages.truncate');
 Route::post('logs/truncate','LogsController@truncateLogs')->name('logs.truncate');
 

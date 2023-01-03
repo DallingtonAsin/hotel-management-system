@@ -4,10 +4,8 @@ namespace App\DataTables\guests;
 
 use App\Models\Guest;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use App\Models\GuestType;
 
 class GuestsDataTable extends DataTable
 {
@@ -19,9 +17,39 @@ class GuestsDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'guests/guestsdatatable.action');
+        return datatables($query)
+        ->order(function ($query) {
+            $query->orderBy('created_at', 'desc');
+        })->addIndexColumn()
+        ->addColumn('action', function ($guest) {
+
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+        data-id="' . $guest->id . '" data-original-title="Edit" id="edit-guest"
+          class="edit-btn edit-guest pr-4">
+         <span class="fa fa-pen"></span></a>';
+
+            $btn .= '<a href="javascript:void(0);" id="delete-guest" 
+        data-toggle="tooltip" data-original-title="Delete"
+         data-id="' . $guest->id . '" class="trash-btn pr-4"">
+        <span class="fa fa-trash-alt" ></span></a>';
+
+            $btn .= '<a href="javascript:void(0);" id="view-guest" 
+       data-toggle="tooltip" data-original-title="View"
+        data-id="' . $guest->id . '" class="text-info bolded">
+       <i class="fa fa-eye" ></i></a>';
+
+            return $btn;
+
+        })->addColumn('name', function ($guest) {
+            $name = $guest->first_name.' '.$guest->last_name;
+            return $name;
+         })->addColumn('guest_type', function ($guest) {
+            $guest = GuestType::find($guest->guest_type_id);
+            return $guest->name;
+         })->addColumn('checkbox', function ($guest) {
+          $checkBox = '<input type="checkbox" id="'.$guest->id.'"/>';
+         return $checkBox;
+         })->rawColumns(['checkbox', 'action']);
     }
 
     /**
@@ -73,6 +101,7 @@ class GuestsDataTable extends DataTable
             'phone_number',
             'address',
             'details',
+            'recorded_by',
         ];
     }
 

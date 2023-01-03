@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\HR\StaffMembersDataTable;
+use App\User;
 
 class StaffMemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        return view('pages.main.hr.staff');
+        $total_staff = User::count();
+        return view('pages.main.hr.staff', ['total_staff' => $total_staff]);
     }
 
     public function GetStaffMemebers(StaffMembersDataTable $dataTable)

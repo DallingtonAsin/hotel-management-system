@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\HR\DepartmentsDatatable;
+use App\Models\Department;
 
 class DepartmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        return view('pages.main.hr.departments');
+        $total_departments = Department::count();
+        return view('pages.main.hr.departments')->with(compact('total_departments'));
     }
 
     public function getDepartmentsDataTable(DepartmentsDatatable $dataTable)

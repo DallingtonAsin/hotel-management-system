@@ -4,17 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\reservations\ReservationsDataTable;
-
+use App\Models\Reservation;
 class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        return view('pages.main.reservations.index');
+        $total_reservations = Reservation::count();
+        return view('pages.main.reservations.index', ['total_reservations' => $total_reservations]);
     }
 
     public function getReservations(ReservationsDataTable $dataTable)
