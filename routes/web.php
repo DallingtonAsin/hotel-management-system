@@ -132,12 +132,15 @@ Route::resources([
     'command' => 'ChatBotController',
 	'company' => 'SettingsController',
 	'departments' => 'DepartmentController',
-	'guest_types' => 'GuestTypeController',
 	'room_types' => 'RoomTypeController',
 	'rooms' => 'RoomController',
-	'bookings' => 'BookingController',
+	'guest_types' => 'GuestTypeController',
+	'guests' => 'GuestController',
+	'invoice_guests' => 'InvoiceGuestController',
+	'reservations' => 'ReservationController',
 	'designations' => 'DesignationController',
 	'staff' => 'StaffMemberController',
+
 ]);
 
 Route::get('/email','MailController@MailWelcome');

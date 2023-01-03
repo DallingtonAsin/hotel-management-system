@@ -52,16 +52,8 @@
       <li class="nav-label">Main Menu</li>
 
 
-      <li><a href="{{ route('home') }}" class="nav-link"><i class="fa fa-home"></i>Home</a></li>
+      <li><a href="{{ route('home') }}" class="nav-link mt-3"><i class="typcn typcn-home"></i>Dashboard</a></li>
   
-
-      <li class="nav-item {{ $show }} ">
-        <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Dashboard</a>
-        <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ Route('home') }}" class="nav-sub-link">Home</a></li>
-        </ul>
-      </li>
-
       <li class="nav-item">
   <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i class="fa fa-shopping-cart"></i>Restaurant & Bar</a>
         <ul class="nav-sub">
@@ -71,20 +63,6 @@
         </ul>
   </li>
 
-      <li class="nav-item">
-  <a href="" class="nav-link with-sub"><i class="fa fa-balance-scale"></i>Accounting</a>
-
-       <ul class="nav-sub">
-  <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
-          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Cash In flow</a></li>
-         <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">General Ledger</a></li>
-  <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a>
-  </li>
-          <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
-
-        </ul>
-      </li>
-     
       <li class="nav-item {{ $show }} ">
         <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Store & Procurement</a>
 
@@ -96,10 +74,8 @@
     <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
       <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
               <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
-      <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Product
-      Categories</a>
-</li>
-            </ul>
+      <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Stock Categories</a></li>
+      </ul>
           </li>
 
           <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
@@ -125,7 +101,7 @@
               <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
       <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
               <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Product Categories</a>
+              <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Stock Categories</a>
 </li>
     </ul>
           </li>
@@ -145,7 +121,7 @@
           <li class="nav-item">
             <a href="" class="nav-link with-sub">Rooms</a>
             <ul class="nav-sub">
-            <li class="nav-sub-item"><a href="{{ Route('rooms.index') }}" class="nav-sub-link">All rooms</a></li>
+            <li class="nav-sub-item"><a href="{{ Route('rooms.index') }}" class="nav-sub-link">Rooms</a></li>
               <li class="nav-sub-item"><a href="{{ Route('room_types.index') }}" class="nav-sub-link">Room types</a></li>
             </ul>
           </li>
@@ -153,15 +129,16 @@
           <li class="nav-item">
             <a href="" class="nav-link with-sub">Guests</a>
             <ul class="nav-sub">
+            <li class="nav-sub-item"><a href="{{ Route('guests.index') }}" class="nav-sub-link">Guests</a></li>
               <li class="nav-sub-item"><a href="{{ Route('guest_types.index') }}" class="nav-sub-link">Guest types</a></li>
             </ul>
           </li>
 
           <li class="nav-item">
-            <a href="" class="nav-link with-sub">Bookings</a>
+            <a href="" class="nav-link with-sub">Reservations</a>
             <ul class="nav-sub">
-            <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">All bookings</a></li>
-              <li class="nav-sub-item"><a href="{{ Route('bookings.create') }}" class="nav-sub-link">Add booking</a></li>
+            <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">All reservations</a></li>
+              <li class="nav-sub-item"><a href="{{ Route('reservations.create') }}" class="nav-sub-link">Add reservation</a></li>
             </ul>
           </li>
 
@@ -213,6 +190,17 @@
 
   </ul>
 </li>
+
+<li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="fa fa-balance-scale"></i>Accounting</a>
+       <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Cash In flow</a></li>
+          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">General Ledger</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
+        </ul>
+      </li>
 
 <li class="nav-item">
   <a href="" class="nav-link with-sub"><i class="typcn typcn-cog"></i>Others</a>

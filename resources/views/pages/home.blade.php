@@ -1,20 +1,9 @@
 @extends('layouts.template')
 
-@can('isAdmin')
 @section('content')
-@include('pages.dashboard.main_admin')
+@include('pages.dashboard.index')
 @endsection
-@endcan
-
-@can('isSuperAdmin')
-@section('content')
-@include('pages.dashboard.main_superAdmin')
-@endsection
-@endcan
 
 
-@can('isCashier')
-@section('content')
-@include('pages.dashboard.main_cashier')
-@endsection
-@endcan
+
+
