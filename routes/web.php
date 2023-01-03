@@ -1,5 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,9 +77,6 @@ Route::get('/customers/with-debts/{id}', 'CustomersController@showCustomerWithDe
 Route::post('update/customer/debts', 'CustomersController@updateCustomerDebts')->name('customer.debt.update');
 
 
-
-
-
 Route::get('/stock/get-data', 'StockController@GetStock')->name('get-stock');
 Route::get('/suppliers/home', 'SuppliersController@GetSuppliers')->name('suppliers.home');
 Route::get('/expenses/get-data', 'ExpensesController@GetExpenses')->name('get-expenses');
@@ -100,6 +102,7 @@ Route::get('StockCats/load/', 'StockCatsController@StockCatAjaxIndex')->name('ge
 Route::get('/create/company', 'SettingsController@showCreateCoForm')->name('companies.create');
 Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
 Route::get('/users/managers', 'UserController@fetchManagers')->name('managers.home');
+
 Route::get('/users/managers/ajax', 'UserController@GetManagers')->name('managers.index.ajax');
 Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.home');
 Route::get('/users/cashiers/ajax', 'UserController@GetCashiers')->name('cashiers.index.ajax');
@@ -110,6 +113,7 @@ Route::get('/guests-types/fetch/ajax', 'GuestTypeController@getGuestTypesDataTab
 Route::get('/departments/fetch/ajax', 'DepartmentController@getDepartmentsDataTable')->name('departments.index.ajax');
 Route::get('/designations/fetch/ajax', 'DesignationController@getDesignationsDataTable')->name('designations.index.ajax');
 Route::get('/staff/fetch/ajax', 'StaffMemberController@GetStaffMemebers')->name('staff.index.ajax');
+Route::get('/reservations/fetch/ajax', 'ReservationController@getReservations')->name('reservations.index.ajax');
 
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
 
@@ -140,7 +144,6 @@ Route::resources([
 	'reservations' => 'ReservationController',
 	'designations' => 'DesignationController',
 	'staff' => 'StaffMemberController',
-
 ]);
 
 Route::get('/email','MailController@MailWelcome');

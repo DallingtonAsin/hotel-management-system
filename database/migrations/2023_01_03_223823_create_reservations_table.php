@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateReservationsTable extends Migration
 {
@@ -20,6 +21,7 @@ class CreateReservationsTable extends Migration
             $table->date('end_date');
             $table->decimal('discount_percent');
             $table->decimal('total_price');
+            $table->string('recorded_by')->nullable();
             $table->timestamps();
             $table->foreign('guest_id')->references('id')->on('guests');
         });
@@ -32,6 +34,8 @@ class CreateReservationsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('reservations');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

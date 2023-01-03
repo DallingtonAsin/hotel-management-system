@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DataTables\reservations\ReservationsDataTable;
 
 class ReservationController extends Controller
 {
@@ -13,7 +14,12 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.main.reservations.index');
+    }
+
+    public function getReservations(ReservationsDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.reservations.index');
     }
 
     /**

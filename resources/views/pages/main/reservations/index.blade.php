@@ -12,10 +12,10 @@
               <div class="col-lg-2">
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
-                  <strong>Rooms</strong>
+                  <strong>Reservations</strong>
                   <span class="badge nunito-font  totl_suppliers">
-                      @isset($number_of_suppliers)
-                      {{ number_format($number_of_suppliers) }}
+                      @isset($total_reservations)
+                      {{ number_format($total_reservations) }}
                       @endisset
                     </span>
                 </h6>
@@ -24,36 +24,10 @@
               <div class="col-lg-2">
                 <h6>
                     <a class=" bolded" href="javascript:void(0)"
-                     id="createNewSupplier"> Add room</a>
+                     id="addNewDepartment"> Add reservation</a>
                 </h6>
               </div>
-
-              <div class="col-lg-2">
-               <div class="btn-group">
-                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Action
-               </button>
-               <ul class="dropdown-menu">
-                 @can('isAdmin')
-
-
-                   <li><a href=""  class="add-link text-dark text-decoration-none"
-                     data-bs-toggle="modal" data-bs-target="#importRooms"><strong>Import suppliers</strong>
-                   </a></li>
-
-                 <li>
-                <a class="text-decoration-none text-dark
-                nunito-font"
-                href="javascript:void(0)"
-                id="removeAllSuppliers"> Delete all rooms</a>
-                 </li>
-                @endcan
-                </ul>
-              </div>
-            </div>
-
           </div>
-
         </div>
       </div>
 
@@ -81,16 +55,17 @@
 
       <div class="table table-sm table-responsive custom-family" >
 
-        <table class="table table-bordered table-hover rooms-table" id="rooms-table">
+        <table class="table table-bordered table-hover reservations-table" id="reservations-table">
 
             <thead>
               <tr>
                 <th></th>
-                <th>Room No.</th>
-                <th>Room Type</th>
-                <th>Floor No.</th>
-                <th>Description</th>
-                <th>Added By</th>
+                <th>Guest name</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Discount (%)</th>
+                <th>Total Price</th>
+                <th>Recorded By</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -266,7 +241,7 @@ role="dialog" aria-labelledby="myModalLabel">
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            }
          });
-  const ajaxUrl = @json(route('rooms.index.ajax'));
+  const ajaxUrl = @json(route('reservations.index.ajax'));
   const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
   const cat = 'supplier';
   const token = "{{ csrf_token() }}";
@@ -277,22 +252,23 @@ role="dialog" aria-labelledby="myModalLabel">
    
 
      //code that displays results of the table index()
-    var table = $('#rooms-table');
-    var title = "List of registered rooms in the system";
+    var table = $('#reservations-table');
+    var title = "List of registered departments in the system";
     var columns = [1,2,3,4];
     var dataColumns = [
          {data: 'checkbox', name:'checkbox'},
-         {data: 'number', name:'number'},
-         {data: 'room_type', name:'room_type'},
-         {data: 'floor_number', name:'floor_number'},
-         {data: 'description', name:'description'},
-         {data: 'added_by', name:'added_by'},
+         {data: 'guest', name:'guest'},
+         {data: 'start_date', name:'start_date'},
+         {data: 'end_date', name:'end_date'},
+         {data: 'discount_percent', name:'discount_percent'},
+         {data: 'total_price', name:'total_price'},
+         {data: 'recorded_by', name:'recorded_by'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
     
     makeDataTable(table, title, columns, dataColumns);
       
-   $('#createNewSupplier').click(function (e) {
+   $('#addNewDepartment').click(function (e) {
          e.preventDefault();
          DisableTableFields(false);
          ShowBtns();
@@ -381,7 +357,7 @@ function Numberize(i){
               var resp = data.success;
               ShowResponse('.response', resp, 'success');
               ResetTblInfo(data);
-              var tbl = $('#rooms-table').DataTable();
+              var tbl = $('#reservations-table').DataTable();
               tbl.ajax.reload();
 
           },
@@ -430,7 +406,7 @@ function Numberize(i){
               $('#deleteSuppliersModal').modal("hide");
               ShowResponse('.response', resp, 'success');
               ResetTblInfo(data);
-              var tbl = $('#rooms-table').DataTable();
+              var tbl = $('#reservations-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
@@ -549,7 +525,7 @@ function ResetTblInfo(response)
           $(".totl_suppliers").text(data.totl_no);
           $(".totl_credit").text(data.totl_credit);
           $(".totl_debt").text(data.totl_debt);
-          var tbl = $('#rooms-table').DataTable();
+          var tbl = $('#reservations-table').DataTable();
           tbl.ajax.reload();
 
 

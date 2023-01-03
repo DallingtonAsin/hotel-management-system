@@ -137,7 +137,7 @@
           <li class="nav-item">
             <a href="" class="nav-link with-sub">Reservations</a>
             <ul class="nav-sub">
-            <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">All reservations</a></li>
+            <li class="nav-sub-item"><a href="{{ Route('reservations.index') }}" class="nav-sub-link">All reservations</a></li>
               <li class="nav-sub-item"><a href="{{ Route('reservations.create') }}" class="nav-sub-link">Add reservation</a></li>
             </ul>
           </li>
