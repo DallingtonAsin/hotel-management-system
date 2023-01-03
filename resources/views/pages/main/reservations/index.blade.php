@@ -4,74 +4,31 @@
 
       <div class="card">
         <div class="card-header">
+          <div class="panel-tile">
 
             <div class="row nunito-font">
+
+
               <div class="col-lg-2">
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
-                  <strong>Suppliers</strong>
-                  <span class="badge badge-info  totl_suppliers">
-                      @isset($number_of_suppliers)
-                      {{ number_format($number_of_suppliers) }}
+                  <strong>Reservations</strong>
+                  <span class="badge badge-info  totl_reservations">
+                      @isset($total_reservations)
+                      {{ number_format($total_reservations) }}
                       @endisset
                     </span>
-                </h6>
-              </div>
-
-              <div class="col-lg-3">
-                <h6>
-                  Credit: shs.<strong class="text-success totl_credit">
-                      @isset($total_credit)
-                      {{ number_format($total_credit) }}
-                      @endisset
-
-                    </strong>
-                </h6>
-              </div>
-
-              <div class="col-lg-3">
-                <h6>
-                  Debts: shs.<label class="text-danger totl_debt">
-                      @isset($total_debts)
-                      {{ number_format($total_debts) }}
-                      @endisset
-
-                    </label>
                 </h6>
               </div>
 
               <div class="col-lg-2">
                 <h6>
                     <a class=" bolded" href="javascript:void(0)"
-                     id="createNewSupplier"> Add supplier</a>
+                     id="addNewDepartment"> Add reservation</a>
                 </h6>
               </div>
-
-              <div class="col-lg-2">
-               <div class="btn-group">
-                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Action
-               </button>
-               <ul class="dropdown-menu">
-                 @can('isAdmin')
-
-
-                   <li><a href=""  class="add-link text-dark text-decoration-none"
-                     data-bs-toggle="modal" data-bs-target="#importSuppliers"><strong>Import suppliers</strong>
-                   </a></li>
-
-                 <li>
-                <a class="text-decoration-none text-dark
-                nunito-font"
-                href="javascript:void(0)"
-                id="removeAllSuppliers"> Delete all suppliers</a>
-                 </li>
-                @endcan
-                </ul>
-              </div>
-            </div>
-
           </div>
+        </div>
       </div>
 
       <div class="card-body">
@@ -96,20 +53,19 @@
 
           </div>
 
-      <div class="table-responsive">
+      <div class="table table-sm table-responsive" >
 
-        <table class="table table-bordered table-hover suppliers-table" id="suppliers-table">
+        <table class="table table-bordered table-hover reservations-table" id="reservations-table">
 
             <thead>
               <tr>
                 <th></th>
-               <th class="td-sm">No</th> 
-                <th>Supplier</th>
-                <th>Mobile No</th>
-               <th>Address</th> 
-               <th>Email</th> 
-                <th>Credit</th>
-                <th>Debt</th>
+                <th>Guest name</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Discount (%)</th>
+                <th>Total Price</th>
+                <th>Recorded By</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -122,7 +78,7 @@
 
 
 
-<!--Add suppliers -->
+<!--Add rooms -->
 <div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-dialog-centered">
@@ -140,7 +96,7 @@ role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-body">
 
         <div class="form-group">
-           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> 
+           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
             <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
              placeholder="Enter supplier id"  Required autofocus>
           </div>
@@ -195,8 +151,8 @@ role="dialog" aria-labelledby="myModalLabel">
 </div>
 </div>
 
-<!--Import Suppliers -->
-<div class="modal fade nunito-font" id="importSuppliers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--Import Rooms -->
+<div class="modal fade nunito-font" id="importRooms" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
@@ -275,13 +231,17 @@ role="dialog" aria-labelledby="myModalLabel">
 </div> <!-- end of modal Deletesuppliers-->
 
 
+{{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script> --}}
+<script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+<script src="{{ asset('vendors/notify/notify.js') }}"></script>
 <script>
   $.ajaxSetup({
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            }
          });
-  const ajaxUrl = @json(route('suppliers.home'));
+  const ajaxUrl = @json(route('reservations.index.ajax'));
   const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
   const cat = 'supplier';
   const token = "{{ csrf_token() }}";
@@ -292,25 +252,23 @@ role="dialog" aria-labelledby="myModalLabel">
    
 
      //code that displays results of the table index()
-    var table = $('#suppliers-table');
-    var title = "List of registered suppliers in the system";
+    var table = $('#reservations-table');
+    var title = "List of registered departments in the system";
     var columns = [1,2,3,4];
     var dataColumns = [
          {data: 'checkbox', name:'checkbox'},
-        //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-         {data: 'id', name:'id'},
-         {data: 'name', name:'name'},
-         {data: 'contact', name:'contact'},
-         {data: 'address', name:'address'},
-         {data: 'email', name:'email'},
-         {data: 'credit', name:'credit'},
-         {data: 'debt', name:'debt'},
+         {data: 'guest', name:'guest'},
+         {data: 'start_date', name:'start_date'},
+         {data: 'end_date', name:'end_date'},
+         {data: 'discount_percent', name:'discount_percent'},
+         {data: 'total_price', name:'total_price'},
+         {data: 'recorded_by', name:'recorded_by'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
     
     makeDataTable(table, title, columns, dataColumns);
       
-   $('#createNewSupplier').click(function (e) {
+   $('#addNewDepartment').click(function (e) {
          e.preventDefault();
          DisableTableFields(false);
          ShowBtns();
@@ -399,7 +357,7 @@ function Numberize(i){
               var resp = data.success;
               ShowResponse('.response', resp, 'success');
               ResetTblInfo(data);
-              var tbl = $('#suppliers-table').DataTable();
+              var tbl = $('#reservations-table').DataTable();
               tbl.ajax.reload();
 
           },
@@ -448,7 +406,7 @@ function Numberize(i){
               $('#deleteSuppliersModal').modal("hide");
               ShowResponse('.response', resp, 'success');
               ResetTblInfo(data);
-              var tbl = $('#suppliers-table').DataTable();
+              var tbl = $('#reservations-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
@@ -504,7 +462,7 @@ function ResetTblInfo(response)
      sum_of_credits = FormatNumber(response.totl_credit);
      sum_of_debts = FormatNumber(response.totl_debt);
 
-     $('.totl_suppliers').html(totl_number);
+     $('.totl_reservations').html(totl_number);
      $('.totl_credit').html(sum_of_credits);
      $('.totl_debt').html(sum_of_debts);
  }
@@ -564,10 +522,10 @@ function ResetTblInfo(response)
              title: 'Message',
              content: data.success,
          });
-          $(".totl_suppliers").text(data.totl_no);
+          $(".totl_reservations").text(data.totl_no);
           $(".totl_credit").text(data.totl_credit);
           $(".totl_debt").text(data.totl_debt);
-          var tbl = $('#suppliers-table').DataTable();
+          var tbl = $('#reservations-table').DataTable();
           tbl.ajax.reload();
 
 

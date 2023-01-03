@@ -3,22 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\DataTables\HR\DesignationsDataTable;
-use App\Models\Designation;
 
-class DesignationController extends Controller
+class InvoiceGuestController extends Controller
 {
     
     public function index()
     {
-        $total_designations = Designation::count();
-        return view('pages.main.hr.designations')->with(compact('total_designations'));
+        //
     }
 
-    public function getDesignationsDataTable(DesignationsDataTable $dataTable)
-    {
-        return $dataTable->render('pages.main.hr.designations');
-    }
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +19,7 @@ class DesignationController extends Controller
      */
     public function create()
     {
-        return view('pages.main.hr.designations');
+        //
     }
 
     /**

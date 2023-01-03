@@ -12,7 +12,7 @@
                    <h6>
                     <i class="fa fa-home text-success"> /</i>
                     <strong>Purchases</strong>
-                    <span class="badge nunito-font totl-no">
+                    <span class="badge badge-info totl-no">
                       @isset($no_of_purchases)
                       {{ number_format($no_of_purchases) }}
                       @endisset
@@ -95,7 +95,7 @@
   </div>
 
 
-   <div class="table-responsive custom-family">
+   <div class="table-responsive">
     <table class="table table-sm  table-bordered table-hover purchase-table" 
      id="purchase-table">
       <thead>
@@ -130,7 +130,7 @@
          @csrf
 
          <div class="modal-header text-center">
-          <h6 class="modal-title w-100 font-weight-bold custom-family" id="modalHeading">
+          <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">
           Add new purchase item</h6>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -233,7 +233,7 @@
         @csrf
 
         <div class="modal-header text-center">
-          <h6 class="modal-title w-100 font-weight-bold custom-family">
+          <h6 class="modal-title w-100 font-weight-bold">
           Import an excel file of purchased items</h6>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>

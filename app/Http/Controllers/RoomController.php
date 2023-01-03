@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\rooms\RoomsDatatable;
+use App\Models\Room;
 
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-     return view('pages.main.rooms.index');
+     $total_rooms = Room::count();
+     return view('pages.main.rooms.index', ['total_rooms' => $total_rooms]);
     }
 
     public function RoomsDataTable(RoomsDatatable $dataTable)

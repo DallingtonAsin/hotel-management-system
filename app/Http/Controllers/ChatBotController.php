@@ -18,11 +18,7 @@ use Excel;
 
 class ChatBotController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $chatStoredCommands = ChatBot::all();

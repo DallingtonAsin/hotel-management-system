@@ -12,7 +12,7 @@
                 <h6>
                   <i class="fa fa-home text-success"> /</i>
                   <strong>List of recorded Expenses</strong>
-                  <span class="badge nunito-font  totl_no">
+                  <span class="badge badge-info  totl_no">
                       @isset($number_of_total_expenses)
                       {{ number_format($number_of_total_expenses) }}
                       @endisset
@@ -83,7 +83,7 @@
 
                     </div>
 
-                    <div class="table table-responsive custom-family">
+                    <div class="table table-responsive">
                       <table class="table table-bordered expenses-table">
 
                         <thead>

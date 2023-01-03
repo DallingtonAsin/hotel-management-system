@@ -34,11 +34,6 @@ class UserController extends Controller
   public function __construct(){
     $this->controller = 'UserController';
   }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $response = Gate::inspect('isSuperAdmin');
@@ -48,7 +43,7 @@ class UserController extends Controller
         try{
            $users = User::where('id',"!=", $request->user()->id)->get();
            $number_of_users = User::count();
-           return view('pages.users.index')
+           return view('pages.users.index', ['total_staff' => $number_of_users])
            ->with(compact('users', 'number_of_users'));
 
         }catch(\Exception $ex)
@@ -775,7 +770,8 @@ class UserController extends Controller
             $message = $this->ActionMessage($action);
      }
     else{
-      $messageErr = "Users ".$name." not removed from the system!";
+
+      $messageErr = "Users not removed from the system!";
       $dataArr = array("code" => '101',
                       "message" => $messageErr,
                       "method" => $method);

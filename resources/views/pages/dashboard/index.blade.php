@@ -5,10 +5,7 @@
           <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
             <div class="info">
               <h4>Staff</h4>
-              <p>
-                <b>
-               56
-              </b></p>
+              <p><b>{{ $total_staff }}</b></p>
             </div>
           </div>
         </a>
@@ -16,7 +13,7 @@
           <div class="widget-small info coloured-icon"><i class="icon fa fa-bed fa-3x"></i>
             <div class="info">
               <h4>Rooms</h4>
-              <p><b>67</b></p>
+              <p><b>{{ $total_rooms }}</b></p>
             </div>
           </div>
         </a>
@@ -24,7 +21,7 @@
           <div class="widget-small warning coloured-icon"><i class="icon fa fa-landmark fa-3x"></i>
             <div class="info">
               <h4>Bookings</h4>
-              <p><b>88</b></p>
+              <p><b>{{ $total_bookings }}</b></p>
             </div>
           </div>
         </a>

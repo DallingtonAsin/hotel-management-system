@@ -38,11 +38,7 @@ class EventsController extends Controller
 
   }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
       $no_of_events = Event::where('start_date', '>=', date('Y-m-d'))->count();

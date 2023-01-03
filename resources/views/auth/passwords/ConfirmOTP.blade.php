@@ -4,7 +4,7 @@
 <div class="container">
 
     <div class=" pt-5">
-    <h4 class="text-center text-white custom-family">
+    <h4 class="text-center text-white">
         {{ config('app.name') }}
     </h4>
         <h6 class="nunito-font text-center text-white text-muted">

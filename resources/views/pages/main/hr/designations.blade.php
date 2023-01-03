@@ -13,9 +13,9 @@
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
                   <strong>Designations</strong>
-                  <span class="badge nunito-font  totl_suppliers">
-                      @isset($number_of_suppliers)
-                      {{ number_format($number_of_suppliers) }}
+                  <span class="badge badge-info totl_desigations">
+                      @isset($total_designations)
+                      {{ number_format($total_designations) }}
                       @endisset
                     </span>
                 </h6>
@@ -79,7 +79,7 @@
 
           </div>
 
-      <div class="table table-sm table-responsive custom-family" >
+      <div class="table table-sm table-responsive" >
 
         <table class="table table-bordered table-hover designation-table" id="designation-table">
 
@@ -480,7 +480,7 @@ function ResetTblInfo(response)
      sum_of_credits = FormatNumber(response.totl_credit);
      sum_of_debts = FormatNumber(response.totl_debt);
 
-     $('.totl_suppliers').html(totl_number);
+     $('.totl_desigations').html(totl_number);
      $('.totl_credit').html(sum_of_credits);
      $('.totl_debt').html(sum_of_debts);
  }
@@ -540,7 +540,7 @@ function ResetTblInfo(response)
              title: 'Message',
              content: data.success,
          });
-          $(".totl_suppliers").text(data.totl_no);
+          $(".totl_desigations").text(data.totl_no);
           $(".totl_credit").text(data.totl_credit);
           $(".totl_debt").text(data.totl_debt);
           var tbl = $('#designation-table').DataTable();

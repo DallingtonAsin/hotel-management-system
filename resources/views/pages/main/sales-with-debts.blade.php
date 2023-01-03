@@ -11,7 +11,7 @@
       @can('isAdmin')
       <div class="col-lg-5">
         <label>Outstanding sales on credit</label>
-        <span class="badge nunito-font totl_no">
+        <span class="badge badge-info totl_no">
          @isset($totl_no)
          {{ number_format($totl_no) }}
          @endisset
@@ -82,10 +82,10 @@
   <form> 
    <div class="row nunito-font">
     <div class=" form-group col-md-3">
-     <input type="date" name="start_date" class="form-control start_date custom-family">
+     <input type="date" name="start_date" class="form-control start_date">
    </div>
    <div class="form-group col-md-3">
-    <input type="date" name="end_date" class="form-control end_date  custom-family">
+    <input type="date" name="end_date" class="form-control end_date ">
   </div>
   <div class="col-md-4">
    <button type="button" class="btn btn-sm btn-success filterSalesBtn" id="filterSalesBtn">Filter sales</button>
@@ -93,7 +93,7 @@
 </div>
 </form>
 
-<div class="table-responsive custom-family">
+<div class="table-responsive">
   <table class="table table-bordered sales-with-debts-table" id="sales-with-debts-table">
     <thead>
       <tr>

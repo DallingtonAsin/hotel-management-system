@@ -12,9 +12,9 @@
                 <i class="fa fa-home text-success"></i> /
                 <span class="text-dark">
                   <strong>Activity Logs</strong>
-                   <span class="badge totl_logs">
-                  @isset($number_of_logs)
-                  {{ number_format($number_of_logs) }}
+                   <span class="badge badge-info totl_logs">
+                  @isset($total_logs)
+                  {{ number_format($total_logs) }}
                   @endisset
                   </span>
                 </span>
@@ -23,13 +23,8 @@
 
            @can('isAdmin')
             <div class="col-lg-2">
-
-             <a class="text-decoration-none text-danger
-             nunito-font"  href="javascript:void(0)" id="removeAllLogs">
-            <i class="fa fa-trash-alt"></i> Delete all logs</a>
-
           </div>
-          @endcan --}}
+          @endcan 
         </div>
               </div>
     </div>
@@ -55,7 +50,7 @@
         </div>
 
 
-        <div class="table table-responsive custom-family">
+        <div class="table table-responsive">
           <table class="table logs-table table-bordered table-hover" id="logs-table">
             <thead>
               <tr>

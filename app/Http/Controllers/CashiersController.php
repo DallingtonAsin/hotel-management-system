@@ -98,11 +98,7 @@ class CashiersController extends Controller
             abort(409, $ex->getMessage());
         }
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index(Request $request)
     {
         try {

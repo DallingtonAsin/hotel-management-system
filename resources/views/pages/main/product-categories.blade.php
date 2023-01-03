@@ -13,7 +13,7 @@
           <h6>
             <i class="fa fa-home text-success"> /</i>
             <strong>Recorded Item categories</strong>
-            <span class="badge totl-PdtCategory">{{ $no_of_categories }}</span>
+            <span class="badge badge-info totl-PdtCategory">{{ $total_categories }}</span>
           </h6>
         </div>
 
@@ -81,12 +81,12 @@
       </div>
 
 
-      <div class="table table-responsive custom-family">
+      <div class="table table-responsive">
         <table class="table table-bordered product-categories-table" id="product-categories-table">
           <thead>
             <tr class="text-center">
               <th style="width:10%"></th>
-             <th style="width:20%">No</th> --}}
+             <!-- <th style="width:20%">No</th>  -->
               <th style="width:50%">Item Category</th>
               <th style="width:20%">Action</th>
             </tr>

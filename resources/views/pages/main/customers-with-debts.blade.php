@@ -13,7 +13,7 @@
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
                   <strong>Customers with debts</strong>
-                  <span class="badge nunito-font  total_debtors">
+                  <span class="badge badge-info  total_debtors">
                       @isset($total_debtors)
                       {{ number_format($total_debtors) }}
                       @endisset
@@ -66,7 +66,7 @@
           </div>
         </div>
 
-      <div class="table-responsive custom-family" >
+      <div class="table-responsive" >
 
         <table class="table table-bordered table-hover customers-with-debts-table" id="customers-with-debts-table">
             <thead>

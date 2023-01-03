@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\GuestType;
-
-class BookingController extends Controller
+use App\DataTables\reservations\ReservationsDataTable;
+use App\Models\Reservation;
+class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        //
+        $total_reservations = Reservation::count();
+        return view('pages.main.reservations.index', ['total_reservations' => $total_reservations]);
+    }
+
+    public function getReservations(ReservationsDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.reservations.index');
     }
 
     /**
@@ -24,8 +26,7 @@ class BookingController extends Controller
      */
     public function create()
     {
-        $guest_types = GuestType::all();
-        return view('pages.main.bookings.add', ['guest_types' => $guest_types]);
+        //
     }
 
     /**

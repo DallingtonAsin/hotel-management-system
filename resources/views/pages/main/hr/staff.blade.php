@@ -230,9 +230,9 @@
                 <h5 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
                <strong>Staff Members</strong>
-                  <span class="badge nunito-font  totl_managers">
-                      @isset($number_of_managers)
-              {{ number_format($number_of_managers) }}
+                  <span class="badge badge-info  totl_staff">
+                      @isset($total_staff)
+                        {{ number_format($total_staff) }}
                       @endisset
                     </span>
                </h5>
@@ -615,7 +615,7 @@
             sum_of_credits = FormatNumber(response.totl_credit);
             sum_of_debts = FormatNumber(response.totl_debt);
 
-            $('.totl_managers').html(totl_number);
+            $('.totl_staff').html(totl_number);
             $('.totl_credit').html(sum_of_credits);
             $('.totl_debt').html(sum_of_debts);
         }
@@ -693,7 +693,7 @@
                                 title: 'Message',
                                 content: data.success,
                             });
-                            $(".totl_managers").text(data.totl_no);
+                            $(".totl_staff").text(data.totl_no);
                             $(".totl_credit").text(data.totl_credit);
                             $(".totl_debt").text(data.totl_debt);
                             var tbl = $('#managers-table').DataTable();

@@ -13,9 +13,9 @@
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
                   <strong>Guest Types</strong>
-                  <span class="badge nunito-font  totl_suppliers">
-                      @isset($number_of_suppliers)
-                      {{ number_format($number_of_suppliers) }}
+                  <span class="badge badge-info  totl_guest_types">
+                      @isset($total_guest_types)
+                      {{ number_format($total_guest_types) }}
                       @endisset
                     </span>
                 </h6>
@@ -478,7 +478,7 @@ function ResetTblInfo(response)
      sum_of_credits = FormatNumber(response.totl_credit);
      sum_of_debts = FormatNumber(response.totl_debt);
 
-     $('.totl_suppliers').html(totl_number);
+     $('.totl_guest_types').html(totl_number);
      $('.totl_credit').html(sum_of_credits);
      $('.totl_debt').html(sum_of_debts);
  }
@@ -538,7 +538,7 @@ function ResetTblInfo(response)
              title: 'Message',
              content: data.success,
          });
-          $(".totl_suppliers").text(data.totl_no);
+          $(".totl_guest_types").text(data.totl_no);
           $(".totl_credit").text(data.totl_credit);
           $(".totl_debt").text(data.totl_debt);
           var tbl = $('#room-types-table').DataTable();

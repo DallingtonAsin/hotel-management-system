@@ -109,7 +109,7 @@ function makeDataTable(table, title, columnArray, dataColumns) {
                  {
                      extend: "excelHtml5",
                      text: '<i class="fa fa-download "></i>Export Excel',
-                     className: "btn btn-default btn-sm",
+                     className: "btn btn-default border-secondary btn-sm",
                      title: title,
                      exportOptions: {
                          columns: columnArray
@@ -123,7 +123,7 @@ function makeDataTable(table, title, columnArray, dataColumns) {
                  {
                      extend: "pdfHtml5",
                      text: '<i class="fa fa-download"></i>Export Pdf',
-                     className: "btn btn-default btn-sm",
+                     className: "btn btn-default border-secondary btn-sm",
                      title: title,
                      exportOptions: {
                          columns: columnArray
@@ -143,7 +143,7 @@ function makeDataTable(table, title, columnArray, dataColumns) {
                          }
                      },
                      text: '<i class="fa fa-save"></i> Print',
-                     className: "btn btn-default btn-sm",
+                     className: "btn btn-default border-secondary btn-sm",
                      title: title
                  }
              )

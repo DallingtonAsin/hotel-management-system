@@ -16,13 +16,13 @@ use Constant;
 use Excel;
 use Helper;
 
-class StockCatsController extends Controller
+class StockCategoryController extends Controller
 {
 
   public $controller;
   public function __construct()
   {
-    $this->controller = 'StockCatsController';
+    $this->controller = 'StockCategoryController';
 
   }
 
@@ -40,9 +40,9 @@ class StockCatsController extends Controller
   public function index()
   {
     $pdt_categories = StockCat::all();
-    $no_of_categories = StockCat::count();
-    return view('pages.main.product-categories')
-                ->with(compact('pdt_categories', 'no_of_categories'));
+    $total_categories = StockCat::count();
+    return view('pages.main.product-categories', ['total_categories' => $total_categories])
+                ->with(compact('pdt_categories', 'total_categories'));
   }
 
   /**
@@ -80,7 +80,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '200',
         "message" => $action,
-        "method" => "StockCatsController@store"
+        "method" => "StockCategoryController@store"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
@@ -92,7 +92,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '101',
         "message" => $messageErr,
-        "method" => "StockCatsController@store"
+        "method" => "StockCategoryController@store"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
 
@@ -170,7 +170,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '200',
         "message" => $action,
-        "method" => "StockCatsController@update"
+        "method" => "StockCategoryController@update"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
@@ -181,7 +181,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '101',
         "message" => $messageErr,
-        "method" => "StockCatsController@update"
+        "method" => "StockCategoryController@update"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
 
@@ -218,7 +218,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '200',
         "message" => $action,
-        "method" => "StockCatsController@destroy"
+        "method" => "StockCategoryController@destroy"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
 
@@ -230,7 +230,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '101',
         "message" => $messageErr,
-        "method" => "StockCatsController@destroy"
+        "method" => "StockCategoryController@destroy"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
@@ -257,7 +257,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '200',
         "message" => $action,
-        "method" => "StockCatsController@deleteAllStockCategories"
+        "method" => "StockCategoryController@deleteAllStockCategories"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
@@ -269,7 +269,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '101',
         "message" => $messageErr,
-        "method" => "StockCatsController@deleteAllStockCategories"
+        "method" => "StockCategoryController@deleteAllStockCategories"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
@@ -350,7 +350,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '200',
         "message" => $action,
-        "method" => "StockCatsController@importCategories"
+        "method" => "StockCategoryController@importCategories"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
       return back()
@@ -360,7 +360,7 @@ class StockCatsController extends Controller
       $dataArr = array(
         "code" => '101',
         "message" => $messageErr,
-        "method" => "StockCatsController@importCategories"
+        "method" => "StockCategoryController@importCategories"
       );
       LogAfterRequest::LogRequest($request, $dataArr);
       return back()

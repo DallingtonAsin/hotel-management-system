@@ -47,7 +47,7 @@ class RoomsDatatable extends DataTable
               $checkBox = '<input type="checkbox" id="'.$room->id.'"/>';
              return $checkBox;
         })->addColumn('room_type', function ($room) {
-            $room_type = RoomType::where('id', $room->room_type_id)->value('name');
+            $room_type = RoomType::where('id', $room->type_id)->value('name');
             return $room_type;
       })->rawColumns(['action', 'checkbox']);
     }
@@ -62,8 +62,8 @@ class RoomsDatatable extends DataTable
     {
         return $model->newQuery()->select(
             'id',
-            'room_type_id',
-            'room_number',
+            'type_id',
+            'number',
             'floor_number',
             'description',
             'added_by'
@@ -101,8 +101,8 @@ class RoomsDatatable extends DataTable
     {
         return [
             'id',
-            'room_type_id',
-            'room_number',
+            'type_id',
+            'number',
             'floor_number',
             'description',
             'added_by'

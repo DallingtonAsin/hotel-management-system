@@ -1,12 +1,13 @@
 <?php
 
-namespace App\DataTables\HR;
+namespace App\DataTables\reservations;
 
-use App\Models\Department;
+use App\Models\Reservation;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
+use App\Models\Guest;
 
-class DepartmentsDatatable extends DataTable
+class ReservationsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -17,41 +18,44 @@ class DepartmentsDatatable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-        ->order(function($query){
-               $query->orderBy('created_at', 'desc');
-        })->addIndexColumn()
-        ->addColumn('action', function ($department) {
-            
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-            data-id="'.$department->id.'" data-original-title="Edit" id="edit-department"
-              class="edit-btn edit-department pr-4">
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($reservation) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+            data-id="' . $reservation->id . '" data-original-title="Edit" id="edit-reservation"
+              class="edit-btn edit-reservation pr-4">
              <span class="fa fa-pen"></span></a>';
-          
-            $btn .= '<a href="javascript:void(0);" id="delete-department" 
+
+                $btn .= '<a href="javascript:void(0);" id="delete-reservation" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$department->id.'" class="trash-btn pr-4"">
+             data-id="' . $reservation->id . '" class="trash-btn pr-4"">
             <span class="fa fa-trash-alt" ></span></a>';
 
-           $btn .= '<a href="javascript:void(0);" id="view-department" 
+                $btn .= '<a href="javascript:void(0);" id="view-reservation" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$department->id.'" class="text-info bolded">
+            data-id="' . $reservation->id . '" class="text-info bolded">
            <i class="fa fa-eye" ></i></a>';
 
-           return $btn;
+                return $btn;
 
-        })->addColumn('checkbox', function ($department) {
-              $checkBox = '<input type="checkbox" id="'.$department->id.'"/>';
+            })->addColumn('guest', function ($reservation) {
+                $guest = Guest::find($reservation->guest_id);
+                return $guest->first_name.' '.$guest->last_name;
+             })->addColumn('checkbox', function ($reservation) {
+              $checkBox = '<input type="checkbox" id="'.$reservation->id.'"/>';
              return $checkBox;
-        })->rawColumns(['checkbox', 'action']);
+             })->rawColumns(['checkbox', 'action']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Department $model
+     * @param \App\Models\Reservation $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Department $model)
+    public function query(Reservation $model)
     {
         return $model->newQuery();
     }
@@ -64,7 +68,7 @@ class DepartmentsDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('hr/departmentsdatatable-table')
+                    ->setTableId('reservations/reservationsdatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')
@@ -87,8 +91,12 @@ class DepartmentsDatatable extends DataTable
     {
         return [
             'id',
-            'name',
-            'created_by'
+            'guest_type',
+            'start_date',
+            'end_date',
+            'discount_percent',
+            'total_price',
+            'recorded_by'
         ];
     }
 
@@ -99,6 +107,6 @@ class DepartmentsDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'Departments_' . date('YmdHis');
+        return 'reservations/Reservations_' . date('YmdHis');
     }
 }

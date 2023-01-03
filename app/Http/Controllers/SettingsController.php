@@ -16,11 +16,7 @@ class SettingsController extends Controller
     {
         return $dataTable->render('pages.main.company-details');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $companies = Company::all();
