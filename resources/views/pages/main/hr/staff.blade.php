@@ -695,24 +695,24 @@
 
                 let errors = [];
                 if (first_name.length < 1) {
-                    errors.push("Please enter the first name of the manager");
+                    errors.push("Please enter the first name");
                 }
                 if (last_name.length < 1) {
-                    errors.push("Please enter the last name of the manager");
+                    errors.push("Please enter the last name");
                 }
                 if (address.length < 1) {
-                    errors.push("Please enter the primary telephone number of the manager");
+                    errors.push("Please enter address");
                 }
 
                 if (tel_no.length < 1) {
-                    errors.push("Please enter the primary telephone number of the manager");
+                    errors.push("Please enter primary phone number");
                 }
                 if (designation.length < 1) {
-                    errors.push("Please enter user's role");
+                    errors.push("Please enter staff's designation");
                 }
 
                 if (gender.length < 1) {
-                    errors.push("Please enter user's gender");
+                    errors.push("Please select gender");
                 }
 
                 return errors;
