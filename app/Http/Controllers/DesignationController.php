@@ -51,9 +51,9 @@ class DesignationController extends Controller
                 return response()->json(['error' => $message]);
             } else {
 
-            
+
                 $department_id = $request->input('department');
-                $name = $request->input('designation');
+                $name = ucfirst($request->input('designation'));
                 $department = Department::where('id', $department_id)->value('name');
                 $added_by = Helper::getLoggedInUser();
 
@@ -147,4 +147,36 @@ class DesignationController extends Controller
             throw $ex;
         }
     }
+
+
+    public function fetchDesignationsAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $designations = Designation::get();
+                dd($designations);
+                echo json_encode($designations);
+                die();
+
+            }
+        } catch (\Exception $ex) {
+            echo "Error " . $ex->getMessage();
+        }
+    }
+
+    public function fetchDesignationsByDepartment(Request $request, $department_id)
+    {
+        try {
+            if ($request->ajax()) {
+                $designations = Designation::where('department_id', $department_id)->get();
+                echo json_encode($designations);
+                die();
+
+            }
+        } catch (\Exception $ex) {
+            echo "Error " . $ex->getMessage();
+        }
+    }
+
+
 }

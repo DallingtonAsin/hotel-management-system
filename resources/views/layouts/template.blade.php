@@ -80,6 +80,7 @@
   <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
   <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
   <link href="{{ asset('css/must-load.css') }}" rel="stylesheet" media="all">
+  <script src="{{ asset('js/custom/ajax.js') }}"></script>
 
 
   <!-- <link href="{{ asset('vendors/jquery-modal/jquery.modal.min.css') }}" rel="stylesheet"> -->

@@ -88,21 +88,11 @@
           {{ session()->get('sessionExpiredMessage') }}
        </span>
        @endif
-
+       <strong class="text-center">{{ __('Need a Hotel Quickbook?') }}<a href="https://pivosoftltd.com" target="_blank" class="pr-3"> Contact us</a></strong>
      </div>
-
-    <!-- <div class="form-group">
-      <span>{{ __('Need assistance?') }}<a class="text-primary"><i class="fa fa-phone ml-1"></i> +256700477421</a></span>
-    </div>  -->
-
 </form>
 </div>
     </div>
-
-
-   <button type="button" class="btn btn-sm btn-block btn-register text-dark bg-white bolded">
-      <strong>{{ __('Need a Hotel Quickbook?') }}<a href="https://pivosoftltd.com" target="_blank"> Contact us</a></strong>
-    </button> 
 
 <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
 <script src="{{ asset('js/login/login.js') }}"></script>

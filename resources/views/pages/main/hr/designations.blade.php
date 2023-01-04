@@ -205,15 +205,17 @@
             }
         });
 
-        const ajaxUrl = @json(route('designations.index.ajax'));
+        const ajaxUrl = @json(route('designations.index.fetch'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const cat = 'designation';
-
+        populateDepartments();
+        
         $(document).ready(function() {
+            
             let table = $('#designations-table');
             let title = "List of registered departments in the system";
-            let columns = [1, 2, 3, 4];
+            let columns = [1, 2, 3];
             let dataColumns = [
                 {
                     data: 'checkbox',
@@ -235,7 +237,7 @@
                     data: 'action',
                     name: 'action',
                     orderable: false,
-                    searchable: false
+                    searchable: true
                 },
             ];
 
@@ -264,7 +266,6 @@
                     }
                 });
             }
-
 
             //modal used to edit designations details [each row of the tbl]
             $('body').on('click', '#edit-designation', function(event) {
@@ -452,8 +453,6 @@
 
             }
 
-
-
             $("#removeAllSuppliers").bind("click", function() {
                 RemoveAllSuppliers();
             });
@@ -512,5 +511,4 @@
     </script>
        <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
        <script src="{{ asset('vendors/notify/notify.js') }}"></script>
-       <script src="{{ asset('js/custom/ajax.js') }}"></script>
 @endsection

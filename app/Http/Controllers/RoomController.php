@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DataTables\rooms\RoomsDatatable;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
+use App\Helpers\Helper;
 
 class RoomController extends Controller
 {
-    
+
     public function index()
     {
-     $total_rooms = Room::count();
-     return view('pages.main.rooms.index', ['total_rooms' => $total_rooms]);
+        $total_rooms = Room::count();
+        return view('pages.main.rooms.index', ['total_rooms' => $total_rooms]);
     }
 
     public function RoomsDataTable(RoomsDatatable $dataTable)
@@ -38,7 +40,56 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'room_type' => 'required',
+            'room_number' => 'required',
+            'floor_number' => 'required',
+            'status' => 'required',
+            'description' => 'sometimes|nullable',
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $room_type_id = $request->input('room_type');
+                $room_number = $request->input('room_number');
+                $floor_number = Helper::Numberize($request->input('floor_number'));
+                $status = ucfirst($request->input('status'));
+                $description = ucfirst($request->input('description'));
+                $added_by = Helper::getLoggedInUser();
+
+                if (
+                    Room::create([
+                        'type_id' => $room_type_id,
+                        'number' => $room_number,
+                        'floor_number' => $floor_number,
+                        'status' => $status,
+                        'description' => $description,
+                        'added_by' => $added_by
+                    ])
+                ) {
+
+                    $message = "Room with number " . $room_number . " has been added successfully";
+                    $stats = $this->GetRoomStats();
+                    $data = [
+                        'success' => $message,
+                        'data' => $stats['data'],
+                        'total' => $stats['total']
+                    ];
+                } else {
+                    $message = "Technical error in adding room";
+                    $data = [
+                        'error' => $message
+                    ];
+                }
+                return response()->json($data);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**
@@ -84,5 +135,22 @@ class RoomController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function GetRoomStats()
+    {
+        try {
+            $rooms = Room::all();
+            $total_rooms = Room::count();
+
+            $data = array(
+                'data' => $rooms,
+                'total' => $total_rooms
+            );
+
+            return $data;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 }

@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="form-group">
-                            <span>Name</span>
+                            <span><i class="text-danger pr-1">*</i>Name</span>
                             <input type="text" class="form-control name bg-white" name="name"
                                 placeholder="Enter department name" required autofocus>
                         </div>
@@ -187,13 +187,8 @@
                 </div>
             </div>
         </div>
-    </div> <!-- end of modal Deletedepartments-->
+    </div> <!-- end of modal Delete Departments-->
 
-
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
-<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script> --}}
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers: {
@@ -495,4 +490,6 @@
             }
         });
     </script>
+     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

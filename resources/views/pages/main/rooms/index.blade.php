@@ -3,58 +3,20 @@
 @section('content')
 
       <div class="card">
-        <div class="card-header">
-          <div class="panel-tile">
 
-            <div class="row nunito-font">
-
-
-              <div class="col-lg-2">
-                <h6 class="text-dark">
-                  <i class="fa fa-home text-success"> /</i>
-                  <strong>Rooms</strong>
-                  <span class="badge badge-info totl_rooms">
-                      @isset($total_rooms)
+        <div class="card-header d-flex align-items-center">
+          <span class="response"></span>
+          <h6 class="card-title mb-0 text-dark">
+              <i class="fa fa-home text-success"> /</i>
+              <strong>Rooms</strong>
+              <span class="badge badge-info total_rooms">
+                  @isset($total_rooms)
                       {{ number_format($total_rooms) }}
-                      @endisset
-                    </span>
-                </h6>
-              </div>
-
-              <div class="col-lg-2">
-                <h6>
-                    <a class=" bolded" href="javascript:void(0)"
-                     id="createNewSupplier"> Add room</a>
-                </h6>
-              </div>
-
-              <div class="col-lg-2">
-               <div class="btn-group">
-                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Action
-               </button>
-               <ul class="dropdown-menu">
-                 @can('isAdmin')
-
-
-                   <li><a href=""  class="add-link text-dark text-decoration-none"
-                     data-bs-toggle="modal" data-bs-target="#importRooms"><strong>Import suppliers</strong>
-                   </a></li>
-
-                 <li>
-                <a class="text-decoration-none text-dark
-                nunito-font"
-                href="javascript:void(0)"
-                id="removeAllSuppliers"> Delete all rooms</a>
-                 </li>
-                @endcan
-                </ul>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
+                  @endisset
+              </span>
+          </h6>
+          <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewRoom">
+              <i class="fa fa-plus-circle pr-1"></i>Add room</button>
       </div>
 
       <div class="card-body">
@@ -104,15 +66,15 @@
 
 
 <!--Add rooms -->
-<div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
+<div class="modal fade nunito-font addRoomModal" id="addRoomModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
-      <form name="suppliers" id="SuppliersForm">
+      <form name="rooms" id="RoomsForm">
           @csrf
        <div class="modal-header text-center">
-        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new supplier</h6>
+        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new room</h6>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -121,49 +83,48 @@ role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-body">
 
         <div class="form-group">
-           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-            <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
-             placeholder="Enter supplier id"  Required autofocus>
+           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> 
+            <input type="hidden" class="form-control roomId bg-white roomId" name="id"
+             placeholder="Enter room id"  required autofocus>
           </div>
 
         <div class="form-group">
-          <span>Name</span>
-          <input type="text" class="form-control name bg-white" name="name" placeholder="Enter supplier name" Required autofocus>
-        </div>
+          <span><span class="text-danger">*</span> Room Type</span>
+          <select class="form-control room_types_section bg-white" name="room_type">
+              <option value="">select room type</option>
+          </select>
+      </div>
 
         <div class="form-group">
-          <span>Address</span>
-          <input type="text" class="form-control address bg-white" name="address" placeholder="Enter address" Required autofocus>
-        </div>
-
-
-        <div class="form-group">
-          <span>Contact</span>
-          <input type="text" class="form-control contact bg-white" name="contact" placeholder="Enter contact" Required autofocus>
+          <span><i class="text-danger pr-1">*</i>Room number</span>
+          <input type="text" class="form-control room_number bg-white" name="room_number" placeholder="Enter room number" required autofocus>
         </div>
 
 
         <div class="form-group">
-          <span>Email</span>
-          <input type="email" class="form-control email bg-white" name="email" placeholder="Email (optional)">
+          <span><i class="text-danger pr-1">*</i>Floor number</span>
+          <input type="number" class="form-control floor_number bg-white" name="floor_number" placeholder="Enter floor number" required autofocus>
         </div>
 
 
         <div class="form-group">
-          <span>Debt</span>
-          <input type="text" class="form-control debt bg-white" name="debt" placeholder="Enter debt">
+          <span><i class="text-danger pr-1">*</i>Status</span>
+          <select name="status" class="form-control status">
+            <option value="">Select status</option>
+            <option value="Occupied">Occupied</option>
+            <option value="Occupied">Vacant</option>
+          </select>
         </div>
 
 
         <div class="form-group">
-          <span>Credit</span>
-          <input type="text" class="form-control credit bg-white" name="credit" placeholder="Enter credit">
+          <span>Description</span>
+          <textarea class="form-control description" rows="3" name="description" placeholder="Enter description"></textarea>
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary addsupplierBtn"  name="AddsupplierBtn">Save</button>
+          <button type="submit" class="btn btn-primary addRoomBtn"  name="addRoomBtn">Save</button>
           <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
         </div>
 
         <div class="form-group">
@@ -187,7 +148,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
       <div class="modal-header text-center">
         <h6 class="modal-title w-100 font-weight-bold">
-        Import an excel file of suppliers </h6>
+        Import an excel file of rooms </h6>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -200,7 +161,7 @@ role="dialog" aria-labelledby="myModalLabel">
         </div>
 
         <div class="form-group">
-          <input type="file" class="form-control-file @error('select_file') is-invalid @enderror" name="select_file" Required autofocus>
+          <input type="file" class="form-control-file @error('select_file') is-invalid @enderror" name="select_file" required autofocus>
         </div>
 
         @error('select_file')
@@ -222,12 +183,12 @@ role="dialog" aria-labelledby="myModalLabel">
 </div>
 
 
- <!--Modal Deletesuppliers -->
+ <!--Modal Delete rooms -->
  <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier</h6>
+          <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete room</h6>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -237,7 +198,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
           <div class="form-group">
             <div class="text-center">
-             <label class="text-danger delete-alert-text">Are you sure you want to delete this supplier
+             <label class="text-danger delete-alert-text">Are you sure you want to delete this room
                <small class="text-dark text-muted bolded">
                </small>
                ?
@@ -253,34 +214,31 @@ role="dialog" aria-labelledby="myModalLabel">
       </div>
     </div>
   </div>
-</div> <!-- end of modal Deletesuppliers-->
+</div> <!-- end of modal Delete Suppliers-->
 
-
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
-<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script> --}}
-<script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-<script src="{{ asset('vendors/notify/notify.js') }}"></script>
 <script>
   $.ajaxSetup({
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            }
          });
+
   const ajaxUrl = @json(route('rooms.index.ajax'));
+  const roomTypesAjaxUrl = @json(route('room_types.ajax.fetch'));
   const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
-  const cat = 'supplier';
-  const token = "{{ csrf_token() }}";
+
+  const cat = 'rooms';
+  populateRoomTypes();
 </script>
 
 <script type="text/javascript">
   $(document).ready(function(){
    
-
      //code that displays results of the table index()
-    var table = $('#rooms-table');
-    var title = "List of registered rooms in the system";
-    var columns = [1,2,3,4];
-    var dataColumns = [
+    let table = $('#rooms-table');
+    let title = "List of registered rooms in the system";
+    let columns = [1,2,3,4];
+    let dataColumns = [
          {data: 'checkbox', name:'checkbox'},
          {data: 'number', name:'number'},
          {data: 'room_type', name:'room_type'},
@@ -292,15 +250,15 @@ role="dialog" aria-labelledby="myModalLabel">
     
     makeDataTable(table, title, columns, dataColumns);
       
-   $('#createNewSupplier').click(function (e) {
+   $('#addNewRoom').click(function (e) {
          e.preventDefault();
          DisableTableFields(false);
          ShowBtns();
-        $('.addsupplierBtn').text("Register supplier");
-        $('.supplierId').val('');
-        $('#SuppliersForm').trigger("reset");
-        $('#modalHeading').html("Register new supplier");
-        $('#addSuppliersModal').modal('show');
+        $('.addRoomBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+        $('.roomId').val('');
+        $('#RoomsForm').trigger("reset");
+        $('#modalHeading').html("Add new room");
+        $('#addRoomModal').modal('show');
     });
 
 
@@ -310,23 +268,23 @@ Numberize(".credit");
 function Numberize(i){
   $(document).on("keyup", i , function(){
   if(this.value.length > 0){
-    var n = parseInt(this.value.replace(/\D/g,''), 10);
+    let n = parseInt(this.value.replace(/\D/g,''), 10);
     $(this).val(n.toLocaleString());
   }
 });
 }
 
-//modal used to edit suppliers details [each row of the tbl]
-    $('body').on('click', '#edit-supplier', function (event) {
-      var supplier_id = $(this).data('id');
+//modal used to edit rooms details [each row of the tbl]
+    $('body').on('click', '#edit-room', function (event) {
+      let room_id = $(this).data('id');
       event.preventDefault();
 
-      $.get("{{ route('suppliers.index') }}" +'/' + supplier_id +'/edit', function (data) {
+      $.get("{{ route('rooms.index') }}" +'/' + room_id +'/edit', function (data) {
 
-          $('#modalHeading').html("Edit details of supplier " + data.name + "");
-          $('.addsupplierBtn').text("Edit supplier");
-          $('#addSuppliersModal').modal('show');
-          $('.supplierId').val(data.id);
+          $('#modalHeading').html("Edit details of room " + data.name + "");
+          $('.addRoomBtn').text("Edit room");
+          $('#addRoomModal').modal('show');
+          $('.roomId').val(data.id);
           $('.name').val(data.name);
           $('.address').val(data.address);
           $('.contact').val(data.contact);
@@ -339,16 +297,16 @@ function Numberize(i){
    });
 
 
-   //View Modal used to view each row [suppliers details]
-   $('body').on('click', '#view-supplier', function (event) {
-      var supplier_id = $(this).data('id');
+   //View Modal used to view each row [rooms details]
+   $('body').on('click', '#view-room', function (event) {
+      let room_id = $(this).data('id');
       event.preventDefault();
 
-      $.get("{{ route('suppliers.index') }}" +'/' + supplier_id +'', function (data) {
+      $.get("{{ route('rooms.index') }}" +'/' + room_id +'', function (data) {
 
-          $('#modalHeading').html("Details of supplier " + data.name + "");
-          $('#addSuppliersModal').modal('show');
-          $('.supplierId').val(data.id);
+          $('#modalHeading').html("Details of room " + data.name + "");
+          $('#addRoomModal').modal('show');
+          $('.roomId').val(data.id);
           $('.name').val(data.name);
           $('.address').val(data.address);
           $('.contact').val(data.contact);
@@ -361,40 +319,43 @@ function Numberize(i){
    });
 
 
-    $('.addSupplierBtn').click(function (e) {
+    $('.addRoomBtn').click(function (e) {
 
         e.preventDefault();
+        // alert("Hey");
+        
 
-        var Errors = validateForm();
+        let Errors = validateForm();
+        // console.log('Errors', errors);
         if(Errors.length == 0){
         $(this).html('Sending..');
 
         $.ajax({
-          data: $('#SuppliersForm').serialize(),
-          url: "{{ route('suppliers.store') }}",
+          data: $('#RoomsForm').serialize(),
+          url: "{{ route('rooms.store') }}",
           type: "POST",
           dataType: 'json',
           success: function (data) {
 
-              $('#SuppliersForm').trigger("reset");
-              $('#addSuppliersModal').modal("hide");
-              var resp = data.success;
+              $('#RoomsForm').trigger("reset");
+              $('#addRoomModal').modal("hide");
+              let resp = data.success;
               ShowResponse('.response', resp, 'success');
               ResetTblInfo(data);
-              var tbl = $('#rooms-table').DataTable();
+              let tbl = $('#rooms-table').DataTable();
               tbl.ajax.reload();
 
           },
           error: function (data) {
               console.log('Error:', data.error);
               ShowResponse('.response', data.error, 'error');
-              $('.addsupplierBtn').html('Save Changes');
+              $('.addRoomBtn').html('Save Changes');
           }
       });
         }else
         {
-            var i;
-            var message ="";
+            let i;
+            let message ="";
             for(i=0; i<Errors.length; i++){
                 message += Errors[i] + "<br>";
             }
@@ -405,32 +366,32 @@ function Numberize(i){
     });
 
    //this pops up confirm delete modal
-    $('body').on('click', '#delete-supplier', function (e) {
-            var supplier_id = $(this).data("id");
+    $('body').on('click', '#delete-room', function (e) {
+            let room_id = $(this).data("id");
             e.preventDefault();
             $("#deleteSuppliersModal").modal('show');
-            $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
+            $(".delete-alert-text").html("Are you sure you want to delete this room?");
             $('.delete-ok-btn').on('click', function(){
-                   ListenAndDoDeletion(supplier_id);
+                   ListenAndDoDeletion(room_id);
          });
 
  });
 
 
  function ListenAndDoDeletion(id){
-    var deleteUrl = '{{ route("suppliers.destroy", ":id") }}';
+    let deleteUrl = '{{ route("rooms.destroy", ":id") }}';
     deleteUrl = deleteUrl.replace(':id', id);
      $('.delete-ok-btn').html('Deleting...');
         $.ajax({
          type: "DELETE",
          url: deleteUrl,
          success: function (data) {
-              var resp = data.success;
+              let resp = data.success;
               $('.delete-ok-btn').html('Yes');
               $('#deleteSuppliersModal').modal("hide");
               ShowResponse('.response', resp, 'success');
               ResetTblInfo(data);
-              var tbl = $('#rooms-table').DataTable();
+              let tbl = $('#rooms-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
@@ -443,7 +404,7 @@ function Numberize(i){
 
   function DisableTableFields(bool){
 
-          $('.supplierId').attr('disabled', bool);
+          $('.roomId').attr('disabled', bool);
           $('.name').attr('disabled', bool);
           $('.address').attr('disabled', bool);
           $('.contact').attr('disabled', bool);
@@ -453,13 +414,13 @@ function Numberize(i){
   }
 
   function HideBtns(){
-          $('.addsupplierBtn').hide();
+          $('.addRoomBtn').hide();
           $('.clearBtn').hide();
           $('.closeBtn').hide();
   }
 
   function ShowBtns(){
-          $('.addsupplierBtn').show();
+          $('.addRoomBtn').show();
           $('.clearBtn').show();
           $('.closeBtn').show();
   }
@@ -475,41 +436,42 @@ function Numberize(i){
     }
 
   function FormatNumber(number){
-   var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+   let FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
    return FormattedNumber;
   }
 
 function ResetTblInfo(response)
  {
-     var totl_number , sum_of_credits, sum_of_debts;
-     totl_number = FormatNumber(response.totl_no);
-     sum_of_credits = FormatNumber(response.totl_credit);
-     sum_of_debts = FormatNumber(response.totl_debt);
-
-     $('.totl_rooms').html(totl_number);
-     $('.totl_credit').html(sum_of_credits);
-     $('.totl_debt').html(sum_of_debts);
+     let total = FormatNumber(response.total);
+     $('.total_rooms').html(total);
  }
 
  function validateForm()
  {
-    var name = $('.name').val();
-    var address = $('.address').val();
-    var contact = $('.contact').val();
-    var errors = [];
-    if(name.length < 1){
-      var nameErr = "Please enter the name of the supplier";
-      errors.push(nameErr);
+    let room_type = $('.room_types_section').val();
+    let room_number = $('.room_number').val();
+    let floor_number = $('.floor_number').val();
+    let status = $('.status').val();
+    let description = $('.description').val();
+
+    let errors = [];
+    if(room_type.length < 1){
+      errors.push("Please enter room type");
     }
-    if(address.length < 1){
-      var addressErr = "Please enter the address of the supplier";
-      errors.push(addressErr);
+    if(room_number.length < 1){
+      errors.push("Please enter room number");
     }
-    if(contact.length < 1){
-     var contactErr = "Please enter supplier's contact";
-     errors.push(contactErr);
+    if(floor_number.length < 1){
+      errors.push("Please enter floor number on which the room is located");
     }
 
+    if(status.length < 1){
+      errors.push("Please select room status");
+    }
+    // if(description.length < 1){
+    //   errors.push("Please enter room details");
+    // }
+   
       return errors;
 
  }
@@ -528,11 +490,11 @@ function ResetTblInfo(response)
    closeIcon: true,
    draggable:true,
    closeIconClass: 'fa fa-close text-danger',
-   title: 'Delete all suppliers',
-   content:'Are you sure you want to remove all suppliers',
+   title: 'Delete all rooms',
+   content:'Are you sure you want to remove all rooms',
    buttons:{
        confirm:function(){
-     var self = this;
+     let self = this;
      return $.ajax({
          data: {
              "_token": "{{ csrf_token() }}",
@@ -546,10 +508,10 @@ function ResetTblInfo(response)
              title: 'Message',
              content: data.success,
          });
-          $(".totl_rooms").text(data.totl_no);
+          $(".total_rooms").text(data.totl_no);
           $(".totl_credit").text(data.totl_credit);
           $(".totl_debt").text(data.totl_debt);
-          var tbl = $('#rooms-table').DataTable();
+          let tbl = $('#rooms-table').DataTable();
           tbl.ajax.reload();
 
 
@@ -577,5 +539,7 @@ function ResetTblInfo(response)
   });
 
 </script>
+<script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+<script src="{{ asset('vendors/notify/notify.js') }}"></script>
 
 @endsection

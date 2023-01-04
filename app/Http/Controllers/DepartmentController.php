@@ -51,7 +51,7 @@ class DepartmentController extends Controller
                 $message = $validator->errors()->all();
                 return response()->json(['error' => $message]);
             } else {
-                $name = $request->input('name');
+                $name = ucfirst($request->input('name'));
                 $added_by = Helper::getLoggedInUser();
                 if (Department::create(['name' => $name, 'created_by' => $added_by])) {
                     $message = "Department " . $name . " added successfully";

@@ -1,7 +1,7 @@
 <div class="az-content-body">
 
       <div class="row">
-        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+        <a href="{{ route('staff.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
           <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
             <div class="info">
               <h4>Staff</h4>
@@ -9,7 +9,7 @@
             </div>
           </div>
         </a>
-        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+        <a href="{{ Route('rooms.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
           <div class="widget-small info coloured-icon"><i class="icon fa fa-bed fa-3x"></i>
             <div class="info">
               <h4>Rooms</h4>
@@ -17,10 +17,10 @@
             </div>
           </div>
         </a>
-        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+        <a href="{{ Route('reservations.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
           <div class="widget-small warning coloured-icon"><i class="icon fa fa-landmark fa-3x"></i>
             <div class="info">
-              <h4>Bookings</h4>
+              <h4>Reservations</h4>
               <p><b>{{ $total_bookings }}</b></p>
             </div>
           </div>

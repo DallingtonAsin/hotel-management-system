@@ -31,7 +31,7 @@
 
          <div class="col-lg-3">
          <a href=""><img src="{{ asset('vendors/img/bed.png')}}" class="icon-img-1"/>
-            <h6 class="header-caption">Bookings</h6></a>
+            <h6 class="header-caption">Reservations</h6></a>
          </div>
 
          <div class="col-lg-3">

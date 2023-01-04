@@ -20,31 +20,37 @@ class RoomTypesDatatable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-        ->order(function($query){
-               $query->orderBy('created_at', 'desc');
-        })->addIndexColumn()
-        ->addColumn('action', function ($roomType) {
-            
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-            data-id="'.$roomType->id.'" data-original-title="Edit" id="edit-room-type"
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($roomType) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+            data-id="' . $roomType->id . '" data-original-title="Edit" id="edit-room-type"
               class="edit-btn edit-room-type pr-4">
              <span class="fa fa-pen"></span></a>';
-          
-            $btn .= '<a href="javascript:void(0);" id="delete-room-type" 
+
+                $btn .= '<a href="javascript:void(0);" id="delete-room-type" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$roomType->id.'" class="trash-btn pr-4"">
+             data-id="' . $roomType->id . '" class="trash-btn pr-4"">
             <span class="fa fa-trash-alt" ></span></a>';
 
-           $btn .= '<a href="javascript:void(0);" id="view-room-type" 
+                $btn .= '<a href="javascript:void(0);" id="view-room-type" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$roomType->id.'" class="text-info bolded">
+            data-id="' . $roomType->id . '" class="text-info bolded">
            <i class="fa fa-eye" ></i></a>';
 
-           return $btn;
+                return $btn;
 
+            })->editColumn('single_occupancy_rate', function ($roomType) {
+            $s_rate = number_format($roomType->single_occupancy_rate);
+            return $s_rate;
+        })->editColumn('double_occupancy_rate', function ($roomType) {
+            $d_rate = number_format($roomType->double_occupancy_rate);
+            return $d_rate;
         })->addColumn('checkbox', function ($roomType) {
-              $checkBox = '<input type="checkbox" id="'.$roomType->id.'"/>';
-             return $checkBox;
+            $checkBox = '<input type="checkbox" id="' . $roomType->id . '"/>';
+            return $checkBox;
         })->rawColumns(['action', 'checkbox']);
     }
 
@@ -73,18 +79,18 @@ class RoomTypesDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('rooms/roomtype')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('rooms/roomtype')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**

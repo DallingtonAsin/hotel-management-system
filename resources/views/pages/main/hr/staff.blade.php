@@ -86,7 +86,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <span><span class="text-danger">*</span> Designation</span>
-                                    <select class="form-control designation_section bg-white" name="designation">
+                                    <select class="form-control bg-white designation_section" name="designation">
                                         <option value="">select designation</option>
                                     </select>
                                 </div>
@@ -162,8 +162,8 @@
 
 
     <!--Modal Delete staff -->
-    <div class="modal fade" id="deleteStaffModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
+    <div class="modal fade" id="deleteStaffModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        role="dialog" aria-labelledby="ModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -381,22 +381,41 @@
             Numberize(".debt");
             Numberize(".credit");
 
-            populateDesignations();
             populateDepartments();
+            onSelectDepartment();
 
-            function populateDesignations() {
-                let url = "{{ route('designations.ajax.fetch') }}"
+            function onSelectDepartment() {
+                $('.departments_section').on('change', function() {
+                    let department_id = $(this).find(":selected").val();
+                    if (department_id) {
+                        populateDesignations(department_id);
+                    }
+                });
+            }
+
+            function populateDesignations(department_id) {
+
+                let url = '{{ route('designations.ajax.fetch', ':department_id') }}';
+                url = url.replace(':department_id', department_id);
+
                 $.ajax({
                     type: "GET",
                     url: url,
                     success: function(resp) {
                         let obj = JSON.parse(resp);
+                        $('.designation_section').empty().append('<option selected="selected" value="">Select designation</option>');
+
                         for (let i = 0; i < obj.length; i++) {
                             let id = obj[i]['id'];
                             let designation = obj[i]['name'];
                             $('.designation_section').append('<option value=' + id + '>' + designation +
                                 '</option>');
                         }
+                    },
+                    error: function(data) {
+                        console.log('Error on fetching designations', data);
+                        console.log('Error:', data.error);
+                        ShowResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -414,6 +433,11 @@
                             $('.departments_section').append('<option value=' + id + '>' + department +
                                 '</option>');
                         }
+                    },
+                    error: function(data) {
+                        console.log('Error on fetching departments', data);
+                        console.log('Error:', data.error);
+                        ShowResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -559,7 +583,6 @@
             }
 
 
-
             $('body').on('click', '#changeAccountBtn', function(e) {
                 e.preventDefault();
                 let user_id = $(this).data("id");
@@ -583,8 +606,6 @@
                 });
 
             });
-
-
 
             function ChangeAccountStatus(id, status) {
                 let accountChangeUrl = '{{ route('account.change') }}';
@@ -663,47 +684,40 @@
             }
 
             function validateForm() {
+
                 let first_name = $('.first_name').val();
                 let last_name = $('.last_name').val();
                 let address = $('.address').val();
                 let national_id = $('.national_id').val();
                 let tel_no = $('.tel_no').val();
-                let role = $('.designation_section').val();
+                let designation = $('.designation_section').val();
                 let gender = $('.gender').val();
 
                 let errors = [];
                 if (first_name.length < 1) {
-                    let fnameErr = "Please enter the first name of the manager";
-                    errors.push(fnameErr);
+                    errors.push("Please enter the first name of the manager");
                 }
                 if (last_name.length < 1) {
-                    let lnameErr = "Please enter the last name of the manager";
-                    errors.push(lnameErr);
+                    errors.push("Please enter the last name of the manager");
                 }
                 if (address.length < 1) {
-                    let addressErr = "Please enter the address of the manager";
-                    errors.push(addressErr);
+                    errors.push("Please enter the primary telephone number of the manager");
                 }
 
                 if (tel_no.length < 1) {
-                    let contactErr = "Please enter the primary telephone number of the manager";
-                    errors.push(contactErr);
+                    errors.push("Please enter the primary telephone number of the manager");
                 }
-                if (role.length < 1) {
-                    let roleErr = "Please enter user's role";
-                    errors.push(roleErr);
+                if (designation.length < 1) {
+                    errors.push("Please enter user's role");
                 }
 
                 if (gender.length < 1) {
-                    let genderErr = "Please enter user's gender";
-                    errors.push(genderErr);
+                    errors.push("Please enter user's gender");
                 }
 
                 return errors;
 
             }
-
-
 
             $("#removeAllmanagers").bind("click", function() {
                 RemoveAllmanagers();
@@ -759,10 +773,6 @@
                 });
 
             }
-
-
-
-
         });
     </script>
 @endsection

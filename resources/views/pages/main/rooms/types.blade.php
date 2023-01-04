@@ -1,579 +1,520 @@
 @extends('layouts.template')
 
 @section('content')
+    <div class="card">
 
-      <div class="card">
-        <div class="card-header">
-          <div class="panel-tile">
+        <div class="card-header d-flex align-items-center">
+            <span class="response"></span>
+            <h6 class="card-title mb-0 text-dark">
+                <i class="fa fa-home text-success"> /</i>
+                <strong>Room Types</strong>
+                <span class="badge badge-info total_room_types">
+                    @isset($total_room_types)
+                        {{ number_format($total_room_types) }}
+                    @endisset
+                </span>
+            </h6>
+            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewRoomType">
+                <i class="fa fa-plus-circle pr-1"></i>Add room type</button>
+        </div>
 
-            <div class="row nunito-font">
+        <div class="card-body">
 
+            <div class="col-lg-8 text-center nunito-font">
 
-              <div class="col-lg-2">
-                <h6 class="text-dark">
-                  <i class="fa fa-home text-success"> /</i>
-                  <strong>Room Types</strong>
-                  <span class="badge badge-info  totl_room_types">
-                      @isset($total_room_types)
-                      {{ number_format($total_room_types) }}
-                      @endisset
-                    </span>
-                </h6>
-              </div>
+                @if (session()->get('success'))
+                    <div class='alert alert-success alert-dismissible' role='alert'>
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span></button>
+                        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
+                    </div>
+                @endif
 
-              <div class="col-lg-2">
-                <h6>
-                    <a class=" bolded" href="javascript:void(0)"
-                     id="createNewSupplier"> Add room type</a>
-                </h6>
-              </div>
+                @if (session()->get('fail'))
+                    <div class='alert alert-danger alert-dismissible' role='alert'>
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span></button>
+                        <strong>Oops!</strong> {{ session()->get('fail') }}
+                    </div>
+                @endif
 
-              <div class="col-lg-2">
-               <div class="btn-group">
-                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Action
-               </button>
-               <ul class="dropdown-menu">
-                 @can('isAdmin')
-
-
-                   <li><a href=""  class="add-link text-dark text-decoration-none"
-                     data-bs-toggle="modal" data-bs-target="#importRooms"><strong>Import suppliers</strong>
-                   </a></li>
-
-                 <li>
-                <a class="text-decoration-none text-dark
-                nunito-font"
-                href="javascript:void(0)"
-                id="removeAllSuppliers"> Delete all rooms</a>
-                 </li>
-                @endcan
-                </ul>
-              </div>
             </div>
 
-          </div>
+            <div class="table table-sm table-responsive">
 
-        </div>
-      </div>
+                <table class="table table-bordered table-hover room-types-table" id="room-types-table">
 
-      <div class="card-body">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Room Type</th>
+                            <th>Single Occupancy Rate($)</th>
+                            <th>Double Occupancy Rate($)</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
 
-        <div class="col-lg-8 text-center nunito-font">
 
-            @if(session()->get('success'))
-            <div class='alert alert-success alert-dismissible' role='alert'>
-             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-              <span aria-hidden='true'>&times;</span></button>
-              <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
             </div>
-            @endif
-
-            @if(session()->get('fail'))
-            <div class='alert alert-danger alert-dismissible' role='alert'>
-             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-              <span aria-hidden='true'>&times;</span></button>
-              <strong>Oops!</strong> {{ session()->get('fail') }}
-            </div>
-            @endif
-
-          </div>
-
-      <div class="table table-sm table-responsive" >
-
-        <table class="table table-bordered table-hover room-types-table" id="room-types-table">
-
-            <thead>
-              <tr>
-                <th></th>
-                <th>Room Type</th>
-                <th>Single Occupancy Rate($)</th>
-                <th>Double Occupancy Rate($)</th>
-                <th>Added By</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-        </table>
-
-
-</div>
-</div>
-</div>
-
-
-
-<!--Add rooms -->
-<div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
-role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-
-      <form name="suppliers" id="SuppliersForm">
-          @csrf
-       <div class="modal-header text-center">
-        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new supplier</h6>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-
-        <div class="form-group">
-           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-            <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
-             placeholder="Enter supplier id"  Required autofocus>
-          </div>
-
-        <div class="form-group">
-          <span>Name</span>
-          <input type="text" class="form-control name bg-white" name="name" placeholder="Enter supplier name" Required autofocus>
         </div>
-
-        <div class="form-group">
-          <span>Address</span>
-          <input type="text" class="form-control address bg-white" name="address" placeholder="Enter address" Required autofocus>
-        </div>
-
-
-        <div class="form-group">
-          <span>Contact</span>
-          <input type="text" class="form-control contact bg-white" name="contact" placeholder="Enter contact" Required autofocus>
-        </div>
-
-
-        <div class="form-group">
-          <span>Email</span>
-          <input type="email" class="form-control email bg-white" name="email" placeholder="Email (optional)">
-        </div>
-
-
-        <div class="form-group">
-          <span>Debt</span>
-          <input type="text" class="form-control debt bg-white" name="debt" placeholder="Enter debt">
-        </div>
-
-
-        <div class="form-group">
-          <span>Credit</span>
-          <input type="text" class="form-control credit bg-white" name="credit" placeholder="Enter credit">
-        </div>
-
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary addsupplierBtn"  name="AddsupplierBtn">Save</button>
-          <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
-        </div>
-
-        <div class="form-group">
-          <span class="errors-section text-danger nunito-font"></span>
-        </div>
-
-      </div>
-    </form>
-  </div>
-</div>
-</div>
-
-<!--Import Rooms -->
-<div class="modal fade nunito-font" id="importRooms" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-
-      <form action="{{ Route('suppliers.import') }}" method="post"
-      enctype="multipart/form-data" name="inportExpensesForm" >
-      @csrf
-
-      <div class="modal-header text-center">
-        <h6 class="modal-title w-100 font-weight-bold">
-        Import an excel file of suppliers </h6>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-
-        <div class="form-group">
-          <span>Select file for Upload</span>
-        </div>
-
-        <div class="form-group">
-          <input type="file" class="form-control-file @error('select_file') is-invalid @enderror" name="select_file" Required autofocus>
-        </div>
-
-        @error('select_file')
-        <div class='alert alert-danger alert-dismissible text-center' role='alert'>
-          <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-            <span aria-hidden='true'>&times;</span></button>
-            <strong>Sorry!</strong> {{ $message }}
-          </div>
-          @enderror
-
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary">Upload</button>
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </form>
     </div>
-  </div>
-</div>
 
 
- <!--Modal Deletesuppliers -->
- <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header text-center">
-          <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier</h6>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+
+    <!--Add rooms -->
+    <div class="modal fade nunito-font addRoomTypeModal" id="addRoomTypeModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+
+                <form name="roomTypes" id="RoomTypesForm">
+                    @csrf
+                    <div class="modal-header text-center">
+                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new room type</h6>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                            <input type="hidden" class="form-control roomTypeId bg-white roomTypeId" name="id"
+                                placeholder="Enter room type id" required autofocus>
+                        </div>
+
+                        <div class="form-group">
+                            <span><i class="text-danger pr-1">*</i>Name</span>
+                            <input type="text" class="form-control name bg-white" name="name"
+                                placeholder="Enter room type name" required autofocus>
+                        </div>
+
+                        <div class="form-group">
+                          <span><i class="text-danger pr-1">*</i>Single Occupancy Rate</span>
+                          <input type="text" class="form-control single_occupancy_rate bg-white" name="single_occupancy_rate"
+                              placeholder="Enter single occupacy rate" required autofocus>
+                      </div>
+
+                      <div class="form-group">
+                        <span><i class="text-danger pr-1">*</i>Double Occupancy rate</span>
+                        <input type="text" class="form-control double_occupancy_rate bg-white" name="double_occupancy_rate"
+                            placeholder="Enter double occupacy rate" required autofocus>
+                    </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary addRoomTypeBtn"
+                                name="addRoomTypeBtn">Save</button>
+                            <button type="reset" class="btn btn-danger clearBtn">Clear</button>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="errors-section text-danger nunito-font"></span>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="modal-body">
-
-          <div class="form-group">
-            <div class="text-center">
-             <label class="text-danger delete-alert-text">Are you sure you want to delete this supplier
-               <small class="text-dark text-muted bolded">
-               </small>
-               ?
-
-             </label>
-           </div>
-         </div>
-
-         <div class="form-group">
-            <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
-            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
-        </div>
-      </div>
     </div>
-  </div>
-</div> <!-- end of modal Deletesuppliers-->
+
+    <!--Import Room Types -->
+    <div class="modal fade nunito-font" id="importRooms" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+
+                <form action="{{ Route('suppliers.import') }}" method="post" enctype="multipart/form-data"
+                    name="inportExpensesForm">
+                    @csrf
+
+                    <div class="modal-header text-center">
+                        <h6 class="modal-title w-100 font-weight-bold">
+                            Import an excel file of room typess </h6>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <span>Select file for Upload</span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="file" class="form-control-file @error('select_file') is-invalid @enderror"
+                                name="select_file" required autofocus>
+                        </div>
+
+                        @error('select_file')
+                            <div class='alert alert-danger alert-dismissible text-center' role='alert'>
+                                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span></button>
+                                <strong>Sorry!</strong> {{ $message }}
+                            </div>
+                        @enderror
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
-<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script> --}}
-<script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-<script src="{{ asset('vendors/notify/notify.js') }}"></script>
-<script>
-  $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-           }
-         });
-  const ajaxUrl = @json(route('roomstypes.index.ajax'));
-  const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
-  const cat = 'supplier';
-  const token = "{{ csrf_token() }}";
-</script>
+    <!--Modal Deleteroom typess -->
+    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
+        aria-labelledby="ModalLabel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete room types</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-   
+                <div class="modal-body">
 
-     //code that displays results of the table index()
-    var table = $('#room-types-table');
-    var title = "List of registered room types in the system";
-    var columns = [1,2,3,4];
-    var dataColumns = [
-         {data: 'checkbox', name:'checkbox'},
-         {data: 'name', name:'name'},
-         {data: 'single_occupancy_rate', name:'single_occupancy_rate'},
-         {data: 'double_occupancy_rate', name:'double_occupancy_rate'},
-         {data: 'added_by', name:'added_by'},
-         {data: 'action', name: 'action',orderable: false,searchable: false},
-     ];
-    
-    makeDataTable(table, title, columns, dataColumns);
-      
-   $('#createNewSupplier').click(function (e) {
-         e.preventDefault();
-         DisableTableFields(false);
-         ShowBtns();
-        $('.addsupplierBtn').text("Register supplier");
-        $('.supplierId').val('');
-        $('#SuppliersForm').trigger("reset");
-        $('#modalHeading').html("Register new supplier");
-        $('#addSuppliersModal').modal('show');
-    });
+                    <div class="form-group">
+                        <div class="text-center">
+                            <label class="text-danger delete-alert-text">Are you sure you want to delete this room types
+                                <small class="text-dark text-muted bolded">
+                                </small>
+                                ?
+
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end of modal Delete room types-->
 
 
-Numberize(".debt");
-Numberize(".credit");
-
-function Numberize(i){
-  $(document).on("keyup", i , function(){
-  if(this.value.length > 0){
-    var n = parseInt(this.value.replace(/\D/g,''), 10);
-    $(this).val(n.toLocaleString());
-  }
-});
-}
-
-//modal used to edit suppliers details [each row of the tbl]
-    $('body').on('click', '#edit-supplier', function (event) {
-      var supplier_id = $(this).data('id');
-      event.preventDefault();
-
-      $.get("{{ route('suppliers.index') }}" +'/' + supplier_id +'/edit', function (data) {
-
-          $('#modalHeading').html("Edit details of supplier " + data.name + "");
-          $('.addsupplierBtn').text("Edit supplier");
-          $('#addSuppliersModal').modal('show');
-          $('.supplierId').val(data.id);
-          $('.name').val(data.name);
-          $('.address').val(data.address);
-          $('.contact').val(data.contact);
-          $('.email').val(data.email);
-          $('.debt').val(data.debt);
-          $('.credit').val(data.credit);
-          DisableTableFields(false);
-          ShowBtns();
-      })
-   });
-
-
-   //View Modal used to view each row [suppliers details]
-   $('body').on('click', '#view-supplier', function (event) {
-      var supplier_id = $(this).data('id');
-      event.preventDefault();
-
-      $.get("{{ route('suppliers.index') }}" +'/' + supplier_id +'', function (data) {
-
-          $('#modalHeading').html("Details of supplier " + data.name + "");
-          $('#addSuppliersModal').modal('show');
-          $('.supplierId').val(data.id);
-          $('.name').val(data.name);
-          $('.address').val(data.address);
-          $('.contact').val(data.contact);
-          $('.email').val(data.email);
-          $('.debt').val(data.debt);
-          $('.credit').val(data.credit);
-          DisableTableFields(true);
-          HideBtns();
-      })
-   });
-
-
-    $('.addSupplierBtn').click(function (e) {
-
-        e.preventDefault();
-
-        var Errors = validateForm();
-        if(Errors.length == 0){
-        $(this).html('Sending..');
-
-        $.ajax({
-          data: $('#SuppliersForm').serialize(),
-          url: "{{ route('suppliers.store') }}",
-          type: "POST",
-          dataType: 'json',
-          success: function (data) {
-
-              $('#SuppliersForm').trigger("reset");
-              $('#addSuppliersModal').modal("hide");
-              var resp = data.success;
-              ShowResponse('.response', resp, 'success');
-              ResetTblInfo(data);
-              var tbl = $('#room-types-table').DataTable();
-              tbl.ajax.reload();
-
-          },
-          error: function (data) {
-              console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
-              $('.addsupplierBtn').html('Save Changes');
-          }
-      });
-        }else
-        {
-            var i;
-            var message ="";
-            for(i=0; i<Errors.length; i++){
-                message += Errors[i] + "<br>";
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-            $('.errors-section').html(message);
+        });
+        const ajaxUrl = @json(route('roomstypes.index.ajax'));
+        const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
+        const cat = 'room_types';
+  </script>
 
-        }
+    <script type="text/javascript">
+      
+        $(document).ready(function() {
 
-    });
+            let table = $('#room-types-table');
+            let title = "List of registered room types in the system";
+            let columns = [1, 2, 3, 4];
+            let dataColumns = [{
+                    data: 'checkbox',
+                    name: 'checkbox'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'single_occupancy_rate',
+                    name: 'single_occupancy_rate'
+                },
+                {
+                    data: 'double_occupancy_rate',
+                    name: 'double_occupancy_rate'
+                },
+                {
+                    data: 'added_by',
+                    name: 'added_by'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ];
 
-   //this pops up confirm delete modal
-    $('body').on('click', '#delete-supplier', function (e) {
-            var supplier_id = $(this).data("id");
-            e.preventDefault();
-            $("#deleteSuppliersModal").modal('show');
-            $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
-            $('.delete-ok-btn').on('click', function(){
-                   ListenAndDoDeletion(supplier_id);
-         });
+            makeDataTable(table, title, columns, dataColumns);
 
- });
-
-
- function ListenAndDoDeletion(id){
-    var deleteUrl = '{{ route("suppliers.destroy", ":id") }}';
-    deleteUrl = deleteUrl.replace(':id', id);
-     $('.delete-ok-btn').html('Deleting...');
-        $.ajax({
-         type: "DELETE",
-         url: deleteUrl,
-         success: function (data) {
-              var resp = data.success;
-              $('.delete-ok-btn').html('Yes');
-              $('#deleteSuppliersModal').modal("hide");
-              ShowResponse('.response', resp, 'success');
-              ResetTblInfo(data);
-              var tbl = $('#room-types-table').DataTable();
-              tbl.ajax.reload();
-         },
-         error: function (data) {
-             console.log('Error:', data);
-             ShowResponse('.response', data.error, 'error');
-         }
-     });
- }
-
-
-  function DisableTableFields(bool){
-
-          $('.supplierId').attr('disabled', bool);
-          $('.name').attr('disabled', bool);
-          $('.address').attr('disabled', bool);
-          $('.contact').attr('disabled', bool);
-          $('.email').attr('disabled', bool);
-          $('.debt').attr('disabled', bool);
-          $('.credit').attr('disabled', bool);
-  }
-
-  function HideBtns(){
-          $('.addsupplierBtn').hide();
-          $('.clearBtn').hide();
-          $('.closeBtn').hide();
-  }
-
-  function ShowBtns(){
-          $('.addsupplierBtn').show();
-          $('.clearBtn').show();
-          $('.closeBtn').show();
-  }
-
-  function ShowResponse(area, message, errorType)
-    {
-      $(area).notify(message,{
-        className: errorType,
-        autoHide: true,
-        clickToHide:true,
-        autoHideDelay:45000,
-       });
-    }
-
-  function FormatNumber(number){
-   var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
-   return FormattedNumber;
-  }
-
-function ResetTblInfo(response)
- {
-     var totl_number , sum_of_credits, sum_of_debts;
-     totl_number = FormatNumber(response.totl_no);
-     sum_of_credits = FormatNumber(response.totl_credit);
-     sum_of_debts = FormatNumber(response.totl_debt);
-
-     $('.totl_room_types').html(totl_number);
-     $('.totl_credit').html(sum_of_credits);
-     $('.totl_debt').html(sum_of_debts);
- }
-
- function validateForm()
- {
-    var name = $('.name').val();
-    var address = $('.address').val();
-    var contact = $('.contact').val();
-    var errors = [];
-    if(name.length < 1){
-      var nameErr = "Please enter the name of the supplier";
-      errors.push(nameErr);
-    }
-    if(address.length < 1){
-      var addressErr = "Please enter the address of the supplier";
-      errors.push(addressErr);
-    }
-    if(contact.length < 1){
-     var contactErr = "Please enter supplier's contact";
-     errors.push(contactErr);
-    }
-
-      return errors;
-
- }
+            $('#addNewRoomType').click(function(e) {
+                e.preventDefault();
+                DisableTableFields(false);
+                ShowBtns();
+                $('.addRoomTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                $('.roomTypeId').val('');
+                $('#RoomTypesForm').trigger("reset");
+                $('#modalHeading').html("Add new room type");
+                $('#addRoomTypeModal').modal('show');
+            });
 
 
+            Numberize(".single_occupancy_rate");
+            Numberize(".double_occupancy_rate");
 
- $("#removeAllSuppliers").bind("click", function(){
-   RemoveAllSuppliers();
- });
+            function Numberize(i) {
+                $(document).on("keyup", i, function() {
+                    if (this.value.length > 0) {
+                        let n = parseInt(this.value.replace(/\D/g, ''), 10);
+                        $(this).val(n.toLocaleString());
+                    }
+                });
+            }
 
- function RemoveAllSuppliers(){
- $.confirm({
-   boxWidth: '30%',
-   icon: 'fa fa-warning',
-   theme:'light',
-   closeIcon: true,
-   draggable:true,
-   closeIconClass: 'fa fa-close text-danger',
-   title: 'Delete all suppliers',
-   content:'Are you sure you want to remove all suppliers',
-   buttons:{
-       confirm:function(){
-     var self = this;
-     return $.ajax({
-         data: {
-             "_token": "{{ csrf_token() }}",
-             },
-         url: '{{ Route("suppliers.truncate") }}',
-         type: 'POST',
-         // dataType: 'json',
-     }).done(function (data) {
+            //modal used to edit room types details [each row of the tbl]
+            $('body').on('click', '#edit-room-type', function(event) {
+                let room_type_id = $(this).data('id');
+                event.preventDefault();
 
-         $.alert({
-             title: 'Message',
-             content: data.success,
-         });
-          $(".totl_room_types").text(data.totl_no);
-          $(".totl_credit").text(data.totl_credit);
-          $(".totl_debt").text(data.totl_debt);
-          var tbl = $('#room-types-table').DataTable();
-          tbl.ajax.reload();
+                $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '/edit', function(data) {
+
+                    $('#modalHeading').html("Edit details of room type " + data.name + "");
+                    $('.addRoomTypeBtn').text("Edit room type");
+                    $('#addRoomTypeModal').modal('show');
+                    $('.roomTypeId').val(data.id);
+                    $('.name').val(data.name);
+                    $('.address').val(data.address);
+                    $('.contact').val(data.contact);
+                    $('.email').val(data.email);
+                    $('.debt').val(data.debt);
+                    $('.credit').val(data.credit);
+                    DisableTableFields(false);
+                    ShowBtns();
+                })
+            });
 
 
-     }).fail(function(data){
-         $.alert({
-             title: 'Response',
-             content:"Suppliers not deleted:"+data.fail,
-         });
-         console.log(data);
+            //View Modal used to view each row [room types details]
+            $('body').on('click', '#view-room-type', function(event) {
+                let room_type_id = $(this).data('id');
+                event.preventDefault();
 
-     });
+                $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '', function(data) {
 
-       },
-       cancel:function(){
+                    $('#modalHeading').html("Details of room type " + data.name + "");
+                    $('#addRoomTypeModal').modal('show');
+                    $('.roomTypeId').val(data.id);
+                    $('.name').val(data.name);
+                    $('.address').val(data.address);
+                    $('.contact').val(data.contact);
+                    $('.email').val(data.email);
+                    $('.debt').val(data.debt);
+                    $('.credit').val(data.credit);
+                    DisableTableFields(true);
+                    HideBtns();
+                })
+            });
 
-       }
-   },
- });
 
-   }
+            $('.addRoomTypeBtn').click(function(e) {
+
+                e.preventDefault();
+
+                let Errors = validateForm();
+                if (Errors.length == 0) {
+                    $(this).html('Sending..');
+
+                    $.ajax({
+                        data: $('#RoomTypesForm').serialize(),
+                        url: "{{ route('room_types.store') }}",
+                        type: "POST",
+                        dataType: 'json',
+                        success: function(data) {
+
+                            $('#RoomTypesForm').trigger("reset");
+                            $('#addRoomTypeModal').modal("hide");
+                            let resp = data.success;
+                            ShowResponse('.response', resp, 'success');
+                            ResetTblInfo(data);
+                            let tbl = $('#room-types-table').DataTable();
+                            tbl.ajax.reload();
+
+                        },
+                        error: function(data) {
+                            console.log('Error:', data.error);
+                            ShowResponse('.response', data.error, 'error');
+                            $('.addRoomTypeBtn').html('Save Changes');
+                        }
+                    });
+                } else {
+                    let i;
+                    let message = "";
+                    for (i = 0; i < Errors.length; i++) {
+                        message += Errors[i] + "<br>";
+                    }
+                    $('.errors-section').html(message);
+
+                }
+
+            });
+
+            //this pops up confirm delete modal
+            $('body').on('click', '#delete-room-type', function(e) {
+                let room_type_id = $(this).data("id");
+                e.preventDefault();
+                $("#deleteSuppliersModal").modal('show');
+                $(".delete-alert-text").html("Are you sure you want to delete this room type?");
+                $('.delete-ok-btn').on('click', function() {
+                    ListenAndDoDeletion(room_type_id);
+                });
+
+            });
 
 
+            function ListenAndDoDeletion(id) {
+                let deleteUrl = '{{ route('room_types.destroy', ':id') }}';
+                deleteUrl = deleteUrl.replace(':id', id);
+                $('.delete-ok-btn').html('Deleting...');
+                $.ajax({
+                    type: "DELETE",
+                    url: deleteUrl,
+                    success: function(data) {
+                        let resp = data.success;
+                        $('.delete-ok-btn').html('Yes');
+                        $('#deleteSuppliersModal').modal("hide");
+                        ShowResponse('.response', resp, 'success');
+                        ResetTblInfo(data);
+                        let tbl = $('#room-types-table').DataTable();
+                        tbl.ajax.reload();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                        ShowResponse('.response', data.error, 'error');
+                    }
+                });
+            }
 
 
-  });
+            function DisableTableFields(bool) {
 
-</script>
+                $('.roomTypeId').attr('disabled', bool);
+                $('.name').attr('disabled', bool);
+            }
 
+            function HideBtns() {
+                $('.addRoomTypeBtn').hide();
+                $('.clearBtn').hide();
+                $('.closeBtn').hide();
+            }
+
+            function ShowBtns() {
+                $('.addRoomTypeBtn').show();
+                $('.clearBtn').show();
+                $('.closeBtn').show();
+            }
+
+            function ShowResponse(area, message, errorType) {
+                $(area).notify(message, {
+                    className: errorType,
+                    autoHide: true,
+                    clickToHide: true,
+                    autoHideDelay: 45000,
+                });
+            }
+
+            function FormatNumber(number) {
+                let FormattedNumber = parseFloat(number).toLocaleString('us', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+                return FormattedNumber;
+            }
+
+            function ResetTblInfo(response) {
+                let totl_number = FormatNumber(response.total);
+                $('.total_room_types').html(totl_number);
+            }
+
+            function validateForm() {
+                let name = $('.name').val();
+                let s_rate = $('.single_occupancy_rate').val();
+                let d_rate = $('.double_occupancy_rate').val();
+
+                let errors = [];
+                if (name.length < 1) {
+                    errors.push("Please enter the name of the room type");
+                }
+                if (s_rate.length < 1) {
+                    errors.push("Please enter single occupancy rate");
+                }
+                if (d_rate.length < 1) {
+                    errors.push("Please enter double occupancy rate");
+                }
+                return errors;
+
+            }
+
+            $("#removeAllSuppliers").bind("click", function() {
+                RemoveAllSuppliers();
+            });
+
+            function RemoveAllSuppliers() {
+                $.confirm({
+                    boxWidth: '30%',
+                    icon: 'fa fa-warning',
+                    theme: 'light',
+                    closeIcon: true,
+                    draggable: true,
+                    closeIconClass: 'fa fa-close text-danger',
+                    title: 'Delete all room types',
+                    content: 'Are you sure you want to remove all room types',
+                    buttons: {
+                        confirm: function() {
+                            let self = this;
+                            return $.ajax({
+                                data: {
+                                    "_token": "{{ csrf_token() }}",
+                                },
+                                url: '{{ Route('suppliers.truncate') }}',
+                                type: 'POST'
+                            }).done(function(data) {
+
+                                $.alert({
+                                    title: 'Message',
+                                    content: data.success,
+                                });
+                                $(".total_room_types").text(data.totl_no);
+                                $(".totl_credit").text(data.totl_credit);
+                                $(".totl_debt").text(data.totl_debt);
+                                let tbl = $('#room-types-table').DataTable();
+                                tbl.ajax.reload();
+
+
+                            }).fail(function(data) {
+                                $.alert({
+                                    title: 'Response',
+                                    content: "Suppliers not deleted:" + data.fail,
+                                });
+                                console.log(data);
+
+                            });
+
+                        },
+                        cancel: function() {
+
+                        }
+                    },
+                });
+
+            }
+        });
+    </script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection
