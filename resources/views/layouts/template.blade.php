@@ -49,7 +49,6 @@
   <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
   <script src="{{ asset('vendors/custom/echarts.js') }}"></script>
 
-
   <link rel="stylesheet" href="{{ asset('vendors/fonts/montserrat/css.css') }}">
   <link href="{{ asset('vendors/calendar/fullcalendar.min.css') }}" rel="stylesheet"/>
   <link href="{{ asset('css/nunito.css') }}" rel="stylesheet">
@@ -77,82 +76,12 @@
   <link href="{{ asset('vendors/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
   <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
   <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
+  <link href="{{ asset('css/must-load.css') }}" rel="stylesheet" media="all">
 
-  <link href="{{ asset('vendors/jquery-modal/jquery.modal.min.css') }}" rel="stylesheet">
+
+  <!-- <link href="{{ asset('vendors/jquery-modal/jquery.modal.min.css') }}" rel="stylesheet"> -->
 
 
-  <style>
-   html, body {
-      max-width: 100%;
-      overflow: scroll;
-      overflow-x: hidden;
-    }
-
-  ::-webkit-scrollbar {
-    width: 0;
-    /* background: transparent; */
-  }
-
-/* ::-webkit-scrollbar-thumb {
-    background: #FF0000;
-} */
-
-.table-responsive{
-  overflow: auto !important;
-}
-
-.az-header-center > div {
-  text-align: center;
-  display: block;
-  }
-
-  .az-header-center > div > i {
-     font-weight: 'bold'
-  }
-
-  .icon-img{
-    width:40px !important;
-    height:40px !important;
-  }
-
-  .icon-img-1{
-    width:45px !important;
-    height:45px !important;
-  }
-
-  .icon-img-2{
-    width:30px !important;
-    height:30px !important;
-  }
-
-  .header-caption{
-    font-size: 12px !important
-  }
-
-  .az-header-center > div > a > h6 {
-    color: #009688 !important;
-    font-size: 13px !important;
-    font-weight:'bold' !important;
-  }
-
-  .fa-home{
-    font-size: 16px !important;
-  }
-
-  .btn-success{
-    background: #009688 !important
-  }
-
-  .text-success{
-    color: #009688 !important
-  }
-
-  .chart-card{
-    width: 600px;
-    height:400px;
-  }
-
-  </style>
 </head>
 
 

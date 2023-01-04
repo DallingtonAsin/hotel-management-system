@@ -139,7 +139,7 @@
 <!--Add customers -->
 <div class="modal fade nunito-font addCustomersModal" id="addCustomersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
       <form name="customers" id="CustomersForm">
@@ -209,7 +209,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
 <!--Import Customers -->
 <div class="modal fade nunito-font" id="importCustomers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
       <form action="{{ Route('customers.import') }}" method="post"
@@ -255,7 +255,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
  <!--Modal Deletecustomers -->
  <div class="modal fade" id="deleteCustomersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete customer</h6>

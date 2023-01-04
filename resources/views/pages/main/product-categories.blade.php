@@ -99,7 +99,7 @@
 
       <!--Modal DeleteItemCategory -->
       <div class="modal fade" id="deletePdtCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="deleteModalLabel">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header text-center">
               <h6 class="modal-title w-100 font-weight-bold">Delete Category</h6>
@@ -134,7 +134,7 @@
 
     <!--Add product category -->
     <div class="modal fade nunito-font" id="addItemCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
 
           <form  name="categories" id="PdtCategoryForm">
@@ -172,7 +172,7 @@
 
   <!--Import PdtCategory Categories -->
   <div class="modal fade nunito-font" id="importCategories" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
 
         <form action="{{ Route('categories.import') }}" method="post"

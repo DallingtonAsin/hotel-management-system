@@ -6,7 +6,7 @@
 <!--Add manager -->
 <div class="modal fade nunito-font" id="addmanagersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
 
             <form mname="user" id="userForm">
@@ -105,7 +105,7 @@
 <!--Import managers -->
 <div class="modal fade nunito-font" id="importmanagers" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
 
             <form action="" method="post" enctype="multipart/form-data" name="inportExpensesForm">
@@ -151,7 +151,7 @@
 <!--Modal Deletemanagers -->
 <div class="modal fade" id="deletemanagersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
                 <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete manager</h5>
@@ -185,7 +185,7 @@
 
 <div class="modal fade" id="accountChangeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
                 <h5 class="modal-title change-account-modal-title w-100 font-weight-bold">Lock or unlock user account

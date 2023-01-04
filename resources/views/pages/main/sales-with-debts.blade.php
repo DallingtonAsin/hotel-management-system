@@ -128,7 +128,7 @@
 
 <!--Modal DeleteSale -->
 <div class="modal fade" id="deleteSaleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header text-center">
         <h6 class="modal-title w-100 font-weight-bold">Delete sold item</h6>
@@ -159,7 +159,7 @@
 
 <!-- View Sold Item Details -->
 <div class="modal fade" id="SalesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-md">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-md">
 
     <div class="modal-content nunito-font border border-custom-dark rounded-0">
       <div class="modal-header main-color-bg text-center">

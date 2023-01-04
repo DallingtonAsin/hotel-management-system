@@ -81,7 +81,7 @@
 <!--Add rooms -->
 <div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
       <form name="suppliers" id="SuppliersForm">
@@ -153,7 +153,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
 <!--Import Rooms -->
 <div class="modal fade nunito-font" id="importRooms" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
       <form action="{{ Route('suppliers.import') }}" method="post"
@@ -199,7 +199,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
  <!--Modal Deletesuppliers -->
  <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier</h6>

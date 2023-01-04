@@ -118,14 +118,13 @@
 
   <!--Add new Stock -->
   <div class="modal fade nunito-font" id="addStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
 
         <form name="StockForm" id="StockForm">
          @csrf
          <div class="modal-header text-center">
-          <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">
-          Add new stock item</h6>
+          <h6 class="modal-title w-100 font-weight-bold" id="modalHeading"> Add new stock item</h6>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -221,7 +220,7 @@
 
 <!--Import Stock -->
 <div class="modal fade nunito-font" id="importStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
       <form action="{{ Route('stock.import') }}" method="post"
@@ -266,7 +265,7 @@
 
 <!--Modal DeleteStock -->
 <div class="modal fade" id="deleteStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header text-center">
         <h6 class="modal-title w-100 font-weight-bold">Delete Item</h6>

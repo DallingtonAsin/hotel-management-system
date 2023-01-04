@@ -92,7 +92,7 @@
 <!--Add company -->
 <div class="modal fade nunito-font addCompanyModal" id="addCompanyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
       <form name="company" id="CompanyForm">
@@ -162,7 +162,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
  <!--Modal Deletecompany -->
  <div class="modal fade" id="deleteCompanyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete company</h6>
