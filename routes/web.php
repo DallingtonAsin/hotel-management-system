@@ -44,7 +44,8 @@ Route::get("/sale/make-receipt", "CartController@getReceipt");
 // Route::get("/users/locked", "UserController@LockedUsersIndex")->name('user-account.locked');
 Route::get('/fetch/company-details', 'SettingsController@GetCompanies')->name('companies.home');
 Route::get('stock/fetch','StockController@fetchStockItemsAjax')->name('stock.ajax.fetch');
-Route::get('roles/fetch','UserController@fetchRolesAjax')->name('roles.ajax.fetch');
+Route::get('designations/fetch','UserController@fetchDesignationsAjax')->name('designations.ajax.fetch');
+Route::get('departments/ajax','DepartmentController@fetchDepartmentsAjax')->name('departments.ajax.fetch');
 
 
 Route::get('reports/ajax/monthly-sales','ReportsController@GetMonthlySalesDT')->name('monthly-sales.ajax');

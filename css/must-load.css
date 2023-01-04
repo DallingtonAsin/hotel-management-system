@@ -62,3 +62,19 @@ display: block;
   width: 600px;
   height:400px;
 }
+
+.close{
+	background-color: red !important;
+	padding: 5px !important;
+	border-radius: 50px;
+	margin-right: 1px !important;
+  }
+
+  .close span{
+	color: #fff;
+	font-size: 25px !important;
+  }
+
+  .table{
+    table-layout: fixed !important;
+  }

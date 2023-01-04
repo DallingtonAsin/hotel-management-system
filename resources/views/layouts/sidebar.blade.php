@@ -137,7 +137,7 @@
       <li class="nav-item">
         <a href="" class="nav-link with-sub"><i class="fa fa-users"></i>Human Resource</a>
         <ul class="nav-sub">
-        <li class="nav-sub-item"><a href="{{ route('staff.index') }}" class="nav-sub-link">Staff members</a></li>
+        <li class="nav-sub-item"><a href="{{ route('staff.index') }}" class="nav-sub-link">Staff</a></li>
           <li class="nav-sub-item"><a href="{{ route('departments.index') }}" class="nav-sub-link">Departments</a></li>
           <li class="nav-sub-item"><a href="{{ route('designations.index') }}" class="nav-sub-link">Designations</a></li>
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Salary Payments</a></li>

@@ -594,6 +594,11 @@ td {
 .typcn{
 	color: #009688 !important;
 }
+
+.typcn-refresh{
+	color: #fff !important;
+}
+
 .fa-dollar{
 	color: #009688 !important;
 }
@@ -700,8 +705,9 @@ td {
 }
 
 .btn-primary{
-	background-color: #2f3541 !important;
-	border-color: #2f3541 !important;
+	background-color: #009688 !important;
+	border-color: #009688 !important;
+	/* 3490dc */
 }
 
 
@@ -948,8 +954,4 @@ td {
 	border-top: 1px solid #ddd;
 	padding: 20px 0 0 0;
 	margin-top: 10px;
-  }
-
- 
-  
-  
+  }  

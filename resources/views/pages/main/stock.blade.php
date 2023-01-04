@@ -133,10 +133,10 @@
         <div class="modal-body">
 
           <div class="form-group">
-            <span>Item ID</span>
+            <span>Item ID / Bar Code</span>
             <input type="hidden" class="stockId" name="id">
             <input type="text" class="form-control bg-white item_code" name="item_code"
-            placeholder="Enter item ID">
+            placeholder="Enter item id or barcode">
           </div>
 
           <div class="form-group">
@@ -167,20 +167,22 @@
           </div>
 
           <div class="form-group">
-            <span>Quantity</span>
-            <input type="text" class="form-control bg-white quantity"  id="qty" name="quantity" placeholder="Enter Quantity" Required autofocus>
-          </div>
-
-          <div class="form-group">
-            <span>Threshold Quantity</span>
-            <input type="text" class="form-control bg-white thresholdQty"  id="thresholdQty" name="thresholdQty" placeholder="Enter threshold quantity">
-          </div>
-
-          <div class="form-group">
             <span>Expiry Date</span>
             <input type="date" class="form-control bg-white expiry_date" name="expiry_date" placeholder="Enter who bought it">
           </div>
 
+          <div class="row form-group">
+          <div class=" col-md-6">
+            <span>Quantity</span>
+            <input type="text" class="form-control bg-white quantity"  id="qty" name="quantity" placeholder="Enter Quantity" Required autofocus>
+          </div>
+
+          <div class="col-md-6">
+            <span>Threshold Quantity</span>
+            <input type="text" class="form-control bg-white thresholdQty"  id="thresholdQty" name="thresholdQty" placeholder="Enter threshold quantity">
+          </div>
+          </div>
+       
           <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
@@ -203,7 +205,7 @@
 
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary addStockBtn"  name="AddItemBtn">Save</button>
+            <button type="submit" class="btn btn-primary addStockBtn"  name="AddItemBtn"><i></i>Save</button>
             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
             <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
           </div>

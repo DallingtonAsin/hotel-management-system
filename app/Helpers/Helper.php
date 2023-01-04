@@ -318,15 +318,15 @@ class Helper
       }
       
       
-      public static function GetUserStats($role)
+      public static function GetUserStats()
       {
         try {
-          $id = Helper::getUserDepartmentId($role);
-          $users_list = User::where('department_id', $id)->get();
-          $number_of_users = User::where('department_id', $id)->count();
+ 
+          $staff = User::all();
+          $total_staff = User::count();
           $data = array(
-            'totl' => $number_of_users,
-            'list' => $users_list
+            'list' => $staff,
+            'totl' => $total_staff
           );
           
           return $data;
@@ -337,7 +337,7 @@ class Helper
             'error_message' => $ex->getMessage(),
             'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
             'controller' => 'Helper',
-            'method' => 'GetUserStats'
+            'method' => 'Helper::GetUserStats()'
           );
           Helper::logError($data);
           abort(409, $ex->getMessage());

@@ -3,8 +3,8 @@
 @section('content')
 
 
-<!--Add manager -->
-<div class="modal fade nunito-font" id="addmanagersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<!--Add staff -->
+<div class="modal fade nunito-font" id="addStaffModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -25,26 +25,20 @@
                         <input type="hidden" class="userId" name="id">
                         <span><span class="text-danger">*</span> First Name</span>
                         <input type="text" class="form-control first_name bg-white" name="firstName"
-                            placeholder="Enter first name" Required autofocus>
+                            placeholder="Enter first name" required autofocus>
                     </div>
 
                     <div class="form-group">
                         <span><span class="text-danger">*</span> Last Name</span>
                         <input type="text" class="form-control last_name bg-white" name="lastName"
-                            placeholder="Enter last name" Required autofocus>
+                            placeholder="Enter last name" required autofocus>
                     </div>
 
 
                     <div class="form-group">
                         <span><span class="text-danger">*</span> Address</span>
                         <input type="text" class="form-control address bg-white" name="address"
-                            placeholder="Enter address" Required autofocus>
-                    </div>
-
-                    <div class="form-group">
-                        <span>NationalID No.</span>
-                        <input type="text" class="form-control national_id bg-white" name="NationalIDNo"
-                            placeholder="Enter NationalID number(optional)" Required autofocus>
+                            placeholder="Enter address" required autofocus>
                     </div>
 
                     <div class="form-group">
@@ -53,11 +47,25 @@
                             placeholder="Email (optional)">
                     </div>
 
+                   <div class="row form-group">
+                   <div class="col-md-6">
+                        <span><span class="text-danger">*</span> Employee Number</span>
+                        <input type="text" class="form-control employee_id bg-white" name="employee_id"
+                            placeholder="Enter employee number" required autofocus>
+                    </div>
+
+                   <div class="col-md-6">
+                        <span>NIN</span>
+                        <input type="text" class="form-control national_id bg-white" name="NationalIDNo"
+                            placeholder="Enter NationalID number(optional)" required autofocus>
+                    </div>
+                   </div>
+
                     <div class="row form-group">
                         <div class="col-md-6">
                             <span><span class="text-danger">*</span> Primary Tel No.</span>
                             <input type="text" class="form-control tel_no bg-white" name="tel_no"
-                                placeholder="Enter primary telephone number" Required autofocus>
+                                placeholder="Enter primary telephone number" required autofocus>
                         </div>
 
                         <div class="col-md-6">
@@ -69,15 +77,25 @@
 
 
                     <div class="row form-group">
-                        <div class="col-md-6">
+
+                    <div class="col-md-4">
                             <div class="form-group">
-                                <span><span class="text-danger">*</span> Role</span>
-                                <select class="form-control role_section bg-white" name="role">
-                                    <option value="">select role</option>
+                                <span><span class="text-danger">*</span> Department</span>
+                                <select class="form-control departments_section bg-white" name="department">
+                                    <option value="">select department</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <span><span class="text-danger">*</span> Designation</span>
+                                <select class="form-control designation_section bg-white" name="designation">
+                                    <option value="">select designation</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <span><span class="text-danger">*</span> Gender</span>
                             <select class="form-control gender bg-white" name="gender">
                                 <option value="">select gender</option>
@@ -89,10 +107,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary AdduserBtn" id="AdduserBtn"
-                            name="AdduserBtn">Save</button>
-                        <button type="reset" class="btn btn-danger">Clear</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary addStaffBtn" id="addStaffBtn" name="addStaffBtn"><i class="fa fa-plus-circle pr-1"></i>Save</button>
+                        <button type="reset" class="btn btn-danger"><i class="typcn typcn-refresh pr-1"></i>Clear</button>
                     </div>
 
                 </div>
@@ -126,7 +142,7 @@
 
                     <div class="form-group">
                         <input type="file" class="form-control-file @error('select_file') is-invalid @enderror"
-                            name="select_file" Required autofocus>
+                            name="select_file" required autofocus>
                     </div>
 
                     @error('select_file')
@@ -136,7 +152,6 @@
                         <strong>Sorry!</strong> {{ $message }}
                     </div>
                     @enderror
-
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Upload</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -241,12 +256,9 @@
               <div class="col-lg-3">
                <h5 class="text-dark">
                   <a href="javascript:void(0)" id="createNewmanager"
-                 class="add-link text-decoration-none bolded">
-                                    Add staff</a></h5>
+                   class="add-link text-decoration-none bolded">Add staff</a></h5>
               </div>
-
           </div>
-
         </div>
       </div>
 
@@ -288,22 +300,11 @@
                 <th>Designation</th>
                 <th>Phone Number</th>
                 <th>NIN</th>
-                <!-- <th>A/C status</th> -->
                 <th>Action</th>
                 </tr>
             </thead>
             </table>
         </div>
-
-
-
-
-
-
-
-
-
-
     </div>
 </div>
 
@@ -325,12 +326,11 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-
         //code that displays results of the table index()
-        var table = $('#managers-table');
-        var title = "List of registered managers in the system";
-        var columns = [0, 1];
-        var dataColumns = [
+        let table = $('#managers-table');
+        let title = "List of registered managers in the system";
+        let columns = [0, 1];
+        let dataColumns = [
             { data: 'checkbox', name: 'checkbox' },
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'name', name: 'name' },
@@ -340,7 +340,6 @@
             { data: 'designation', name: 'designation' },
             { data: 'phone_number', name: 'phone_number' },
             { data: 'nin', name: 'nin' },
-            // { data: 'is_active', name: 'is_active' },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ];
 
@@ -350,29 +349,47 @@
             e.preventDefault();
             DisableTableFields(false);
             ShowBtns();
-            $('.AdduserBtn').text("Register manager");
+            $('.addStaffBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
             $('.managerId').val('');
             $('#userForm').trigger("reset");
-            $('#modalHeading').html("Register new manager");
-            $('#addmanagersModal').modal('show');
+            $('#modalHeading').html("Add new staff");
+            $('#addStaffModal').modal('show');
         });
 
 
         Numberize(".debt");
         Numberize(".credit");
 
-        PopulateRoles();
-        function PopulateRoles() {
-            var fetchRolesByAjaxUrl = "{{ route('roles.ajax.fetch') }}"
+        populateDesignations();
+        populateDepartments();
+
+        function populateDesignations() {
+            let url = "{{ route('designations.ajax.fetch') }}"
             $.ajax({
                 type: "GET",
-                url: fetchRolesByAjaxUrl,
+                url: url,
                 success: function (resp) {
-                    var obj = JSON.parse(resp);
-                    for (var i = 0; i < obj.length; i++) {
+                    let obj = JSON.parse(resp);
+                    for (let i = 0; i < obj.length; i++) {
                         let id = obj[i]['id'];
-                        let role_name = obj[i]['role'];
-                        $('.role_section').append('<option value=' + id + '>' + role_name + '</option>');
+                        let designation = obj[i]['name'];
+                        $('.designation_section').append('<option value=' + id + '>' + designation + '</option>');
+                    }
+                }
+            });
+        }
+
+        function populateDepartments() {
+            let url = "{{ route('departments.ajax.fetch') }}"
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (resp) {
+                    let obj = JSON.parse(resp);
+                    for (let i = 0; i < obj.length; i++) {
+                        let id = obj[i]['id'];
+                        let department = obj[i]['name'];
+                        $('.departments_section').append('<option value=' + id + '>' + department + '</option>');
                     }
                 }
             });
@@ -382,7 +399,7 @@
         function Numberize(i) {
             $(document).on("keyup", i, function () {
                 if (this.value.length > 0) {
-                    var n = parseInt(this.value.replace(/\D/g, ''), 10);
+                    let n = parseInt(this.value.replace(/\D/g, ''), 10);
                     $(this).val(n.toLocaleString());
                 }
             });
@@ -390,23 +407,24 @@
 
         //modal used to edit managers details [each row of the tbl]
         $('body').on('click', '#edit-user', function (event) {
-            var manager_id = $(this).data('id');
+            let manager_id = $(this).data('id');
             event.preventDefault();
 
             $.get("{{ route('users.index') }}" + '/' + manager_id + '/edit', function (data) {
 
                 $('#modalHeading').html("Edit details of manager " + data.name + "");
-                $('.AdduserBtn').text("Edit manager");
-                $('#addmanagersModal').modal('show');
+                $('.addStaffBtn').text("Edit manager");
+                $('#addStaffModal').modal('show');
                 $('.userId').val(data.id);
                 $('.first_name').val(data.first_name);
                 $('.last_name').val(data.last_name);
                 $('.address').val(data.address);
                 $('.email').val(data.email);
-                $('.national_id').val(data.nationalID_no);
+                $('.nin').val(data.nationalID_no);
                 $('.tel_no').val(data.tel_no);
                 $('.alt_telno').val(data.alt_telno);
-                $('.role_section').val(data.department_id);
+                $('.designation_section').val(data.designtion_id);
+                $('.departments_section').val(data.department_id);
                 $('.gender').val(data.gender);
                 DisableTableFields(false);
                 ShowBtns();
@@ -416,13 +434,13 @@
 
         //View Modal used to view each row [managers details]
         $('body').on('click', '#view-user', function (event) {
-            var manager_id = $(this).data('id');
+            let manager_id = $(this).data('id');
             event.preventDefault();
 
             $.get("{{ route('users.index') }}" + '/' + manager_id + '', function (data) {
 
                 $('#modalHeading').html("Details of manager " + data.name + "");
-                $('#addmanagersModal').modal('show');
+                $('#addStaffModal').modal('show');
                 $('.userId').val(data.id);
                 $('.first_name').val(data.first_name);
                 $('.last_name').val(data.last_name);
@@ -431,7 +449,8 @@
                 $('.national_id').val(data.nationalID_no);
                 $('.tel_no').val(data.tel_no);
                 $('.alt_telno').val(data.alt_telno);
-                $('.role_section').val(data.department_id);
+                $('.designation_section').val(data.designtion_id);
+                $('.departments_section').val(data.department_id);
                 $('.gender').val(data.gender);
                 DisableTableFields(true);
                 HideBtns();
@@ -439,11 +458,11 @@
         });
 
 
-        $('.AdduserBtn').click(function (e) {
+        $('.addStaffBtn').click(function (e) {
 
             e.preventDefault();
 
-            var Errors = validateForm();
+            let Errors = validateForm();
             if (Errors.length == 0) {
                 $(this).html('Sending..');
 
@@ -455,10 +474,10 @@
                     success: function (data) {
 
                         $('#userForm').trigger("reset");
-                        $('#addmanagersModal').modal("hide");
-                        var tbl = $('#managers-table').DataTable();
+                        $('#addStaffModal').modal("hide");
+                        let tbl = $('#managers-table').DataTable();
                         tbl.ajax.reload();
-                        var resp = data.success;
+                        let resp = data.success;
                         ShowResponse('.response', resp, 'success');
                         ResetTblInfo(data);
 
@@ -466,12 +485,12 @@
                     error: function (data) {
                         console.log('Error:', data.error);
                         ShowResponse('.response', data.error, 'error');
-                        $('.AdduserBtn').html('Save Changes');
+                        $('.addStaffBtn').html('Save Changes');
                     }
                 });
             } else {
-                var i;
-                var message = "";
+                let i;
+                let message = "";
                 for (i = 0; i < Errors.length; i++) {
                     message += Errors[i] + "<br>";
                 }
@@ -483,7 +502,7 @@
 
         //this pops up confirm delete modal
         $('body').on('click', '#delete-user', function (e) {
-            var manager_id = $(this).data("id");
+            let manager_id = $(this).data("id");
             e.preventDefault();
             $("#deletemanagersModal").modal('show');
             $(".delete-alert-text").html("Are you sure you want to delete this manager?");
@@ -494,19 +513,19 @@
         });
 
         function ListenAndDoDeletion(id) {
-            var deleteUrl = '{{ route("users.destroy", ":id") }}';
+            let deleteUrl = '{{ route("users.destroy", ":id") }}';
             deleteUrl = deleteUrl.replace(':id', id);
             $('.delete-ok-btn').html('Deleting...');
             $.ajax({
                 type: "DELETE",
                 url: deleteUrl,
                 success: function (data) {
-                    var resp = data.success;
+                    let resp = data.success;
                     $('.delete-ok-btn').html('Yes');
                     $('#deletemanagersModal').modal("hide");
                     ShowResponse('.response', resp, 'success');
                     ResetTblInfo(data);
-                    var tbl = $('#managers-table').DataTable();
+                    let tbl = $('#managers-table').DataTable();
                     tbl.ajax.reload();
                 },
                 error: function (data) {
@@ -520,10 +539,10 @@
 
         $('body').on('click', '#changeAccountBtn', function (e) {
             e.preventDefault();
-            var user_id = $(this).data("id");
-            var account_status = $(this).data("status");
-            var name = $(this).data("name");
-            var statusText;
+            let user_id = $(this).data("id");
+            let account_status = $(this).data("status");
+            let name = $(this).data("name");
+            let statusText;
             if (account_status) {
                 statusText = 'deactivate';
                 $('.change-account-modal-title').html("Deactivate user account");
@@ -545,8 +564,8 @@
 
 
         function ChangeAccountStatus(id, status) {
-            var accountChangeUrl = '{{ route("account.change") }}';
-            var btnText;
+            let accountChangeUrl = '{{ route("account.change") }}';
+            let btnText;
             (status) ? btnText = 'Deactivating...' : btnText = 'Activating...';
             $('.confirm-changeAccount-ok-btn').html(btnText);
             $.ajax({
@@ -554,11 +573,11 @@
                 url: accountChangeUrl,
                 data: { id: id, status: status },
                 success: function (data) {
-                    var resp = data.success;
+                    let resp = data.success;
                     $('.confirm-changeAccount-ok-btn').html('Yes');
                     $('#accountChangeModal').modal("hide");
                     ShowResponse('.response', resp, 'success');
-                    var tbl = $('#managers-table').DataTable();
+                    let tbl = $('#managers-table').DataTable();
                     tbl.ajax.reload();
                 },
                 error: function (data) {
@@ -579,18 +598,18 @@
             $('.national_id').attr('disabled', bool);
             $('.tel_no').attr('disabled', bool);
             $('.alt_telno').attr('disabled', bool);
-            $('.role_section').attr('disabled', bool);
+            $('.designation_section').attr('disabled', bool);
             $('.gender').attr('disabled', bool);
         }
 
         function HideBtns() {
-            $('.AdduserBtn').hide();
+            $('.addStaffBtn').hide();
             $('.clearBtn').hide();
             $('.closeBtn').hide();
         }
 
         function ShowBtns() {
-            $('.AdduserBtn').show();
+            $('.addStaffBtn').show();
             $('.clearBtn').show();
             $('.closeBtn').show();
         }
@@ -605,12 +624,12 @@
         }
 
         function FormatNumber(number) {
-            var FormattedNumber = parseFloat(number).toLocaleString('us', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            let FormattedNumber = parseFloat(number).toLocaleString('us', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             return FormattedNumber;
         }
 
         function ResetTblInfo(response) {
-            var totl_number, sum_of_credits, sum_of_debts;
+            let totl_number, sum_of_credits, sum_of_debts;
             totl_number = FormatNumber(response.totl_no);
             sum_of_credits = FormatNumber(response.totl_credit);
             sum_of_debts = FormatNumber(response.totl_debt);
@@ -621,39 +640,39 @@
         }
 
         function validateForm() {
-            var first_name = $('.first_name').val();
-            var last_name = $('.last_name').val();
-            var address = $('.address').val();
-            var national_id = $('.national_id').val();
-            var tel_no = $('.tel_no').val();
-            var role = $('.role_section').val();
-            var gender = $('.gender').val();
+            let first_name = $('.first_name').val();
+            let last_name = $('.last_name').val();
+            let address = $('.address').val();
+            let national_id = $('.national_id').val();
+            let tel_no = $('.tel_no').val();
+            let role = $('.designation_section').val();
+            let gender = $('.gender').val();
 
-            var errors = [];
+            let errors = [];
             if (first_name.length < 1) {
-                var fnameErr = "Please enter the first name of the manager";
+                let fnameErr = "Please enter the first name of the manager";
                 errors.push(fnameErr);
             }
             if (last_name.length < 1) {
-                var lnameErr = "Please enter the last name of the manager";
+                let lnameErr = "Please enter the last name of the manager";
                 errors.push(lnameErr);
             }
             if (address.length < 1) {
-                var addressErr = "Please enter the address of the manager";
+                let addressErr = "Please enter the address of the manager";
                 errors.push(addressErr);
             }
 
             if (tel_no.length < 1) {
-                var contactErr = "Please enter the primary telephone number of the manager";
+                let contactErr = "Please enter the primary telephone number of the manager";
                 errors.push(contactErr);
             }
             if (role.length < 1) {
-                var roleErr = "Please enter user's role";
+                let roleErr = "Please enter user's role";
                 errors.push(roleErr);
             }
 
             if (gender.length < 1) {
-                var genderErr = "Please enter user's gender";
+                let genderErr = "Please enter user's gender";
                 errors.push(genderErr);
             }
 
@@ -679,7 +698,7 @@
                 content: 'Are you sure you want to remove all managers',
                 buttons: {
                     confirm: function () {
-                        var self = this;
+                        let self = this;
                         return $.ajax({
                             data: {
                                 "_token": "{{ csrf_token() }}",
@@ -696,7 +715,7 @@
                             $(".totl_staff").text(data.totl_no);
                             $(".totl_credit").text(data.totl_credit);
                             $(".totl_debt").text(data.totl_debt);
-                            var tbl = $('#managers-table').DataTable();
+                            let tbl = $('#managers-table').DataTable();
                             tbl.ajax.reload();
 
 

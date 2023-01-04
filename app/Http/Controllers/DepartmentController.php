@@ -85,4 +85,17 @@ class DepartmentController extends Controller
     {
         //
     }
+
+    public function fetchDepartmentsAjax(Request $request) {
+        try {
+            if($request->ajax()){
+            $departments = Department::get();
+            echo json_encode($departments);
+            die();
+            
+            }
+        } catch (\Exception $ex) {
+            echo "Error ".$ex->getMessage();
+        }
+    }
 }
