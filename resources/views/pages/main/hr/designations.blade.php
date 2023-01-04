@@ -205,7 +205,7 @@
             }
         });
 
-        const ajaxUrl = @json(route('designations.index.ajax'));
+        const ajaxUrl = @json(route('designations.index.fetch'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const cat = 'designation';
@@ -214,7 +214,7 @@
             
             let table = $('#designations-table');
             let title = "List of registered departments in the system";
-            let columns = [1, 2, 3, 4];
+            let columns = [1, 2, 3];
             let dataColumns = [
                 {
                     data: 'checkbox',
@@ -236,7 +236,7 @@
                     data: 'action',
                     name: 'action',
                     orderable: false,
-                    searchable: false
+                    searchable: true
                 },
             ];
 
