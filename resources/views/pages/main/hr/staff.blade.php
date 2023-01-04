@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <!--Add staff -->
 <div class="modal fade nunito-font" id="addStaffModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
@@ -108,7 +107,7 @@
 
                     <div class="form-group">
                         <button type="button" class="btn btn-primary addStaffBtn" id="addStaffBtn" name="addStaffBtn"><i class="fa fa-plus-circle pr-1"></i>Save</button>
-                        <button type="reset" class="btn btn-danger"><i class="typcn typcn-refresh pr-1"></i>Clear</button>
+                        <button type="reset" class="btn btn-danger"><i class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
                     </div>
 
                 </div>
@@ -235,31 +234,25 @@
 </div>
 
       <div class="card">
-        <div class="card-header">
-          <div class="panel-tile">
-
-        <div class="row nunito-font">
+        <div class="card-header d-flex align-items-center">
 
               <span class="response"></span>
-            <div class="col-lg-6">
-                <h5 class="text-dark">
+          
+                <h6 class="card-title mb-0 text-dark">
                   <i class="fa fa-home text-success"> /</i>
-               <strong>Staff Members</strong>
-                  <span class="badge badge-info  totl_staff">
+                  <strong>Staff Members</strong>
+                  <span class="badge badge-info totl_staff">
                       @isset($total_staff)
                         {{ number_format($total_staff) }}
                       @endisset
                     </span>
-               </h5>
-              </div>
+               </h6>
 
-              <div class="col-lg-3">
-               <h5 class="text-dark">
-                  <a href="javascript:void(0)" id="createNewmanager"
-                   class="add-link text-decoration-none bolded">Add staff</a></h5>
-              </div>
-          </div>
-        </div>
+               <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewStaff">Add Staff</button>
+
+                  <!-- <a href="javascript:void(0)" id="addNewStaff"
+                   class="btn btn-xm float-right">Add staff</a> -->
+              
       </div>
 
          <div class="card-body">
@@ -285,8 +278,7 @@
           </div>
             </div>
 
-      <div class="table table-responsive" >
-
+      <div class="table-responsive" >
         <table class="table table-bordered table-hover managers-table" id="managers-table">
         
             <thead>
@@ -308,6 +300,11 @@
     </div>
 </div>
 
+<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <a class="dropdown-item" href="#">Action 1</a>
+  <a class="dropdown-item" href="#">Action 2</a>
+  <button class="dropdown-item" type="button">Action 3</button>
+</div>
 
 <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
 <script src="{{ asset('vendors/notify/notify.js') }}"></script>
@@ -345,7 +342,7 @@
 
         makeDataTable(table, title, columns, dataColumns);
 
-        $('#createNewmanager').click(function (e) {
+        $('#addNewStaff').click(function (e) {
             e.preventDefault();
             DisableTableFields(false);
             ShowBtns();
