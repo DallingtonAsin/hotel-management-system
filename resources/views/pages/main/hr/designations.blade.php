@@ -209,7 +209,8 @@
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const cat = 'designation';
-
+        populateDepartments();
+        
         $(document).ready(function() {
             
             let table = $('#designations-table');
@@ -452,8 +453,6 @@
 
             }
 
-
-
             $("#removeAllSuppliers").bind("click", function() {
                 RemoveAllSuppliers();
             });
@@ -512,5 +511,4 @@
     </script>
        <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
        <script src="{{ asset('vendors/notify/notify.js') }}"></script>
-       <script src="{{ asset('js/custom/ajax.js') }}"></script>
 @endsection

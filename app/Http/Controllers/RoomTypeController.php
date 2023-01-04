@@ -130,7 +130,6 @@ class RoomTypeController extends Controller
     private function GetRoomTypeStats()
     {
         try {
-
             $room_types = RoomType::all();
             $total_room_types = RoomType::count();
 
@@ -142,6 +141,19 @@ class RoomTypeController extends Controller
             return $data;
         } catch (\Exception $ex) {
             throw $ex;
+        }
+    }
+
+    public function fetchRoomTypesAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $room_types = RoomType::get();
+                echo json_encode($room_types);
+                die();
+            }
+        } catch (\Exception $ex) {
+            echo "Error " . $ex->getMessage();
         }
     }
 }

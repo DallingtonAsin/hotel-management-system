@@ -48,7 +48,7 @@ Route::get('designations/fetch/{department_id}','DesignationController@fetchDesi
 Route::get('designations/index/ajax','DesignationController@getDesignationsDataTable')->name('designations.index.fetch');
 
 Route::get('departments/ajax','DepartmentController@fetchDepartmentsAjax')->name('departments.ajax.fetch');
-
+Route::get('room-types/ajax','RoomTypeController@fetchRoomTypesAjax')->name('room_types.ajax.fetch');
 
 Route::get('reports/ajax/monthly-sales','ReportsController@GetMonthlySalesDT')->name('monthly-sales.ajax');
 Route::get('reports/ajax/low-running-stock/{qty?}','ReportsController@GetLowStockDT')->name('low-stock.ajax');

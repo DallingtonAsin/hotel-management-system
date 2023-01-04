@@ -8,10 +8,12 @@ class Room extends Model
 {
     protected $table = 'rooms';
     public $timestamps = true;
+
     protected $fillable = [
-      'room_type_id',
-      'room_number',
+      'type_id',
+      'number',
       'floor_number',
+      'status',
       'description',
       'added_by',
     ];
