@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DataTables\rooms\RoomTypesDatatable;
 use App\Models\RoomType;
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\Helper as Helper;
 
 class RoomTypeController extends Controller
 {
@@ -38,7 +40,46 @@ class RoomTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:55',
+            'single_occupancy_rate' => 'required',
+            'double_occupancy_rate' => 'required',
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+                $name = ucfirst($request->input('name'));
+                $s_rate = Helper::Numberize($request->input('single_occupancy_rate'));
+                $d_rate = Helper::Numberize($request->input('double_occupancy_rate'));
+
+                $added_by = Helper::getLoggedInUser();
+                if (RoomType::create([
+                    'name' => $name,
+                    'single_occupancy_rate' => $s_rate,
+                    'double_occupancy_rate' => $d_rate,
+                    'added_by' => $added_by
+                 ])) {
+                    $message = "Room type " . $name . " has been added successfully";
+                    $stats = $this->GetRoomTypeStats();
+                    $data = [
+                        'success' => $message,
+                        'data' => $stats['data'],
+                        'total' => $stats['total']
+                    ];
+                } else {
+                    $message = "Technical error in adding room type";
+                    $data = [
+                        'error' => $message
+                    ];
+                }
+                return response()->json($data);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**
@@ -84,5 +125,23 @@ class RoomTypeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function GetRoomTypeStats()
+    {
+        try {
+
+            $room_types = RoomType::all();
+            $total_room_types = RoomType::count();
+
+            $data = array(
+                'data' => $room_types,
+                'total' => $total_room_types
+            );
+
+            return $data;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 }

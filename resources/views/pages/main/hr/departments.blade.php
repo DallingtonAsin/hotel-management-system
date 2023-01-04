@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="form-group">
-                            <span>Name</span>
+                            <span><i class="text-danger pr-1">*</i>Name</span>
                             <input type="text" class="form-control name bg-white" name="name"
                                 placeholder="Enter department name" required autofocus>
                         </div>

@@ -97,7 +97,6 @@ class StockController extends Controller
       $stock->supplier = $supplier;
       $stock->quantity = $quantity;
       $stock->threshold_qty = $thresholdQty;
-      $expiry_date = $expiry_date;
       $stock->buying_price = $buying_price;
       $stock->selling_price = $selling_price;
       $stock->wholesale_price = $wholesale_price;
