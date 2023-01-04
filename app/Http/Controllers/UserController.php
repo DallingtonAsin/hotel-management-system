@@ -510,7 +510,7 @@ class UserController extends Controller
         $statArr = Helper::GetUserStats();
         $number_of_users = $statArr['totl'];
 
-         return response()->json([$sessionVariable => $message, 'totl_no' => $number_of_users ]);
+         return response()->json([$sessionVariable => $message, 'total' => $number_of_users ]);
 
           }
           else
