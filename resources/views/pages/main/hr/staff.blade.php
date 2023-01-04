@@ -695,10 +695,10 @@
 
                 let errors = [];
                 if (first_name.length < 1) {
-                    errors.push("Please enter the first name");
+                    errors.push("Please enter first name");
                 }
                 if (last_name.length < 1) {
-                    errors.push("Please enter the last name");
+                    errors.push("Please enter last name");
                 }
                 if (address.length < 1) {
                     errors.push("Please enter address");
