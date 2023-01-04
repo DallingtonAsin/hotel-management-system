@@ -147,4 +147,18 @@ class DesignationController extends Controller
             throw $ex;
         }
     }
+
+
+    public function fetchDesignationsAjax(Request $request, $department_id) {
+        try {
+            if($request->ajax()){
+            $designations = Designation::where('department_id', $department_id)->get();
+            echo json_encode($designations);
+            die();
+            
+            }
+        } catch (\Exception $ex) {
+            echo "Error ".$ex->getMessage();
+        }
+    }
 }

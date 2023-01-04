@@ -211,6 +211,7 @@
         const cat = 'designation';
 
         $(document).ready(function() {
+            
             let table = $('#designations-table');
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3, 4];
@@ -264,7 +265,6 @@
                     }
                 });
             }
-
 
             //modal used to edit designations details [each row of the tbl]
             $('body').on('click', '#edit-designation', function(event) {

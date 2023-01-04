@@ -526,21 +526,6 @@ class UserController extends Controller
 
     }
 
-
-    
-    public function fetchDesignationsAjax(Request $request) {
-        try {
-            if($request->ajax()){
-            $designations = Designation::get();
-            echo json_encode($designations);
-            die();
-            
-            }
-        } catch (\Exception $ex) {
-            echo "Error ".$ex->getMessage();
-        }
-    }
-
     /**
      * Display the specified resource.
      *
