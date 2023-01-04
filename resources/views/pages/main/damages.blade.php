@@ -114,7 +114,7 @@
 
               <!-- Add Damage Details -->
               <div class="modal fade" id="addDamagesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-md">
 
                   <div class="modal-content nunito-font rounded-0">
                     <form name="damagesForm" id="damagesForm">
@@ -195,7 +195,7 @@
             <!--Modal DeleteDamage -->
             <div class="modal fade" id="deleteDamageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
             aria-labelledby="ModalLabel">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header text-center">
                   <h6 class="modal-title w-100 font-weight-bold">Delete damaged item</h6>
@@ -225,7 +225,7 @@
 
           <!--Import Damaged Items -->
           <div class="modal fade nunito-font" id="importDamages" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
               <div class="modal-content">
 
                 <form action="{{ Route('damages.import') }}" method="post"

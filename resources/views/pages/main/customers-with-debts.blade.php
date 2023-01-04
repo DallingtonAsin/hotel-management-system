@@ -90,7 +90,7 @@
 
 <div class="modal fade nunito-font CustomerDebtDetailsModel" id="CustomerDebtDetailsModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
 
       <form name="customers" id="DebtSaleDetailsForm">

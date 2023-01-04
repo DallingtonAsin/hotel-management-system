@@ -308,6 +308,3 @@ function updateTblStats(cat, response) {
      });
      return FormattedNumber;
  }
-
-
- 

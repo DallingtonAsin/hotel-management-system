@@ -12,6 +12,8 @@
 
   <script>window.Laravel = { csrfToken: 'csrf_token()' }</script>
   <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
+  <script src="{{ asset('js/routes/index.js') }}"></script>
+
   <script src="{{ asset('vendors/jquery-modal/jquery.modal.min.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
@@ -45,17 +47,17 @@
   <script src="{{ asset('vendors/js/chart.flot.sampledata.js') }}"></script>
   <script src="{{ asset('vendors/js/azia.js') }}"></script>
   <script src="{{ asset('js/external.min.js') }}"></script>
-  <script src="{{ asset('vendors/custom/custom-datatables.js') }}"></script>
+  <script src="{{ asset('js/custom/datatables.js') }}"></script>
   <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
   <script src="{{ asset('vendors/custom/echarts.js') }}"></script>
-
 
   <link rel="stylesheet" href="{{ asset('vendors/fonts/montserrat/css.css') }}">
   <link href="{{ asset('vendors/calendar/fullcalendar.min.css') }}" rel="stylesheet"/>
   <link href="{{ asset('css/nunito.css') }}" rel="stylesheet">
   <!-- <link href="{{ asset('css/hotel.css') }}" rel="stylesheet"> -->
   <link href="{{ asset('vendors/css/azia.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">  <link href="{{ asset('css/css.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
+  <link href="{{ asset('css/css.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/notification.css') }}" rel="stylesheet">
   
   <link href="{{ asset('vendors/datatables/dtables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
@@ -77,82 +79,12 @@
   <link href="{{ asset('vendors/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
   <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
   <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
+  <link href="{{ asset('css/must-load.css') }}" rel="stylesheet" media="all">
 
-  <link href="{{ asset('vendors/jquery-modal/jquery.modal.min.css') }}" rel="stylesheet">
+
+  <!-- <link href="{{ asset('vendors/jquery-modal/jquery.modal.min.css') }}" rel="stylesheet"> -->
 
 
-  <style>
-   html, body {
-      max-width: 100%;
-      overflow: scroll;
-      overflow-x: hidden;
-    }
-
-  ::-webkit-scrollbar {
-    width: 0;
-    /* background: transparent; */
-  }
-
-/* ::-webkit-scrollbar-thumb {
-    background: #FF0000;
-} */
-
-.table-responsive{
-  overflow: auto !important;
-}
-
-.az-header-center > div {
-  text-align: center;
-  display: block;
-  }
-
-  .az-header-center > div > i {
-     font-weight: 'bold'
-  }
-
-  .icon-img{
-    width:40px !important;
-    height:40px !important;
-  }
-
-  .icon-img-1{
-    width:45px !important;
-    height:45px !important;
-  }
-
-  .icon-img-2{
-    width:30px !important;
-    height:30px !important;
-  }
-
-  .header-caption{
-    font-size: 12px !important
-  }
-
-  .az-header-center > div > a > h6 {
-    color: #009688 !important;
-    font-size: 13px !important;
-    font-weight:'bold' !important;
-  }
-
-  .fa-home{
-    font-size: 16px !important;
-  }
-
-  .btn-success{
-    background: #009688 !important
-  }
-
-  .text-success{
-    color: #009688 !important
-  }
-
-  .chart-card{
-    width: 600px;
-    height:400px;
-  }
-
-  </style>
 </head>
 
 

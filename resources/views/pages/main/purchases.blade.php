@@ -123,7 +123,7 @@
 
 <!--Add new purchase -->
 <div class="modal fade nunito-font" id="addPurchaseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
 
         <form name="purchaseForm" id="purchaseForm">
@@ -225,7 +225,7 @@
 
 <!--Import Purchases -->
  <div class="modal fade nunito-font" id="importPurchases" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
 
         <form action="{{ Route('purchases.import') }}" method="post"
@@ -270,7 +270,7 @@
 
    <!--Modal Deletepurchase -->
    <div class="modal fade" id="deletepurchaseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h6 class="modal-title w-100 font-weight-bold">Delete Purchased Item</h6>

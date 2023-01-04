@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Controllers\LogAfterRequest;
-use App\Http\Controllers\SmsController;
 use App\Notifications\UserRegistration;
 use App\Jobs\MailRegistration;
 use App\DataTables\ManagersDataTable;
@@ -21,8 +17,10 @@ use App\DataTables\CashiersDataTable;
 use App\DataTables\UsersDataTable;
 use App\DataTables\ActiveUserAccountsDataTable;
 use App\DataTables\InactiveUserAccountsDataTable;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Carbon;
+use App\Models\Designation;
 use App\User;
-use App\Models\Role;
 use Helper;
 use Constant;
 
@@ -176,7 +174,7 @@ class UserController extends Controller
 
           case ($status == true):
           $deactivated = User::where('id', $id)
-          ->update(['is_active' => false, 'inactivated_by' => $admin]);
+          ->update(['is_active' => false, 'acc_changed_by' => $admin]);
           if($deactivated){
 
             $action = "deactivated user ".$name."'s account";
@@ -204,7 +202,7 @@ class UserController extends Controller
           case ($status == false):
           $activated = User::where('id', $id)
           ->update(['is_active' => true, 'loginAttempts' => 0,
-                    'otpAttempts' => 0,  'inactivated_by' => $admin]);
+                    'otpAttempts' => 0,  'acc_changed_by' => $admin]);
           if($activated){
 
             $action = "activated user ".$name."'s account";
@@ -258,7 +256,7 @@ class UserController extends Controller
 
           case ($status == true):
           $deactivated = User::where('id', $id)
-          ->update(['is_active' => false, 'inactivated_by' => $admin]);
+          ->update(['is_active' => false, 'acc_changed_by' => $admin]);
           if($deactivated){
 
             $action = "deactivated user ".$name."'s account";
@@ -286,7 +284,7 @@ class UserController extends Controller
           case ($status == false):
           $activated = User::where('id', $id)
           ->update(['is_active' => true, 'loginAttempts' => 0,
-                    'otpAttempts' => 0,  'inactivated_by' => $admin]);
+                    'otpAttempts' => 0,  'acc_changed_by' => $admin]);
           if($activated){
 
             $action = "activated user ".$name."'s account";
@@ -373,10 +371,15 @@ class UserController extends Controller
           $user_email = trim($request->input('email'));
           $user_telno = trim($request->input('tel_no'));
           $user_alt_telno = trim($request->input('alt_telno'));
-          $user_nin = trim($request->input('NationalIDNo'));
+          $user_nin = trim($request->input('nin'));
           $user_gender = trim($request->input('gender'));
-          $department_id = $request->input('role');
-          $user_position= Helper::getRole($department_id);
+
+          $department_id = $request->input('department');
+          $designation_id = $request->input('designation');
+          $designation = Designation::where('id', $designation_id)->value('name');
+
+          $staff_id = $request->input('employee_id');
+    
           $registra = $request->user()->name;
           $name = $user_fname." ".$user_lname;
           $defaultPwd = '12345678';
@@ -407,21 +410,22 @@ class UserController extends Controller
          else
          {
          
-          
           $user->first_name = $user_fname;
           $user->last_name = $user_lname;
           $user->name = $name;
           $user->username = $username;
           $user->gender = $user_gender;
           $user->email = $user_email;
+          $user->staff_id = $staff_id;
           $user->department_id = $department_id;
-          $user->tel_no = $user_telno;
-          $user->alt_telno = $user_alt_telno;
+          $user->designation_id = $designation_id;
+          $user->phone_number = $user_telno;
+          $user->other_phone_number = $user_alt_telno;
           $user->address = $user_address;
-          $user->nationalID_no = $user_nin;
+          $user->nin = $user_nin;
           $user->password = $password;
-          $user->is_active = 1;
-          $user->inactivated_by = $registra;
+          $user->is_active = true;
+          $user->acc_changed_by = $registra;
 
           $save_status = $user->save();
           if($save_status)
@@ -429,14 +433,14 @@ class UserController extends Controller
 
             $subject = 'User Registration';
             $userEmail = $request->email;
-            $registraPosition = $this->getRole($request->user()->department_id);
+            $registraPosition = Designation::where('id', Auth::user()->designation_id)->value('name');
             $registraEmail = $request->user()->email;
             $default_password = $defaultPwd;
             $now = now();
 
             $action = "registered user ".$name."";
             $sendAction = "You have been registered as a
-                      ".$user_position." today at ".$now."";
+                      ".$designation." today at ".$now."";
             LogsController::logger($request, $action, now());
 
             $data = array(
@@ -454,109 +458,59 @@ class UserController extends Controller
               'activity' => 'registration',
             );
 
-          
-            $user->notify(new UserRegistration($data));
-
-            $this->Enqueue($data);
             $sessionVariable = 'success';
 
+            // $user->notify(new UserRegistration($data));
 
-           if($this->is_connectedToInternet() == 1){
+            // $this->Enqueue($data);
+            //
 
-            $text_message = "Hey ".$name."";
-            $text_message .= "".$sendAction."";
-            $text_message .= "Your username is
-            ".$username." and password is ".$default_password."";
+
+          //  if($this->is_connectedToInternet() == 1){
+
+          //   $text_message = "Hey ".$name."";
+          //   $text_message .= "".$sendAction."";
+          //   $text_message .= "Your username is
+          //   ".$username." and password is ".$default_password."";
 
             
-            $sms = new SmsController();
-            $from = config("app.name");
-            $isSmsSent = Helper::SendTextMessage($request, $user_telno, $text_message);
+          //   $sms = new SmsController();
+          //   $from = config("app.name");
+          //   $isSmsSent = Helper::SendTextMessage($request, $user_telno, $text_message);
 
-            if($isSmsSent == true)
-            {
+          //   if($isSmsSent == true)
+          //   {
 
-            $SMSmessage = "SMS sent to registered ".$user_position." ".$name." successfully";
-            $SMSdataArr = array("code" => '201',
-                                  "message" => $SMSmessage,
-                                  "method" => $method);
-            LogAfterRequest::LogRequest($request,  $SMSdataArr);
-            }
-            else{
-                $SMSmessageErr = "SMS was never sent to registered ".$user_position." ".$name."!";
-                $SMSdataErrArr = array("code" => '101',
-                                 "message" => $SMSmessageErr,
-                                  "method" => $method);
-                LogAfterRequest::LogRequest($request,   $SMSdataErrArr);
+          //   $SMSmessage = "SMS sent to registered ".$designation." ".$name." successfully";
+          //   $SMSdataArr = array("code" => '201',
+          //                         "message" => $SMSmessage,
+          //                         "method" => $method);
+          //   LogAfterRequest::LogRequest($request,  $SMSdataArr);
+          //   }
+          //   else{
+          //       $SMSmessageErr = "SMS was never sent to registered ".$designation." ".$name."!";
+          //       $SMSdataErrArr = array("code" => '101',
+          //                        "message" => $SMSmessageErr,
+          //                         "method" => $method);
+          //       LogAfterRequest::LogRequest($request,   $SMSdataErrArr);
 
-            }
+          //   }
 
-          }else{
-            $message = "".ucwords($user_position)." registration failed";
-            $sessionVariable = 'fail';
-          }
+          // }else{
+          //   $message = "".ucwords($designation)." registration failed";
+          //   $sessionVariable = 'fail';
+          // }
 
-            $message = "User ".$name." has been registered successfully";
-            $dataArr = array("code" => '201',
+        $message = "User ".$name." has been registered successfully";
+        $dataArr = array("code" => '201',
                                   "message" => $message,
                                   "method" => $method);
-            LogAfterRequest::LogRequest($request, $dataArr);
+        LogAfterRequest::LogRequest($request, $dataArr);
 
-        $statArr = Helper::GetUserStats($user_position);
+        $statArr = Helper::GetUserStats();
         $number_of_users = $statArr['totl'];
 
-         return response()
-         ->json([$sessionVariable => $message,
-                 'totl_no' => $number_of_users,
-         ]);
-
-            // return back()->with("success", $message);
-
-           /* if($request->has('email') &&
-              $request->filled('email')){
-
-              if($this->is_connectedToInternet() == 1){
-                Mail::send('pages.mail.welcome', $data, function($message) use ($name,$default_password, $user_position,$registra,$registraPosition, $registraEmail, $userEmail,$subject)
-                {
-                  $message->from($registraEmail, 'Dallington');
-                  $message->to($userEmail, 'Henry')->subject($subject);
-                });
-
-                if(Mail::failures())
-                {
-                  $message = "User ".$name." has been registered but an email has not been sent";
-                  $dataArr = array("code" => '201',
-                                    "message" => $message,
-                                    "method" => $method);
-                   LogAfterRequest::LogRequest($request, $dataArr);
-                  return back()->with("success", $message);
-
-                }
-
-
-                else{
-                  $message = "User ".$name." has been registered & an email about account  details has been sent";
-                  $dataArr = array("code" => '200',
-                                    "message" => $message,
-                                    "method" => $method);
-                   LogAfterRequest::LogRequest($request, $dataArr);
-                  return back()->with("success", $message);
-                }
-
-              }
-              else if($this->is_connectedToInternet() == 0)
-              {
-                 $message = "User ".$name." has been registered successfully but couldn't send email because of no Internet connection!";
-                 $dataArr = array("code" => '201',
-                 "message" => $message,
-                 "method" => $method);
-                 LogAfterRequest::LogRequest($request, $dataArr);
-                 return back()->with("success", $message);
-
-              }
-
-            }*/
-
+         return response()->json([$sessionVariable => $message, 'total' => $number_of_users ]);
 
           }
           else
@@ -574,11 +528,11 @@ class UserController extends Controller
 
 
     
-    public function fetchRolesAjax(Request $request) {
+    public function fetchDesignationsAjax(Request $request) {
         try {
             if($request->ajax()){
-            $roles = Role::get();
-            echo json_encode($roles);
+            $designations = Designation::get();
+            echo json_encode($designations);
             die();
             
             }
@@ -780,7 +734,7 @@ class UserController extends Controller
       $message = $messageErr;
    }
 
-        $statArr = Helper::GetUserStats($user_position);
+        $statArr = Helper::GetUserStats();
         $number_of_users = $statArr['totl'];
 
          return response()
@@ -895,7 +849,7 @@ class UserController extends Controller
             LogsController::logger($request, $action, now());
             LogAfterRequest::LogRequest($request, $dataArr);
 
-            $statArr = Helper::GetUserStats($user_position);
+            $statArr = Helper::GetUserStats();
             $number_of_users = $statArr['totl'];
 
          return response()
