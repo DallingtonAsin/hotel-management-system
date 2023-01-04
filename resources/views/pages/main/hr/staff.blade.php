@@ -244,8 +244,8 @@
                     @endisset
                 </span>
             </h6>
-            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewStaff">Add
-                Staff</button>
+            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewStaff">
+                <i class="fa fa-plus-circle pr-1"></i>Add staff</button>
         </div>
 
         <div class="card-body">

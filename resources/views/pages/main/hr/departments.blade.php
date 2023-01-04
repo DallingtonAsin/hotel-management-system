@@ -13,8 +13,8 @@
                     @endisset
                 </span>
             </h6>
-            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewDepartment">Add
-                department</button>
+            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewDepartment">
+                <i class="fa fa-plus-circle pr-1"></i>Add department</button>
         </div>
 
         <div class="card-body">

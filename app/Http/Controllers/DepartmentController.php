@@ -132,9 +132,6 @@ class DepartmentController extends Controller
             echo "Error " . $ex->getMessage();
         }
     }
-
-
-
     private function GetDepartmentStats()
     {
         try {

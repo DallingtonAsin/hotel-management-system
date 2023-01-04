@@ -13,5 +13,7 @@ class Designation extends Model
    protected $fillable = [
    	        'id',
               'name',
+              'department_id',
+              'created_by'
    ];
 }

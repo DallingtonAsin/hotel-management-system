@@ -12,6 +12,8 @@
 
   <script>window.Laravel = { csrfToken: 'csrf_token()' }</script>
   <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
+  <script src="{{ asset('js/routes/index.js') }}"></script>
+
   <script src="{{ asset('vendors/jquery-modal/jquery.modal.min.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
@@ -45,7 +47,7 @@
   <script src="{{ asset('vendors/js/chart.flot.sampledata.js') }}"></script>
   <script src="{{ asset('vendors/js/azia.js') }}"></script>
   <script src="{{ asset('js/external.min.js') }}"></script>
-  <script src="{{ asset('vendors/custom/custom-datatables.js') }}"></script>
+  <script src="{{ asset('js/custom/datatables.js') }}"></script>
   <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
   <script src="{{ asset('vendors/custom/echarts.js') }}"></script>
 
