@@ -12,6 +12,8 @@ class GuestType extends Model
     protected $fillable = [
       'id',
       'name',
+      'is_regular',
+      'is_corporate',
       'added_by',
     ];
 }

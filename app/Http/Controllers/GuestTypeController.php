@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DataTables\guests\GuestTypesDatatable;
 use App\Models\GuestType;
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\Helper;
 
 class GuestTypeController extends Controller
 {
@@ -38,7 +40,53 @@ class GuestTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+   
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $name = ucfirst($request->input('name'));
+                $is_regular = $request->input('is_regular');
+                $is_corporate = $request->input('is_corporate');
+
+                $is_regular_bool = $is_regular == 'Yes';
+                $is_corporate_bool = $is_corporate == 'Yes';
+                $added_by = Helper::getLoggedInUser();
+
+                $req_data = [
+                    'name' => $name,
+                    'is_regular' => $is_regular_bool,
+                    'is_corporate' => $is_corporate_bool,
+                    'added_by' => $added_by,
+                ];
+            
+                if (GuestType::create($req_data)) {
+
+                    $message = "Guest type " . $name . " added successfully";
+                    $stats = $this->GetGuestTypeStats();
+                    $data = [
+                        'success' => $message,
+                        'data' => $stats['data'],
+                        'total' => $stats['total']
+                    ];
+
+                } else {
+                    $message = "Technical error in adding guest type";
+                    $data = [
+                        'error' => $message
+                    ];
+                }
+                return response()->json($data);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**
@@ -84,5 +132,23 @@ class GuestTypeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function GetGuestTypeStats()
+    {
+        try {
+
+            $guest_types = GuestType::all();
+            $total_guest_types = GuestType::count();
+
+            $data = array(
+                'data' => $guest_types,
+                'total' => $total_guest_types
+            );
+
+            return $data;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 }

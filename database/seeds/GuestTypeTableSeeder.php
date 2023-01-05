@@ -18,18 +18,21 @@ class GuestTypeTableSeeder extends Seeder
             "name" => "Regular",
             "is_regular" => true,
             "is_corporate" => false,
+            'added_by' => 'Olivia'
         ]);
 
         GuestType::create([
             "name" => "Walkin",
             "is_regular" => true,
             "is_corporate" => false,
+            'added_by' => 'Olivia'
         ]);
 
         GuestType::create([
             "name" => "Corporate",
             "is_regular" => false,
             "is_corporate" => true,
+            'added_by' => 'Olivia'
         ]);
     }
 }

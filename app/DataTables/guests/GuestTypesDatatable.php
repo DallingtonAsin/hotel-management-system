@@ -4,9 +4,6 @@ namespace App\DataTables\guests;
 
 use App\Models\GuestType;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class GuestTypesDatatable extends DataTable
@@ -96,7 +93,8 @@ class GuestTypesDatatable extends DataTable
             'id',
             'name',
             'is_regular',
-            'is_corporate'
+            'is_corporate',
+            'added_by'
         ];
     }
 
