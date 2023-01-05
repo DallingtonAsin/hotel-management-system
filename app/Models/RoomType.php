@@ -13,6 +13,6 @@ class RoomType extends Model
       'name',
       'single_occupancy_rate',
       'double_occupancy_rate',
-      'added_by',
+      'created_by',
     ];
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Room;
 use App\Models\Reservation;
 use App\User;
-use Helper;
+use App\Helpers\Helper;
 
 class HomeController extends Controller
 {

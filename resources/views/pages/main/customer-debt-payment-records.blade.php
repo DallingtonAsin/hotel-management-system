@@ -192,7 +192,7 @@ role="dialog" aria-labelledby="myModalLabel">
          {data: 'item', name:'item'},
          {data: 'amount_paid', name:'amount_paid'},
          {data: 'balance', name:'balance'},
-         {data: 'recorded_by', name:'recorded_by'},
+         {data: 'created_by', name:'created_by'},
          {data: 'date', name:'date'},
 
         //  {data: 'action', name: 'action',orderable: false,searchable: false},
@@ -209,7 +209,7 @@ role="dialog" aria-labelledby="myModalLabel">
          {data: 'item', name:'item'},
          {data: 'amount_paid', name:'amount_paid'},
          {data: 'balance', name:'balance'},
-         {data: 'recorded_by', name:'recorded_by'},
+         {data: 'created_by', name:'created_by'},
          {data: 'date', name:'date'},
      ];
       makeDataTable2(table, title, columns, dataColumns);

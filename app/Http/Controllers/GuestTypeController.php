@@ -57,13 +57,13 @@ class GuestTypeController extends Controller
 
                 $is_regular_bool = $is_regular == 'Yes';
                 $is_corporate_bool = $is_corporate == 'Yes';
-                $added_by = Helper::getLoggedInUser();
+                $created_by = Helper::getLoggedInUserId();
 
                 $req_data = [
                     'name' => $name,
                     'is_regular' => $is_regular_bool,
                     'is_corporate' => $is_corporate_bool,
-                    'added_by' => $added_by,
+                    'created_by' => $created_by,
                 ];
             
                 if (GuestType::create($req_data)) {

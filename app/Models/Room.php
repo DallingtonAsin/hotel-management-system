@@ -15,6 +15,6 @@ class Room extends Model
       'floor_number',
       'status',
       'description',
-      'added_by',
+      'created_by',
     ];
 }

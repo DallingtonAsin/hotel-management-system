@@ -90,7 +90,7 @@ class PurchasesDataTable extends DataTable
             'cost_price_per_item',
             'total_cost_price',
             'supplier',
-            'recorded_by',
+            'created_by',
             'date'
         ];
     }

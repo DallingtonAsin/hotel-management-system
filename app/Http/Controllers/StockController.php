@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\DataTables\StockDataTable;
 use Illuminate\Support\Str;
 use Constant;
-use Helper;
+use App\Helpers\Helper;
 
 
 class StockController extends Controller
@@ -109,7 +109,7 @@ class StockController extends Controller
     //   $purchase->quantity = $quantity;
     //   $purchase->cost_price_per_item = $buying_price;
     //   $purchase->supplier = $supplier;
-    //   $purchase->recorded_by =  $request->user()->name;
+    //   $purchase->created_by =  $request->user()->name;
     //   $purchase->date = now();
     //  ($expiry_date == "mm/dd/yyyy")? $stock->expiry_date = "" : $stock->expiry_date =$expiry_date;
     //   $savePurchaseResponse = $purchase->save();

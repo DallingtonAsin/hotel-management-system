@@ -52,7 +52,7 @@ class ReservationTableSeeder extends Seeder
             'end_date' => $endDate,
             'discount_percent' => $this->faker->numberBetween(1, 10),
             'total_price' => $this->faker->numberBetween($min = 150000, $max = 500000),
-            'recorded_by' => 'Olivia'
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
 
         Reservation::create([
@@ -61,7 +61,7 @@ class ReservationTableSeeder extends Seeder
             'end_date' => $endDate,
             'discount_percent' => $this->faker->numberBetween(1, 10),
             'total_price' => $this->faker->numberBetween($min = 150000, $max = 500000),
-            'recorded_by' => 'Olivia'
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
 
         Reservation::create([
@@ -70,7 +70,7 @@ class ReservationTableSeeder extends Seeder
             'end_date' => $endDate,
             'discount_percent' => $this->faker->numberBetween(1, 10),
             'total_price' => $this->faker->numberBetween($min = 150000, $max = 500000),
-            'recorded_by' => 'Olivia'
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
     }
 }

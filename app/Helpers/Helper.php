@@ -23,6 +23,18 @@ use Constant;
 class Helper
 {
 
+
+  public static function getUserNames($id)
+  {
+    try {
+
+      $user = User::find($id);
+      return $user->first_name . ' ' . $user->last_name;
+
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
   public static function logError($data)
   {
 
@@ -168,7 +180,7 @@ class Helper
       $purchase->wholesale_price = Helper::array_key_isset('wholesale_price', $row) ? Helper::Numberize($row['wholesale_price']) : null;
       $purchase->supplier = Helper::array_key_isset('supplier', $row) ? $row['supplier'] : null;
       $purchase->supplier_contact = Helper::array_key_isset('suppliers_contact', $row) ? $row['suppliers_contact'] : null;
-      $purchase->recorded_by = Auth::user()->name;
+      $purchase->created_by = Auth::user()->name;
       $purchase->date_of_purchase = Helper::array_key_isset('date_of_purchase', $row) ? $row['date_of_purchase'] : date('Y-m-d');
 
       $isSaved = $purchase->save();
@@ -462,11 +474,16 @@ class Helper
   }
 
 
+  public static function getLoggedInUserId()
+  {
+    $userId = Auth::user()->id;
+    return $userId;
+  }
+
   public static function getLoggedInUser()
   {
     $user = Auth::user()->first_name . ' ' . Auth::user()->last_name;
     return $user;
   }
-
 
 }

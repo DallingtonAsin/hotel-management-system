@@ -19,8 +19,9 @@ class CreateGuestTypesTable extends Migration
             $table->string('name');
             $table->boolean('is_regular')->default(false);
             $table->boolean('is_corporate')->default(false);
-            $table->string('added_by')->nullable();
+            $table->integer('created_by')->nullable()->unsigned();
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

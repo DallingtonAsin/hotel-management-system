@@ -262,7 +262,7 @@ role="dialog" aria-labelledby="myModalLabel">
          {data: 'end_date', name:'end_date'},
          {data: 'discount_percent', name:'discount_percent'},
          {data: 'total_price', name:'total_price'},
-         {data: 'recorded_by', name:'recorded_by'},
+         {data: 'created_by', name:'created_by'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
     

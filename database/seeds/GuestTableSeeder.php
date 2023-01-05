@@ -50,7 +50,7 @@ class GuestTableSeeder extends Seeder
             'email' => $this->faker->email,
             'phone_number' => '0700477421',
             'address' => 'Nakawa, Kampala',
-            'recorded_by' => 'Olivia'
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
 
         Guest::create([
@@ -60,7 +60,7 @@ class GuestTableSeeder extends Seeder
             'email' => $this->faker->email,
             'phone_number' => '0774014727',
             'address' => 'Ntinda, Kampala',
-            'recorded_by' => 'Olivia'
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
 
         Guest::create([
@@ -70,7 +70,7 @@ class GuestTableSeeder extends Seeder
             'email' => $this->faker->email,
             'phone_number' => '0786857180',
             'address' => 'Kyanja, Kampala',
-            'recorded_by' => 'Olivia'
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
 
         Guest::create([
@@ -80,7 +80,7 @@ class GuestTableSeeder extends Seeder
             'email' => $this->faker->email,
             'phone_number' => '0700857180',
             'address' => 'Kireka, Kampala',
-            'recorded_by' => 'Olivia'
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
     }
 }

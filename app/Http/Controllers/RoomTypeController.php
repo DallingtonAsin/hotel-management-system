@@ -55,12 +55,12 @@ class RoomTypeController extends Controller
                 $s_rate = Helper::Numberize($request->input('single_occupancy_rate'));
                 $d_rate = Helper::Numberize($request->input('double_occupancy_rate'));
 
-                $added_by = Helper::getLoggedInUser();
+                $created_by = Helper::getLoggedInUserId();
                 if (RoomType::create([
                     'name' => $name,
                     'single_occupancy_rate' => $s_rate,
                     'double_occupancy_rate' => $d_rate,
-                    'added_by' => $added_by
+                    'created_by' => $created_by
                  ])) {
                     $message = "Room type " . $name . " has been added successfully";
                     $stats = $this->GetRoomTypeStats();

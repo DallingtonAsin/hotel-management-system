@@ -59,7 +59,7 @@ class RoomController extends Controller
                 $floor_number = Helper::Numberize($request->input('floor_number'));
                 $status = ucfirst($request->input('status'));
                 $description = ucfirst($request->input('description'));
-                $added_by = Helper::getLoggedInUser();
+                $created_by = Helper::getLoggedInUserId();
 
                 if (
                     Room::create([
@@ -68,7 +68,7 @@ class RoomController extends Controller
                         'floor_number' => $floor_number,
                         'status' => $status,
                         'description' => $description,
-                        'added_by' => $added_by
+                        'created_by' => $created_by
                     ])
                 ) {
 

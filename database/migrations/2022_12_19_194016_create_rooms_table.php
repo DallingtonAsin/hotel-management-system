@@ -20,9 +20,10 @@ class CreateRoomsTable extends Migration
             $table->string('floor_number');
             $table->string('description')->nullable();
             $table->string('status', 10)->nullable();
-            $table->string('added_by')->nullable();
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('type_id')->references('id')->on('room_types');
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

@@ -96,7 +96,7 @@ class ReservationsDataTable extends DataTable
             'end_date',
             'discount_percent',
             'total_price',
-            'recorded_by'
+            'created_by'
         ];
     }
 

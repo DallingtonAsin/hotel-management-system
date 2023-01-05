@@ -46,37 +46,37 @@ class DesignationTableSeeder extends Seeder
         Designation::create([
             "name" => "Manager",
             "department_id" => $this->faker->randomElement([1,2,3,4,5,6]),
-            "created_by" => "Olivia",
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Designation::create([
             "name" => "Office Assistant",
             "department_id" => $this->faker->randomElement([1,2,3,4,5,6]),
-            "created_by" => "Olivia",
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Designation::create([
             "name" => "Cashier",
             "department_id" => $this->faker->randomElement([1,2,3,4,5,6]),
-            "created_by" => "Olivia",
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Designation::create([
             "name" => "House Keeper",
             "department_id" => $this->faker->randomElement([1,2,3,4,5,6]),
-            "created_by" => "Olivia",
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Designation::create([
             "name" => "Receiptionist",
             "department_id" => $this->faker->randomElement([1,2,3,4,5,6]),
-            "created_by" => "Olivia",
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Designation::create([
             "name" => "Computer Assistant",
             "department_id" => $this->faker->randomElement([1,2,3,4,5,6]),
-            "created_by" => "Olivia",
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
     }
 }

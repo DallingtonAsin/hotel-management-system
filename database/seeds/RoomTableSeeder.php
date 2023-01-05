@@ -49,7 +49,7 @@ class RoomTableSeeder extends Seeder
             'number' => $this->faker->randomElement(['A', 'B', 'C','D', 'E']).''.$this->faker->numberBetween(500, 700),
             'floor_number' => $this->faker->randomElement([1,2,3,4, 5, 6, 7]),
             'description' => 'Double room with 5x6 nice bed',
-            'added_by' => 'Olivia',
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Room::create([
@@ -57,7 +57,7 @@ class RoomTableSeeder extends Seeder
             'number' => $this->faker->randomElement(['A', 'B', 'C','D', 'E']).''.$this->faker->numberBetween(700, 800),
             'floor_number' => $this->faker->randomElement([1,2,3,4, 5, 6]),
             'description' => 'Single room with 6x6 nice bed',
-            'added_by' => 'Olivia',
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
         // php artisan db:seed --class=RoomsTableSeeder
 
@@ -66,7 +66,7 @@ class RoomTableSeeder extends Seeder
             'number' => $this->faker->randomElement(['A', 'B', 'C','D', 'E']).''.$this->faker->numberBetween(100, 400),
             'floor_number' => $this->faker->randomElement([1,2,3,4, 5]),
             'description' => 'Single room with good facilities',
-            'added_by' => 'Olivia',
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Room::create([
@@ -74,7 +74,7 @@ class RoomTableSeeder extends Seeder
             'number' => $this->faker->randomElement(['A', 'B', 'C','D', 'E']).''.$this->faker->numberBetween(400, 600),
             'floor_number' => $this->faker->randomElement([1,2,3,4, 5, 6, 7]),
             'description' => 'Single room with 6x6 nice bed',
-            'added_by' => 'Olivia',
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Room::create([
@@ -82,7 +82,7 @@ class RoomTableSeeder extends Seeder
             'number' => $this->faker->randomElement(['A', 'B', 'C','D', 'E']).''.$this->faker->numberBetween(100, 250),
             'floor_number' => $this->faker->randomElement([1,2,3,4, 5]),
             'description' => 'Single room with 6x6 nice bed',
-            'added_by' => 'Olivia',
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
    

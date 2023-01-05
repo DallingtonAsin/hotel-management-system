@@ -4,10 +4,8 @@ namespace App\DataTables\rooms;
 
 use App\Models\RoomType;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
 
 class RoomTypesDatatable extends DataTable
 {
@@ -48,6 +46,8 @@ class RoomTypesDatatable extends DataTable
         })->editColumn('double_occupancy_rate', function ($roomType) {
             $d_rate = number_format($roomType->double_occupancy_rate);
             return $d_rate;
+        })->editColumn('created_by', function ($roomType) {
+            return Helper::getUserNames($roomType->created_by);
         })->addColumn('checkbox', function ($roomType) {
             $checkBox = '<input type="checkbox" id="' . $roomType->id . '"/>';
             return $checkBox;
@@ -67,7 +67,7 @@ class RoomTypesDatatable extends DataTable
             'name',
             'single_occupancy_rate',
             'double_occupancy_rate',
-            'added_by'
+            'created_by'
         );
     }
 
@@ -105,7 +105,7 @@ class RoomTypesDatatable extends DataTable
             'name',
             'single_occupancy_rate',
             'double_occupancy_rate',
-            'added_by'
+            'created_by'
         ];
     }
 

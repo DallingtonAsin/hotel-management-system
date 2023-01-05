@@ -14,6 +14,6 @@ class GuestType extends Model
       'name',
       'is_regular',
       'is_corporate',
-      'added_by',
+      'created_by',
     ];
 }

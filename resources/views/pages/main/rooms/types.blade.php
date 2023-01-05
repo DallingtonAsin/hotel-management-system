@@ -240,8 +240,8 @@
                     name: 'double_occupancy_rate'
                 },
                 {
-                    data: 'added_by',
-                    name: 'added_by'
+                    data: 'created_by',
+                    name: 'created_by'
                 },
                 {
                     data: 'action',

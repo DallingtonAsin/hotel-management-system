@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\DataTables\HR\DesignationsDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Designation;
-use Helper;
+use App\Helpers\Helper;
 
 class DesignationController extends Controller
 {
@@ -55,13 +55,13 @@ class DesignationController extends Controller
                 $department_id = $request->input('department');
                 $name = ucfirst($request->input('designation'));
                 $department = Department::where('id', $department_id)->value('name');
-                $added_by = Helper::getLoggedInUser();
+                $created_by = Helper::getLoggedInUserId();
 
                 if (
                     Designation::create([
                         'name' => $name,
                         'department_id' => $department_id,
-                        'created_by' => $added_by
+                        'created_by' => $created_by
                     ])
                 ) {
                     $message = "Designation " . $name . " has been added in " . $department . " department successfully";

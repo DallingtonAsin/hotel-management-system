@@ -21,9 +21,11 @@ class CreateReservationsTable extends Migration
             $table->date('end_date');
             $table->decimal('discount_percent');
             $table->decimal('total_price');
-            $table->string('recorded_by')->nullable();
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('guest_id')->references('id')->on('guests');
+            $table->foreign('created_by')->references('id')->on('users');
+
         });
     }
 

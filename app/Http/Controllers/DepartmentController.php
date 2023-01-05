@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\HR\DepartmentsDatatable;
 use App\Models\Department;
-use Helper;
+use App\Helpers\Helper;
 
 class DepartmentController extends Controller
 {
@@ -52,8 +52,8 @@ class DepartmentController extends Controller
                 return response()->json(['error' => $message]);
             } else {
                 $name = ucfirst($request->input('name'));
-                $added_by = Helper::getLoggedInUser();
-                if (Department::create(['name' => $name, 'created_by' => $added_by])) {
+                $created_by = Helper::getLoggedInUserId();
+                if (Department::create(['name' => $name, 'created_by' => $created_by])) {
                     $message = "Department " . $name . " added successfully";
                     $stats = $this->GetDepartmentStats();
                     $data = [

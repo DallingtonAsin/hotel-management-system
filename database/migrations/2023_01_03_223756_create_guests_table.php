@@ -23,9 +23,10 @@ class CreateGuestsTable extends Migration
             $table->string('phone_number');
             $table->string('address')->nullable();
             $table->string('details')->nullable();
-            $table->string('recorded_by')->nullable();
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('guest_type_id')->references('id')->on('guest_types');
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

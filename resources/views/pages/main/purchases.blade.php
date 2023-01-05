@@ -339,7 +339,7 @@
          {data: 'total_cost_price', name:'total_cost_price'},
           // {data: 'date_of_purchase', name:'date_of_purchase'},
         //  {data: 'supplier', name:'supplier'},
-        //  {data: 'recorded_by', name:'recorded_by'},
+        //  {data: 'created_by', name:'created_by'},
          {data: 'action', name:'action',orderable: false,searchable: false},
      ];
     

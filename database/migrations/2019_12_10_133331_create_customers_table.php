@@ -23,7 +23,7 @@ class CreateCustomersTable extends Migration
             $table->unsignedBigInteger('item_taken');
             $table->double('debt')->nullable();
             $table->double('credit')->nullable();
-            $table->string('added_by');
+            $table->string('created_by');
             $table->date('taken_on')->nullable();
             $table->timestamps();
             $table->foreign('item_taken')->references('id')->on('stock')->onDelete('cascade');
