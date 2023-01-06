@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DataTables\rooms\RoomsDatatable;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Models\Room;
 use App\Helpers\Helper;
 
@@ -152,5 +153,57 @@ class RoomController extends Controller
         } catch (\Exception $ex) {
             throw $ex;
         }
+    }
+
+    public function fetchRoomsAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $rooms = Room::get();
+                echo json_encode($rooms);
+                die();
+            }
+        } catch (\Exception $ex) {
+            echo "Error " . $ex->getMessage();
+        }
+    }
+
+    public function suggestRoomss(Request $request)
+    {
+        try {
+            $data = array();
+            $room_number = $request->room_number;
+       
+            $room_suggestions = Room::where('number', 'like', '%' . $room_number . '%')
+                ->get();
+            foreach ($room_suggestions as $item) {
+                $data[] = $item->id;
+                $data[] = $item->number;
+            }
+            // return response()->json($data);
+            echo json_encode($data);
+
+        } catch (\Exception $ex) {
+            echo "Error " . $ex->getMessage();
+        }
+    }
+
+
+    protected function suggestRooms(Request $request)
+    {
+
+        if($request->input('query')){
+            $query = $request->input('query');
+            $data = array();
+            $items = DB::table("rooms")
+            ->where("number", "like", "%".$query."%")
+            ->get();
+
+            foreach($items as $item){
+                $data[] = $item->number;
+            }
+            return response()->json($data);
+        }
+
     }
 }

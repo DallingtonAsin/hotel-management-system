@@ -49,6 +49,9 @@ Route::get('designations/index/ajax','DesignationController@getDesignationsDataT
 
 Route::get('departments/ajax','DepartmentController@fetchDepartmentsAjax')->name('departments.ajax.fetch');
 Route::get('room-types/ajax','RoomTypeController@fetchRoomTypesAjax')->name('room_types.ajax.fetch');
+Route::get('rooms/ajax','RoomController@fetchRoomsAjax')->name('rooms.ajax.fetch');
+Route::post('rooms/ajax/suggestions','RoomController@suggestRooms')->name('rooms.ajax.suggest');
+
 
 Route::get('reports/ajax/monthly-sales','ReportsController@GetMonthlySalesDT')->name('monthly-sales.ajax');
 Route::get('reports/ajax/low-running-stock/{qty?}','ReportsController@GetLowStockDT')->name('low-stock.ajax');
@@ -156,7 +159,6 @@ Route::get('/overview', 'HomeController@overview')->name('overview');
 Route::get('/reports', 'ReportsController@index')->name('reports');
 Route::get('/reports/charts/purchases', 'ReportsController@purchaseReports')->name('reports.charts.purchases');
 
-
 Route::post('pos/session/update','CartController@updateItemInSession')->name('session.update');
 Route::post('pos/record','CartController@MakeSaleGateway')->name('sale.transact');
 Route::post('sale/transact','CartController@recordSale')->name('sale.record');
@@ -170,9 +172,7 @@ Route::post('/sales/filtered-sales','SalesController@filterSales')->name('filter
 Route::post('/sales/debts/search','SalesController@filterSalesWithDebts')->name('sales.debts.filter'); 
 
 
-
-Route::put('/sales/records/update/','SalesController@updateSaleRecord')
-->name('sales.records.update');
+Route::put('/sales/records/update/','SalesController@updateSaleRecord')->name('sales.records.update');
 Route::get('sales/export-sales','SalesController@exportSales')->name('sales.export');
 
 Route::post('stock/import-stock','StockController@importStock')->name('stock.import');

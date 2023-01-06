@@ -66,8 +66,10 @@ class ReservationTableSeeder extends Seeder
 
         Reservation::create([
             'guest_id' => $this->faker->randomElement([1,2,3]),
-            'start_date' => $startDate,
-            'end_date' => $endDate,
+            'guest_type_id' => $this->faker->randomElement([1,2,3]),
+            'room_id' => $this->faker->randomElement([1,2,3]),
+            'arrival_date' => $startDate,
+            'departure_date' => $endDate,
             'discount_percent' => $this->faker->numberBetween(1, 10),
             'total_price' => $this->faker->numberBetween($min = 150000, $max = 500000),
             "created_by"  => $this->faker->randomElement([1,2,3,4,5])

@@ -16,7 +16,7 @@ class CreateGuestTypesTable extends Migration
     {
         Schema::create('guest_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->boolean('is_regular')->default(false);
             $table->boolean('is_corporate')->default(false);
             $table->integer('created_by')->nullable()->unsigned();

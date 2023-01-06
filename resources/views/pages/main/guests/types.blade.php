@@ -61,8 +61,6 @@
         </div>
     </div>
 
-
-
     <!--Add guest types -->
     <div class="modal fade nunito-font addGuestTypeModal" id="addGuestTypeModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"

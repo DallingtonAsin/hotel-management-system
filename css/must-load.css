@@ -80,3 +80,18 @@ display: block;
   .table{
     table-layout: fixed !important;
   }
+
+  .guest-types-tab .nav-item .nav-link.active {
+    background-color: #009688;
+    border-color: #009688;
+    color: #fff
+}
+
+.card-body .form-group span, .card-body .form-group input{
+    font-size: 14.5px;
+}
+
+input[type="radio"]:checked {
+  color: #009688;
+  background-color: #009688;
+}

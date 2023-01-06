@@ -699,6 +699,7 @@ class CartController extends Controller
                                 $data[] = $item->item_code;
                             }
                             echo json_encode($data);
+                            // return response()->json($data);
                         }
 
                     }

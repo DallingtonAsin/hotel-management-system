@@ -366,7 +366,6 @@
 
             });
 
-
             function ListenAndDoDeletion(id) {
                 let deleteUrl = '{{ route('designations.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
@@ -389,7 +388,6 @@
                     }
                 });
             }
-
 
             function DisableTableFields(bool) {
 

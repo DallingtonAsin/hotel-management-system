@@ -16,10 +16,10 @@ class CreateRoomsTable extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('type_id');
-            $table->string('number');
+            $table->string('number')->unique();
             $table->string('floor_number');
             $table->string('description')->nullable();
-            $table->string('status', 10)->nullable();
+            $table->enum('status', ['Occupied', 'Vacant']);
             $table->integer('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('type_id')->references('id')->on('room_types');

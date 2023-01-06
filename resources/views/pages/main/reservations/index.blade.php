@@ -3,32 +3,20 @@
 @section('content')
 
       <div class="card">
-        <div class="card-header">
-          <div class="panel-tile">
 
-            <div class="row nunito-font">
-
-
-              <div class="col-lg-2">
-                <h6 class="text-dark">
-                  <i class="fa fa-home text-success"> /</i>
-                  <strong>Reservations</strong>
-                  <span class="badge badge-info  totl_reservations">
-                      @isset($total_reservations)
+        <div class="card-header d-flex align-items-center">
+          <span class="response"></span>
+          <h6 class="card-title mb-0 text-dark">
+              <i class="fa fa-home text-success"> /</i>
+              <strong>Reservations</strong>
+              <span class="badge badge-info total_designations">
+                  @isset($total_reservations)
                       {{ number_format($total_reservations) }}
-                      @endisset
-                    </span>
-                </h6>
-              </div>
-
-              <div class="col-lg-2">
-                <h6>
-                    <a class=" bolded" href="javascript:void(0)"
-                     id="addNewDepartment"> Add reservation</a>
-                </h6>
-              </div>
-          </div>
-        </div>
+                  @endisset
+              </span>
+          </h6>
+          <a href="{{route('reservations.create') }}" class="btn btn-primary btn-sm outline-none ml-auto mb-2 text-white" id="addNewDesignation">
+              <i class="fa fa-plus-circle pr-1"></i>Add reservation</a>
       </div>
 
       <div class="card-body">
@@ -61,8 +49,8 @@
               <tr>
                 <th></th>
                 <th>Guest name</th>
-                <th>Start date</th>
-                <th>End date</th>
+                <th>Arrival date</th>
+                <th>Departure date</th>
                 <th>Discount (%)</th>
                 <th>Total Price</th>
                 <th>Recorded By</th>
@@ -258,8 +246,8 @@ role="dialog" aria-labelledby="myModalLabel">
     var dataColumns = [
          {data: 'checkbox', name:'checkbox'},
          {data: 'guest', name:'guest'},
-         {data: 'start_date', name:'start_date'},
-         {data: 'end_date', name:'end_date'},
+         {data: 'arrival_date', name:'arrival_date'},
+         {data: 'departure_date', name:'departure_date'},
          {data: 'discount_percent', name:'discount_percent'},
          {data: 'total_price', name:'total_price'},
          {data: 'created_by', name:'created_by'},

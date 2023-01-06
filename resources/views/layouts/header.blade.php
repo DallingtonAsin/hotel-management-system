@@ -30,7 +30,7 @@
          </div>
 
          <div class="col-lg-3">
-         <a href=""><img src="{{ asset('vendors/img/bed.png')}}" class="icon-img-1"/>
+         <a href="{{ route('reservations.index') }}"><img src="{{ asset('vendors/img/bed.png')}}" class="icon-img-1"/>
             <h6 class="header-caption">Reservations</h6></a>
          </div>
 

@@ -141,9 +141,6 @@
           <li class="nav-sub-item"><a href="{{ route('designations.index') }}" class="nav-sub-link">Designations</a></li>
           <li class="nav-sub-item"><a href="{{ route('staff.index') }}" class="nav-sub-link">Staff</a></li>
           <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Salary Payments</a></li>
-          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Other Staff Payments</a></li>
-
-
 </ul>
 </li>
 

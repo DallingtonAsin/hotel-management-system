@@ -1,107 +1,136 @@
 @extends('layouts.template')
 
 @section('content')
+    <div class="card">
+        <div class="card-body">
 
-      <div class="card card-primary">
-        <div class="card-header bg-secondary">
-          <span class="card-title text-white">Reserve Accomodation</span>
-        </div>
-
-      <div class="card-body">
-
-        <form class="form" method="post" action="{{ route('companies.register', isset($company)?$company['id']:0) }}"
-          enctype='multipart/form-data'>
-          @csrf
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Name</span>
-            <input type="text" class="form-control" placeholder="Enter client first name" required name="name"
-              value="" autocomplete="off">
-          </div>
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Phone Number</span>
-            <input type="text" class="form-control" name="phone_number" placeholder="Enter phone number"
-              value="" required autocomplete="off">
-          </div>
-
-          <div class="form-group">
-            <span class="text-muted">Email</span>
-            <input type="text" class="form-control" name="email" placeholder="Enter email"
-              value="" required autocomplete="off">
-          </div>
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Passport</span>
-            <input type="text" class="form-control" name="passport_id" placeholder="Enter company email"
-              value="" required autocomplete="off">
-          </div>
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>NIN</span>
-            <input type="text" class="form-control" name="nin" placeholder="Enter company email"
-              value="" required autocomplete="off">
-          </div>
-
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Room Number</span>
-            <input type="text" class="form-control" placeholder="Enter room number" required name="company_address"
-              value="" autocomplete="off">
-          </div>
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Guest Type</span>
-            <select name="guest_type" class="form-control" required>
-              <option value="">Select guest type</option>
-              @foreach($guest_types as $type)
-                   <option value="{{$type->name}}">{{$type->name}}</option>
-              @endforeach
-           </select>
-          </div>
-
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Arrival Time</span>
-            <input type="datetime-local" class="form-control" placeholder="Enter arrival time" required name="company_address"
-              value="" autocomplete="off">
-          </div>
-
-          <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Departure Time</span>
-            <input type="datetime-local" class="form-control" placeholder="Enter departure time" required name="company_address"
-              value="" autocomplete="off">
-          </div>
-
-  
-          <div class="form-group">
-            <input type="submit" class="btn btn-sm btn-primary border-dark"
-              value="<?= isset($company)? 'Update' : 'Add Company'?>">
-          </div>
-
-          <div class="row form-group">
-            <div class="col-lg-9">
-              <span class="pl-0 response"></span>
+            @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong><span class="fa fa-check-circle"></span></strong>
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-          </div>
+           @endif
 
-        </form>
-      </div>
+            @if (Session::has('error'))
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong>
+                    {{ Session::get('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <ul class="nav nav-tabs guest-types-tab" id="GuestTypesTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#regular-tab-pane"
+                        type="button" role="tab" aria-controls="regular-tab-pane" aria-selected="true"><small>Regular |
+                            Walkin Guest</small></button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#corporate-tab-pane"
+                        type="button" role="tab" aria-controls="corporate-tab-pane"
+                        aria-selected="false"><small>Corporate Guest</small></button>
+                </li>
+
+            </ul>
+            <div class="tab-content mt-3 px-2" id="GuestTypesTabContent">
+                <div class="tab-pane fade show active" id="regular-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+                    tabindex="0">
+                    @include('pages.main.reservations.forms.regular_guest')
+                </div>
+                <div class="tab-pane fade" id="walkin-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
+                    tabindex="0">
+
+                </div>
+                <div class="tab-pane fade" id="corporate-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
+                    tabindex="0">
+                    @include('pages.main.reservations.forms.corporate_guest')
+                </div>
+            </div>
+
+
+
+        </div>
     </div>
 
 
-<script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 
-@if(session()->get('success'))
-<script>
-  $(document).ready(function () {
-    var div = ".response";
-    var type = "success";
-    var LoginMessageError = "{{ session()->get('success') }}";
-    ShowLoginErrorMessage(div, type, LoginMessageError);
-  });
+    <script>
+        const roomsAjaxUrl = @json(route('rooms.ajax.fetch'));
+        populateRooms();
+        onSelectGuestType();
 
-</script>
-@endif
+        function onSelectGuestType() {
+            $('.guest_types_section').on('change', function() {
+                let guest_type_id = $(this).find(":selected").val();
+                alert('guest_type_id' + guest_type_id);
+                if (guest_type_id) {
+                    populateDesignations(guest_type_id);
+                }
+            });
+        }
+    </script>
 
+    @if (session()->get('success'))
+        <script>
+            $(document).ready(function() {
+                var div = ".response";
+                var type = "success";
+                var LoginMessageError = "{{ session()->get('success') }}";
+                ShowLoginErrorMessage(div, type, LoginMessageError);
+            });
+        </script>
+    @endif
+
+    <script type="text/javascript">
+        var $ = jQuery;
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        });
+
+        onTypingRoomNumber();
+
+        function onTypingRoomNumber() {
+            let search_qry = $('.room_number').val();
+            $('.room_number').typeahead({
+                source: function(search_qry, result) {
+                    $.ajax({
+                        url: "{{ route('rooms.ajax.suggest') }}",
+                        method: 'post',
+                        data: {
+                            query: search_qry,
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            console.log(`Got data`, data);
+                            result($.map(data, function(item) {
+                                return item;
+                            }));
+                        },
+                        error: function(data) {
+                            console.log(data);
+                        },
+                    });
+                }
+            });
+        }
+    </script>
 @endsection
