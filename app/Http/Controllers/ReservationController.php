@@ -42,29 +42,54 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'guest_type' => 'required',
-            'first_name' => 'required|max:55',
-            'last_name' => 'required|max:55',
-            'company_name' => 'sometimes|nullable',
-            'tax_number' => 'sometimes|nullable',
-            'company_contact' => 'sometimes|nullable',
-            'company_email' => 'sometimes|nullable',
-            'phone_number' => 'required|min:10',
-            'email' => 'sometimes|nullable|email',
-            'passport_number' => 'sometimes|nullable',
-            'nin' => 'sometimes|nullable',
-            'occupancy_type' => 'required',
-            'room_number' => 'required',
-            'arrival_date' => 'required',
-            'departure_date' => 'required',
-            'other_details' => 'sometimes|nullable'
-        ]);
+
+        $guest_type = $request->input('guest_type');
+        if (stripos($guest_type, 'regular') !== false) {
+            $validator = Validator::make($request->all(), [
+                'guest_type' => 'required',
+                'first_name' => 'required|max:55',
+                'last_name' => 'required|max:55',
+                'company_name' => 'sometimes|nullable',
+                'tax_number' => 'sometimes|nullable',
+                'company_contact' => 'sometimes|nullable',
+                'company_email' => 'sometimes|nullable',
+                'phone_number' => 'required|min:10',
+                'email' => 'sometimes|nullable|email',
+                'passport_number' => 'sometimes|nullable',
+                'nin' => 'sometimes|nullable',
+                'occupancy_type' => 'required',
+                'room_number' => 'required',
+                'arrival_date' => 'required',
+                'departure_date' => 'required',
+                'other_details' => 'sometimes|nullable'
+            ]);
+            $tab = '?tab=regular-tab';
+        }else{
+            $validator = Validator::make($request->all(), [
+                'guest_type' => 'required',
+                'first_name' => 'required|max:55',
+                'last_name' => 'required|max:55',
+                'company_name' => 'required',
+                'tax_number' => 'required',
+                'company_contact' => 'required',
+                'company_email' => 'required',
+                'phone_number' => 'required|min:10',
+                'email' => 'required|email',
+                'passport_number' => 'sometimes|nullable',
+                'nin' => 'sometimes|nullable',
+                'occupancy_type' => 'required',
+                'room_number' => 'required',
+                'arrival_date' => 'required',
+                'departure_date' => 'required',
+                'other_details' => 'sometimes|nullable'
+            ]);
+            $tab = '?tab=corporate-tab';
+        }
 
         try {
             if ($validator->fails()) {
                 
-                return redirect('reservations/create')
+                return redirect('reservations/create'.$tab)
                 ->withErrors($validator)
                 ->withInput();
 
@@ -87,7 +112,6 @@ class ReservationController extends Controller
                 $created_by = Helper::getLoggedInUserId();
 
 
-                $guest_type = $request->input('guest_type');
                 $guest_type_id = GuestType::where('name', 'like', "%".$guest_type."%")->value('id');
                 $room_number = $request->input('room_number');
 
