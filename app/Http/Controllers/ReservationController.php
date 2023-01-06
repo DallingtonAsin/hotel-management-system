@@ -50,7 +50,7 @@ class ReservationController extends Controller
             'tax_number' => 'sometimes|nullable',
             'company_contact' => 'sometimes|nullable',
             'company_email' => 'sometimes|nullable',
-            'phone_number' => 'required',
+            'phone_number' => 'required|min:10',
             'email' => 'sometimes|nullable|email',
             'passport_number' => 'sometimes|nullable',
             'nin' => 'sometimes|nullable',
@@ -135,16 +135,11 @@ class ReservationController extends Controller
                     'total_price' => $total_price,
                     'created_by' => $created_by,
                 ];
-
-                $findGuest = Guest::where('first_name', $first_name)
-                    ->where('last_name', $last_name)
-                    ->where('phone_number', $last_name)
-                    ->orWhere('email', $email);
-
-                $exists =  $findGuest->exists();
+                $exists =  $this->checkIfGuestExists($phone_number, $email);
 
                 if ($exists) {
-                    $findGuest = $findGuest->first();
+                    
+                    $findGuest = Guest::where('phone_number', $phone_number)->first();
                     $reservation_details['guest_id'] = $findGuest->id;
                     $resp = $this->addNewReservation($reservation_details);
                     return back()->with( $resp['execKey'], $resp['message']);
@@ -170,6 +165,20 @@ class ReservationController extends Controller
         }
     }
 
+    private function checkIfGuestExists($phone_number, $email)
+    {
+        try {
+            $obj = Guest::where('phone_number', $phone_number);
+            if ($email) {
+                $obj = $obj->where('email', $email);
+            }
+            $exists = $obj->exists();
+            return $exists;
+
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
 
     private function addNewGuest($guest)
     {
