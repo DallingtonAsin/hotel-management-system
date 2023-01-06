@@ -80,13 +80,7 @@
             });
         });
 
-        var urlParams = new URLSearchParams(window.location.search);
-        var tab = urlParams.get('tab');
-
-        if (tab) {
-            $('#tabs a[href="#' + tab + '"]').tab('show');
-        }
-
+    
         onTypingRoomNumber();
 
         function onTypingRoomNumber() {
@@ -112,6 +106,12 @@
                     });
                 }
             });
+        }
+
+        let urlParams = new URLSearchParams(window.location.search);
+        let tab = urlParams.get('tab');
+        if (tab) {
+            $('#tabs a[href="#' + tab + '"]').tab('show');
         }
     </script>
 @endsection
