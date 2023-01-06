@@ -11,4 +11,16 @@ class Reservation extends Model
 
     protected $table = 'reservations';
     public $timestamps = true;
+
+    protected $fillable = [
+        'guest_id',
+        'guest_type_id',
+        'room_id',
+        'occupancy_type',
+        'arrival_date',
+        'departure_date',
+        'discount_percent',
+        'total_price',
+        'created_by'
+    ];
 }

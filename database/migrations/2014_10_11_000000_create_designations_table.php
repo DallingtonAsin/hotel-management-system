@@ -18,7 +18,7 @@ class CreateDesignationsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->unsignedBigInteger('department_id');
-            $table->string('created_by')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
             $table->foreign('department_id')->references('id')->on('departments');
         });

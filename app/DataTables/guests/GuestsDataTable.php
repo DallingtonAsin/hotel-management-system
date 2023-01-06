@@ -101,7 +101,7 @@ class GuestsDataTable extends DataTable
             'phone_number',
             'address',
             'details',
-            'recorded_by',
+            'created_by',
         ];
     }
 

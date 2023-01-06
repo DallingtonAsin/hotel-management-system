@@ -17,13 +17,20 @@ class CreateReservationsTable extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('guest_id');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->decimal('discount_percent');
+            $table->unsignedBigInteger('guest_type_id');
+            $table->unsignedBigInteger('room_id');
+            $table->string('occupancy_type');
+            $table->date('arrival_date');
+            $table->date('departure_date');
+            $table->decimal('discount_percent')->default(0);
             $table->decimal('total_price');
-            $table->string('recorded_by')->nullable();
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('guest_id')->references('id')->on('guests');
+            $table->foreign('guest_type_id')->references('id')->on('guest_types');
+            $table->foreign('room_id')->references('id')->on('rooms');
+            $table->foreign('created_by')->references('id')->on('users');
+
         });
     }
 

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateGuestTypesTable extends Migration
 {
@@ -15,10 +16,12 @@ class CreateGuestTypesTable extends Migration
     {
         Schema::create('guest_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->boolean('is_regular')->default(false);
             $table->boolean('is_corporate')->default(false);
+            $table->integer('created_by')->nullable()->unsigned();
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 
@@ -29,6 +32,8 @@ class CreateGuestTypesTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('guest_types');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

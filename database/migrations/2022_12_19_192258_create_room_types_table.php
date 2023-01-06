@@ -18,8 +18,10 @@ class CreateRoomTypesTable extends Migration
             $table->string('name');
             $table->double('single_occupancy_rate');
             $table->double('double_occupancy_rate');
-            $table->string('added_by')->nullable();
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users');
+
         });
     }
 

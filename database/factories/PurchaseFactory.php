@@ -28,7 +28,7 @@ class PurchaseFactory extends Factory
         'quantity' => $this->faker->randomDigitNot(0),
         'cost_price_per_item' => $this->faker->numberBetween($min=4000, $max=6000),
         'supplier' => $this->faker->lastName,
-        'recorded_by' => $this->faker->firstName,
+        'created_by' => $this->faker->firstName,
     ];
   }
 }

@@ -4,10 +4,8 @@ namespace App\DataTables\guests;
 
 use App\Models\GuestType;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
 
 class GuestTypesDatatable extends DataTable
 {
@@ -20,36 +18,38 @@ class GuestTypesDatatable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-        ->order(function($query){
-               $query->orderBy('created_at', 'desc');
-        })->addIndexColumn()
-        ->addColumn('action', function ($guestType) {
-            
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-            data-id="'.$guestType->id.'" data-original-title="Edit" id="edit-guest-type"
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($guestType) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+            data-id="' . $guestType->id . '" data-original-title="Edit" id="edit-guest-type"
               class="edit-btn edit-guest-type pr-4">
              <span class="fa fa-pen"></span></a>';
-          
-            $btn .= '<a href="javascript:void(0);" id="delete-guest-type" 
+
+                $btn .= '<a href="javascript:void(0);" id="delete-guest-type" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$guestType->id.'" class="trash-btn pr-4"">
+             data-id="' . $guestType->id . '" class="trash-btn pr-4"">
             <span class="fa fa-trash-alt" ></span></a>';
 
-           $btn .= '<a href="javascript:void(0);" id="view-guest-type" 
+                $btn .= '<a href="javascript:void(0);" id="view-guest-type" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$guestType->id.'" class="text-info bolded">
+            data-id="' . $guestType->id . '" class="text-info bolded">
            <i class="fa fa-eye" ></i></a>';
 
-           return $btn;
+                return $btn;
 
-        })->addColumn('checkbox', function ($guestType) {
-              $checkBox = '<input type="checkbox" id="'.$guestType->id.'"/>';
-             return $checkBox;
+            })->addColumn('checkbox', function ($guestType) {
+            $checkBox = '<input type="checkbox" id="' . $guestType->id . '"/>';
+            return $checkBox;
         })->editColumn('is_regular', function ($guestType) {
-           return $guestType->is_regular ? true : false;
-      })->editColumn('is_corporate', function ($guestType) {
-        return $guestType->is_corporate ? true : false;
-   })->rawColumns(['action', 'checkbox']);
+            return $guestType->is_regular ? true : false;
+        })->editColumn('is_corporate', function ($guestType) {
+            return $guestType->is_corporate ? true : false;
+        })->editColumn('created_by', function ($guestType) {
+            return Helper::getUserNames($guestType->created_by);
+        })->rawColumns(['action', 'checkbox']);
     }
 
     /**
@@ -71,18 +71,18 @@ class GuestTypesDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('guests/guesttypesdatatable-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('guests/guesttypesdatatable-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -96,7 +96,8 @@ class GuestTypesDatatable extends DataTable
             'id',
             'name',
             'is_regular',
-            'is_corporate'
+            'is_corporate',
+            'created_by'
         ];
     }
 

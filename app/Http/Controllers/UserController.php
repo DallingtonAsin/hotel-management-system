@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Carbon;
 use App\Models\Designation;
 use App\User;
-use Helper;
+use App\Helpers\Helper;
 use Constant;
 
 
@@ -174,7 +174,7 @@ class UserController extends Controller
 
           case ($status == true):
           $deactivated = User::where('id', $id)
-          ->update(['is_active' => false, 'acc_changed_by' => $admin]);
+          ->update(['is_active' => false, 'created_by' => $admin]);
           if($deactivated){
 
             $action = "deactivated user ".$name."'s account";
@@ -202,7 +202,7 @@ class UserController extends Controller
           case ($status == false):
           $activated = User::where('id', $id)
           ->update(['is_active' => true, 'loginAttempts' => 0,
-                    'otpAttempts' => 0,  'acc_changed_by' => $admin]);
+                    'otpAttempts' => 0,  'created_by' => $admin]);
           if($activated){
 
             $action = "activated user ".$name."'s account";
@@ -256,7 +256,7 @@ class UserController extends Controller
 
           case ($status == true):
           $deactivated = User::where('id', $id)
-          ->update(['is_active' => false, 'acc_changed_by' => $admin]);
+          ->update(['is_active' => false, 'created_by' => $admin]);
           if($deactivated){
 
             $action = "deactivated user ".$name."'s account";
@@ -284,7 +284,7 @@ class UserController extends Controller
           case ($status == false):
           $activated = User::where('id', $id)
           ->update(['is_active' => true, 'loginAttempts' => 0,
-                    'otpAttempts' => 0,  'acc_changed_by' => $admin]);
+                    'otpAttempts' => 0,  'created_by' => $admin]);
           if($activated){
 
             $action = "activated user ".$name."'s account";
@@ -425,7 +425,7 @@ class UserController extends Controller
           $user->nin = $user_nin;
           $user->password = $password;
           $user->is_active = true;
-          $user->acc_changed_by = $registra;
+          $user->created_by = $registra;
 
           $save_status = $user->save();
           if($save_status)

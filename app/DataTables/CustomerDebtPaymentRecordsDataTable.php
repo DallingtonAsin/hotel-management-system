@@ -51,8 +51,8 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
             return number_format($data->amount_paid);
         })->editColumn('balance', function ($data) {
             return number_format($data->balance);
-        })->editColumn('recorded_by', function ($data) {
-            return User::where('id', $data->recorded_by)->value('name');
+        })->editColumn('created_by', function ($data) {
+            return User::where('id', $data->created_by)->value('name');
         })->addColumn('item', function ($data) {
             return Sale::where('id', $data->sale_id)->value('item');
         })->addColumn('customer', function ($data) {
@@ -88,7 +88,7 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
             'sale_id',
             'amount_paid',
             'balance',
-            'recorded_by',
+            'created_by',
         ];
     }
 

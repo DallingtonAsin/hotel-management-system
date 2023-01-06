@@ -5,10 +5,8 @@ namespace App\DataTables\rooms;
 use App\Models\Room;
 use App\Models\RoomType;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
 
 class RoomsDatatable extends DataTable
 {
@@ -49,7 +47,9 @@ class RoomsDatatable extends DataTable
         })->addColumn('room_type', function ($room) {
             $room_type = RoomType::where('id', $room->type_id)->value('name');
             return $room_type;
-      })->rawColumns(['action', 'checkbox']);
+      })->editColumn('created_by', function ($room) {
+        return Helper::getUserNames($room->created_by);
+    })->rawColumns(['action', 'checkbox']);
     }
 
     /**
@@ -66,7 +66,7 @@ class RoomsDatatable extends DataTable
             'number',
             'floor_number',
             'description',
-            'added_by'
+            'created_by'
         );
     }
 
@@ -105,7 +105,7 @@ class RoomsDatatable extends DataTable
             'number',
             'floor_number',
             'description',
-            'added_by'
+            'created_by'
         ];
        
     }

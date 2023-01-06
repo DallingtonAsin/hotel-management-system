@@ -5,6 +5,7 @@ namespace App\DataTables\HR;
 use App\Models\Department;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
 
 class DepartmentsDatatable extends DataTable
 {
@@ -17,31 +18,33 @@ class DepartmentsDatatable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-        ->order(function($query){
-               $query->orderBy('created_at', 'desc');
-        })->addIndexColumn()
-        ->addColumn('action', function ($department) {
-            
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-            data-id="'.$department->id.'" data-original-title="Edit" id="edit-department"
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($department) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+            data-id="' . $department->id . '" data-original-title="Edit" id="edit-department"
               class="edit-btn edit-department pr-4">
              <span class="fa fa-pen"></span></a>';
-          
-            $btn .= '<a href="javascript:void(0);" id="delete-department" 
+
+                $btn .= '<a href="javascript:void(0);" id="delete-department" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$department->id.'" class="trash-btn pr-4"">
+             data-id="' . $department->id . '" class="trash-btn pr-4"">
             <span class="fa fa-trash-alt" ></span></a>';
 
-           $btn .= '<a href="javascript:void(0);" id="view-department" 
+                $btn .= '<a href="javascript:void(0);" id="view-department" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$department->id.'" class="text-info bolded">
+            data-id="' . $department->id . '" class="text-info bolded">
            <i class="fa fa-eye" ></i></a>';
 
-           return $btn;
+                return $btn;
 
-        })->addColumn('checkbox', function ($department) {
-              $checkBox = '<input type="checkbox" id="'.$department->id.'"/>';
-             return $checkBox;
+            })->addColumn('checkbox', function ($department) {
+            $checkBox = '<input type="checkbox" id="' . $department->id . '"/>';
+            return $checkBox;
+        })->editColumn('created_by', function ($department) {
+            return Helper::getUserNames($department->created_by);
         })->rawColumns(['checkbox', 'action']);
     }
 

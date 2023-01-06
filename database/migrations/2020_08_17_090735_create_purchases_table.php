@@ -24,7 +24,7 @@ class CreatePurchasesTable extends Migration
         //     cost_price_per_item money NOT NULL,
         //     total_cost_price AS quantity*cost_price_per_item PERSISTED,
         //     supplier NVARCHAR(255),
-        //     recorded_by NVARCHAR(40),
+        //     created_by NVARCHAR(40),
         //     date DATETIME DEFAULT CURRENT_TIMESTAMP,
         //  )");
 
@@ -41,7 +41,7 @@ class CreatePurchasesTable extends Migration
             $table->double('wholesale_price')->default('0');
             $table->string('supplier')->nullable();
             $table->string('supplier_contact')->nullable();
-            $table->string('recorded_by');
+            $table->string('created_by');
             $table->date('date_of_purchase')->nullable();
             $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

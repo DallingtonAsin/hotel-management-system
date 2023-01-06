@@ -6,7 +6,7 @@ use App\Models\Designation;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Department;
-
+use App\Helpers\Helper;
 class DesignationsDataTable extends DataTable
 {
     /**
@@ -46,6 +46,8 @@ class DesignationsDataTable extends DataTable
         })->addColumn('department', function ($designation) {
             $department = Department::where('id', $designation->department_id)->value('name');
             return $department;
+        })->editColumn('created_by', function ($designation) {
+                return Helper::getUserNames($designation->created_by);
         })->rawColumns(['checkbox', 'department', 'action']);
 
     }

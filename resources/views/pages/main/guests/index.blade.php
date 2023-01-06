@@ -262,7 +262,7 @@ role="dialog" aria-labelledby="myModalLabel">
          {data: 'email', name:'email'},
          {data: 'phone_number', name:'phone_number'},
          {data: 'address', name:'address'},
-         {data: 'recorded_by', name:'recorded_by'},
+         {data: 'created_by', name:'created_by'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
     

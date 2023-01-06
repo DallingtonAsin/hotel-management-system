@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DataTables\reservations\ReservationsDataTable;
 use App\Models\Reservation;
+use App\Models\GuestType;
+use App\Models\Guest;
+use App\Models\Room;
+use App\Models\RoomType;
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\Helper;
+use Carbon\Carbon;
+
 class ReservationController extends Controller
 {
-    
+
     public function index()
     {
         $total_reservations = Reservation::count();
@@ -22,22 +30,196 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        $guest_types = GuestType::all();
+        return view('pages.main.reservations.add', ['guest_types' => $guest_types]);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'guest_type' => 'required',
+            'first_name' => 'required|max:55',
+            'last_name' => 'required|max:55',
+            'company_name' => 'sometimes|nullable',
+            'tax_number' => 'sometimes|nullable',
+            'company_contact' => 'sometimes|nullable',
+            'company_email' => 'sometimes|nullable',
+            'phone_number' => 'required',
+            'email' => 'sometimes|nullable|email',
+            'passport_number' => 'sometimes|nullable',
+            'nin' => 'sometimes|nullable',
+            'occupancy_type' => 'required',
+            'room_number' => 'required',
+            'arrival_date' => 'required',
+            'departure_date' => 'required',
+            'other_details' => 'sometimes|nullable'
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                
+                return redirect('reservations/create')
+                ->withErrors($validator)
+                ->withInput();
+
+            } else {
+               
+                $first_name = ucfirst($request->input('first_name'));
+                $last_name = ucfirst($request->input('last_name'));
+                $company_name = ucfirst($request->input('company_name'));
+                $tax_number = $request->input('tax_number');
+                $company_contact = $request->input('company_contact');
+                $company_email = $request->input('company_email');
+                $phone_number = $request->input('phone_number');
+                $email = $request->input('email');
+                $passport_number = $request->input('passport_number');
+                $nin = $request->input('nin');
+                $occupancy_type = $request->input('occupancy_type');
+                $other_details = $request->input('other_details');
+                $arrival_date = date('Y-m-d, H:i:s', strtotime($request->input('arrival_date')));
+                $departure_date = date('Y-m-d, H:i:s', strtotime($request->input('departure_date')));
+                $created_by = Helper::getLoggedInUserId();
+
+
+                $guest_type = $request->input('guest_type');
+                $guest_type_id = GuestType::where('name', 'like', "%".$guest_type."%")->value('id');
+                $room_number = $request->input('room_number');
+
+                $doesRoomExist = Room::where('number', $room_number)->exists();
+                if ($doesRoomExist) {
+                    $room_details = Room::where('number', $room_number)->first();
+                    $room_id = $room_details->id;
+                    $room_type_id = $room_details->type_id;
+                }else{
+                    return back()->with('error', 'Room with number '.$room_number.' does not exist in the system'); 
+                }
+
+                $roomType = RoomType::find($room_type_id);
+
+                if (stripos($occupancy_type, 'single') !== false) {
+                    $price_rate = $roomType->single_occupancy_rate;
+                }else{
+                    $price_rate = $roomType->double_occupancy_rate;
+                }
+
+                $no_of_days = Carbon::parse($arrival_date)->diffInDays(Carbon::parse($departure_date));
+                $total_price = intval($no_of_days)*floatval($price_rate);
+
+                $guestData = [
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'email' => $email,
+                    'phone_number' => $phone_number,
+                    'company_name' => $company_name,
+                    'company_contact' => $company_contact,
+                    'company_email' => $company_email,
+                    'tax_number' => $tax_number,
+                    'passport_number' => $passport_number,
+                    'nin' => $nin,
+                    'other_details' => $other_details,
+                    'created_by' => $created_by,
+                ];
+
+                $reservation_details = [
+                    'guest_type_id' => $guest_type_id,
+                    'room_id' => $room_id,
+                    'arrival_date' => $arrival_date,
+                    'occupancy_type' => $occupancy_type,
+                    'departure_date' => $departure_date,
+                    'total_price' => $total_price,
+                    'created_by' => $created_by,
+                ];
+
+                $findGuest = Guest::where('first_name', $first_name)
+                    ->where('last_name', $last_name)
+                    ->where('phone_number', $last_name)
+                    ->orWhere('email', $email);
+
+                $exists =  $findGuest->exists();
+
+                if ($exists) {
+                    $findGuest = $findGuest->first();
+                    $reservation_details['guest_id'] = $findGuest->id;
+                    $resp = $this->addNewReservation($reservation_details);
+                    return back()->with( $resp['execKey'], $resp['message']);
+
+                } else {
+
+                    $guest = $this->addNewGuest($guestData);
+                    if ($guest) {
+                        $reservation_details['guest_id'] = $guest->id;
+                        $resp = $this->addNewReservation($reservation_details);
+                        return back()->with( $resp['execKey'], $resp['message']);
+
+                    } else {
+                        return back()->with('error', "Technical error in adding guest details");
+                    }
+
+                }
+
+                
+            }
+        } catch (\Exception $ex) {
+            return back()->with('error', $ex->getMessage());
+        }
+    }
+
+
+    private function addNewGuest($guest)
+    {
+        try {
+            $guest = Guest::create($guest);
+            return $guest;
+           
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    private function addNewReservation($reservation)
+    {
+        try {
+
+            $isReservationInserted = false;
+            if (Reservation::create($reservation)) {
+                $isReservationInserted = true;
+            }
+
+            if($isReservationInserted){
+
+                $guest_id = $reservation['guest_id'];
+                $guest = $this->getGuestDetails($guest_id);
+                $guest_names = $guest->first_name . ' ' . $guest->last_name;
+                $message = "Reservation for guest " . $guest_names . " has been created successfully";
+                $execKey = "success";
+
+            }else{
+                $message = "Technical error in adding reservation details";
+                $execKey = "error";
+            }
+            return [
+                'message' => $message,
+                'execKey' => $execKey
+            ];
+
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    private function getGuestDetails($guest_id){
+        try{
+             $guest = Guest::find($guest_id);
+            return $guest;
+        }catch(\Exception $ex){
+            throw $ex;
+        }
     }
 
     /**
@@ -84,4 +266,24 @@ class ReservationController extends Controller
     {
         //
     }
+
+    private function GetReservationStats()
+    {
+        try {
+
+            $reservations = Reservation::all();
+            $total_reservations = Reservation::count();
+
+            $data = array(
+                'data' => $reservations,
+                'total' => $total_reservations
+            );
+
+            return $data;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
+
 }

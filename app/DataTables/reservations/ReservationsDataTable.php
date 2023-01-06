@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Guest;
+use App\Helpers\Helper;
 
 class ReservationsDataTable extends DataTable
 {
@@ -40,6 +41,8 @@ class ReservationsDataTable extends DataTable
 
                 return $btn;
 
+            })->editColumn('created_by', function ($reservation) {
+                return Helper::getUserNames($reservation->created_by);
             })->addColumn('guest', function ($reservation) {
                 $guest = Guest::find($reservation->guest_id);
                 return $guest->first_name.' '.$guest->last_name;
@@ -92,11 +95,11 @@ class ReservationsDataTable extends DataTable
         return [
             'id',
             'guest_type',
-            'start_date',
-            'end_date',
+            'arrival_date',
+            'departure_date',
             'discount_percent',
             'total_price',
-            'recorded_by'
+            'created_by'
         ];
     }
 

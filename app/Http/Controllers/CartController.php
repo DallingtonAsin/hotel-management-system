@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Stock;
 use App\Models\Tax;
-use Helper;
+use App\Helpers\Helper;
 use App\Models\SalesTaxTracker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -699,6 +699,7 @@ class CartController extends Controller
                                 $data[] = $item->item_code;
                             }
                             echo json_encode($data);
+                            // return response()->json($data);
                         }
 
                     }

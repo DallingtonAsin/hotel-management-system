@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartmentTableSeeder::class,
             DesignationTableSeeder::class,
-            GuestTypeTableSeeder::class,
+            UserTableSeeder::class,
             RoomTypeTableSeeder::class,
             RoomTableSeeder::class,
-            UserTableSeeder::class,
+            GuestTypeTableSeeder::class,
             StockTableSeeder::class,
             CustomersTableSeeder::class,
             DamagesTableSeeder::class,

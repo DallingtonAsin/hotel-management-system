@@ -20,7 +20,7 @@ class Purchase extends Model
         'wholesale_price',
         'supplier',
         'supplier_contact',
-        'recorded_by',
+        'created_by',
         'date',      
     ];
     public $timestamps = true;

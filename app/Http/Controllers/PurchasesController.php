@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use App\Imports\ImportPurchases;
 use Constant;
-use Helper;
+use App\Helpers\Helper;
 
 class PurchasesController extends Controller
 {
@@ -76,7 +76,7 @@ class PurchasesController extends Controller
       $wholesale_price = floatval(Helper::Numberize($request->input('wholesale_price')));
       $supplier = $request->input('supplier');
       $supplier_contact = $request->input('supplier_contact');
-      $recorded_by = Auth::user()->name;
+      $created_by = Auth::user()->name;
       $date_of_purchase = $request->input('date_of_purchase');
 
 try {
@@ -102,7 +102,7 @@ try {
           'retail_price' => $retail_price,
           'wholesale_price' => $wholesale_price,
           'supplier' => $supplier,
-          'suppliers_contact' => $recorded_by,
+          'suppliers_contact' => $created_by,
           'date_of_purchase' => $date_of_purchase,
         ];
   
@@ -225,7 +225,7 @@ try {
       $wholesale_price = floatval(Helper::Numberize($request->input('wholesale_price')));
       $supplier = $request->input('supplier');
       $supplier_contact = $request->input('supplier_contact');
-      $recorded_by = Auth::user()->name;
+      $created_by = Auth::user()->name;
       $date_of_purchase = $request->input('date_of_purchase');
 
     try {
@@ -248,7 +248,7 @@ try {
           'wholesale_price' => $wholesale_price,
           'supplier' => $supplier,
           'suppliers_contact' => $supplier_contact,
-          'recorded_by' => $recorded_by,
+          'created_by' => $created_by,
           'date_of_purchase' => $date_of_purchase,
         ];
   

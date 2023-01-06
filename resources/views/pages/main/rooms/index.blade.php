@@ -244,7 +244,7 @@ role="dialog" aria-labelledby="myModalLabel">
          {data: 'room_type', name:'room_type'},
          {data: 'floor_number', name:'floor_number'},
          {data: 'description', name:'description'},
-         {data: 'added_by', name:'added_by'},
+         {data: 'created_by', name:'created_by'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
     

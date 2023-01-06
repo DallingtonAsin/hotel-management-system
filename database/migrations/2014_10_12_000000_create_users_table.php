@@ -37,7 +37,7 @@ class CreateUsersTable extends Migration
                 $table->string('otp_code')->nullable();
                 $table->string('is_verified')->default(true);
                 $table->boolean('is_active')->default(true);
-                $table->string('acc_changed_by')->nullable();
+                $table->string('created_by')->nullable();
                 $table->rememberToken()->nullable();
                 $table->timestamps();
                 $table->foreign('designation_id')->references('id')->on('designations');

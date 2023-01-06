@@ -18,14 +18,18 @@ class CreateGuestsTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->unsignedBigInteger('guest_type_id');
             $table->string('email')->nullable();
             $table->string('phone_number');
-            $table->string('address')->nullable();
-            $table->string('details')->nullable();
-            $table->string('recorded_by')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('company_contact')->nullable();
+            $table->string('company_email')->nullable();
+            $table->string('tax_number')->nullable();
+            $table->string('passport_number')->nullable();
+            $table->string('nin')->nullable();
+            $table->string('other_details')->nullable();
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
-            $table->foreign('guest_type_id')->references('id')->on('guest_types');
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

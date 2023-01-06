@@ -318,7 +318,7 @@ role="dialog" aria-labelledby="myModalLabel">
          {data: 'item_taken', name:'item_taken'},
          {data: 'credit', name:'credit'},
          {data: 'debt', name:'debt'},
-         {data: 'added_by', name:'added_by'},
+         {data: 'created_by', name:'created_by'},
          {data: 'taken_on', name:'taken_on'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];

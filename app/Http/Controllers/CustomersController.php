@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\Stock;
-use Helper;
+use App\Helpers\Helper;
 use App\Imports\ImportCustomers;
 use App\Exports\ExportCustomers;
 use Illuminate\Support\Facades\DB;
@@ -139,7 +139,7 @@ class CustomersController extends Controller
         $customer->debt = $debt;
         $customer->credit = $credit;
         $customer->taken_on = $taken_on;
-        $customer->added_by = $req->user()->name;
+        $customer->created_by = $req->user()->name;
         $response = $customer->save();
         
       }

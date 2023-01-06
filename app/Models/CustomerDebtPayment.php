@@ -12,7 +12,7 @@ class CustomerDebtPayment extends Model
         'amount_paid',
         'balance',
         'date',
-        'recorded_by'
+        'created_by'
     ];
     public $timestamps = true;
 

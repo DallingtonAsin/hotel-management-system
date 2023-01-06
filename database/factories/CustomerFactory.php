@@ -27,7 +27,7 @@ class CustomerFactory extends Factory
       'item_taken' => $this->faker->randomElement([1,2,3,4]),
       'debt' => $this->faker->numberBetween($min=1000, $max=5000),
       'credit' => $this->faker->numberBetween($min=5000, $max=9500),
-      'added_by' => $this->faker->firstName,
+      'created_by' => $this->faker->firstName,
     ];
   }
 }
