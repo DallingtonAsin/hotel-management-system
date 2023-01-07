@@ -15,8 +15,11 @@
   <script src="{{ asset('js/routes/index.js') }}"></script>
 
   <script src="{{ asset('vendors/jquery-modal/jquery.modal.min.js') }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+  {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+   integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script> --}}
+   
+  <script src="{{ asset('vendors/bootstrap/js/bootstrap.bundle-5.0.2.min.js') }}"></script>
   <script src="{{ asset('vendors/datatables/dtables/js/jquery.dataTables.min.js') }}"></script>
   <script src="{{ asset('vendors/datatables/dataTables.buttons.min.js') }}"></script>
   <script src="{{ asset('vendors/datatables/buttons.print.min.js') }}"></script>
@@ -28,13 +31,11 @@
   <script src="{{ asset('vendors/datatables/dataTables.select.min.js') }}"></script>
 
   <script src="{{ asset('vendors/notify/notify.js') }}"></script>
-  <script src="{{ asset('vendors/js/customJs.js') }}"></script>
   <script src="{{ asset('vendors/jquery-confirm/jquery-confirm.min.js') }}"></script>
   <script src="{{ asset('vendors/calendar/jquery-ui.min.js') }}"></script>
   <script src="{{ asset('vendors/calendar/moment.min.js') }}"></script>
   <script src="{{ asset('vendors/calendar/fullcalendar.min.js') }}"></script>
   <script src="{{ asset('vendors/js/bootstrap3-typeahead.min.js') }}"></script>
-  <script src="{{ asset('js/Chart.min.js') }}"></script>
   <script src="{{ asset('js/custom/ajax.js') }}"></script>
 
   <script src="{{ asset('vendors/js/jquery-ui.min.js') }}"></script>
@@ -46,6 +47,10 @@
   <script src="{{ asset('vendors/js/jquery.flot.resize.js') }}"></script>
   <script src="{{ asset('vendors/js/Chart.bundle.min.js') }}"></script>
   <script src="{{ asset('vendors/js/chart.flot.sampledata.js') }}"></script>
+  <script src="{{ asset('js/Chart.min.js') }}"></script>
+  <script src="{{ asset('vendors/js/customJs.js') }}"></script>
+
+
   <script src="{{ asset('vendors/js/azia.js') }}"></script>
   <script src="{{ asset('js/external.min.js') }}"></script>
   <script src="{{ asset('js/custom/datatables.js') }}"></script>
@@ -56,7 +61,12 @@
   <link href="{{ asset('vendors/calendar/fullcalendar.min.css') }}" rel="stylesheet"/>
   <link href="{{ asset('css/nunito.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/azia.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
+  {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
+  --}}
+
+  <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-5.2.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-4.0.0.min.css')}}">
   <link href="{{ asset('css/css.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/notification.css') }}" rel="stylesheet">
   

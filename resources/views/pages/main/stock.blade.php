@@ -5,8 +5,9 @@
 @include('pages.main.messages.response')
 <div class="card">
 
-  <div class="card-header d-flex justify-content-between align-items-center">
+  <div class="card-header row d-flex justify-content-between align-items-center">
 
+   <div class="col">
     <h6 class="text-left text-dark">
       <i class="fa fa-home text-success"> /</i>
       <strong>Inventory</strong>
@@ -16,8 +17,9 @@
           @endisset
       </span>
     </h6>
+   </div>
     
-
+   <div class="col">
     <h6 class="text-center">
       Current stock value:
       <span class="text-success text-center">shs.
@@ -28,11 +30,15 @@
         </strong>
       </span>
     </h6>
+   </div>
 
+   <div class="col">
     <div class="btn-group float-right justify-content-between mb-2">
       <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewStock"><i class="fa fa-plus-circle pr-1"></i>Add stock</button>
       <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#importStock"><i class="fa fa-file-import pr-1"></i>Import file</button>
     </div>
+  </div>
+
   </div>
 
 
@@ -90,9 +96,9 @@
 
         <form name="StockForm" id="StockForm">
          @csrf
-         <div class="modal-header text-center">
+         <div class="modal-header d-flex justify-content-between">
           <h6 class="modal-title w-100 font-weight-bold" id="modalHeading"> Add new stock item</h6>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <button type="button" class="close mt-1" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>

@@ -3,12 +3,12 @@
 
       <div class="az-header-left">
         <a href="" id="azSidebarToggle" class="az-header-menu-icon">
-            <i class="fa fa-bars text-dark"></i>
+            <i class="fa fa-bars text-white"></i>
         </a>
       </div>
 
       <div class="az-header-center">
-        <h5 class="nav-label colored-icon-1 text-dark text-uppercase text-bold" >
+        <h5 class="nav-label colored-icon-1 text-white text-uppercase text-bold" >
           @if(isset($companyData))
           {{ $companyData['company_name'] }}
           @else
@@ -17,33 +17,33 @@
         </h5>
       </div>
       
-      <div class="az-header-center row pr-5">
+      <div class="az-header-center pr-5 row mt-2">
 
         <div class="col-lg-3">
-        <a href="{{ route('pos.index') }}"><img src="{{ asset('vendors/img/pos1.png')}}" class="icon-img-1"/>
-            <h6 class="header-caption">POS</h6></a>
+        <a href="{{ route('pos.index') }}"><img src="{{ asset('vendors/img/pos1.png')}}"/>
+            <h6 class="text-white">POS</h6></a>
          </div>
 
          <div class="col-lg-3">
-         <a href=""><img src="{{ asset('vendors/img/cup-tea.png')}}" class="icon-img"/>
-            <h6 class="header-caption mt-1">KOTs</h6></a>
+         <a href=""><img src="{{ asset('vendors/img/kot.png')}}"/>
+            <h6 class="mt-1">KOTs</h6></a>
          </div>
 
          <div class="col-lg-3">
-         <a href="{{ route('reservations.index') }}"><img src="{{ asset('vendors/img/bed.png')}}" class="icon-img-1"/>
-            <h6 class="header-caption">Reservations</h6></a>
+         <a href="{{ route('reservations.index') }}"><img src="{{ asset('vendors/img/bed1.png')}}"/>
+            <h6>Reservations</h6></a>
          </div>
 
          <div class="col-lg-3">
-         <a href=""><img src="{{ asset('vendors/img/finance3.png')}}" class="icon-img-1 text-warning"/>
-            <h6 class="header-caption">Accounting</h6></a>
+         <a href=""><img src="{{ asset('vendors/img/accounting.png')}}"/>
+            <h6>Accounting</h6></a>
          </div>
       </div>
 
       <div class="dropdown az-profile-menu">
         <a href="" class="text-decoration-none nunito-font username text-cap">
-          <span class="mt-5 text-dark">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}
-          <i class="fas fa-angle-down text-dark"></i> </span>
+          <span class="mt-5 text-white">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}
+           </span>
           <i class="dropdown-toggle"></i></a>
 
         <div class="dropdown-menu">

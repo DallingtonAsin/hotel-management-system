@@ -3,61 +3,41 @@
 @section('content')
     <div class="card">
 
-      <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center">
 
-        <h6 class="text-left text-dark">
-          <i class="fa fa-home text-success"> /</i>
-          <strong>Reservations</strong>
-          <span class="badge badge-info total_departments">
-              @isset($total_reservations)
-                  {{ number_format($total_reservations) }}
-              @endisset
-          </span>
-        </h6>
-        
-    
-        <div class="btn-group float-right justify-content-between mb-2">
-          <a href="{{ route('reservations.create') }}"
+            <h6 class="text-left text-dark">
+                <i class="fa fa-home text-success"> /</i>
+                <strong>Reservations</strong>
+                <span class="badge badge-info total_departments">
+                    @isset($total_reservations)
+                        {{ number_format($total_reservations) }}
+                    @endisset
+                </span>
+            </h6>
+
+
+            <div class="btn-group float-right justify-content-between mb-2">
+                <a href="{{ route('reservations.create') }}"
                     class="btn btn-primary btn-sm mx-2 outline-none ml-auto mb-2 text-white" id="addNewDesignation">
                     <i class="fa fa-plus-circle pr-1"></i>Add reservation</a>
+            </div>
         </div>
-      </div>
 
         <div class="card-body">
-
-            <div class="col-lg-8 text-center nunito-font">
-                @if (session()->get('success'))
-                    <div class='alert alert-success alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                    </div>
-                @endif
-
-                @if (session()->get('fail'))
-                    <div class='alert alert-danger alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Oops!</strong> {{ session()->get('fail') }}
-                    </div>
-                @endif
-
-            </div>
-
             <div class="table table-sm table-responsive">
 
                 <table class="table table-bordered table-hover reservations-table" id="reservations-table">
 
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Guest name</th>
-                            <th>Arrival date</th>
+                            <th scope="col"></th>
+                            <th scope="col">Guest name</th>
+                            <th scope="col">Arrival date</th>
                             <th>Departure date</th>
                             <th>Room Number</th>
                             <th>Discount (%)</th>
                             <th>Total Price</th>
-                            <th>Recorded By</th>
+                            <th scope="col">Recorded By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -67,8 +47,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!--Add rooms -->
     <div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1"
@@ -235,11 +213,12 @@
     </div> <!-- end of modal Deletesuppliers-->
 
 
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
-<script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script> --}}
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
-    <script>
+
+    {{-- <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script> --}}
+
+
+    <script type="text/javascript">
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -249,10 +228,9 @@
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const cat = 'supplier';
         const token = "{{ csrf_token() }}";
-    </script>
 
-    <script type="text/javascript">
         $(document).ready(function() {
+
 
 
             //code that displays results of the table index()
@@ -338,7 +316,7 @@
                     url: url,
                     type: 'GET',
                     success: function(response) {
-                   
+
                         let returned_url = response.url;
                         console.log('Returned url is', response.url);
                         window.open(returned_url, '_blank');
@@ -543,8 +521,6 @@
 
             }
 
-
-
             $("#removeAllSuppliers").bind("click", function() {
                 RemoveAllSuppliers();
             });
@@ -568,7 +544,6 @@
                                 },
                                 url: '{{ Route('suppliers.truncate') }}',
                                 type: 'POST',
-                                // dataType: 'json',
                             }).done(function(data) {
 
                                 $.alert({
@@ -599,10 +574,6 @@
                 });
 
             }
-
-
-
-
         });
     </script>
 @endsection
