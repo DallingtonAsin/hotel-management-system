@@ -26,4 +26,4 @@
 </div>
 @endif
 
-<span class="response"></span>
+{{-- <span class="response"></span> --}}

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Reservation;
 
 class InvoiceGuest extends Model
 {
@@ -11,4 +12,20 @@ class InvoiceGuest extends Model
 
     protected $table = 'invoice_guests';
     public $timestamps = true;
+
+    protected $fillable = [
+        'reservation_id',
+        'discount_percent',
+        'total',
+        'ts_issued',
+        'issued_by',
+        'cancelled_by',
+        'ts_paid',
+        'ts_cancelled'
+    ];
+
+    public function reservation()
+    {
+        return $this->belongsTo(Reservation::class);
+    }
 }

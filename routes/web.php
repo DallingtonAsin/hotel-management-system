@@ -123,6 +123,7 @@ Route::get('/reservations/fetch/ajax', 'ReservationController@getReservations')-
 Route::get('/guests/fetch/ajax', 'GuestController@getGuests')->name('guests.index.ajax');
 
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
+Route::get('invoice/download/{id}', 'InvoiceController@download')->name('invoice.generate');
 
 Route::resources([
 	'stock' => 'StockController',

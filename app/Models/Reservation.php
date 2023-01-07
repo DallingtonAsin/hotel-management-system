@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\InvoiceGuest;
 
 class Reservation extends Model
 {
@@ -11,16 +12,18 @@ class Reservation extends Model
 
     protected $table = 'reservations';
     public $timestamps = true;
-
     protected $fillable = [
-        'guest_id',
-        'guest_type_id',
-        'room_id',
-        'occupancy_type',
         'arrival_date',
         'departure_date',
-        'discount_percent',
-        'total_price',
+        'room_id',
+        'guest_id',
+        'guest_type_id',
+        'occupancy_type',
         'created_by'
     ];
+
+    public function invoice()
+    {
+        return $this->hasOne(InvoiceGuest::class);
+    }
 }

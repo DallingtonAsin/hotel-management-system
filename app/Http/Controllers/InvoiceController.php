@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\InvoiceGuest;
 use PDF;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 class InvoiceController extends Controller
 {
-    
+
     public function index()
     {
         //
@@ -17,6 +22,43 @@ class InvoiceController extends Controller
         $pdf = PDF::loadView('pages.main.invoices.booking');
 
         return $pdf->download('nicesnippets.pdf');
+    }
+
+    private function createInvoicesDirIfnotExists($directory)
+    {
+        try {
+            $path = public_path($directory);
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0777, true, true);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function download($id)
+    {
+
+        try {
+            // $invoice = InvoiceGuest::find($id);
+            $directory = 'invoices';
+            $this->createInvoicesDirIfnotExists(($directory));
+
+            $filename = 'invoice-' . $id . '.pdf';
+            $path = public_path('' . $directory . '/' . $filename);
+
+            $pdf = PDF::loadView('pages.main.documents.invoice');
+            $pdf->save($path);
+
+            $subpath = 'invoices/' . $filename;
+            $url = Storage::disk('invoices')->url($subpath);
+            return response()->json(['url' => $url]);
+
+        } catch (\Exception $ex) {
+            return back()->with('error', $ex->getMessage());
+        }
+
+        // return $pdf->stream('nicesnippets.pdf');
     }
 
     /**
