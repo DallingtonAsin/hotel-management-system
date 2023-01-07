@@ -1,89 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Larave Generate Invoice PDF - Nicesnippest.com</title>
+    <title>Invoice - Casamiltu Hotel</title>
+<link href="{{ asset('css/invoice.css') }}" rel="stylesheet">
 </head>
-<style type="text/css">
-    body{
-        font-family: 'Roboto Condensed', sans-serif;
-    }
-    .m-0{
-        margin: 0px;
-    }
-    .p-0{
-        padding: 0px;
-    }
-    .pt-5{
-        padding-top:5px;
-    }
-    .mt-10{
-        margin-top:10px;
-    }
-    .text-center{
-        text-align:center !important;
-    }
-    .w-100{
-        width: 100%;
-    }
-    .w-50{
-        width:50%;   
-    }
-    .w-85{
-        width:85%;   
-    }
-    .w-15{
-        width:15%;   
-    }
-    .logo img{
-        width:45px;
-        height:45px;
-        padding-top:30px;
-    }
-    .logo span{
-        margin-left:8px;
-        top:19px;
-        position: absolute;
-        font-weight: bold;
-        font-size:25px;
-    }
-    .gray-color{
-        color:#5D5D5D;
-    }
-    .text-bold{
-        font-weight: bold;
-    }
-    .border{
-        border:1px solid black;
-    }
-    table tr,th,td{
-        border: 1px solid #d2d2d2;
-        border-collapse:collapse;
-        padding:7px 8px;
-    }
-    table tr th{
-        background: #F4F4F4;
-        font-size:15px;
-    }
-    table tr td{
-        font-size:13px;
-    }
-    table{
-        border-collapse:collapse;
-    }
-    .box-text p{
-        line-height:10px;
-    }
-    .float-left{
-        float:left;
-    }
-    .total-part{
-        font-size:16px;
-        line-height:12px;
-    }
-    .total-right p{
-        padding-right:20px;
-    }
-</style>
 <body>
 <div class="head-title">
     <h1 class="text-center m-0 p-0">Invoice</h1>
@@ -95,7 +15,8 @@
         <p class="m-0 pt-5 text-bold w-100">Order Date - <span class="gray-color">03-06-2022</span></p>
     </div>
     <div class="w-50 float-left logo mt-10">
-        <img src="https://www.nicesnippets.com/image/imgpsh_fullsize.png"> <span>Nicesnippets.com</span>     
+        <img src="https://www.nicesnippets.com/image/imgpsh_fullsize.png"> 
+        <span>Casa Miltu Hotel</span>
     </div>
     <div style="clear: both;"></div>
 </div>
@@ -112,7 +33,7 @@
                     <p>360004</p>
                     <p>Near Haveli Road,</p>
                     <p>Lal Darvaja,</p>
-                    <p>India</p>
+                    <p>Uganda</p>
                     <p>Contact : 1234567890</p>
                 </div>
             </td>
@@ -197,5 +118,8 @@
             </td>
         </tr>
     </table>
+</div>
+<div class="mt-5 justify-content-center">
+    <strong class="mt-3 text-center">Thank you for choosing our hotel. We hope you had a pleasant stay.</strong>
 </div>
 </html>

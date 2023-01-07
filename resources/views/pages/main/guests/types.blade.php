@@ -86,7 +86,7 @@
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger pr-1">*</span>Name</span>
+                            <span><span class="text-dan-ger pr-1">*</span>Name</span>
                             <input type="text" class="form-control name bg-white" name="name"
                                 placeholder="Enter guest type name" required autofocus>
                         </div>

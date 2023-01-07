@@ -88,7 +88,12 @@
           {{ session()->get('sessionExpiredMessage') }}
        </span>
        @endif
-       <strong class="text-center">{{ __('Need a Hotel Quickbook?') }}<a href="https://pivosoftltd.com" target="_blank" class="pr-3"> Contact us</a></strong>
+       <strong class="ml-3">
+        <h6 class="text-center">
+        {{ __('Need a hotel quickbook?') }}
+        <a href="https://pivosoftltd.com" target="_blank" class="pr-3 text-info"> Contact us</a>
+        </h6>
+      </strong>
      </div>
 </form>
 </div>

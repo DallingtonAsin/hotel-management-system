@@ -6,10 +6,14 @@ use App\Models\Reservation;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Guest;
+use App\Models\InvoiceGuest;
+use App\Models\Room;
+
 use App\Helpers\Helper;
 
 class ReservationsDataTable extends DataTable
 {
+
     /**
      * Build DataTable class.
      *
@@ -25,31 +29,30 @@ class ReservationsDataTable extends DataTable
             ->addColumn('action', function ($reservation) {
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-            data-id="' . $reservation->id . '" data-original-title="Edit" id="edit-reservation"
-              class="edit-btn edit-reservation pr-4">
-             <span class="fa fa-pen"></span></a>';
-
-                $btn .= '<a href="javascript:void(0);" id="delete-reservation" 
-            data-toggle="tooltip" data-original-title="Delete"
-             data-id="' . $reservation->id . '" class="trash-btn pr-4"">
-            <span class="fa fa-trash-alt" ></span></a>';
-
-                $btn .= '<a href="javascript:void(0);" id="view-reservation" 
-           data-toggle="tooltip" data-original-title="View"
-            data-id="' . $reservation->id . '" class="text-info bolded">
-           <i class="fa fa-eye" ></i></a>';
+                 data-id="' . $reservation->id . '" data-original-title="Generate Invoice" id="generate-invoice"
+                 class="edit-btn generate-invoice pr-1"> Generate Invoice</a>';
 
                 return $btn;
 
             })->editColumn('created_by', function ($reservation) {
-                return Helper::getUserNames($reservation->created_by);
-            })->addColumn('guest', function ($reservation) {
-                $guest = Guest::find($reservation->guest_id);
-                return $guest->first_name.' '.$guest->last_name;
-             })->addColumn('checkbox', function ($reservation) {
-              $checkBox = '<input type="checkbox" id="'.$reservation->id.'"/>';
-             return $checkBox;
-             })->rawColumns(['checkbox', 'action']);
+            return Helper::getUserNames($reservation->created_by);
+        })->addColumn('guest', function ($reservation) {
+            $guest = Guest::find($reservation->guest_id);
+            return $guest->first_name . ' ' . $guest->last_name;
+        })->addColumn('room_number', function ($reservation) {
+            $room_number = Room::where('id', $reservation->room_id)->value('number');
+            return $room_number;
+        })->addColumn('discount_percent', function ($reservation) {
+            $discount_percent = InvoiceGuest::where('reservation_id', $reservation->id)->value('discount_percent');
+            return $discount_percent;
+        })->addColumn('total_amount', function ($reservation) {
+            $total_amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('total');
+            $total_amount = number_format($total_amount);
+            return $total_amount;
+        })->addColumn('checkbox', function ($reservation) {
+            $checkBox = '<input type="checkbox" id="' . $reservation->id . '"/>';
+            return $checkBox;
+        })->rawColumns(['checkbox', 'action']);
     }
 
     /**
@@ -71,18 +74,18 @@ class ReservationsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('reservations/reservationsdatatable-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('reservations/reservationsdatatable-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -97,8 +100,6 @@ class ReservationsDataTable extends DataTable
             'guest_type',
             'arrival_date',
             'departure_date',
-            'discount_percent',
-            'total_price',
             'created_by'
         ];
     }

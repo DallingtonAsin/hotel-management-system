@@ -2,72 +2,45 @@
 
 @section('content')
 
+@include('pages.main.messages.response')
 <div class="card">
-  <div class="card-header">
-    <div class="panel-title">
-      <span class="pl-0 mt-4 response"></span>
-      <div class="row nunito-font">
-        <div class="col-lg-3 text-dark">
-         <h6>
-          <i class="fa fa-home text-success"> /</i>
-          <strong>Stock</strong>
-          <span class="badge badge-info  totl-stock">
-            @isset($number_of_stockItems)
-            {{ number_format($number_of_stockItems) }}
-            @endisset
-          </span>
-        </h6>
-      </div>
 
-      @can('isAdmin')
-      <div class="col-lg-3">
-        <span><h6>
-          Current stock value:
-          <span class="text-success text-center">shs.
-            <strong class="stock-value">
-              @isset($stock_value)
-              {{ number_format($stock_value) }}
-              @endisset
-            </strong>
-          </span>
-        </h6>
+  <div class="card-header row d-flex justify-content-between align-items-center">
+
+   <div class="col">
+    <h6 class="text-left text-dark">
+      <i class="fa fa-home text-success"> /</i>
+      <strong>Inventory</strong>
+      <span class="badge badge-info total_departments">
+          @isset($number_of_stockItems)
+              {{ number_format($number_of_stockItems) }}
+          @endisset
       </span>
-    </div>
-    @endcan
-    <div class="col-lg-2">
-     <h6>
-      <a class="add-link  text-decoration-none"
-      href="javascript:void(0)"
-      id="createNewStock"><strong>Add Stock</strong> </a>
     </h6>
+   </div>
+    
+   <div class="col">
+    <h6 class="text-center">
+      Current stock value:
+      <span class="text-success text-center">shs.
+        <strong class="stock-value">
+          @isset($stock_value)
+          {{ number_format($stock_value) }}
+          @endisset
+        </strong>
+      </span>
+    </h6>
+   </div>
+
+   <div class="col">
+    <div class="btn-group float-right justify-content-between mb-2">
+      <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewStock"><i class="fa fa-plus-circle pr-1"></i>Add stock</button>
+      <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#importStock"><i class="fa fa-file-import pr-1"></i>Import file</button>
+    </div>
   </div>
 
-  <div class="col-lg-2">
-   <h6><a href=""  class="add-link  text-decoration-none" data-bs-toggle="modal" data-bs-target="#importStock"><strong>Import stock</strong></a></h6>
- </div>
+  </div>
 
- @can('isAdmin')
- <div class="col-lg-2">
-   <div class="btn-group">
-    <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-     Action
-   </button>
-   <ul class="dropdown-menu">
-     <li>
-      <a class="text-decoration-none text-dark
-      nunito-font"
-      href="javascript:void(0)"
-      id="removeAllStockItems">
-      <i class="fa fa-trash-alt text-danger"></i> Delete all stock</a>
-    </li>
-  </ul>
-</div>
-</div>
-@endcan
-
-</div>
-</div>
-</div>
 
 <div class="card-body">
   <div class="row">
@@ -123,9 +96,9 @@
 
         <form name="StockForm" id="StockForm">
          @csrf
-         <div class="modal-header text-center">
+         <div class="modal-header d-flex justify-content-between">
           <h6 class="modal-title w-100 font-weight-bold" id="modalHeading"> Add new stock item</h6>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <button type="button" class="close mt-1" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -205,9 +178,8 @@
 
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary addStockBtn"  name="AddItemBtn"><i></i>Save</button>
-            <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-            <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-sm btn-primary addStockBtn"  name="AddItemBtn"><i></i>Save</button>
+            <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
           </div>
 
           <div class="form-group">
@@ -389,7 +361,7 @@
          e.preventDefault();
          NullifyFields();
          ShowHideBtns('show');
-         $('.addStockBtn').text("Record stock");
+         $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
          $('#StockForm').trigger("reset");
          $('#modalHeading').html("Record new stock");
          DisableFormFields(false);

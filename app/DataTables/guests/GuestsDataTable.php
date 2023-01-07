@@ -5,7 +5,7 @@ namespace App\DataTables\guests;
 use App\Models\Guest;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
-use App\Models\GuestType;
+use App\Helpers\Helper;
 
 class GuestsDataTable extends DataTable
 {
@@ -18,38 +18,37 @@ class GuestsDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-        ->order(function ($query) {
-            $query->orderBy('created_at', 'desc');
-        })->addIndexColumn()
-        ->addColumn('action', function ($guest) {
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($guest) {
 
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
         data-id="' . $guest->id . '" data-original-title="Edit" id="edit-guest"
           class="edit-btn edit-guest pr-4">
          <span class="fa fa-pen"></span></a>';
 
-            $btn .= '<a href="javascript:void(0);" id="delete-guest" 
+                $btn .= '<a href="javascript:void(0);" id="delete-guest" 
         data-toggle="tooltip" data-original-title="Delete"
          data-id="' . $guest->id . '" class="trash-btn pr-4"">
         <span class="fa fa-trash-alt" ></span></a>';
 
-            $btn .= '<a href="javascript:void(0);" id="view-guest" 
+                $btn .= '<a href="javascript:void(0);" id="view-guest" 
        data-toggle="tooltip" data-original-title="View"
         data-id="' . $guest->id . '" class="text-info bolded">
        <i class="fa fa-eye" ></i></a>';
 
-            return $btn;
+                return $btn;
 
-        })->addColumn('name', function ($guest) {
-            $name = $guest->first_name.' '.$guest->last_name;
+            })->editColumn('created_by', function ($guest) {
+                return Helper::getUserNames($guest->created_by);
+            })->addColumn('name', function ($guest) {
+            $name = $guest->first_name . ' ' . $guest->last_name;
             return $name;
-         })->addColumn('guest_type', function ($guest) {
-            $guest = GuestType::find($guest->guest_type_id);
-            return $guest->name;
-         })->addColumn('checkbox', function ($guest) {
-          $checkBox = '<input type="checkbox" id="'.$guest->id.'"/>';
-         return $checkBox;
-         })->rawColumns(['checkbox', 'action']);
+        })->addColumn('checkbox', function ($guest) {
+            $checkBox = '<input type="checkbox" id="' . $guest->id . '"/>';
+            return $checkBox;
+        })->rawColumns(['checkbox', 'action']);
     }
 
     /**
@@ -71,18 +70,18 @@ class GuestsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('guests/guestsdatatable-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('guests/guestsdatatable-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -96,12 +95,17 @@ class GuestsDataTable extends DataTable
             'id',
             'first_name',
             'last_name',
-            'guest_type_id',
-            'email',
+            'company_name',
+            'tin_number',
+            'company_contact',
+            'company_email',
             'phone_number',
-            'address',
-            'details',
-            'created_by',
+            'email',
+            'passport_number',
+            'tax_number',
+            'nin',
+            'other_details',
+            'created_by'
         ];
     }
 
