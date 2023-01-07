@@ -4,32 +4,32 @@
     <link href="{{ asset('css/reservation_invoice.css') }}" rel="stylesheet">
   </head>
   <body>
-    <h1>Hotel Name</h1>
+    <h1>{{ $company->name }}</h1>
     <h2>Invoice</h2>
     <table>
       <tr>
         <th>Invoice Number:</th>
-        <td>123456</td>
+        <td>{{ $invoice->id }}</td>
       </tr>
       <tr>
         <th>Date:</th>
-        <td>01/01/2023</td>
+        <td>{{ date('Y-m-d H:i A', strtotime($invoice->ts_issued)) }}</td>
       </tr>
       <tr>
         <th>Guest Information:</th>
         <td>
-          <p>Name: John Doe</p>
-          <p>Address: 123 Main Street, Anytown, USA</p>
-          <p>Phone: 555-555-5555</p>
+          <p>Name: {{$guest->first_name}} {{$guest->last_name}}</p>
+          <p>Email: {{$guest->email}}</p>
+          <p>Phone: {{$guest->phone_number}}</p>
         </td>
       </tr>
       <tr>
         <th>Reservation Details:</th>
         <td>
-          <p>Arrival Date: 01/01/2023</p>
-          <p>Departure Date: 01/03/2023</p>
-          <p>Room Type: Standard King</p>
-          <p>Rate: $100 per night</p>
+          <p>Arrival Date: {{ $reservation->arrival_date }}</p>
+          <p>Departure Date: {{ $reservation->departure_date }}</p>
+          <p>Room Type: {{ $room_type }}</p>
+          <p>Rate: ${{ $price_rate }} per night</p>
         </td>
       </tr>
     </table>
@@ -37,15 +37,15 @@
     <table>
       <tr>
         <th>Room Charge:</th>
-        <td class="text-right">$200</td>
+        <td class="text-right">${{number_format($invoice->total)}}</td>
       </tr>
       <tr>
         <th>Taxes and Fees:</th>
-        <td class="text-right">$30</td>
+        <td class="text-right">${{number_format($tax_fees)}}</td>
       </tr>
       <tr>
         <th>Total:</th>
-        <td class="text-right">$230</td>
+        <td class="text-right">${{number_format($total_amount)}}</td>
       </tr>
     </table>
     <p>Thank you for choosing our hotel. We hope you had a pleasant stay.</p>
