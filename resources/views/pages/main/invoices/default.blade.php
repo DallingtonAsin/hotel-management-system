@@ -15,7 +15,8 @@
         <p class="m-0 pt-5 text-bold w-100">Order Date - <span class="gray-color">03-06-2022</span></p>
     </div>
     <div class="w-50 float-left logo mt-10">
-        <img src="https://www.nicesnippets.com/image/imgpsh_fullsize.png"> <span>casamiltuhotel.com</span>     
+        <img src="https://www.nicesnippets.com/image/imgpsh_fullsize.png"> 
+        <span>Casa Miltu Hotel</span>
     </div>
     <div style="clear: both;"></div>
 </div>
@@ -117,5 +118,8 @@
             </td>
         </tr>
     </table>
+</div>
+<div class="mt-5 justify-content-center">
+    <strong class="mt-3 text-center">Thank you for choosing our hotel. We hope you had a pleasant stay.</strong>
 </div>
 </html>

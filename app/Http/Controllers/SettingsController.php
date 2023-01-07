@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\DataTables\CompanyDataTable;
 use App\Http\Controllers\LogsController;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Validator;
 
 class SettingsController extends Controller
 {
@@ -14,18 +15,24 @@ class SettingsController extends Controller
 
     public function GetCompanies(CompanyDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.company-details');
-    }
-    
-    public function index()
-    {
-        $companies = Company::all();
-        $number_of_companies = Company::count();
-        return view('pages.main.company-details')->with(compact('companies', 'number_of_companies'));
-      
+        return $dataTable->render('pages.main.company.registration');
     }
 
-   
+    public function index()
+    {
+        $company_details = Company::first();
+        if(!empty($company_details)){
+            foreach($company_details as $k){
+                $k->services = unserialize($k->services);
+            }
+        }
+       
+        $number_of_companies = Company::count();
+        return view('pages.main.company.registration')->with(compact('company_details', 'number_of_companies'));
+
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -50,9 +57,21 @@ class SettingsController extends Controller
 
 
 
-    public function showCreateCoForm(){
-        $company = Company::where('company_name', '!=', null)->first();
-        return view('pages.main.add-edit-company')->with(compact('company'));
+    public function showCreateCoForm()
+    {
+        $categories = ['1-star', '2-star', '3-star', '4-star', '5-star'];
+        $services = ['swimming pool', 'fitness center', 'restaurant', 'business center'];
+        $count = Company::count();
+        $company = null;
+
+        if($count > 0){
+            $company = Company::first();
+            $companyArray = $company->toArray();
+            $company['services'] = unserialize($companyArray['services']);
+           
+        }
+
+        return view('pages.main.company.registration')->with(compact('company', 'categories', 'services'));
     }
 
     /**
@@ -68,61 +87,100 @@ class SettingsController extends Controller
 
 
 
- public function addUpdateCompany(Request $request, $id){
-   
-    $this->validate($request, [
-        'company_name' => 'required',
-        'company_email' => 'required',
-        'company_address' => 'required',
-      ]);
 
-      try{
+    public function addUpdateCompany(Request $request, $id)
+    {
 
-      $company_name = $request->input('company_name');
-      $company_abbrev = $request->input('company_abbrev');
-      $company_email = $request->input('company_email');
-      $company_address = $request->input('company_address');
-      $company_motto = $request->input('company_motto');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'street' => 'sometimes|nullable',
+            'city' => 'required',
+            'state' => 'sometimes|nullable',
+            'zip' => 'sometimes|nullable',
+            'phone_number' => 'required',
+            'email' => 'sometimes|nullable',
+            'website_url' => 'sometimes|nullable',
+            'category' => 'required',
+            'services' => 'required',
+            'logo' => 'sometimes|nullable'
+        ]);
 
-    (isset($id) && $id != 0) ? $company = Company::find($id) : $company = new Company();
- 
-    $company->company_name = $company_name;
-    $company->company_abbrev = $company_abbrev;
-    $company->company_email = $company_email;
-    $company->company_address = $company_address;
-    $company->company_motto = $company_motto;
- 
+        // dd($request);
 
-     if($request->hasfile('company_logo')){
-        $this->validate($request, [
-           'company_logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-       ]);
+        try {
 
-        $file = $request->file('company_logo');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extension;
-            $file->move("uploads/images/company/logo",$filename);
-            $company->company_logo = $filename;
-     }
+            if ($validator->fails()) {
       
-        $result = $company->save();
+                return back()
+                ->withErrors($validator)
+                ->withInput();
 
-        if($result) {
-            (isset($id) && $id != 0) ? $notice = 'updated' : $notice = 'registered';
-            $action =  "".$notice." company ".$company_name." profile";
-            LogsController::logger($request, $action, now());
-            return back()->with('success', $this->ActionMessage($action));
-        }
-        else{
-            (isset($id) && $id != 0) ? $fnotice = 'updating' : $fnotice = 'registering';
-            return  back()->with('fail',''.$fnotice.' company profile failed');
+            } else {
+
+                $name = $request->input('name');
+                $street = $request->input('street');
+                $city = $request->input('city');
+                $state = $request->input('state');
+                $zip = $request->input('zip');
+
+                $phone_number = $request->input('phone_number');
+                $email = $request->input('email');
+                $website_url = $request->input('website_url');
+                $category = $request->input('category');
+                $services = $request->input('services');
+
+                if (!empty($services)) {
+                    $services = serialize($services);
+                }
+
+                $details = [
+                    'name' => $name,
+                    'street' => $street,
+                    'city' => $city,
+                    'state' => $state,
+                    'zip' => $zip,
+                    'phone_number' => $phone_number,
+                    'email' => $email,
+                    'website_url' => $website_url,
+                    'category' => $category,
+                    'services' => $services,
+                ];
+
+                if ($request->hasfile('logo')) {
+                    $this->validate($request, [
+                        'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    ]);
+                    $file = $request->file('logo');
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = time() . '.' . $extension;
+                    $file->move("uploads/images/company/logo", $filename);
+                    $details['logo'] = $filename;
+                }
+
+                if (!empty($id)) {
+                    $result = Company::where('id', $id)->update($details);
+                    $action = 'updated';
+                } else {
+                    $result = Company::create($details);
+                    $action = 'registered';
+                }
+
+                $message = "" . $action . " company " . $name . " profile";
+                LogsController::logger($request, $message, now());
+
+                if ($result) {
+                    return back()->with('success', $this->ActionMessage($message));
+                } else {
+                    return back()->with('fail', 'Technical error in recording company details');
+                }
+
+            }
+
+        } catch (\Exception $ex) {
+            return back()->with('fail', $ex->getMessage());
         }
 
-    }catch(\Exception $ex){
-        dd($ex->getMessage());
     }
-
-}
 
 
 
@@ -162,8 +220,8 @@ class SettingsController extends Controller
 
     protected function ActionMessage($action)
     {
-      $message = "You have successfully ".$action."";
-      return $message;
+        $message = "You have successfully " . $action . "";
+        return $message;
     }
 
 

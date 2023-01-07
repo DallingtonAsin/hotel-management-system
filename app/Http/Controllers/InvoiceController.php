@@ -47,7 +47,7 @@ class InvoiceController extends Controller
             $filename = 'invoice-' . $id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
 
-            $pdf = PDF::loadView('pages.main.documents.invoice');
+            $pdf = PDF::loadView('pages.main.invoices.reservation');
             $pdf->save($path);
 
             $subpath = 'invoices/' . $filename;

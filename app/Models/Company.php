@@ -11,12 +11,17 @@ class Company extends Model
     protected $table = 'company_details';
     public $timestamps = true;
     protected $fillable = [
-        'company_name',
-        'company_abbrev',
-        'company_email',
-        'company_address',
-        'company_motto',
-        'company_logo'    
+        'name',
+        'street',
+        'city',
+        'state',
+        'zip',
+        'phone_number',
+        'email',
+        'website_url',
+        'category',
+        'services',
+        'logo'   
     ];
 
         

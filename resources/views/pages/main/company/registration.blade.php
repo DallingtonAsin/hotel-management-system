@@ -1,0 +1,120 @@
+@extends('layouts.template')
+
+@section('content')
+    @include('pages.main.messages.response')
+    <div class="card card-primary">
+        <div class="card-header bg-default">
+            <span class="card-title text-dark">
+                <?= isset($company) ? 'Edit company details' : 'Add company details' ?>
+            </span>
+        </div>
+
+        <div class="card-body">
+            {!! Form::open(['route' => ['companies.register', isset($company) ? $company['id'] : 0], 'method' => 'POST']) !!}
+
+            <div class="form-group">
+                <span><i class="text-danger pr-1">*</i>Name</span>
+                <input type="text" class="form-control name bg-white" name="name"
+                    value="<?= isset($company) ? $company['name'] :  old('name')  ?>" placeholder="Enter company name" required>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <span><i class="text-danger pr-1">*</i>City</span>
+                    <input type="text" class="form-control city bg-white" name="city"
+                        value="<?= isset($company) ? $company['city'] : old('city') ?>" placeholder="Enter city">
+                </div>
+
+                <div class="col-md-3">
+                    <span>Street</span>
+                    <input type="text" class="form-control street bg-white" name="street"
+                        value="<?= isset($company) ? $company['street'] : old('street') ?>" placeholder="Enter street">
+                </div>
+
+                <div class="col-md-3">
+                    <span>State/Province</span>
+                    <input type="text" class="form-control state bg-white" name="state"
+                        value="<?= isset($company) ? $company['state'] : '' ?>" placeholder="Enter state">
+                </div>
+
+                <div class="col-md-3">
+                    <span>Zip/Postal Code</span>
+                    <input type="text" class="form-control state bg-white" name="zip"
+                        value="<?= isset($company) ? $company['zip'] : old('zip') ?>" placeholder="Enter zip">
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <span><i class="text-danger pr-1">*</i>Phone Number</span>
+                    <input type="text" class="form-control phone_number bg-white" name="phone_number"
+                        value="<?= isset($company) ? $company['phone_number'] : old('phone_number') ?>" placeholder="Enter phone number">
+                </div>
+
+                <div class="col-md-6">
+                    <span>Email</span>
+                    <input type="email" class="form-control email bg-white" name="email"
+                        value="<?= isset($company) ? $company['email'] : old('email') ?>" placeholder="Enter company email">
+                </div>
+            </div>
+
+
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <span>Website url</span>
+                    <input type="website_url" class="form-control website_url bg-white" name="website_url"
+                        value="<?= isset($company) ? $company['website_url'] : old('website_url') ?>" placeholder="Enter website url">
+                </div>
+
+                <div class="col-md-6">
+                    <span><i class="text-danger pr-1">*</i>Category</span>
+                    <select class="form-control" name="category">
+                        <option value="">Select category</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category }}" {{ $company['category'] == $category ? 'selected' : '' }} {{ old('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span for="services"><i class="text-danger pr-1">*</i>Services</span>
+                <select name="services[]" id="services-list" class="form-control" multiple>
+                    <option value="">Select services</option>
+                    @foreach ($services as $service)
+                        <option value="{{ $service }}" {{ in_array($service, $company['services']) ? 'selected' : '' }}>{{ $service }}</option>
+                    @endforeach
+                </select>
+
+
+            </div>
+
+            <div class="form-group">
+                <span class="text-muted">Company Logo</span>
+                <input type="file" class="form-control-file" name="logo" value="{{old('logo')}}">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-sm btn-primary border-dark"
+                    value="<?= isset($company) ? 'Update' : 'Submit' ?>">
+            </div>
+
+            {!! Form::close() !!}
+
+        </div>
+    </div>
+
+
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+
+    @if (session()->get('success'))
+        <script>
+            $(document).ready(function() {
+                var div = ".response";
+                var type = "success";
+                var LoginMessageError = "{{ session()->get('success') }}";
+                ShowLoginErrorMessage(div, type, LoginMessageError);
+            });
+        </script>
+    @endif
+@endsection
