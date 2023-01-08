@@ -341,15 +341,6 @@
          Numberize(".selling_price");
          Numberize(".wholesale_price");
 
-         function Numberize(i){
-          $(document).on("keyup", i , function(){
-            if(this.value.length > 0){
-              var n = parseInt(this.value.replace(/\D/g,''), 10);
-              $(this).val(n.toLocaleString());
-            }
-          });
-        }
-
         $.fn.dataTable.ext.errMode = 'none';
         $('#stock-table').on( 'error.dt', function ( e, settings, techNote, message ) {
           console.log( 'An error has been reported by DataTables: ', message );

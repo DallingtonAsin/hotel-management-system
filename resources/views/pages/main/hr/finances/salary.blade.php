@@ -83,25 +83,31 @@
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                             <input type="hidden" class="form-control salaryId bg-white salaryId" name="id"
-                                placeholder="Enter salary id" required autofocus>
+                                placeholder="Enter salary id" autofocus>
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger">*</span> Department</span>
-                            <select class="form-control departments_section bg-white" name="department">
-                                <option value="">select department</option>
+                            <span><span class="text-danger">*</span> Staff member</span>
+                            <select class="form-control staff_members_section bg-white" name="name">
+                                <option value="">select staff member</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger">*</span> Designation</span>
-                            <input type="text" class="form-control name bg-white salary" name="salary"
-                                placeholder="Enter salary name" required autofocus>
+                            <span><span class="text-danger">*</span> Amount</span>
+                            <input type="text" class="form-control name bg-white amount" name="amount"
+                                placeholder="Enter salary amount" required autofocus>
+                        </div>
+
+
+                        <div class="form-group">
+                            <span class="text-muted"><span class="text-danger pr-2">*</span>Payment Date</span>
+                            <input type="date" class="form-control payment_date" name="payment_date"
+                                value="{{ old('payment_date', now()->format('Y-m-d\TH:i')) }}" autocomplete="on">
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addSalaryBtn"
-                                name="addSalaryBtn">Save</button>
+                            <button type="submit" class="btn btn-primary addSalaryBtn" name="addSalaryBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                         </div>
 
@@ -199,7 +205,6 @@
     </div> <!-- end of modal Delete Designations-->
 
     <script type="text/javascript">
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -211,14 +216,13 @@
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const cat = 'salary';
         populateDepartments();
-        
+
         $(document).ready(function() {
-            
+
             let table = $('#salaries-table');
             let title = "List of recorded salaries in the system";
-            let columns = [1, 2, 3];
-            let dataColumns = [
-                {
+            let columns = [1, 2, 3, 4];
+            let dataColumns = [{
                     data: 'checkbox',
                     name: 'checkbox'
                 },
@@ -259,18 +263,7 @@
                 $('#addSalaryModal').modal('show');
             });
 
-
-            Numberize(".debt");
-            Numberize(".credit");
-
-            function Numberize(i) {
-                $(document).on("keyup", i, function() {
-                    if (this.value.length > 0) {
-                        let n = parseInt(this.value.replace(/\D/g, ''), 10);
-                        $(this).val(n.toLocaleString());
-                    }
-                });
-            }
+             Numberize(".amount");
 
             //modal used to edit salaries details [each row of the tbl]
             $('body').on('click', '#edit-salary', function(event) {
@@ -443,7 +436,7 @@
 
                 let department = $('.departments_section').val();
                 let salary = $('.salary').val();
-               
+
                 let errors = [];
                 if (department.length < 1) {
                     errors.push(`Please select department`);
@@ -451,7 +444,7 @@
                 if (salary.length < 1) {
                     errors.push(`Please enter salary`);
                 }
-             
+
                 return errors;
 
             }
@@ -512,6 +505,6 @@
             }
         });
     </script>
-       <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-       <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

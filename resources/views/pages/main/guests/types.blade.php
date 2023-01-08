@@ -273,15 +273,6 @@
             Numberize(".debt");
             Numberize(".credit");
 
-            function Numberize(i) {
-                $(document).on("keyup", i, function() {
-                    if (this.value.length > 0) {
-                        let n = parseInt(this.value.replace(/\D/g, ''), 10);
-                        $(this).val(n.toLocaleString());
-                    }
-                });
-            }
-
             //modal used to edit guest types details [each row of the tbl]
             $('body').on('click', '#edit-guest-type', function(event) {
                 let guest_type_id = $(this).data('id');

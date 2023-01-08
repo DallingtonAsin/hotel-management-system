@@ -122,7 +122,7 @@ Route::get('/reservations/fetch/ajax', 'ReservationController@getReservations')-
 Route::get('/guests/fetch/ajax', 'GuestController@getGuests')->name('guests.index.ajax');
 
 Route::get('/payments/fetch/ajax', 'finances\PaymentController@getPaymentsDataTable')->name('payments.index.ajax');
-Route::get('/staff/fetch/ajax', 'finances\SalaryController@getSalariesDataTable')->name('salaries.index.ajax');
+Route::get('/salaries/fetch/ajax', 'finances\SalaryController@getSalariesDataTable')->name('salaries.index.ajax');
 
 
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');

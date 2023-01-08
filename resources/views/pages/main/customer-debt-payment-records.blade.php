@@ -229,15 +229,6 @@ role="dialog" aria-labelledby="myModalLabel">
 
 Numberize(".balance");
 
-function Numberize(i){
-  $(document).on("keyup", i , function(){
-  if(this.value.length > 0){
-    var n = parseInt(this.value.replace(/\D/g,''), 10);
-    $(this).val(n.toLocaleString());
-  }
-});
-}
-
 $('body').on('input', '.received', function (event) {
    let cost, last_paid, received, balance, outstanding_bal;
    cost =  parseFloat($('.amount').val());

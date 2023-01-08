@@ -258,15 +258,6 @@
             Numberize(".debt");
             Numberize(".credit");
 
-            function Numberize(i) {
-                $(document).on("keyup", i, function() {
-                    if (this.value.length > 0) {
-                        let n = parseInt(this.value.replace(/\D/g, ''), 10);
-                        $(this).val(n.toLocaleString());
-                    }
-                });
-            }
-
             //modal used to edit designations details [each row of the tbl]
             $('body').on('click', '#edit-designation', function(event) {
                 let designation_id = $(this).data('id');

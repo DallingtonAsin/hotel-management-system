@@ -688,26 +688,7 @@
                         document.getElementById('num').innerHTML = FormatNumber(rowCount.toFixed(0));
                         document.getElementById('amountToPay').innerHTML = FormatNumber(subTotal.toFixed(2));
                       }
-                      
-                      function Numberize(i){
-                        // $(document).on("keyup", i , function(){
-                          //   if(this.value.length > 0){
-                            //     let n = parseInt(this.value.replace(/\D/g,''), 10);
-                            //     $(this).val(n.toLocaleString());
-                            //   }
-                            // });
-                            $(document).on("keyup", i , function(event) {
-                              if(event.which >= 37 && event.which <= 40){
-                                event.preventDefault();
-                              }
-                              $(this).val(function(index, value) {
-                                value = value.replace(/,/g,''); // remove commas from existing input
-                                return numberWithCommas(value); // add commas back in
-                              });
-                            });
-                            
-                          }
-                          
+                
                           function formatString2Number(num){
                             let number = num.replace(/,/g , '').trim();
                             let FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});

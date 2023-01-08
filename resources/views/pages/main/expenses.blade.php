@@ -285,14 +285,6 @@ function SanitizeString(str){
 
 Numberize(".amount");
 
-function Numberize(i){
-  $(document).on("keyup", i , function(){
-  if(this.value.length > 0){
-    var n = parseInt(this.value.replace(/\D/g,''), 10);
-    $(this).val(n.toLocaleString());
-  }
-});
-}
 
  function FormatNumber(number){
    var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});

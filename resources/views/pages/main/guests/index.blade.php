@@ -141,15 +141,6 @@
             Numberize(".debt");
             Numberize(".credit");
 
-            function Numberize(i) {
-                $(document).on("keyup", i, function() {
-                    if (this.value.length > 0) {
-                        var n = parseInt(this.value.replace(/\D/g, ''), 10);
-                        $(this).val(n.toLocaleString());
-                    }
-                });
-            }
-
             //modal used to edit suppliers details [each row of the tbl]
             $('body').on('click', '#edit-supplier', function(event) {
                 var supplier_id = $(this).data('id');

@@ -56,6 +56,8 @@
   <script src="{{ asset('js/custom/datatables.js') }}"></script>
   <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
   <script src="{{ asset('vendors/custom/echarts.js') }}"></script>
+  <script src="{{ asset('js/custom/common.js') }}"></script>
+
 
   {{-- <link rel="stylesheet" href="{{ asset('vendors/fonts/montserrat/css.css') }}"> --}}
   <link href="{{ asset('vendors/calendar/fullcalendar.min.css') }}" rel="stylesheet"/>

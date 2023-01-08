@@ -415,15 +415,6 @@ role="dialog" aria-labelledby="myModalLabel">
 Numberize(".debt");
 Numberize(".credit");
 
-function Numberize(i){
-  $(document).on("keyup", i , function(){
-  if(this.value.length > 0){
-    var n = parseInt(this.value.replace(/\D/g,''), 10);
-    $(this).val(n.toLocaleString());
-  }
-});
-}
-
 //modal used to edit customer details [each row of the tbl]
     $('body').on('click', '#edit-customer', function (event) {
       var customer_id = $(this).data('id');
