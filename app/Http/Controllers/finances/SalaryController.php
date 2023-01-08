@@ -4,17 +4,21 @@ namespace App\Http\Controllers\finances;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\DataTables\finances\SalariesDataTable;
+use App\Models\Salary;
 
 class SalaryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function index()
     {
-        //
+        $total_salaries = Salary::count();
+        return view('pages.main.hr.finances.salary')->with(compact('total_salaries'));
+    }
+
+    public function getSalariesDataTable(SalariesDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.hr.finances.salary');
     }
 
     /**

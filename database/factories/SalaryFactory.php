@@ -24,7 +24,8 @@ class SalaryFactory extends Factory
         return [
             'employee_id' => $this->faker->randomElement([1, 2, 3, 4, 5, 6, 7, 8]),
             'amount' => $this->faker->numberBetween(50000, 100000),
-            'pay_date' => $this->faker->dateTimeBetween('next Monday', 'next Monday +7 days')
+            'pay_date' => $this->faker->dateTimeBetween('next Monday', 'next Monday +7 days'),
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
           ];
     }
 }

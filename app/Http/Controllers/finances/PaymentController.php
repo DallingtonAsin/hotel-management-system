@@ -4,18 +4,24 @@ namespace App\Http\Controllers\finances;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\DataTables\finances\PaymentsDataTable;
+use App\Models\Payment;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+
     public function index()
     {
-        //
+        $total_payments = Payment::count();
+        return view('pages.main.hr.finances.payments')->with(compact('total_payments'));
     }
+
+    public function getPaymentsDataTable(PaymentsDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.hr.finances.payments');
+    }
+
 
     /**
      * Show the form for creating a new resource.

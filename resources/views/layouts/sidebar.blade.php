@@ -152,8 +152,8 @@
                   <li class="nav-item">
                     <a href="" class="nav-link with-sub">Finances</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Salaries</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Payments</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('salary.index') }}" class="nav-sub-link">Salaries</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('payments.index') }}" class="nav-sub-link">Payments</a></li>
                     </ul>
                 </li>
               </ul>

@@ -2,12 +2,11 @@
 
 namespace App\DataTables\finances;
 
-use App\Models\Salary;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
+use App\Models\Salary;
+use App\User;
 
 class SalariesDataTable extends DataTable
 {
@@ -19,9 +18,41 @@ class SalariesDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'finances/salariesdatatable.action');
+        return datatables($query)
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($salary) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+        data-id="' . $salary->id . '" data-original-title="Edit" id="edit-salary"
+          class="edit-btn edit-salary pr-4">
+         <span class="fa fa-pen"></span></a>';
+
+                $btn .= '<a href="javascript:void(0);" id="delete-salary" 
+        data-toggle="tooltip" data-original-title="Delete"
+         data-id="' . $salary->id . '" class="trash-btn pr-4"">
+        <span class="fa fa-trash-alt" ></span></a>';
+
+                $btn .= '<a href="javascript:void(0);" id="view-salary" 
+       data-toggle="tooltip" data-original-title="View"
+        data-id="' . $salary->id . '" class="text-info bolded">
+       <i class="fa fa-eye" ></i></a>';
+
+                return $btn;
+
+            })->addColumn('checkbox', function ($salary) {
+            $checkBox = '<input type="checkbox" id="' . $salary->id . '"/>';
+            return $checkBox;
+        })->addColumn('employee_name', function ($salary) {
+            $user = User::find($salary->employee_id);
+            return $user->first_name . ' ' . $user->last_name;
+        })->editColumn('amount', function ($salary) {
+            return number_format($salary->amount);
+        })->editColumn('created_by', function ($salary) {
+            return Helper::getUserNames($salary->created_by);
+        })->rawColumns(['checkbox', 'action']);
+
     }
 
     /**
@@ -43,18 +74,18 @@ class SalariesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('finances/salariesdatatable-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('finances/salariesdatatable-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -65,15 +96,10 @@ class SalariesDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            'id',
+            'employee_id',
+            'amount',
+            'pay_date'
         ];
     }
 

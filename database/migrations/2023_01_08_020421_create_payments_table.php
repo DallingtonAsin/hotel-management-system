@@ -18,14 +18,14 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('guest_id');
             $table->unsignedBigInteger('invoice_id');
             $table->decimal('amount', 8, 2);
-            $table->string('method'); // payment method (e.g. cash, credit card)
+            $table->string('method'); 
             $table->date('date'); 
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('guest_id')->references('id')->on('guests');
             $table->foreign('invoice_id')->references('id')->on('invoice_guests');
-
-
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

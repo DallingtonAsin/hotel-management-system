@@ -18,9 +18,11 @@ class CreateSalariesTable extends Migration
             $table->integer('employee_id')->unsigned();
             $table->decimal('amount', 8, 2); 
             $table->date('pay_date');
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 
