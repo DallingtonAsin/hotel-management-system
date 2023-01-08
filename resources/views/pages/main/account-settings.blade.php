@@ -2,23 +2,21 @@
 
 @section('content')
 
+@include('pages.main.messages.response')
+ <div class="card"> 
 
- <div class="card-table nunito-font"> --}}
-   <div class="card card-dashboard-table-six">
-
+ <div class="card-header">
   <div class="card-title">
-       <strong class="col-lg-10 text-success">
-        <i class="fa fa-gear"></i>
-         <span class="text-dark">
-          Profile / Edit your profile
-        </span>
-      </strong>
+    <strong class="col-lg-10 text-success">
+     <i class="fa fa-home"></i>/
+      <span class="text-dark">
+       Profile >> 
+     </span>
+   </strong><span>Edit your profile</span>
 </div>
+ </div>
 
-  <div class="card-body pt-3">
-    <div class="card">
-
-      <div class="card-body">
+  <div class="card-body">
 
         <form class="profileForm" method="POST" action="{{route('profile.update', Auth::user()->id)}}" id="profileForm" enctype='multipart/form-data'>
            @csrf
@@ -39,17 +37,17 @@
          </div>
 
          <div class="form-group">
-          <span class="text-muted">Contact</span>
-          <input type="text" class="form-control contact" name="Contact" value="{{Auth::user()->tel_no}}" required
+          <span class="text-muted">Phone Number</span>
+          <input type="text" class="form-control contact" name="Contact" value="{{Auth::user()->phone_number}}" required
           autocomplete="off"
           >
         </div>
 
         <div class="form-group">
-          <span class="text-muted">Address</span>
-          <input type="text" class="form-control address" name="Address" value="{{Auth::user()->address}}"
-          autocomplete="off">
-        </div required>
+          <span class="text-muted">Email</span>
+          <input type="text" class="form-control email" name="email" value="{{Auth::user()->email}}"
+             autocomplete="off">
+        </div>
 
         <div class="form-group">
           <span class="text-muted">Image</span>
@@ -57,8 +55,10 @@
         </div>
 
         <div class="form-group">
-            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Need to change your password? click here
+            <button class="btn btn-link collapsed" type="button" 
+            data-toggle="collapse" data-bs-target="#collapseTwo"
+             aria-expanded="false" aria-controls="collapseTwo">
+              <span class="text-decoration-none">Need to change your password? click here</span>
             </button>
         </div>
         
@@ -109,11 +109,6 @@
         <div class="row form-group">
          <div class="col-lg-3">
          <button type="submit" class="btn btn-primary addProfileBtn"  name="addProfileBtn">Update Profile</button>
-          <input type="button" 
-           class="btn overview-item--c4 text-white addProfileBtn"
-            id="addProfileBtn" value="Update Profile"> --}}
-         </div>
-
          <div class="col-lg-9">
             <span class="pl-0 errors_section text-danger"></span>
           </div>
@@ -129,8 +124,6 @@
      </div>
    </div>
  </div>
-</div>
-{{-- </div> --}}
 
 
 <script src="{{ asset('vendors/notify/notify.js') }}"></script>
@@ -310,10 +303,6 @@
       });
     }
    
-
-
-
-
 </script>
 
 @endsection

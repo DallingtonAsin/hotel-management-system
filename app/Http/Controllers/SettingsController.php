@@ -62,13 +62,16 @@ class SettingsController extends Controller
         $categories = ['1-star', '2-star', '3-star', '4-star', '5-star'];
         $services = ['swimming pool', 'fitness center', 'restaurant', 'business center'];
         $count = Company::count();
-        $company = null;
-
+        $company = Company::where('id', '!=', null)->get();
+        // dd($company);
         if($count > 0){
             $company = Company::first();
             $companyArray = $company->toArray();
             $company['services'] = unserialize($companyArray['services']);
            
+        }else{
+            $company['services'] = [];
+            $company['id'] = 0; 
         }
 
         return view('pages.main.company.registration')->with(compact('company', 'categories', 'services'));
