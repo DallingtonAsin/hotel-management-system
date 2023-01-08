@@ -392,7 +392,7 @@ Numberize(".quantity");
           },
           error: function (data) {
             console.log('Error:', data.error);
-            ShowResponse('.response', data.error, 'error');
+            displayResponse('.response', data.error, 'error');
           }
         });
 
@@ -435,7 +435,7 @@ Numberize(".quantity");
             $('#damagesForm').trigger("reset");
             $('#addDamagesModal').modal("hide");
             var resp = data.success;
-            ShowResponse('.response', resp, 'success');
+            displayResponse('.response', resp, 'success');
             ResetTblInfo(data);
             var tbl = $('#damages-table').DataTable();
             tbl.ajax.reload();
@@ -443,7 +443,7 @@ Numberize(".quantity");
           },
           error: function (data) {
             console.log('Error:', data.error);
-            ShowResponse('.response', data.error, 'error');
+            displayResponse('.response', data.error, 'error');
             $('.addDamageBtn').html('Save Changes');
           }
         });
@@ -466,7 +466,7 @@ Numberize(".quantity");
             $('#damagesForm').trigger("reset");
             $('#addDamagesModal').modal("hide");
             var resp = data.success;
-            ShowResponse('.response', resp, 'success');
+            displayResponse('.response', resp, 'success');
             ResetTblInfo(data);
             var tbl = $('#damages-table').DataTable();
             tbl.ajax.reload();
@@ -474,7 +474,7 @@ Numberize(".quantity");
           },
           error: function (data) {
             console.log('Error:', data.fail);
-            ShowResponse('.response', data.error, 'error');
+            displayResponse('.response', data.error, 'error');
             $('.addDamageBtn').html('Save Changes');
           }
         });
@@ -557,14 +557,14 @@ Numberize(".quantity");
             var resp = data.success;
             $('.delete-ok-btn').html('Yes');
             $('#deleteDamageModal').modal("hide");
-            ShowResponse('.response', resp, 'success');
+            displayResponse('.response', resp, 'success');
             ResetTblInfo(data);
             var tbl = $('#damages-table').DataTable();
             tbl.ajax.reload();
           },
           error: function (data) {
             console.log('Error:', data);
-            ShowResponse('.response', data.error, 'error');
+            displayResponse('.response', data.error, 'error');
           }
         });
       }
@@ -624,16 +624,6 @@ Numberize(".quantity");
           $('.closeBtn').show();
         }
 
-      }
-
-      function ShowResponse(area, message, errorType)
-      {
-        $(area).notify(message,{
-          className: errorType,
-          autoHide: true,
-          clickToHide:true,
-          autoHideDelay:45000,
-        });
       }
 
       function FormatNumber(number){

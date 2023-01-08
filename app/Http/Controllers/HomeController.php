@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Room;
+use App\Models\Guest;
 use App\Models\Reservation;
 use App\User;
-use App\Helpers\Helper;
 
 class HomeController extends Controller
 {
@@ -33,8 +33,14 @@ class HomeController extends Controller
             $total_staff = User::count();
             $total_rooms = Room::count();
             $total_bookings = Reservation::count();
+            $total_guests = Guest::count();
 
-        return view('pages.home', ['total_staff' => $total_staff, 'total_bookings' => $total_bookings, 'total_rooms' => $total_rooms]);
+
+        return view('pages.home', ['total_staff' => $total_staff,
+                    'total_bookings' => $total_bookings,
+                    'total_rooms' => $total_rooms,
+                    'total_guests' => $total_guests
+                ]);
         }else{
             return redirect('/');
         }

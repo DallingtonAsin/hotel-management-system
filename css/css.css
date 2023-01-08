@@ -395,10 +395,6 @@ td {
 .btn-filter:hover{
 	color: orange !important;
 }
-
-.amount{
-	font-size:14px !important;
-}
 .add-link{
 	text-decoration: none !important;
 }

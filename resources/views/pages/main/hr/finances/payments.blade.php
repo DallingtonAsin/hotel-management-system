@@ -16,7 +16,7 @@
             <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewPayment">
                 <i class="fa fa-plus-circle pr-1"></i>Add payment</button>
         </div>
-
+       
         <div class="card-body">
 
             <div class="table-responsive">
@@ -93,8 +93,7 @@
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Amount</span>
-                            <input type="text" class="form-control bg-white amount" name="amount"
-                                placeholder="Enter salary amount" required autofocus>
+                            <input type="text" class="form-control bg-white amount" name="amount" placeholder="Enter salary amount" required autofocus>
                         </div>
 
                         <div class="form-group">
@@ -337,19 +336,24 @@
 
                             $('#PaymentsForm').trigger("reset");
                             $('#addPaymentModal').modal("hide");
-                            let resp = data.success;
-                            ShowResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            let tbl = $('#payments-table').DataTable();
-                            tbl.ajax.reload();
 
+                            let resp = data.success || data.error;
+                            let type = data.success ? 'success' : 'error';
+                            displayResponse('.response', resp, type);
+
+                            if(data.success){
+                                ResetTblInfo(data);
+                                let tbl = $('#payments-table').DataTable();
+                                tbl.ajax.reload();
+                            }else{
+                                $('#addPaymentModal').modal('hide');
+                            }
                         },
                         error: function(data) {
                             $('#addPaymentModal').modal('hide');
-                          
                             let error_message = data.error;
                             console.log('Error message:', data.error);
-                            ShowResponse('.response', error_message, 'error');
+                            displayResponse('.response', 'Error is bad', 'error');
                             $('.addPaymentBtn').html('Save Changes');
                         }
                     });
@@ -388,14 +392,14 @@
                         let resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
-                        ShowResponse('.response', resp, 'success');
+                        displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
                         let tbl = $('#payments-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -421,15 +425,6 @@
                 $('.addPaymentBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
-            }
-
-            function ShowResponse(area, message, errorType = 'error') {
-                $(area).notify(message, {
-                    className: errorType,
-                    autoHide: true,
-                    clickToHide: true,
-                    autoHideDelay: 45000,
-                });
             }
 
             function FormatNumber(number) {

@@ -6,3 +6,13 @@ function Numberize(i) {
         }
     });
 }
+
+
+function displayResponse(area, message, errorType = 'error') {
+    $(area).notify(message, {
+        className: errorType,
+        autoHide: true,
+        clickToHide: true,
+        autoHideDelay: 5000,
+    });
+}

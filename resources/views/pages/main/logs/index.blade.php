@@ -233,14 +233,14 @@ deleteUrl = deleteUrl.replace(':id', id);
           var resp = data.success;
           $('.delete-ok-btn').html('Yes');
           $('#deleteLogsModal').modal("hide");
-          ShowResponse('.response', resp, 'success');
+          displayResponse('.response', resp, 'success');
           ResetTblInfo(data);
           var tbl = $('.logs-table').DataTable();
           tbl.ajax.reload();
      },
      error: function (data) {
          console.log('Error:', data);
-         ShowResponse('.response', data.error, 'error');
+         displayResponse('.response', data.error, 'error');
      }
  });
 }
@@ -276,15 +276,6 @@ function ShowBtns(){
       $('.closeBtn').show();
 }
 
-function ShowResponse(area, message, errorType)
-{
-  $(area).notify(message,{
-    className: errorType,
-    autoHide: true,
-    clickToHide:true,
-    autoHideDelay:45000,
-   });
-}
 });
 
 $("#removeAllLogs").bind("click", function(){
@@ -315,7 +306,7 @@ $.confirm({
          $(".totl_logs").text(data.totl);
          var tbl = $('.logs-table').DataTable();
          tbl.ajax.reload();
-         ShowResponse('.response', resp, 'success');
+         displayResponse('.response', resp, 'success');
     }).fail(function(error){
         $.alert({
             title: 'Response',

@@ -406,7 +406,7 @@ role="dialog" aria-labelledby="myModalLabel">
             },
              error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
+              displayResponse('.response', data.error, 'error');
               $('.AddcustomerBtn').html('Save Changes');
            },
         });
@@ -476,7 +476,7 @@ Numberize(".credit");
               $('#CustomersForm').trigger("reset");
               $('#addCustomersModal').modal("hide");
               var resp = data.success;
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               var tbl = $('#customers-table').DataTable();
               tbl.ajax.reload();
@@ -484,7 +484,7 @@ Numberize(".credit");
           },
           error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
+              displayResponse('.response', data.error, 'error');
               $('.AddcustomerBtn').html('Save Changes');
           }
       });
@@ -525,14 +525,14 @@ Numberize(".credit");
               var resp = data.success;
               $('.delete-ok-btn').html('Yes');
               $('#deleteCustomersModal').modal("hide");
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               var tbl = $('#customers-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
              console.log('Error:', data);
-             ShowResponse('.response', data.error, 'error');
+             displayResponse('.response', data.error, 'error');
          }
      });
  }
@@ -559,15 +559,6 @@ Numberize(".credit");
           $('.closeBtn').show();
   }
 
-  function ShowResponse(area, message, errorType)
-    {
-      $(area).notify(message,{
-        className: errorType,
-        autoHide: true,
-        clickToHide:true,
-        autoHideDelay:45000,
-       });
-    }
 
   function FormatNumber(number){
    var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});

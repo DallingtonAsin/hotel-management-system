@@ -219,20 +219,20 @@
           success: function (data) {
               getUpdatedUserDetails(user_id);
               if(data.success){
-                 ShowResponse('.response', data.success, 'success');
+                 displayResponse('.response', data.success, 'success');
                    $('.oldpassword').val('');
                    $('.newpassword').val('');
                    $('.confirmpassword').val('');
               }
               if(data.error){
-                ShowResponse('.response', data.error, 'error');
+                displayResponse('.response', data.error, 'error');
               }
               $('.addProfileBtn').html('Update Profile');
               
           },
           error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'success');
+              displayResponse('.response', data.error, 'success');
               $('.addProfileBtn').html('Save Changes');
           }
       });
@@ -283,16 +283,6 @@
  function stringIsEmpty(value){
    return value ? value.trim().length == 0: true;
  }
-
-   function ShowResponse(area, message, errorType)
-    {
-      $(area).notify(message,{
-        className: errorType,
-        autoHide: true,
-        clickToHide:true,
-        autoHideDelay:45000,
-       });
-    }
 
     function getUpdatedUserDetails(user_id){
        $.get("{{ route('profile.index') }}" +'/' + user_id +'', function (data) {

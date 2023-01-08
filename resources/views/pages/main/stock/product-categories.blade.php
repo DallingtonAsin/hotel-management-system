@@ -298,7 +298,7 @@ $('body').on('click', '#edit-pdt-category', function (event) {
     },
     error: function (data) {
       console.log('Error:', data.error);
-      ShowResponse('.response', data.error, 'error');
+      displayResponse('.response', data.error, 'error');
     }
   });
 
@@ -321,7 +321,7 @@ function UpdatePdtCategory(PdtCategory_id){
       $('#PdtCategoryForm').trigger("reset");
       $('#addItemCategoryModal').modal("hide");
       var resp = data.success;
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#product-categories-table').DataTable();
       tbl.ajax.reload();
@@ -329,7 +329,7 @@ function UpdatePdtCategory(PdtCategory_id){
     },
     error: function (data) {
       console.log('Error:', data.error);
-      ShowResponse('.response', data.error, 'error');
+      displayResponse('.response', data.error, 'error');
       $('.addPdtCategoryBtn').html('Save Changes');
     }
   });
@@ -351,7 +351,7 @@ function recordPdtCategory(){
       $('#PdtCategoryForm').trigger("reset");
       $('#addItemCategoryModal').modal("hide");
       var resp = data.success;
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#product-categories-table').DataTable();
       tbl.ajax.reload();
@@ -359,7 +359,7 @@ function recordPdtCategory(){
     },
     error: function (data) {
       console.log('Error:', data.error);
-      ShowResponse('.response', data.error, 'error');
+      displayResponse('.response', data.error, 'error');
       $('.addPdtCategoryBtn').html('Save Changes');
     }
   });
@@ -405,7 +405,7 @@ function recordPdtCategory(){
         for(i=0; i<Errors.length; i++){
           message += Errors[i] + "<br>";
         }
-            //ShowResponse('.errors-section', resp, 'error');
+            //displayResponse('.errors-section', resp, 'error');
             $('.errors-section').html(message);
 
           }
@@ -437,14 +437,14 @@ function recordPdtCategory(){
       var resp = data.success;
       $('.delete-ok-btn').html('Yes');
       $('#deletePdtCategoryModal').modal("hide");
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#product-categories-table').DataTable();
       tbl.ajax.reload();
     },
     error: function (data) {
      console.log('Error:', data);
-     ShowResponse('.response', data.error, 'error');
+     displayResponse('.response', data.error, 'error');
    }
  });
   }
@@ -479,16 +479,6 @@ function recordPdtCategory(){
       $('.clearBtn').show();
       $('.closeBtn').show();
     }
-  }
-
-  function ShowResponse(area, message, errorType)
-  {
-    $(area).notify(message,{
-      className: errorType,
-      autoHide: true,
-      clickToHide:true,
-      autoHideDelay:45000,
-    });
   }
 
   function FormatNumber(number){

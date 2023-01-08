@@ -354,7 +354,7 @@ Numberize(".amount");
               $('#ExpensesForm').trigger("reset");
               $('#addExpensesModal').modal("hide");
               var resp = data.success;
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               var tbl = $('.expenses-table').DataTable();
               tbl.ajax.reload();
@@ -362,7 +362,7 @@ Numberize(".amount");
           },
           error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
+              displayResponse('.response', data.error, 'error');
               $('#addExpensesBtn').html('Save Changes');
           }
       });
@@ -403,14 +403,14 @@ Numberize(".amount");
               var resp = data.success;
               $('.delete-ok-btn').html('Yes');
               $('#deleteExpensesModal').modal("hide");
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               var tbl = $('.expenses-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
              console.log('Error:', data);
-             ShowResponse('.response', data.error, 'error');
+             displayResponse('.response', data.error, 'error');
          }
      });
  }
@@ -436,15 +436,6 @@ Numberize(".amount");
           $('.closeBtn').show();
   }
 
-  function ShowResponse(area, message, errorType)
-    {
-      $(area).notify(message,{
-        className: errorType,
-        autoHide: true,
-        clickToHide:true,
-        autoHideDelay:45000,
-       });
-    }
 
   function FormatNumber(number){
    var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});

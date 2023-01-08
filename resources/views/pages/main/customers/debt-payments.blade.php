@@ -314,7 +314,7 @@ $.ajax({
       $('#CustomerDebtDetailsModel').modal("hide");
       var resp = data.success;
       console.log("Got this message for you", resp);
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#debt-payment-records-table').DataTable();
       tbl.ajax.reload();
@@ -322,7 +322,7 @@ $.ajax({
   },
   error: function (data) {
       console.log('Error:', data.error);
-      ShowResponse('.response', data.error, 'error');
+      displayResponse('.response', data.error, 'error');
       $('.submitBtn').html('Edit details');
   }
 });
@@ -364,15 +364,6 @@ $.ajax({
           $('.closeBtn').show();
   }
 
-  function ShowResponse(area, message, errorType)
-    {
-      $(area).notify(message,{
-        className: errorType,
-        autoHide: true,
-        clickToHide:true,
-        autoHideDelay:45000,
-       });
-    }
 
   function FormatNumber(number){
    var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});

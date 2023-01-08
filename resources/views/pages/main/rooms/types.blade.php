@@ -331,7 +331,7 @@
                             $('#RoomTypesForm').trigger("reset");
                             $('#addRoomTypeModal').modal("hide");
                             let resp = data.success;
-                            ShowResponse('.response', resp, 'success');
+                            displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);
                             let tbl = $('#room-types-table').DataTable();
                             tbl.ajax.reload();
@@ -339,7 +339,7 @@
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
-                            ShowResponse('.response', data.error, 'error');
+                            displayResponse('.response', data.error, 'error');
                             $('.addRoomTypeBtn').html('Save Changes');
                         }
                     });
@@ -379,14 +379,14 @@
                         let resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
-                        ShowResponse('.response', resp, 'success');
+                        displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
                         let tbl = $('#room-types-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -408,15 +408,6 @@
                 $('.addRoomTypeBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
-            }
-
-            function ShowResponse(area, message, errorType) {
-                $(area).notify(message, {
-                    className: errorType,
-                    autoHide: true,
-                    clickToHide: true,
-                    autoHideDelay: 45000,
-                });
             }
 
             function FormatNumber(number) {

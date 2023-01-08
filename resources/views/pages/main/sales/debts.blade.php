@@ -491,7 +491,7 @@
 
       error: function (data) {
         console.log('Error:', data.error);
-        ShowResponse('.response', data.error, 'error');
+        displayResponse('.response', data.error, 'error');
       }
     });
 
@@ -525,7 +525,7 @@
         $('#SaleForm').trigger("reset");
         $('#SalesModal').modal("hide");
         var resp = data.success;
-        ShowResponse('.response', resp, 'success');
+        displayResponse('.response', resp, 'success');
         ResetTblInfo(data);
         var tbl = $('#sales-with-debts-table').DataTable();
         tbl.ajax.reload();
@@ -533,7 +533,7 @@
       },
       error: function (data) {
         console.log('Error:', data.error);
-        ShowResponse('.response', data.error, 'error');
+        displayResponse('.response', data.error, 'error');
         $('.addSaleBtn').html('Save Changes');
       }
     });
@@ -601,14 +601,14 @@
       var resp = data.success;
       $('.delete-ok-btn').html('Yes');
       $('#deleteSaleModal').modal("hide");
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('.sales-with-debts-table').DataTable();
       tbl.ajax.reload();
     },
     error: function (data) {
      console.log('Error:', data);
-     ShowResponse('.response', data.error, 'error');
+     displayResponse('.response', data.error, 'error');
    }
  });
   }
@@ -624,16 +624,6 @@
     $('.customer').attr('disabled', bool);
     $('.cashier').attr('disabled', bool);
     $('.date').attr('disabled', boolx);
-  }
-
-  function ShowResponse(area, message, errorType)
-  {
-    $(area).notify(message,{
-      className: errorType,
-      autoHide: true,
-      clickToHide:true,
-      autoHideDelay:45000,
-    });
   }
 
   function FormatNumber(number){

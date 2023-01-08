@@ -575,7 +575,7 @@
                             // console.log(data);
                             let message = data.response;
                             // console.log(message);
-                            ShowResponse('.response', message, 'error');
+                            displayResponse('.response', message, 'error');
                           }
                         });
                       }
@@ -603,18 +603,6 @@
                         });
                       }
                     });
-                    
-                    
-                    
-                    function ShowResponse(area, message, errorType)
-                    {
-                      $(area).notify(message,{
-                        className: errorType,
-                        autoHide: true,
-                        clickToHide:true,
-                        autoHideDelay:45000,
-                      });
-                    }
                     
                     $("#UpdateCartForm").submit(function(e){
                       return false;

@@ -401,7 +401,7 @@ Numberize(".wholesale_price");
           },
           error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
+              displayResponse('.response', data.error, 'error');
           }
       });
 
@@ -424,7 +424,7 @@ Numberize(".wholesale_price");
               $('#purchaseForm').trigger("reset");
               $('#addPurchaseModal').modal("hide");
               var resp = data.success;
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               var tbl = $('.purchase-table').DataTable();
               tbl.ajax.reload();
@@ -432,7 +432,7 @@ Numberize(".wholesale_price");
           },
           error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
+              displayResponse('.response', data.error, 'error');
               $('.addPurchaseBtn').html('Save Changes');
           }
       });
@@ -455,7 +455,7 @@ Numberize(".wholesale_price");
               $('#purchaseForm').trigger("reset");
               $('#addPurchaseModal').modal("hide");
               var resp = data.success;
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               var tbl = $('.purchase-table').DataTable();
               tbl.ajax.reload();
@@ -463,7 +463,7 @@ Numberize(".wholesale_price");
           },
           error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
+              displayResponse('.response', data.error, 'error');
               $('.addPurchaseBtn').html('Save Changes');
           }
       });
@@ -542,7 +542,7 @@ Numberize(".wholesale_price");
             for(i=0; i<Errors.length; i++){
                 message += Errors[i] + "<br>";
             }
-            //ShowResponse('.errors-section', resp, 'error');
+            //displayResponse('.errors-section', resp, 'error');
             $('.errors-section').html(message);
 
         }
@@ -575,14 +575,14 @@ Numberize(".wholesale_price");
               var resp = data.success;
               $('.delete-ok-btn').html('Yes');
               $('#deletepurchaseModal').modal("hide");
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               var tbl = $('.purchase-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
              console.log('Error:', data);
-             ShowResponse('.response', data.error, 'error');
+             displayResponse('.response', data.error, 'error');
          }
      });
  }
@@ -637,17 +637,6 @@ Numberize(".wholesale_price");
           $('.closeBtn').show();
       }
   }
-
-  function ShowResponse(area, message, errorType)
-    {
-      $(area).notify(message,{
-        className: errorType,
-        autoHide: true,
-        clickToHide:true,
-        autoHideDelay:45000,
-       });
-    }
-
 
 
 function ResetTblInfo(response)

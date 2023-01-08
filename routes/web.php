@@ -132,6 +132,12 @@ Route::get('/salaries/fetch/ajax', 'finances\SalaryController@getSalariesDataTab
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
 Route::get('invoice/download/{id}', 'InvoiceController@download')->name('invoice.generate');
 
+Route::get('accounting/balance-sheet', 'AccountingController@generateBalanceSheet')->name('accounting.balance_sheet');
+Route::get('accounting/cash-flow-statement', 'AccountingController@generateCashFlowStatement')->name('accounting.cash_flow_statement');
+Route::get('accounting/general-ledger', 'AccountingController@generateGeneralLedger')->name('accounting.general_ledger');
+
+
+
 Route::resources([
 	'payments' => 'finances\PaymentController',
 	'salary' => 'finances\SalaryController',
@@ -140,6 +146,7 @@ Route::resources([
 Route::resources([
 	'stock' => 'StockController',
 	'pos' => 'CartController',
+	'kots' => 'KitchenOrderController',
 	'sales' => 'SalesController',
 	'product-categories' => 'StockCategoryController',
 	'cashiers' => 'CashiersController',
@@ -164,8 +171,6 @@ Route::resources([
 	'reservations' => 'ReservationController',
 	'designations' => 'DesignationController',
 	'staff' => 'StaffMemberController',
-	// 'payments' => 'PaymentController',
-	// 'salary' => 'SalaryController',
 ]);
 
 Route::get('/email','MailController@MailWelcome');

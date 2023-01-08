@@ -397,7 +397,7 @@ $('body').on('click', '#edit-stock', function (event) {
     },
     error: function (data) {
       console.log('Error:', data.error);
-      ShowResponse('.response', data.error, 'error');
+      displayResponse('.response', data.error, 'error');
     }
   });
 
@@ -423,7 +423,7 @@ function UpdateStock(stock_id){
       $('#StockForm').trigger("reset");
       $('#addStockModal').modal("hide");
       var resp = data.success;
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#stock-table').DataTable();
       tbl.ajax.reload();
@@ -431,7 +431,7 @@ function UpdateStock(stock_id){
     },
     error: function (data) {
       console.log('Error:', data.error);
-      ShowResponse('.response', data.error, 'error');
+      displayResponse('.response', data.error, 'error');
       $('.addStockBtn').html('Save Changes');
     }
   });
@@ -453,7 +453,7 @@ function recordStock(){
       $('#StockForm').trigger("reset");
       $('#addStockModal').modal("hide");
       var resp = data.success;
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#stock-table').DataTable();
       tbl.ajax.reload();
@@ -461,7 +461,7 @@ function recordStock(){
     },
     error: function (data) {
       console.log('Error:', data.error);
-      ShowResponse('.response', data.error, 'error');
+      displayResponse('.response', data.error, 'error');
       $('.addStockBtn').html('Save Changes');
     }
   });
@@ -517,7 +517,7 @@ function recordStock(){
         for(i=0; i<Errors.length; i++){
           message += Errors[i] + "<br>";
         }
-            //ShowResponse('.errors-section', resp, 'error');
+            //displayResponse('.errors-section', resp, 'error');
             $('.errors-section').html(message);
 
           }
@@ -551,14 +551,14 @@ function recordStock(){
       var resp = data.success;
       $('.delete-ok-btn').html('Yes');
       $('#deleteStockModal').modal("hide");
-      ShowResponse('.response', resp, 'success');
+      displayResponse('.response', resp, 'success');
       ResetTblInfo(data);
       var tbl = $('#stock-table').DataTable();
       tbl.ajax.reload();
     },
     error: function (data) {
      console.log('Error:', data);
-     ShowResponse('.response', data.error, 'error');
+     displayResponse('.response', data.error, 'error');
    }
  });
   }
@@ -603,16 +603,6 @@ function recordStock(){
       $('.clearBtn').show();
       $('.closeBtn').show();
     }
-  }
-
-  function ShowResponse(area, message, errorType)
-  {
-    $(area).notify(message,{
-      className: errorType,
-      autoHide: true,
-      clickToHide:true,
-      autoHideDelay:45000,
-    });
   }
 
   function FormatNumber(number){

@@ -386,7 +386,7 @@
                             $('#SuppliersForm').trigger("reset");
                             $('#addSuppliersModal').modal("hide");
                             var resp = data.success;
-                            ShowResponse('.response', resp, 'success');
+                            displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);
                             var tbl = $('#reservations-table').DataTable();
                             tbl.ajax.reload();
@@ -394,7 +394,7 @@
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
-                            ShowResponse('.response', data.error, 'error');
+                            displayResponse('.response', data.error, 'error');
                             $('.addsupplierBtn').html('Save Changes');
                         }
                     });
@@ -434,14 +434,14 @@
                         var resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
-                        ShowResponse('.response', resp, 'success');
+                        displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
                         var tbl = $('#reservations-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -468,15 +468,6 @@
                 $('.addsupplierBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
-            }
-
-            function ShowResponse(area, message, errorType) {
-                $(area).notify(message, {
-                    className: errorType,
-                    autoHide: true,
-                    clickToHide: true,
-                    autoHideDelay: 45000,
-                });
             }
 
             function FormatNumber(number) {
