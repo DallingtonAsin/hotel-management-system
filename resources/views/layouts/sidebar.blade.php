@@ -65,7 +65,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Store & Procurement</a>
+                <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Store & Procurement</a>
                 <ul class="nav-sub">
                     <li class="nav-item">
                         <a href="" class="nav-link with-sub">Inventory</a>
