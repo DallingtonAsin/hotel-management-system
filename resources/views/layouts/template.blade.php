@@ -65,7 +65,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> 
   --}}
 
-  <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-5.2.min.css')}}">
+  {{-- <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-5.2.min.css')}}"> --}}
   <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-4.0.0.min.css')}}">
   <link href="{{ asset('css/css.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/notification.css') }}" rel="stylesheet">

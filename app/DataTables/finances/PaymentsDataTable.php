@@ -2,7 +2,7 @@
 
 namespace App\DataTables\finances;
 
-use App\Models\finances/PaymentsDataTable;
+use App\Models\Payment;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -27,10 +27,10 @@ class PaymentsDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\finances/PaymentsDataTable $model
+     * @param \App\Models\Payment $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(finances/PaymentsDataTable $model)
+    public function query(Payment $model)
     {
         return $model->newQuery();
     }
@@ -84,6 +84,6 @@ class PaymentsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'finances/Payments_' . date('YmdHis');
+        return 'Payments_' . date('YmdHis');
     }
 }

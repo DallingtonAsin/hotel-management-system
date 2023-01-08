@@ -30,13 +30,14 @@
 
                     <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th scope="col">No.</th>
                             <th scope="col">Guest name</th>
                             <th scope="col">Arrival date</th>
                             <th>Departure date</th>
-                            <th>Room Number</th>
+                            <th scope="col">Days</th>
+                            <th>Room No.</th>
                             <th>Discount (%)</th>
-                            <th>Total Price</th>
+                            <th>T. Price</th>
                             <th scope="col">Recorded By</th>
                             <th>Action</th>
                         </tr>
@@ -238,9 +239,12 @@
             var title = "List of registered departments in the system";
             var columns = [1, 2, 3, 4];
             var dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
+
                 {
                     data: 'guest',
                     name: 'guest'
@@ -252,6 +256,10 @@
                 {
                     data: 'departure_date',
                     name: 'departure_date'
+                },
+                {
+                    data: 'nights',
+                    name: 'nights'
                 },
                 {
                     data: 'room_number',

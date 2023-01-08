@@ -141,3 +141,13 @@ table {
   width: 0;
   height: 0;
 }
+
+.btn-xs {
+  color: white;
+  font-size: 11px;
+  padding: 0px 0px;
+  border-radius: 3px;
+  height: 2px !important;
+  line-height: 2px !important;
+}
+

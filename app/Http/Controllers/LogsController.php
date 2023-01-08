@@ -183,7 +183,8 @@ class LogsController extends Controller
 public static function logger(Request $request, $action, $date){
 
     $newLog = new Logs();
-    $newLog->name =$name =  $request->user()->name;
+    $user = $request->user();
+    $newLog->name =$name =  $user->firsname. ' '.$user->last_name;
     $newLog->role = $userPosition = LogsController::getRole($request->user()->department_id);
     $newLog->logged_action = $action;
     $newLog->ip_address = \Request::getClientIp();

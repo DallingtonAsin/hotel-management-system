@@ -2,7 +2,7 @@
 
 namespace App\DataTables\finances;
 
-use App\Models\finances/SalariesDataTable;
+use App\Models\Salary;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -27,10 +27,10 @@ class SalariesDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\finances/SalariesDataTable $model
+     * @param \App\Models\Salary $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(finances/SalariesDataTable $model)
+    public function query(Salary $model)
     {
         return $model->newQuery();
     }
@@ -84,6 +84,6 @@ class SalariesDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'finances/Salaries_' . date('YmdHis');
+        return 'Salaries_' . date('YmdHis');
     }
 }
