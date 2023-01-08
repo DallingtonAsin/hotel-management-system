@@ -265,15 +265,6 @@ role="dialog" aria-labelledby="myModalLabel">
 Numberize(".debt");
 Numberize(".credit");
 
-function Numberize(i){
-  $(document).on("keyup", i , function(){
-  if(this.value.length > 0){
-    let n = parseInt(this.value.replace(/\D/g,''), 10);
-    $(this).val(n.toLocaleString());
-  }
-});
-}
-
 //modal used to edit rooms details [each row of the tbl]
     $('body').on('click', '#edit-room', function (event) {
       let room_id = $(this).data('id');
@@ -340,7 +331,7 @@ function Numberize(i){
               $('#RoomsForm').trigger("reset");
               $('#addRoomModal').modal("hide");
               let resp = data.success;
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               let tbl = $('#rooms-table').DataTable();
               tbl.ajax.reload();
@@ -348,7 +339,7 @@ function Numberize(i){
           },
           error: function (data) {
               console.log('Error:', data.error);
-              ShowResponse('.response', data.error, 'error');
+              displayResponse('.response', data.error, 'error');
               $('.addRoomBtn').html('Save Changes');
           }
       });
@@ -389,14 +380,14 @@ function Numberize(i){
               let resp = data.success;
               $('.delete-ok-btn').html('Yes');
               $('#deleteSuppliersModal').modal("hide");
-              ShowResponse('.response', resp, 'success');
+              displayResponse('.response', resp, 'success');
               ResetTblInfo(data);
               let tbl = $('#rooms-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
              console.log('Error:', data);
-             ShowResponse('.response', data.error, 'error');
+             displayResponse('.response', data.error, 'error');
          }
      });
  }
@@ -424,16 +415,6 @@ function Numberize(i){
           $('.clearBtn').show();
           $('.closeBtn').show();
   }
-
-  function ShowResponse(area, message, errorType)
-    {
-      $(area).notify(message,{
-        className: errorType,
-        autoHide: true,
-        clickToHide:true,
-        autoHideDelay:45000,
-       });
-    }
 
   function FormatNumber(number){
    let FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});

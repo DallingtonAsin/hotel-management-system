@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,6 +49,10 @@ Route::get('departments/ajax','DepartmentController@fetchDepartmentsAjax')->name
 Route::get('room-types/ajax','RoomTypeController@fetchRoomTypesAjax')->name('room_types.ajax.fetch');
 Route::get('rooms/ajax','RoomController@fetchRoomsAjax')->name('rooms.ajax.fetch');
 Route::post('rooms/ajax/suggestions','RoomController@suggestRooms')->name('rooms.ajax.suggest');
+Route::get('staff-members/ajax','UserController@fetchStaffAjax')->name('staff.ajax.fetch');
+Route::get('guests/ajax','GuestController@fetchGuestsAjax')->name('guests.ajax.fetch');
+
+
 
 
 Route::get('reports/ajax/monthly-sales','ReportsController@GetMonthlySalesDT')->name('monthly-sales.ajax');
@@ -113,6 +115,7 @@ Route::get('/users/managers/ajax', 'UserController@GetManagers')->name('managers
 Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.home');
 Route::get('/users/cashiers/ajax', 'UserController@GetCashiers')->name('cashiers.index.ajax');
 Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.ajax');
+
 Route::get('/rooms/fetch/ajax', 'RoomController@RoomsDataTable')->name('rooms.index.ajax');
 Route::get('/rooms-types/fetch/ajax', 'RoomTypeController@RoomTypesDataTable')->name('roomstypes.index.ajax');
 Route::get('/guests-types/fetch/ajax', 'GuestTypeController@getGuestTypesDataTable')->name('guesttypes.index.ajax');
@@ -122,12 +125,28 @@ Route::get('/staff/fetch/ajax', 'StaffMemberController@GetStaffMemebers')->name(
 Route::get('/reservations/fetch/ajax', 'ReservationController@getReservations')->name('reservations.index.ajax');
 Route::get('/guests/fetch/ajax', 'GuestController@getGuests')->name('guests.index.ajax');
 
+Route::get('/payments/fetch/ajax', 'finances\PaymentController@getPaymentsDataTable')->name('payments.index.ajax');
+Route::get('/salaries/fetch/ajax', 'finances\SalaryController@getSalariesDataTable')->name('salaries.index.ajax');
+
+
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
 Route::get('invoice/download/{id}', 'InvoiceController@download')->name('invoice.generate');
+
+Route::get('accounting/balance-sheet', 'AccountingController@generateBalanceSheet')->name('accounting.balance_sheet');
+Route::get('accounting/cash-flow-statement', 'AccountingController@generateCashFlowStatement')->name('accounting.cash_flow_statement');
+Route::get('accounting/general-ledger', 'AccountingController@generateGeneralLedger')->name('accounting.general_ledger');
+
+
+
+Route::resources([
+	'payments' => 'finances\PaymentController',
+	'salary' => 'finances\SalaryController',
+]);
 
 Route::resources([
 	'stock' => 'StockController',
 	'pos' => 'CartController',
+	'kots' => 'KitchenOrderController',
 	'sales' => 'SalesController',
 	'product-categories' => 'StockCategoryController',
 	'cashiers' => 'CashiersController',
@@ -221,17 +240,9 @@ Route::post('damaged-stock-items/import-damages','DamagesController@importDamage
 Route::get('damaged-stock-items/export-damages','DamagesController@exportDamages')->name('damages.export');
 Route::post('stock/search/item','DamagesController@searchItem')->name('stock-item.search');
 
-Route::get('payments','PaymentsController@index')->name('payments');
-Route::get('payments/paypal','PaymentsController@paypalIndex')->name('paypal');
-Route::post('payments/paypal/post','PaymentsController@PayPalPayment')->name('paypal-payment-form-submit');
-Route::get('payment/paypay/cancel', 'PaymentsController@cancel')->name('payment.cancel');
-Route::get('payment/paypal/success', 'PaymentsController@success')->name('payment.success');
-Route::post('payments','PaymentsController@MoMoPayment')->name('payments.request');
-
 Route::get('get-chartdata','ReportsController@getMonthlySalesData')->name('chartdata');
 Route::resource('customers','CustomersController');
 Route::get('account-settings','ProfileController@accountSettings')->name('account-settings');
-
 
 
 Route::get('reports/low-running-stock/{qty?}','ReportsController@lowRunningStock')->name('low-stock');

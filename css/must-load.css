@@ -71,7 +71,7 @@ overflow: auto !important;
   opacity: 1 !important;
   filter: none !important;
   padding: 5px !important;
-  margin-top: 15px
+  margin-top: 1px !important
 
 }
 
@@ -141,3 +141,13 @@ table {
   width: 0;
   height: 0;
 }
+
+.btn-xs {
+  color: white;
+  font-size: 11px;
+  padding: 0px 0px;
+  border-radius: 3px;
+  height: 2px !important;
+  line-height: 2px !important;
+}
+

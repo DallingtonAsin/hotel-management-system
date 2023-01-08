@@ -30,13 +30,14 @@
 
                     <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th scope="col">No.</th>
                             <th scope="col">Guest name</th>
                             <th scope="col">Arrival date</th>
                             <th>Departure date</th>
-                            <th>Room Number</th>
+                            <th scope="col">Days</th>
+                            <th>Room No.</th>
                             <th>Discount (%)</th>
-                            <th>Total Price</th>
+                            <th>T. Price</th>
                             <th scope="col">Recorded By</th>
                             <th>Action</th>
                         </tr>
@@ -238,9 +239,12 @@
             var title = "List of registered departments in the system";
             var columns = [1, 2, 3, 4];
             var dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
+
                 {
                     data: 'guest',
                     name: 'guest'
@@ -252,6 +256,10 @@
                 {
                     data: 'departure_date',
                     name: 'departure_date'
+                },
+                {
+                    data: 'nights',
+                    name: 'nights'
                 },
                 {
                     data: 'room_number',
@@ -294,16 +302,7 @@
             Numberize(".debt");
             Numberize(".credit");
 
-            function Numberize(i) {
-                $(document).on("keyup", i, function() {
-                    if (this.value.length > 0) {
-                        var n = parseInt(this.value.replace(/\D/g, ''), 10);
-                        $(this).val(n.toLocaleString());
-                    }
-                });
-            }
-
-
+    
             //Generate invoice
             $('body').on('click', '#generate-invoice', function(event) {
 
@@ -387,7 +386,7 @@
                             $('#SuppliersForm').trigger("reset");
                             $('#addSuppliersModal').modal("hide");
                             var resp = data.success;
-                            ShowResponse('.response', resp, 'success');
+                            displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);
                             var tbl = $('#reservations-table').DataTable();
                             tbl.ajax.reload();
@@ -395,7 +394,7 @@
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
-                            ShowResponse('.response', data.error, 'error');
+                            displayResponse('.response', data.error, 'error');
                             $('.addsupplierBtn').html('Save Changes');
                         }
                     });
@@ -435,14 +434,14 @@
                         var resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
-                        ShowResponse('.response', resp, 'success');
+                        displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
                         var tbl = $('#reservations-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -469,15 +468,6 @@
                 $('.addsupplierBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
-            }
-
-            function ShowResponse(area, message, errorType) {
-                $(area).notify(message, {
-                    className: errorType,
-                    autoHide: true,
-                    clickToHide: true,
-                    autoHideDelay: 45000,
-                });
             }
 
             function FormatNumber(number) {

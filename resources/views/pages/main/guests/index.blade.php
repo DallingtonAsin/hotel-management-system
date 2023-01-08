@@ -141,15 +141,6 @@
             Numberize(".debt");
             Numberize(".credit");
 
-            function Numberize(i) {
-                $(document).on("keyup", i, function() {
-                    if (this.value.length > 0) {
-                        var n = parseInt(this.value.replace(/\D/g, ''), 10);
-                        $(this).val(n.toLocaleString());
-                    }
-                });
-            }
-
             //modal used to edit suppliers details [each row of the tbl]
             $('body').on('click', '#edit-supplier', function(event) {
                 var supplier_id = $(this).data('id');
@@ -213,7 +204,7 @@
                             $('#SuppliersForm').trigger("reset");
                             $('#addSuppliersModal').modal("hide");
                             var resp = data.success;
-                            ShowResponse('.response', resp, 'success');
+                            displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);
                             var tbl = $('#guests-table').DataTable();
                             tbl.ajax.reload();
@@ -221,7 +212,7 @@
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
-                            ShowResponse('.response', data.error, 'error');
+                            displayResponse('.response', data.error, 'error');
                             $('.addsupplierBtn').html('Save Changes');
                         }
                     });
@@ -261,14 +252,14 @@
                         var resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
-                        ShowResponse('.response', resp, 'success');
+                        displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
                         var tbl = $('#guests-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -295,15 +286,6 @@
                 $('.addsupplierBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
-            }
-
-            function ShowResponse(area, message, errorType) {
-                $(area).notify(message, {
-                    className: errorType,
-                    autoHide: true,
-                    clickToHide: true,
-                    autoHideDelay: 45000,
-                });
             }
 
             function FormatNumber(number) {

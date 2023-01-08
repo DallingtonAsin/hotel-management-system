@@ -15,32 +15,32 @@
             <div class="form-group">
                 <span><i class="text-danger pr-1">*</i>Name</span>
                 <input type="text" class="form-control name bg-white" name="name"
-                    value="<?= isset($company) ? $company['name'] :  old('name')  ?>" placeholder="Enter company name" required>
+                    value="<?= isset($company['name']) ? $company['name'] :  old('name')  ?>" placeholder="Enter company name" required>
             </div>
 
             <div class="row form-group">
                 <div class="col-md-3">
                     <span><i class="text-danger pr-1">*</i>City</span>
                     <input type="text" class="form-control city bg-white" name="city"
-                        value="<?= isset($company) ? $company['city'] : old('city') ?>" placeholder="Enter city">
+                        value="<?= isset($company['city']) ? $company['city'] : old('city') ?>" placeholder="Enter city">
                 </div>
 
                 <div class="col-md-3">
                     <span>Street</span>
                     <input type="text" class="form-control street bg-white" name="street"
-                        value="<?= isset($company) ? $company['street'] : old('street') ?>" placeholder="Enter street">
+                        value="<?= isset($company['street']) ? $company['street'] : old('street') ?>" placeholder="Enter street">
                 </div>
 
                 <div class="col-md-3">
                     <span>State/Province</span>
                     <input type="text" class="form-control state bg-white" name="state"
-                        value="<?= isset($company) ? $company['state'] : '' ?>" placeholder="Enter state">
+                        value="<?= isset($company['state']) ? $company['state'] : '' ?>" placeholder="Enter state">
                 </div>
 
                 <div class="col-md-3">
                     <span>Zip/Postal Code</span>
                     <input type="text" class="form-control state bg-white" name="zip"
-                        value="<?= isset($company) ? $company['zip'] : old('zip') ?>" placeholder="Enter zip">
+                        value="<?= isset($company['zip']) ? $company['zip'] : old('zip') ?>" placeholder="Enter zip">
                 </div>
             </div>
 
@@ -48,13 +48,13 @@
                 <div class="col-md-6">
                     <span><i class="text-danger pr-1">*</i>Phone Number</span>
                     <input type="text" class="form-control phone_number bg-white" name="phone_number"
-                        value="<?= isset($company) ? $company['phone_number'] : old('phone_number') ?>" placeholder="Enter phone number">
+                        value="<?= isset($company['phone_number']) ? $company['phone_number'] : old('phone_number') ?>" placeholder="Enter phone number">
                 </div>
 
                 <div class="col-md-6">
                     <span>Email</span>
                     <input type="email" class="form-control email bg-white" name="email"
-                        value="<?= isset($company) ? $company['email'] : old('email') ?>" placeholder="Enter company email">
+                        value="<?= isset($company['email']) ? $company['email'] : old('email') ?>" placeholder="Enter company email">
                 </div>
             </div>
 
@@ -63,16 +63,22 @@
                 <div class="col-md-6">
                     <span>Website url</span>
                     <input type="website_url" class="form-control website_url bg-white" name="website_url"
-                        value="<?= isset($company) ? $company['website_url'] : old('website_url') ?>" placeholder="Enter website url">
+                        value="<?= isset($company['website_url']) ? $company['website_url'] : old('website_url') ?>" placeholder="Enter website url">
                 </div>
 
                 <div class="col-md-6">
                     <span><i class="text-danger pr-1">*</i>Category</span>
                     <select class="form-control" name="category">
                         <option value="">Select category</option>
+                        @if(count($categories) > 0)
                         @foreach ($categories as $category)
-                            <option value="{{ $category }}" {{ $company['category'] == $category ? 'selected' : '' }} {{ old('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
+                            <option value="{{ $category }}" 
+                             {{ isset($company['category']) ? $company['category'] == $category ? 'selected' : '' : '' }}
+                              {{ old('category') == $category ? 'selected' : '' }}>
+                              {{ $category }}
+                            </option>
                         @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -81,9 +87,11 @@
                 <span for="services"><i class="text-danger pr-1">*</i>Services</span>
                 <select name="services[]" id="services-list" class="form-control" multiple>
                     <option value="">Select services</option>
+                    @if(count($services) > 0)
                     @foreach ($services as $service)
-                        <option value="{{ $service }}" {{ in_array($service, $company['services']) ? 'selected' : '' }}>{{ $service }}</option>
+                    <option value="{{ $service }}" {{ in_array($service, $company['services']) ? 'selected' : '' }}>{{ $service }}</option>
                     @endforeach
+                    @endif
                 </select>
 
 

@@ -8,7 +8,7 @@ use Yajra\DataTables\Services\DataTable;
 use App\Models\Guest;
 use App\Models\InvoiceGuest;
 use App\Models\Room;
-
+use Carbon\Carbon;
 use App\Helpers\Helper;
 
 class ReservationsDataTable extends DataTable
@@ -30,7 +30,7 @@ class ReservationsDataTable extends DataTable
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                  data-id="' . $reservation->id . '" data-original-title="Generate Invoice" id="generate-invoice"
-                 class="edit-btn generate-invoice pr-1"> Generate Invoice</a>';
+                 class="btn btn-xs btn-primary text-white generate-invoice pr-1"><i class="fa fa-download pr-1"></i> Invoice</a>';
 
                 return $btn;
 
@@ -42,6 +42,9 @@ class ReservationsDataTable extends DataTable
         })->addColumn('room_number', function ($reservation) {
             $room_number = Room::where('id', $reservation->room_id)->value('number');
             return $room_number;
+        })->addColumn('nights', function ($reservation) {
+            $nights = Carbon::parse($reservation->arrival_date)->diffInDays(Carbon::parse($reservation->departure_date));
+            return $nights;
         })->addColumn('discount_percent', function ($reservation) {
             $discount_percent = InvoiceGuest::where('reservation_id', $reservation->id)->value('discount_percent');
             return $discount_percent;

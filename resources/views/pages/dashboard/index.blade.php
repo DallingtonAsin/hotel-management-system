@@ -29,8 +29,8 @@
         <a href="" class="col-md-6 col-lg-3 text-decoration-none">
           <div class="widget-small danger coloured-icon"><i class="icon fa fa-shopping-cart fa-3x"></i>
             <div class="info">
-              <h4>Orders</h4>
-              <p><b>78</b></p>
+              <h4>Guests</h4>
+              <p><b>{{ $total_guests }}</b></p>
             </div>
           </div>
         </a>

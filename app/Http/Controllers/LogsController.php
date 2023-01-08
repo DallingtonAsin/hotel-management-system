@@ -28,12 +28,12 @@ class LogsController extends Controller
      public function index(){
         $logs = Logs::all();
         $total_logs = Logs::count();
-        return view('pages.logs.index')->with(compact('total_logs'));
+        return view('pages.main.logs.index')->with(compact('total_logs'));
     }
 
     public function GetLogs(LogsDataTable $dataTable)
     {
-        return $dataTable->render('pages.logs.index');
+        return $dataTable->render('pages.main.logs.index');
     }
 
 
@@ -183,7 +183,8 @@ class LogsController extends Controller
 public static function logger(Request $request, $action, $date){
 
     $newLog = new Logs();
-    $newLog->name =$name =  $request->user()->name;
+    $user = $request->user();
+    $newLog->name =$name =  $user->firsname. ' '.$user->last_name;
     $newLog->role = $userPosition = LogsController::getRole($request->user()->department_id);
     $newLog->logged_action = $action;
     $newLog->ip_address = \Request::getClientIp();

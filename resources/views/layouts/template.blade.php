@@ -56,6 +56,8 @@
   <script src="{{ asset('js/custom/datatables.js') }}"></script>
   <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
   <script src="{{ asset('vendors/custom/echarts.js') }}"></script>
+  <script src="{{ asset('js/custom/common.js') }}"></script>
+
 
   {{-- <link rel="stylesheet" href="{{ asset('vendors/fonts/montserrat/css.css') }}"> --}}
   <link href="{{ asset('vendors/calendar/fullcalendar.min.css') }}" rel="stylesheet"/>
@@ -66,7 +68,7 @@
   --}}
 
   <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-5.2.min.css')}}">
-  <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-4.0.0.min.css')}}">
+  {{-- <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-4.0.0.min.css')}}"> --}}
   <link href="{{ asset('css/css.css') }}" rel="stylesheet">
   <link href="{{ asset('vendors/css/notification.css') }}" rel="stylesheet">
   

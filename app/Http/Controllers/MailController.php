@@ -34,7 +34,7 @@ class MailController extends Controller
     
     public function index()
     {
-        return view('pages.main.mail');
+        return view('pages.main.messages.mail');
     }
 
     protected function getRole($id)

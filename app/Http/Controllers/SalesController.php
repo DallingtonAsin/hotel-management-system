@@ -140,7 +140,7 @@ class SalesController extends Controller
         
         
       }
-          return view('pages.main.sales');
+          return view('pages.main.sales.index');
 
 
 }
@@ -218,7 +218,7 @@ public function filterSalesWithDebts(Request $request){
       
       
     }
-        return view('pages.main.sales-with-debts');
+        return view('pages.main.sales.debts');
 
 
 }
@@ -226,19 +226,19 @@ public function filterSalesWithDebts(Request $request){
 
 
 public function GetSales(SalesDataTable $dataTable){
-   return $dataTable->render('pages.main.sales');
+   return $dataTable->render('pages.main.sales.index');
 }
 
 public function GetTodaySales(TodaySalesDataTable $dataTable){
-  return $dataTable->render('pages.main.sales-with-debts');
+  return $dataTable->render('pages.main.sales.debts');
 }
 
 public function GetSalesWithDebts(SalesWithDebtsDataTable $dataTable){
-  return $dataTable->render('pages.main.sales-with-debts');
+  return $dataTable->render('pages.main.sales.debts');
  }
 
 public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
-  return $dataTable->render('pages.main.sales');
+  return $dataTable->render('pages.main.sales.index');
 }
 
 
@@ -291,7 +291,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
        }
        $menu_selected = 'sales';
 
-      return view('pages.main.sales')->with(
+      return view('pages.main.sales.index')->with(
         compact('today_sales','totl_no', 'all_sales', 'netValue',
          'volume_of_todaysales', 'total_sales', 'menu_selected')
       );
@@ -325,7 +325,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
          $this->GetSales();
        }
 
-      return view('pages.main.sales')->with(
+      return view('pages.main.sales.index')->with(
         compact('today_sales','totl_no', 'all_sales', 'netValue',
          'volume_of_todaysales', 'total_sales')
       );
@@ -359,7 +359,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
          $this->GetSales();
        }
 
-      return view('pages.main.sales-with-debts')->with(
+      return view('pages.main.sales.debts')->with(
         compact('today_sales','totl_no', 'all_sales', 'netValue',
          'volume_of_todaysales', 'total_sales')
       );
@@ -427,7 +427,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
      */
     public function create()
     {
-      return view('pages.main.sales');
+      return view('pages.main.sales.index');
     }
 
     /**

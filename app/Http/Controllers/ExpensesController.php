@@ -32,13 +32,13 @@ class ExpensesController extends Controller
       $expenses = Expense::All();
       $number_of_total_expenses = Expense::count();
       $total_expenses = DB::table('expenses')->sum('amount');
-      return view('pages.main.expenses')->with(compact('expenses','total_expenses','number_of_total_expenses'));
+      return view('pages.main.expenses.index')->with(compact('expenses','total_expenses','number_of_total_expenses'));
     }
 
     public function GetExpenses(ExpensesDataTable $dataTable)
     {
 
-        return $dataTable->render('pages.main.expenses');
+        return $dataTable->render('pages.main.expenses.index');
     }
 
     /**
@@ -48,7 +48,7 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-      return view('pages.main.expenses');
+      return view('pages.main.expenses.index');
     }
 
     /**

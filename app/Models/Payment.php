@@ -2,19 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
 
+    use HasFactory;
+
 	protected $table = 'payments';
-	public $timestamps = false;
+	public $timestamps = true;
 	protected $fillable = [
-		'transaction_id',
-		'currency_code',
-		'paid_amount',
-		'payment_details',
-		'payment_status',
+		'guest_id',
+		'invoice_id',
+		'amount',
+		'method',
+		'date',
+		'created_by'
 	];
 	
 }

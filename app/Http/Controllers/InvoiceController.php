@@ -97,6 +97,7 @@ class InvoiceController extends Controller
 
             $subpath = 'invoices/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
+            dd($url);
             return response()->json(['url' => $url]);
 
         } catch (\Exception $ex) {

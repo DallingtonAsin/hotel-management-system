@@ -71,7 +71,7 @@ class CartController extends Controller
             $number_of_cartItems = DB::table('cart')->count();
             $amount_due = DB::table('cart')->sum('amount');
             $amount = DB::table('cart')->sum('amount');
-            return view('pages.main.cart')->with(compact('cart_items','total','amount',
+            return view('pages.main.pos.index')->with(compact('cart_items','total','amount',
                 'number_of_cartItems', 'amount_due'));
         }catch(\Exception $ex)
         {
@@ -86,7 +86,7 @@ class CartController extends Controller
     */
     public function create()
     {
-        return view('pages.main.cart');
+        return view('pages.main.pos.index');
     }
 
     /**

@@ -107,7 +107,12 @@
                                 name="addStaffBtn"><i class="fa fa-plus-circle pr-1"></i>Save</button>
                             <button type="reset" class="btn btn-danger"><i
                                     class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
+
+                        <span class="response"></span>
                         </div>
+
+        
+
 
                     </div>
                 </form>
@@ -415,7 +420,7 @@
                     error: function(data) {
                         console.log('Error on fetching designations', data);
                         console.log('Error:', data.error);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
@@ -437,21 +442,12 @@
                     error: function(data) {
                         console.log('Error on fetching departments', data);
                         console.log('Error:', data.error);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
 
-
-            function Numberize(i) {
-                $(document).on("keyup", i, function() {
-                    if (this.value.length > 0) {
-                        let n = parseInt(this.value.replace(/\D/g, ''), 10);
-                        $(this).val(n.toLocaleString());
-                    }
-                });
-            }
-
+    
             //modal used to edit managers details [each row of the tbl]
             $('body').on('click', '#edit-user', function(event) {
                 let manager_id = $(this).data('id');
@@ -478,7 +474,6 @@
                 })
             });
 
-
             //View Modal used to view each row [managers details]
             $('body').on('click', '#view-user', function(event) {
                 let manager_id = $(this).data('id');
@@ -504,7 +499,6 @@
                 })
             });
 
-
             $('.addStaffBtn').click(function(e) {
 
                 e.preventDefault();
@@ -525,13 +519,13 @@
                             let tbl = $('#managers-table').DataTable();
                             tbl.ajax.reload();
                             let resp = data.success;
-                            ShowResponse('.response', resp, 'success');
+                            displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);
 
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
-                            ShowResponse('.response', data.error, 'error');
+                            displayResponse('.response', data.error, 'error');
                             $('.addStaffBtn').html('Save Changes');
                         }
                     });
@@ -570,18 +564,17 @@
                         let resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteStaffModal').modal("hide");
-                        ShowResponse('.response', resp, 'success');
+                        displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
                         let tbl = $('#managers-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
-
 
             $('body').on('click', '#changeAccountBtn', function(e) {
                 e.preventDefault();
@@ -623,17 +616,16 @@
                         let resp = data.success;
                         $('.confirm-changeAccount-ok-btn').html('Yes');
                         $('#accountChangeModal').modal("hide");
-                        ShowResponse('.response', resp, 'success');
+                        displayResponse('.response', resp, 'success');
                         let tbl = $('#managers-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        ShowResponse('.response', data.error, 'error');
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }
-
 
             function DisableTableFields(bool) {
 
@@ -659,15 +651,6 @@
                 $('.addStaffBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
-            }
-
-            function ShowResponse(area, message, errorType) {
-                $(area).notify(message, {
-                    className: errorType,
-                    autoHide: true,
-                    clickToHide: true,
-                    autoHideDelay: 45000,
-                });
             }
 
             function FormatNumber(number) {

@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+use App\Models\Reservation;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,12 +15,21 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
+
             DepartmentTableSeeder::class,
             DesignationTableSeeder::class,
+          
             UserTableSeeder::class,
+          
             RoomTypeTableSeeder::class,
             RoomTableSeeder::class,
             GuestTypeTableSeeder::class,
+            GuestTableSeeder::class,
+            ReservationTableSeeder::class,
+            InvoiceGuestTableSeeder::class,
+            SalaryTableSeeder::class,
+            PaymentTableSeeder::class,
+
             StockTableSeeder::class,
             CustomersTableSeeder::class,
             DamagesTableSeeder::class,

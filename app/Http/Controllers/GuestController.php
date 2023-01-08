@@ -85,4 +85,17 @@ class GuestController extends Controller
     {
         //
     }
+
+    public function fetchGuestsAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $guests = Guest::get();
+                echo json_encode($guests);
+                die();
+            }
+        } catch (\Exception $ex) {
+            echo "Error " . $ex->getMessage();
+        }
+    }
 }

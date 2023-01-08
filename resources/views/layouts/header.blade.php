@@ -25,7 +25,7 @@
          </div>
 
          <div class="col-lg-3">
-         <a href=""><img src="{{ asset('vendors/img/kot.png')}}"/>
+         <a href="{{ route('kots.index') }}"><img src="{{ asset('vendors/img/kot.png')}}"/>
             <h6 class="mt-1">KOTs</h6></a>
          </div>
 
@@ -35,14 +35,14 @@
          </div>
 
          <div class="col-lg-3">
-         <a href=""><img src="{{ asset('vendors/img/accounting.png')}}"/>
-            <h6>Accounting</h6></a>
+         <a href="{{ route('staff.index') }}"><img src="{{ asset('vendors/img/users.png')}}"/>
+            <h6>Staff</h6></a>
          </div>
       </div>
 
       <div class="dropdown az-profile-menu">
         <a href="" class="text-decoration-none nunito-font username text-cap">
-          <span class="mt-5 text-white">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}
+          <span class="mt-5 text-white">{{{ isset(Auth::user()->first_name) ? Auth::user()->first_name. ' '.Auth::user()->last_name : Auth::user()->email }}}
            </span>
           <i class="dropdown-toggle"></i></a>
 
