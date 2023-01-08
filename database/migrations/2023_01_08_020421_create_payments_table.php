@@ -14,13 +14,18 @@ class CreatePaymentsTable extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('transaction_id');
-            $table->string('currency_code');
-            $table->double('paid_amount');
-            $table->text('payment_details');
-            $table->string('payment_status');
-            $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->increments('id');
+            $table->unsignedBigInteger('guest_id');
+            $table->unsignedBigInteger('invoice_id');
+            $table->decimal('amount', 8, 2);
+            $table->string('method'); // payment method (e.g. cash, credit card)
+            $table->date('date'); 
+            $table->timestamps();
+
+            $table->foreign('guest_id')->references('id')->on('guests');
+            $table->foreign('invoice_id')->references('id')->on('invoice_guests');
+
+
         });
     }
 

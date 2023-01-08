@@ -3,11 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Guest;
+use App\Models\Salary;
 
-class GuestTableSeeder extends Seeder
+class SalaryTableSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -15,6 +14,6 @@ class GuestTableSeeder extends Seeder
      */
     public function run()
     {
-        Guest::factory()->count(10)->create();
+      Salary::factory()->count(10)->create();
     }
 }

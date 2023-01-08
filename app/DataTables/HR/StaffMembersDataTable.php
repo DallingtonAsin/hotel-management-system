@@ -46,6 +46,9 @@ class StaffMembersDataTable extends DataTable
             return $checkBox;
         })->addColumn('department', function ($staff) {
             return Department::where('id', $staff->department_id)->value('name');
+        })->addColumn('name', function ($staff) {
+            $name = $staff->first_name . ' ' . $staff->last_name;
+            return $name;
         })->addColumn('designation', function ($staff) {
             return Designation::where('id', $staff->designation_id)->value('name');
         })->editColumn('is_active', function ($data) {
@@ -67,7 +70,6 @@ class StaffMembersDataTable extends DataTable
             'id',
             'first_name',
             'last_name',
-            'name',
             'gender',
             'email',
             'staff_id',

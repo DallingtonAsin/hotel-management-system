@@ -107,7 +107,12 @@
                                 name="addStaffBtn"><i class="fa fa-plus-circle pr-1"></i>Save</button>
                             <button type="reset" class="btn btn-danger"><i
                                     class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
+
+                        <span class="response"></span>
                         </div>
+
+        
+
 
                     </div>
                 </form>
@@ -442,7 +447,6 @@
                 });
             }
 
-
             function Numberize(i) {
                 $(document).on("keyup", i, function() {
                     if (this.value.length > 0) {
@@ -478,7 +482,6 @@
                 })
             });
 
-
             //View Modal used to view each row [managers details]
             $('body').on('click', '#view-user', function(event) {
                 let manager_id = $(this).data('id');
@@ -503,7 +506,6 @@
                     HideBtns();
                 })
             });
-
 
             $('.addStaffBtn').click(function(e) {
 
@@ -582,7 +584,6 @@
                 });
             }
 
-
             $('body').on('click', '#changeAccountBtn', function(e) {
                 e.preventDefault();
                 let user_id = $(this).data("id");
@@ -633,7 +634,6 @@
                     }
                 });
             }
-
 
             function DisableTableFields(bool) {
 

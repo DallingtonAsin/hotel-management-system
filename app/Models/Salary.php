@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class Salary extends Model
 {
-
     use HasFactory;
 
-	protected $table = 'payments';
+    protected $table = 'salaries';
 	public $timestamps = true;
 	protected $fillable = [
-		'guest_id',
+		'employee_id',
 		'amount',
-		'method',
-		'date'
+		'pay_date'
 	];
-	
 }

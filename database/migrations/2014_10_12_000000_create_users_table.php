@@ -18,15 +18,14 @@ class CreateUsersTable extends Migration
                 $table->increments('id');
                 $table->string('first_name');
                 $table->string('last_name');
-                $table->string('name');
                 $table->string('username')->unique();
-                $table->string('gender');
-                $table->string('email')->nullable();
                 $table->string('staff_id');
                 $table->unsignedBigInteger('department_id')->default(1);
                 $table->unsignedBigInteger('designation_id')->default(1);
                 $table->string('phone_number')->unique();
                 $table->string('other_phone_number')->nullable();
+                $table->string('email')->nullable();
+                $table->string('gender');
                 $table->string('address');
                 $table->string('nin')->nullable();
                 $table->timestamp('email_verified_at')->nullable();
