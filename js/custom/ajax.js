@@ -62,16 +62,16 @@ function populateStaffMemebers() {
 }
 
 
-function populateStaff() {
+function populateGuests() {
     $.ajax({
         type: "GET",
-        url: staffAjaxUrl,
+        url: guestsAjaxUrl,
         success: function (resp) {
             let obj = JSON.parse(resp);
             for (let i = 0; i < obj.length; i++) {
                 let id = obj[i]['id'];
                 let name = obj[i]['first_name'] + ' '+ obj[i]['last_name'];
-                $('.staff_members_section').append('<option value=' + id + '>' + name + '</option>');
+                $('.guest_section').append('<option value=' + id + '>' + name + '</option>');
             }
         }
     });

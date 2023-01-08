@@ -167,8 +167,8 @@
                 </tr>
               </thead>
               
-             <tbody id="CartTableBody">
-              </tbody> 
+             <tbody id="CartTableBody"></tbody> 
+              
             </table>
           </div>
          </main>

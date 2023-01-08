@@ -19,27 +19,7 @@
 
         <div class="card-body">
 
-            <div class="col-lg-8 text-center nunito-font">
-
-                @if (session()->get('success'))
-                    <div class='alert alert-success alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                    </div>
-                @endif
-
-                @if (session()->get('fail'))
-                    <div class='alert alert-danger alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Oops!</strong> {{ session()->get('fail') }}
-                    </div>
-                @endif
-
-            </div>
-
-            <div class="table table-sm table-responsive">
+            <div class="table-responsive">
 
                 <table class="table table-bordered table-hover payments-table" id="payments-table">
 
@@ -89,16 +69,38 @@
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger">*</span> Department</span>
-                            <select class="form-control departments_section bg-white" name="department">
-                                <option value="">select department</option>
+                            <span><span class="text-danger">*</span> Guest</span>
+                            <select class="form-control guest_section bg-white" name="guest">
+                                <option value="">select guest</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger">*</span> Designation</span>
-                            <input type="text" class="form-control name bg-white payment" name="payment"
-                                placeholder="Enter payment name" required autofocus>
+                            <span><span class="text-danger">*</span> Invoice No.</span>
+                            <input type="text" class="form-control name bg-white invoice_id" name="invoice_id"
+                            placeholder="Enter invoice number" required autofocus>
+                        </div>
+
+                        <div class="form-group">
+                            <span><span class="text-danger">*</span> Payment method</span>
+                            <select name="payment_method" class="form-control payment_method">
+                                <option value="">Choose payment method</option>
+                                <option>Cash</option>
+                                <option>Credit Card</option>
+                                <option>Mobile Money</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <span><span class="text-danger">*</span> Amount</span>
+                            <input type="text" class="form-control bg-white amount" name="amount"
+                                placeholder="Enter salary amount" required autofocus>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="text-muted"><span class="text-danger pr-2">*</span>Payment Date</span>
+                            <input type="date" class="form-control payment_date" name="payment_date"
+                                value="{{ old('payment_date', now()->format('Y-m-d')) }}" autocomplete="on">
                         </div>
 
                         <div class="form-group">
@@ -173,7 +175,7 @@
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete payment</h6>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class=method"close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -210,9 +212,9 @@
 
         const ajaxUrl = @json(route('payments.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
-        const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
+        const guestsAjaxUrl = @json(route('guests.ajax.fetch'));
         const cat = 'payment';
-        populateDepartments();
+        populateGuests();
         
         $(document).ready(function() {
             
@@ -270,8 +272,7 @@
             });
 
 
-            Numberize(".debt");
-            Numberize(".credit");
+            Numberize(".amount");
 
             //modal used to edit payments details [each row of the tbl]
             $('body').on('click', '#edit-payment', function(event) {
@@ -325,6 +326,7 @@
                 let Errors = validateForm();
                 if (Errors.length == 0) {
                     $(this).html('Sending..');
+                    $('.errors-section').html('');
 
                     $.ajax({
                         data: $('#PaymentsForm').serialize(),
@@ -343,8 +345,11 @@
 
                         },
                         error: function(data) {
-                            console.log('Error:', data.error);
-                            ShowResponse('.response', data.error, 'error');
+                            $('#addPaymentModal').modal('hide');
+                          
+                            let error_message = data.error;
+                            console.log('Error message:', data.error);
+                            ShowResponse('.response', error_message, 'error');
                             $('.addPaymentBtn').html('Save Changes');
                         }
                     });
@@ -418,7 +423,7 @@
                 $('.closeBtn').show();
             }
 
-            function ShowResponse(area, message, errorType) {
+            function ShowResponse(area, message, errorType = 'error') {
                 $(area).notify(message, {
                     className: errorType,
                     autoHide: true,
@@ -442,15 +447,27 @@
 
             function validateForm() {
 
-                let department = $('.departments_section').val();
-                let payment = $('.payment').val();
-               
+                let guest_section = $('.guest_section').val();
+                let invoice_id = $('.invoice_id').val();
+                let amount = $('.amount').val();
+                let payment_method = $('.payment_method').val();
+                let payment_date = $('.payment_date').val();
+
                 let errors = [];
-                if (department.length < 1) {
-                    errors.push(`Please select department`);
+                if (guest_section.length < 1) {
+                    errors.push(`Please select guest`);
                 }
-                if (payment.length < 1) {
-                    errors.push(`Please enter payment`);
+                if (invoice_id.length < 1) {
+                    errors.push(`Please enter invoice number`);
+                }
+                if (amount.length < 1) {
+                    errors.push(`Please enter amount`);
+                }
+                if (payment_method.length < 1) {
+                    errors.push(`Please select payment method`);
+                }
+                if (payment_date.length < 1) {
+                    errors.push(`Please select payment date`);
                 }
              
                 return errors;

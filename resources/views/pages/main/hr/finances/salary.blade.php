@@ -18,31 +18,8 @@
         </div>
 
         <div class="card-body">
-
-            <div class="col-lg-8 text-center nunito-font">
-
-                @if (session()->get('success'))
-                    <div class='alert alert-success alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                    </div>
-                @endif
-
-                @if (session()->get('fail'))
-                    <div class='alert alert-danger alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Oops!</strong> {{ session()->get('fail') }}
-                    </div>
-                @endif
-
-            </div>
-
-            <div class="table table-sm table-responsive">
-
+            <div class="table-responsive">
                 <table class="table table-bordered table-hover salaries-table" id="salaries-table">
-
                     <thead>
                         <tr>
                             <th></th>
@@ -54,15 +31,11 @@
                         </tr>
                     </thead>
                 </table>
-
-
             </div>
         </div>
     </div>
 
-
-
-    <!--Add Designations -->
+    <!--Add Salary -->
     <div class="modal fade nunito-font addSalaryModal" id="addSalaryModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
@@ -95,7 +68,7 @@
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Amount</span>
-                            <input type="text" class="form-control name bg-white amount" name="amount"
+                            <input type="text" class="form-control bg-white amount" name="amount"
                                 placeholder="Enter salary amount" required autofocus>
                         </div>
 

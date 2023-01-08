@@ -50,6 +50,8 @@ Route::get('room-types/ajax','RoomTypeController@fetchRoomTypesAjax')->name('roo
 Route::get('rooms/ajax','RoomController@fetchRoomsAjax')->name('rooms.ajax.fetch');
 Route::post('rooms/ajax/suggestions','RoomController@suggestRooms')->name('rooms.ajax.suggest');
 Route::get('staff-members/ajax','UserController@fetchStaffAjax')->name('staff.ajax.fetch');
+Route::get('guests/ajax','GuestController@fetchGuestsAjax')->name('guests.ajax.fetch');
+
 
 
 
