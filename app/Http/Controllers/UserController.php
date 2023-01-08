@@ -947,4 +947,17 @@ class UserController extends Controller
     return $message;
   }
 
+  public function fetchStaffAjax(Request $request)
+  {
+      try {
+          if ($request->ajax()) {
+              $staff_members = User::get();
+              echo json_encode($staff_members);
+              die();
+          }
+      } catch (\Exception $ex) {
+          echo "Error " . $ex->getMessage();
+      }
+  }
+
 }

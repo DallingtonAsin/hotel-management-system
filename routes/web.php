@@ -49,6 +49,8 @@ Route::get('departments/ajax','DepartmentController@fetchDepartmentsAjax')->name
 Route::get('room-types/ajax','RoomTypeController@fetchRoomTypesAjax')->name('room_types.ajax.fetch');
 Route::get('rooms/ajax','RoomController@fetchRoomsAjax')->name('rooms.ajax.fetch');
 Route::post('rooms/ajax/suggestions','RoomController@suggestRooms')->name('rooms.ajax.suggest');
+Route::get('staff-members/ajax','UserController@fetchStaffAjax')->name('staff.ajax.fetch');
+
 
 
 Route::get('reports/ajax/monthly-sales','ReportsController@GetMonthlySalesDT')->name('monthly-sales.ajax');

@@ -14,6 +14,7 @@ class Salary extends Model
 	protected $fillable = [
 		'employee_id',
 		'amount',
-		'pay_date'
+		'pay_date',
+		'created_by'
 	];
 }

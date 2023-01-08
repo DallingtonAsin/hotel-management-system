@@ -88,7 +88,7 @@
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Staff member</span>
-                            <select class="form-control staff_members_section bg-white" name="name">
+                            <select class="form-control staff_members_section bg-white" name="employee">
                                 <option value="">select staff member</option>
                             </select>
                         </div>
@@ -99,11 +99,10 @@
                                 placeholder="Enter salary amount" required autofocus>
                         </div>
 
-
                         <div class="form-group">
                             <span class="text-muted"><span class="text-danger pr-2">*</span>Payment Date</span>
                             <input type="date" class="form-control payment_date" name="payment_date"
-                                value="{{ old('payment_date', now()->format('Y-m-d\TH:i')) }}" autocomplete="on">
+                                value="{{ old('payment_date', now()->format('Y-m-d')) }}" autocomplete="on">
                         </div>
 
                         <div class="form-group">
@@ -213,9 +212,9 @@
 
         const ajaxUrl = @json(route('salaries.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
-        const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
+        const staffAjaxUrl = @json(route('staff.ajax.fetch'));
         const cat = 'salary';
-        populateDepartments();
+        populateStaffMemebers();
 
         $(document).ready(function() {
 
@@ -316,6 +315,7 @@
 
                 let Errors = validateForm();
                 if (Errors.length == 0) {
+                    $('.errors-section').html('');
                     $(this).html('Sending..');
 
                     $.ajax({
@@ -324,7 +324,7 @@
                         type: "POST",
                         dataType: 'json',
                         success: function(data) {
-
+                            
                             $('#SalaryForm').trigger("reset");
                             $('#addSalaryModal').modal("hide");
                             let resp = data.success;
@@ -434,19 +434,21 @@
 
             function validateForm() {
 
-                let department = $('.departments_section').val();
-                let salary = $('.salary').val();
+                let employee = $('.staff_members_section').val();
+                let amount = $('.amount').val();
+                let payment_date = $('.payment_date').val();
 
                 let errors = [];
-                if (department.length < 1) {
-                    errors.push(`Please select department`);
+                if (employee.length < 1) {
+                    errors.push(`Please select staff member`);
                 }
-                if (salary.length < 1) {
-                    errors.push(`Please enter salary`);
+                if (amount.length < 1) {
+                    errors.push(`Please enter salary amount`);
                 }
-
+                if (payment_date.length < 1) {
+                    errors.push(`Please select payment date`);
+                }
                 return errors;
-
             }
 
             $("#removeAllSuppliers").bind("click", function() {

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\finances;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DataTables\finances\SalariesDataTable;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Salary;
+use App\Helpers\Helper;
+use App\User;
 
 class SalaryController extends Controller
 {
@@ -35,11 +38,58 @@ class SalaryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'employee' => 'required',
+            'amount' => 'required',
+            'payment_date' => 'required',
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $employee_id = $request->input('employee');
+                $amount = Helper::Numberize($request->input('amount'));
+                $payment_date = $request->input('payment_date');
+                $employee = User::find($employee_id);
+                $employee_name = $employee->first_name . ' ' . $employee->last_name;
+
+                $created_by = Helper::getLoggedInUserId();
+                $salary_details = [
+                    'employee_id' => $employee_id,
+                    'amount' => $amount,
+                    'pay_date' => $payment_date,
+                    'created_by' => $created_by
+                ];
+
+                if (
+                    Salary::create($salary_details)
+                ) {
+                    $message = "Salary for " . $employee_name . " has been recorded successfully";
+                    $stats = $this->GetSalaryStats();
+                    $data = [
+                        'success' => $message,
+                        'data' => $stats['data'],
+                        'total' => $stats['total']
+                    ];
+                } else {
+
+                    $message = "Technical error in adding salary details";
+                    $data = [
+                        'error' => $message
+                    ];
+                }
+                return response()->json($data);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**
@@ -85,5 +135,23 @@ class SalaryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function GetSalaryStats()
+    {
+        try {
+
+            $salary = Salary::all();
+            $total_salary = Salary::count();
+
+            $data = array(
+                'data' => $salary,
+                'total' => $total_salary
+            );
+
+            return $data;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 }
