@@ -18,13 +18,13 @@ class ProfileController extends Controller
     }
     public function index()
     {
-        return view('pages.main.profile');
+        return view('pages.main.users.profile.index');
         
     }
 
     public function accountSettings()
     {
-        return view('pages.main.account-settings');
+        return view('pages.main.users.profile.edit');
     }
 
     /**

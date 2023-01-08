@@ -28,12 +28,12 @@ class LogsController extends Controller
      public function index(){
         $logs = Logs::all();
         $total_logs = Logs::count();
-        return view('pages.logs.index')->with(compact('total_logs'));
+        return view('pages.main.logs.index')->with(compact('total_logs'));
     }
 
     public function GetLogs(LogsDataTable $dataTable)
     {
-        return $dataTable->render('pages.logs.index');
+        return $dataTable->render('pages.main.logs.index');
     }
 
 

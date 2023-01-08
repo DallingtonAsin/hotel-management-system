@@ -34,14 +34,14 @@ class StockController extends Controller
       $stock_value = DB::table('stock')->sum('total_cost_price');
       $categories = DB::table('stockcategories')->get();
       $suppliers = DB::table('suppliers')->get();
-      return view('pages.main.stock')->with(compact('stock','stock_value','categories','suppliers','number_of_stockItems'));
+      return view('pages.main.stock.stock')->with(compact('stock','stock_value','categories','suppliers','number_of_stockItems'));
     }
 
 
     public function GetStock(StockDataTable $dataTable)
     {
         //if(Auth::check()){
-           return $dataTable->render('pages.main.stock');
+           return $dataTable->render('pages.main.stock.stock');
         // }else{
         //    return redirect('/');
         // }
@@ -54,7 +54,7 @@ class StockController extends Controller
      */
     public function create()
     {
-      return view('pages.main.stock');
+      return view('pages.main.stock.stock');
     }
 
     /**

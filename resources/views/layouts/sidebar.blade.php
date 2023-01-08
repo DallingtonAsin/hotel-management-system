@@ -162,7 +162,7 @@
             <li class="nav-item">
                 <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                 <ul class="nav-sub">
-                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Sales
+                    <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales
                             Report</a></li>
                     <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Expense
                             Report</a></li>

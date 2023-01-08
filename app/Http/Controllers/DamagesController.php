@@ -29,7 +29,7 @@ class DamagesController extends Controller
 
   public function GetDamages(DamagesDataTable $dataTable){
 
-    return  $dataTable->render('pages.main.damages');
+    return  $dataTable->render('pages.main.stock.damages');
    }
 
 
@@ -44,7 +44,7 @@ class DamagesController extends Controller
     $number_of_damages = Damage::count();
     $cost_of_damages = DB::table('damages')->sum('total_cost');
 
-    return view('pages.main.damages')->with(compact('damages', 'cost_of_damages', 'number_of_damages'));
+    return view('pages.main.stock.damages')->with(compact('damages', 'cost_of_damages', 'number_of_damages'));
   }
 
   /**
@@ -54,7 +54,7 @@ class DamagesController extends Controller
    */
   public function create()
   {
-    return view('pages.main.damages');
+    return view('pages.main.stock.damages');
   }
 
   /**

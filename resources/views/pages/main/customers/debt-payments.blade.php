@@ -56,7 +56,6 @@
                 <th>Balance</th>
                 <th>Recorded By</th>
                 <th>Date</th>
-               <th>Action</th> --}}
               </tr>
             </thead>
         </table>

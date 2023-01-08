@@ -46,33 +46,33 @@ class CustomersController extends Controller
     $number_of_customers = Customer::count();
     $total_credit = DB::table('customers')->sum('credit');
     $total_debts = DB::table('customers')->sum('debt');
-    return view('pages.main.customers')->with(compact('customers','total_credit','total_debts','number_of_customers'));
+    return view('pages.main.customers.index')->with(compact('customers','total_credit','total_debts','number_of_customers'));
     
   }
   
   public function GetCustomers(CustomersDataTable $dataTable)
   {
-    return $dataTable->render('pages.main.customers');
+    return $dataTable->render('pages.main.customers.index');
   }
 
   public function customerDebtPaymentsIndex(){
-    return view('pages.main.customer-debt-payment-records');
+    return view('pages.main.customers.debt-payments');
   }
 
   public function GetCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable)
   {
-    return $dataTable->render('pages.main.customer-debt-payment-records');
+    return $dataTable->render('pages.main.customers.debt-payments');
   }
   
   
   public function customersWithDebtsIndex(){
     $total_debtors = Sale::where('balance', '>', 0)->where('fully_paid', 0)->count();
     $total_debts = Sale::where('balance', '>', 0)->where('fully_paid', 0)->sum('balance');
-    return view('pages.main.customers-with-debts')->with(compact('total_debtors', 'total_debts'));
+    return view('pages.main.customers.debts')->with(compact('total_debtors', 'total_debts'));
   }
   
   public function GetCustomersWithDebts(CustomersWithDebtsDataTable $dataTable){
-    return $dataTable->render('pages.main.customers-with-debts');
+    return $dataTable->render('pages.main.customers.debts');
   }
   
   
@@ -84,7 +84,7 @@ class CustomersController extends Controller
   */
   public function create()
   {
-    return view('pages.main.customers');
+    return view('pages.main.customers.index');
   }
   
   /**
@@ -536,7 +536,7 @@ public function exportCustomers()
 
 public function downloadCustomersPdf(){
   $customers = Customer::all();
-  $pdf = PDF::loadView('pages.main.customers' ,compact('customers'));
+  $pdf = PDF::loadView('pages.main.customers.index' ,compact('customers'));
   return $pdf->download('customers.pdf');
 }
 
