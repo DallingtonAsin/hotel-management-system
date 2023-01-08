@@ -127,6 +127,7 @@ Route::get('/guests/fetch/ajax', 'GuestController@getGuests')->name('guests.inde
 
 Route::get('/payments/fetch/ajax', 'finances\PaymentController@getPaymentsDataTable')->name('payments.index.ajax');
 Route::get('/salaries/fetch/ajax', 'finances\SalaryController@getSalariesDataTable')->name('salaries.index.ajax');
+Route::get('/kitchen-orders/fetch/ajax', 'KitchenOrderController@getKitchenOrdersDataTable')->name('kitchen_orders.index.ajax');
 
 
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
@@ -146,7 +147,7 @@ Route::resources([
 Route::resources([
 	'stock' => 'StockController',
 	'pos' => 'CartController',
-	'kots' => 'KitchenOrderController',
+	'kitchen-orders' => 'KitchenOrderController',
 	'sales' => 'SalesController',
 	'product-categories' => 'StockCategoryController',
 	'cashiers' => 'CashiersController',

@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             SalaryTableSeeder::class,
             PaymentTableSeeder::class,
 
+            KitchenOrderTableSeeder::Class,
+
             StockTableSeeder::class,
             CustomersTableSeeder::class,
             DamagesTableSeeder::class,

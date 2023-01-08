@@ -58,14 +58,14 @@
                 <ul class="nav-sub">
                     <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link">Point of Sale</a>
                     </li>
-                    <li class="nav-sub-item"><a href="{{ route('kots.index') }}" class="nav-sub-link">Kitchen Order
+                    <li class="nav-sub-item"><a href="{{ route('kitchen-orders.index') }}" class="nav-sub-link">Kitchen Order
                             Tickets</a></li>
 
                 </ul>
             </li>
 
             <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Store & Procurement</a>
+                <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Store & Procurement</a>
                 <ul class="nav-sub">
                     <li class="nav-item">
                         <a href="" class="nav-link with-sub">Inventory</a>

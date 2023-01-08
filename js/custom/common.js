@@ -13,6 +13,6 @@ function displayResponse(area, message, errorType = 'error') {
         className: errorType,
         autoHide: true,
         clickToHide: true,
-        autoHideDelay: 5000,
+        autoHideDelay: 10000,
     });
 }
