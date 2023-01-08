@@ -51,12 +51,12 @@ class InvoiceController extends Controller
             // $invoice = InvoiceGuest::find($id);
             $directory = 'invoices';
             $this->createInvoicesDirIfnotExists(($directory));
-
+   
             $filename = 'invoice-' . $id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
-
+            
             $count = Company::count();
-            $company = null;
+            $company = [];
             if($count > 0){
                 $company = Company::first();
             }
@@ -70,8 +70,10 @@ class InvoiceController extends Controller
          
             $room = Room::find($reservation->room_id);
             $room_type_id = $room->type_id;
+           
             $roomType = RoomType::find($room_type_id);
             $room_type = $roomType->name;
+
             $tax_fees = $invoice->total * 0.18;
 
 
@@ -97,10 +99,12 @@ class InvoiceController extends Controller
 
             $subpath = 'invoices/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
-            dd($url);
+          
+          
             return response()->json(['url' => $url]);
 
         } catch (\Exception $ex) {
+            dd($ex->getMessage());
             return back()->with('error', $ex->getMessage());
         }
 
