@@ -58,7 +58,7 @@
                 <ul class="nav-sub">
                     <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link">Point of Sale</a>
                     </li>
-                    <li class="nav-sub-item"><a href="{{ route('kots.index') }}" class="nav-sub-link">Kitchen Order
+                    <li class="nav-sub-item"><a href="{{ route('kitchen-orders.index') }}" class="nav-sub-link">Kitchen Order
                             Tickets</a></li>
 
                 </ul>

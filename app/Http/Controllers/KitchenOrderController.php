@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DataTables\pos\KitchenOrdersDataTable;
+use App\Models\KitchenOrder;
 
 class KitchenOrderController extends Controller
 {
@@ -10,11 +12,17 @@ class KitchenOrderController extends Controller
      * Display a listing of the resource.
      *
      */
-
     public function index()
     {
-        return view('pages.main.pos.kots');
+        $total_orders = KitchenOrder::count();
+        return view('pages.main.pos.kots')->with(compact('total_orders'));
     }
+
+    public function getKitchenOrdersDataTable(KitchenOrdersDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.pos.kots');
+    }
+  
 
     /**
      * Show the form for creating a new resource.

@@ -25,7 +25,7 @@
          </div>
 
          <div class="col-lg-3">
-         <a href="{{ route('kots.index') }}"><img src="{{ asset('vendors/img/kot.png')}}"/>
+         <a href="{{ route('kitchen-orders.index') }}"><img src="{{ asset('vendors/img/kot.png')}}"/>
             <h6 class="mt-1">KOTs</h6></a>
          </div>
 
