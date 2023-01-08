@@ -7,7 +7,7 @@
             <h6 class="card-title mb-0 text-dark">
                 <i class="fa fa-home text-success"> /</i>
                 <strong>Kitchen Orders</strong>
-                <span class="badge badge-info total_designations">
+                <span class="badge badge-info total_kitchen-orders">
                     @isset($total_orders)
                         {{ number_format($total_orders) }}
                     @endisset
@@ -21,7 +21,7 @@
 
             <div class="table table-sm table-responsive">
 
-                <table class="table table-bordered table-hover designations-table" id="designations-table">
+                <table class="table table-bordered table-hover kitchen-orders-table" id="kitchen-orders-table">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -72,17 +72,17 @@
 
 
 
-    <!--Add Designations -->
+    <!--Add Kitchen Order -->
     <div class="modal fade nunito-font addDesignationModal" id="addDesignationModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
-                <form name="designations" id="DesignationsForm">
+                <form name="kitchen-orders" id="KotForm">
                     @csrf
                     <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new designation</h6>
+                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new kitchen order</h6>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -92,26 +92,36 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control designationId bg-white designationId" name="id"
-                                placeholder="Enter designation id" required autofocus>
+                            <input type="hidden" class="form-control kotId bg-white kotId" name="id"
+                                placeholder="Enter kot id" required autofocus>
                         </div>
 
-                        <div class="form-group">
-                            <span><span class="text-danger">*</span> Department</span>
-                            <select class="form-control departments_section bg-white" name="department">
-                                <option value="">select department</option>
+                          <div class="form-group">
+                            <label for="table_number"><span class="text-danger pr-1">*</span>Table Number</label>
+                            <input type="text" class="form-control table_number" id="table_number" name="table_number" placeholder="Enter table number">
+                          </div>
+                          <div class="form-group">
+                            <label for="item"><span class="text-danger pr-1">*</span>Item</label>
+                            <input type="text" class="form-control item" name="item" id="item" placeholder="Enter item name">
+                          </div>
+                          <div class="form-group">
+                            <label for="quantity"><span class="text-danger pr-1">*</span>Quantity</label>
+                            <input type="text" class="form-control quantity" name="quantity" id="quantity" placeholder="Enter quantity">
+                          </div>
+                          <div class="form-group">
+                            <label for="status"><span class="text-danger pr-1">*</span>Status</label>
+                            <select class="form-control status" name="status" id="status">
+                              <option value="">Select order status</option>
+                              <option value="In Progress">In Progress</option>
+                              <option value="Completed">Completed</option>
+                              <option value="Cancelled">Cancelled</option>
+
                             </select>
-                        </div>
+                          </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger">*</span> Designation</span>
-                            <input type="text" class="form-control name bg-white designation" name="designation"
-                                placeholder="Enter designation name" required autofocus>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary addDesignationBtn"
-                                name="addDesignationBtn">Save</button>
+                            <button type="submit" class="btn btn-primary addKotBtn"
+                                name="addKotBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                         </div>
 
@@ -125,54 +135,6 @@
         </div>
     </div>
 
-    <!--Import Designations -->
-    <div class="modal fade nunito-font" id="importRooms" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-
-                <form action="{{ Route('suppliers.import') }}" method="post" enctype="multipart/form-data"
-                    name="inportExpensesForm">
-                    @csrf
-
-                    <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold">
-                            Import an excel file of designations </h6>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <span>Select file for Upload</span>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="file" class="form-control-file @error('select_file') is-invalid @enderror"
-                                name="select_file" required autofocus>
-                        </div>
-
-                        @error('select_file')
-                            <div class='alert alert-danger alert-dismissible text-center' role='alert'>
-                                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                    <span aria-hidden='true'>&times;</span></button>
-                                <strong>Sorry!</strong> {{ $message }}
-                            </div>
-                        @enderror
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
     <!--Modal Delete Designations -->
     <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
@@ -180,7 +142,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete designation</h6>
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete kot</h6>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -190,7 +152,7 @@
 
                     <div class="form-group">
                         <div class="text-center">
-                            <label class="text-danger delete-alert-text">Are you sure you want to delete this designation
+                            <label class="text-danger delete-alert-text">Are you sure you want to delete this kot
                                 <small class="text-dark text-muted bolded">
                                 </small>
                                 ?
@@ -219,12 +181,12 @@
         const ajaxUrl = @json(route('kitchen_orders.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
-        const cat = 'designation';
+        const cat = 'kot';
         populateDepartments();
         
         $(document).ready(function() {
             
-            let table = $('#designations-table');
+            let table = $('#kitchen-orders-table');
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3];
             let dataColumns = [
@@ -271,28 +233,27 @@
                 e.preventDefault();
                 DisableTableFields(false);
                 ShowBtns();
-                $('.addDesignationBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.designationId').val('');
-                $('#DesignationsForm').trigger("reset");
-                $('#modalHeading').html("Add new designation");
+                $('.addKotBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                $('.kotId').val('');
+                $('#KotForm').trigger("reset");
+                $('#modalHeading').html("Add new kot");
                 $('#addDesignationModal').modal('show');
             });
 
 
-            Numberize(".debt");
-            Numberize(".credit");
+            Numberize(".quantity");
 
-            //modal used to edit designations details [each row of the tbl]
-            $('body').on('click', '#edit-designation', function(event) {
-                let designation_id = $(this).data('id');
+            //modal used to edit kitchen-orders details [each row of the tbl]
+            $('body').on('click', '#edit-kot', function(event) {
+                let kot_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('designations.index') }}" + '/' + designation_id + '/edit', function(data) {
+                $.get("{{ route('kitchen-orders.index') }}" + '/' + kot_id + '/edit', function(data) {
 
-                    $('#modalHeading').html("Edit details of designation " + data.name + "");
-                    $('.addDesignationBtn').text("Edit designation");
+                    $('#modalHeading').html("Edit details of kot " + data.name + "");
+                    $('.addKotBtn').text("Edit kot");
                     $('#addDesignationModal').modal('show');
-                    $('.designationId').val(data.id);
+                    $('.kotId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -305,16 +266,16 @@
             });
 
 
-            //View Modal used to view each row [designations details]
-            $('body').on('click', '#view-designation', function(event) {
-                let designation_id = $(this).data('id');
+            //View Modal used to view each row [kitchen-orders details]
+            $('body').on('click', '#view-kot', function(event) {
+                let kot_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('designations.index') }}" + '/' + designation_id + '', function(data) {
+                $.get("{{ route('kitchen-orders.index') }}" + '/' + kot_id + '', function(data) {
 
-                    $('#modalHeading').html("Details of designation " + data.name + "");
+                    $('#modalHeading').html("Details of kot " + data.name + "");
                     $('#addDesignationModal').modal('show');
-                    $('.designationId').val(data.id);
+                    $('.kotId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -327,7 +288,7 @@
             });
 
 
-            $('.addDesignationBtn').click(function(e) {
+            $('.addKotBtn').click(function(e) {
 
                 e.preventDefault();
 
@@ -336,25 +297,25 @@
                     $(this).html('Sending..');
 
                     $.ajax({
-                        data: $('#DesignationsForm').serialize(),
-                        url: "{{ route('designations.store') }}",
+                        data: $('#KotForm').serialize(),
+                        url: "{{ route('kitchen-orders.store') }}",
                         type: "POST",
                         dataType: 'json',
                         success: function(data) {
 
-                            $('#DesignationsForm').trigger("reset");
+                            $('#KotForm').trigger("reset");
                             $('#addDesignationModal').modal("hide");
                             let resp = data.success;
                             displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);
-                            let tbl = $('#designations-table').DataTable();
+                            let tbl = $('#kitchen-orders-table').DataTable();
                             tbl.ajax.reload();
 
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
                             displayResponse('.response', data.error, 'error');
-                            $('.addDesignationBtn').html('Save Changes');
+                            $('.addKotBtn').html('Save Changes');
                         }
                     });
                 } else {
@@ -370,19 +331,19 @@
             });
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-designation', function(e) {
-                let designation_id = $(this).data("id");
+            $('body').on('click', '#delete-kot', function(e) {
+                let kot_id = $(this).data("id");
                 e.preventDefault();
                 $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this designation?");
+                $(".delete-alert-text").html("Are you sure you want to delete this kot?");
                 $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(designation_id);
+                    ListenAndDoDeletion(kot_id);
                 });
 
             });
 
             function ListenAndDoDeletion(id) {
-                let deleteUrl = '{{ route('designations.destroy', ':id') }}';
+                let deleteUrl = "{{ route('kitchen-orders.destroy', ':id') }}";
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
@@ -394,7 +355,7 @@
                         $('#deleteSuppliersModal').modal("hide");
                         displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
-                        let tbl = $('#designations-table').DataTable();
+                        let tbl = $('#kitchen-orders-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
@@ -406,7 +367,7 @@
 
             function DisableTableFields(bool) {
 
-                $('.designationId').attr('disabled', bool);
+                $('.kotId').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
                 $('.address').attr('disabled', bool);
                 $('.contact').attr('disabled', bool);
@@ -416,13 +377,13 @@
             }
 
             function HideBtns() {
-                $('.addDesignationBtn').hide();
+                $('.addKotBtn').hide();
                 $('.clearBtn').hide();
                 $('.closeBtn').hide();
             }
 
             function ShowBtns() {
-                $('.addDesignationBtn').show();
+                $('.addKotBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
             }
@@ -437,20 +398,28 @@
 
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
-                $('.total_designations').html(totl_number);
+                $('.total_kitchen-orders').html(totl_number);
             }
 
             function validateForm() {
 
-                let department = $('.departments_section').val();
-                let designation = $('.designation').val();
+                let table_number = $('.table_number').val();
+                let item = $('.item').val();
+                let quantity = $('.quantity').val();
+                let status = $('.status').val();
                
                 let errors = [];
-                if (department.length < 1) {
-                    errors.push(`Please select department`);
+                if (table_number.length < 1) {
+                    errors.push(`Please enter table number`);
                 }
-                if (designation.length < 1) {
-                    errors.push(`Please enter designation`);
+                if (item.length < 1) {
+                    errors.push(`Please enter item`);
+                }
+                if (quantity.length < 1) {
+                    errors.push(`Please enter quantity`);
+                }
+                if (status.length < 1) {
+                    errors.push(`Please select status of the order`);
                 }
              
                 return errors;
@@ -469,8 +438,8 @@
                     closeIcon: true,
                     draggable: true,
                     closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all designations',
-                    content: 'Are you sure you want to remove all designations',
+                    title: 'Delete all kitchen-orders',
+                    content: 'Are you sure you want to remove all kitchen-orders',
                     buttons: {
                         confirm: function() {
                             let self = this;
@@ -487,10 +456,10 @@
                                     title: 'Message',
                                     content: data.success,
                                 });
-                                $(".total_designations").text(data.totl_no);
+                                $(".total_kitchen-orders").text(data.totl_no);
                                 $(".totl_credit").text(data.totl_credit);
                                 $(".totl_debt").text(data.totl_debt);
-                                let tbl = $('#designations-table').DataTable();
+                                let tbl = $('#kitchen-orders-table').DataTable();
                                 tbl.ajax.reload();
 
 

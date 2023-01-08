@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class KitchenOrder extends Model
 {
     use HasFactory;
+
+    protected $table = 'kitchen_orders';
+    public $timestamps = true;
+
+    protected $fillable = [
+        'order_number',
+        'table_number',
+        'item',
+        'quantity',
+        'status',
+        'created_by'
+    ];
+
+
 }
