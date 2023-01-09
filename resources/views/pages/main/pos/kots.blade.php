@@ -96,32 +96,34 @@
                                 placeholder="Enter kot id" required autofocus>
                         </div>
 
-                          <div class="form-group">
+                        <div class="form-group">
                             <label for="table_number"><span class="text-danger pr-1">*</span>Table Number</label>
-                            <input type="text" class="form-control table_number" id="table_number" name="table_number" placeholder="Enter table number">
-                          </div>
-                          <div class="form-group">
+                            <input type="text" class="form-control table_number" id="table_number" name="table_number"
+                                placeholder="Enter table number">
+                        </div>
+                        <div class="form-group">
                             <label for="item"><span class="text-danger pr-1">*</span>Item</label>
-                            <input type="text" class="form-control item" name="item" id="item" placeholder="Enter item name">
-                          </div>
-                          <div class="form-group">
+                            <input type="text" class="form-control item" name="item" id="item"
+                                placeholder="Enter item name">
+                        </div>
+                        <div class="form-group">
                             <label for="quantity"><span class="text-danger pr-1">*</span>Quantity</label>
-                            <input type="text" class="form-control quantity" name="quantity" id="quantity" placeholder="Enter quantity">
-                          </div>
-                          <div class="form-group">
+                            <input type="text" class="form-control quantity" name="quantity" id="quantity"
+                                placeholder="Enter quantity">
+                        </div>
+                        <div class="form-group">
                             <label for="status"><span class="text-danger pr-1">*</span>Status</label>
                             <select class="form-control status" name="status" id="status">
-                              <option value="">Select order status</option>
-                              <option value="In Progress">In Progress</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Cancelled">Cancelled</option>
+                                <option value="">Select order status</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
 
                             </select>
-                          </div>
+                        </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addKotBtn"
-                                name="addKotBtn">Save</button>
+                            <button type="submit" class="btn btn-primary addKotBtn" name="addKotBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                         </div>
 
@@ -136,9 +138,8 @@
     </div>
 
     <!--Modal Delete Designations -->
-    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
-        aria-labelledby="ModalLabel">
+    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -170,8 +171,45 @@
         </div>
     </div> <!-- end of modal Delete Designations-->
 
-    <script type="text/javascript">
 
+    <!--Modal Status Kitchen Order -->
+    <div class="modal fade" id="changeOrderStatusModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
+        aria-labelledby="ModalLabel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold text-center">Update Kitchen Order
+                        Status</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="text-center">
+                            <label class="text-danger order-status-text-alert">
+                                Are you sure you want to change order status for this kot
+                                <small class="text-dark text-muted bolded">
+                                </small>
+                                ?
+
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary change-status-btn" name="ConfirmBtn">Yes</button>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end of modal Status - Kitchen Order-->
+
+    <script type="text/javascript">
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -183,16 +221,17 @@
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const cat = 'kot';
         populateDepartments();
-        
+
         $(document).ready(function() {
-            
+
             let table = $('#kitchen-orders-table');
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3];
-            let dataColumns = [
-                {
-                    data: 'checkbox',
-                    name: 'checkbox'
+            let dataColumns = [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'order_number',
@@ -330,6 +369,71 @@
 
             });
 
+
+            $('body').on('click', '#mark-completed', function(e) {
+                let kot_id = $(this).data("id");
+                let status = 'completed';
+                e.preventDefault();
+                confirmOrderStatusChange(kot_id, status);
+            });
+
+            $('body').on('click', '#mark-cancelled', function(e) {
+                let kot_id = $(this).data("id");
+                let status = 'cancelled';
+                e.preventDefault();
+                confirmOrderStatusChange(kot_id, status);
+            });
+
+
+            $('body').on('click', '#mark-pending', function(e) {
+                let kot_id = $(this).data("id");
+                let status = 'In Progress';
+                e.preventDefault();
+                confirmOrderStatusChange(kot_id, status);
+            });
+
+            function confirmOrderStatusChange(kot_id, status) {
+                $("#changeOrderStatusModal").modal('show');
+                $(".order-status-text-alert").html(`Are you sure you want to mark this order ${status}?`);
+                $('.change-status-btn').on('click', function() {
+                    updateOrderStatus(kot_id, status);
+                });
+            }
+
+            function updateOrderStatus(id, status) {
+
+                let url = "{{ route('kitchen-order.status.update', ':id') }}";
+                url = url.replace(':id', id);
+                $('.change-status-btn').html('Updating...');
+                $.ajax({
+                    type: "PUT",
+                    url: url,
+                    data: {
+                        status: status,
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        let resp = data.success || data.error;
+                        let type = data.success ? 'success' : 'error';
+
+                        $('.change-status-btn').html('Yes');
+                        $('#changeOrderStatusModal').modal("hide");
+                        displayResponse('.response', resp, type);
+
+                        if (data.success) {
+                            ResetTblInfo(data);
+                            let tbl = $('#kitchen-orders-table').DataTable();
+                            tbl.ajax.reload();
+                        }
+
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                        displayResponse('.response', data.error, 'error');
+                    }
+                });
+            }
+
             //this pops up confirm delete modal
             $('body').on('click', '#delete-kot', function(e) {
                 let kot_id = $(this).data("id");
@@ -337,12 +441,12 @@
                 $("#deleteSuppliersModal").modal('show');
                 $(".delete-alert-text").html("Are you sure you want to delete this kot?");
                 $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(kot_id);
+                    deleteRecord(kot_id);
                 });
 
             });
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = "{{ route('kitchen-orders.destroy', ':id') }}";
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
@@ -350,10 +454,12 @@
                     type: "DELETE",
                     url: deleteUrl,
                     success: function(data) {
+                        
                         let resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
                         displayResponse('.response', resp, 'success');
+
                         ResetTblInfo(data);
                         let tbl = $('#kitchen-orders-table').DataTable();
                         tbl.ajax.reload();
@@ -407,7 +513,7 @@
                 let item = $('.item').val();
                 let quantity = $('.quantity').val();
                 let status = $('.status').val();
-               
+
                 let errors = [];
                 if (table_number.length < 1) {
                     errors.push(`Please enter table number`);
@@ -421,16 +527,16 @@
                 if (status.length < 1) {
                     errors.push(`Please select status of the order`);
                 }
-             
+
                 return errors;
 
             }
 
             $("#removeAllSuppliers").bind("click", function() {
-                RemoveAllSuppliers();
+                removeAllOrders();
             });
 
-            function RemoveAllSuppliers() {
+            function removeAllOrders() {
                 $.confirm({
                     boxWidth: '30%',
                     icon: 'fa fa-warning',
@@ -482,6 +588,6 @@
             }
         });
     </script>
-       <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-       <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

@@ -108,6 +108,50 @@ class KitchenOrderController extends Controller
         }
     }
 
+    public function changeKitchenOrderStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required',
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $order_status = ucfirst($request->input('status'));
+
+                $kitchen_order = KitchenOrder::find($id);
+                $order_number = $kitchen_order->order_number;
+                $created_by = Helper::getLoggedInUserId();
+
+                $kot = [
+                    'status' => $order_status,
+                    'created_by' => $created_by,
+                ];
+
+                if ($kitchen_order->update($kot)) {
+                    $message = "Kitchen order ".$order_number." has been marked ".lcfirst($order_status)." successfully";
+                    $stats = $this->GetKitchenOrderStats();
+                    $data = [
+                        'success' => $message,
+                        'data' => $stats['data'],
+                        'total' => $stats['total']
+                    ];
+                } else {
+                    $message = "Technical error in updating kitchen order status";
+                    $data = [
+                        'error' => $message
+                    ];
+                }
+                return response()->json($data);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
     /**
      * Display the specified resource.
      *

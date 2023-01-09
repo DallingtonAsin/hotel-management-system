@@ -20,12 +20,9 @@
             @endif
 
             <h6 class="user-profile-name text-cap">
-                @isset(Auth::user()->name)
+                @isset(Auth::user()->first_name)
                     {{ Auth::user()->first_name }}
                 @endisset
-                @empty(Auth::user()->name || Auth::user()->email)
-                    {{ __('Guest') }}
-                @endempty
             </h6>
 
             <span class="online text-white nunito-font pt-2">
