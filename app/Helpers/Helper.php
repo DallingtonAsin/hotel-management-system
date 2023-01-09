@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
 use App\User;
 use Constant;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class Helper
 {
@@ -497,6 +498,15 @@ class Helper
   {
     $user = Auth::user()->first_name . ' ' . Auth::user()->last_name;
     return $user;
+  }
+
+  public static function getOrderNumber($table, $column, $length, $prefix){
+    try{
+      $order_number = IdGenerator::generate(['table' => $table, 'field' => $column,  'length' => $length, 'prefix' => $prefix]);
+      return $order_number;
+    }catch(\Exception $ex){
+      throw $ex;
+    }
   }
 
 }

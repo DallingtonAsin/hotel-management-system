@@ -19,7 +19,7 @@
     <table>
       <tr>
         <th>Invoice Number:</th>
-        <td>{{ $invoice->id }}</td>
+        <td>{{ $invoice->invoice_number }}</td>
       </tr>
       <tr>
         <th>Date:</th>
@@ -31,6 +31,14 @@
           <p>Name: {{$guest->first_name}} {{$guest->last_name}}</p>
           <p>Email: {{$guest->email}}</p>
           <p>Phone: {{$guest->phone_number}}</p>
+
+          @if($is_corporate == true)
+          <p>Company Name: {{$guest->company_name}}</p>
+          <p>Company Phone: {{$guest->company_contact}}</p>
+          <p>Company Email: {{$guest->company_email}}</p>
+          <p>TIN: {{$guest->tax_number}}</p>
+          @endif
+
         </td>
       </tr>
       <tr>
@@ -47,15 +55,15 @@
     <table>
       <tr>
         <th>Room Charge:</th>
-        <td class="text-right">${{number_format($invoice->total)}}</td>
+        <td class="text-right">${{number_format($invoice->amount)}}</td>
       </tr>
       <tr>
-        <th>Taxes and Fees:</th>
-        <td class="text-right">${{number_format($tax_fees)}}</td>
+        <th>Tax Fees:</th>
+        <td class="text-right">${{number_format($invoice->tax)}}</td>
       </tr>
       <tr>
         <th>Total:</th>
-        <td class="text-right">${{number_format($total_amount)}}</td>
+        <td class="text-right">${{number_format($invoice->total_amount)}}</td>
       </tr>
     </table>
     <p>Thank you for choosing our hotel. We hope you had a pleasant stay.</p>

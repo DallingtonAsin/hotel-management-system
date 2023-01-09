@@ -32,13 +32,16 @@
                         <tr>
                             <th scope="col">No.</th>
                             <th scope="col">Guest name</th>
-                            <th scope="col">Arrival date</th>
-                            <th>Departure date</th>
+                            <th scope="col">Guest Type</th>
+                            <th scope="col">Arr. date</th>
+                            <th>Dept. date</th>
                             <th scope="col">Days</th>
-                            <th>Room No.</th>
-                            <th>Discount (%)</th>
-                            <th>T. Price</th>
-                            <th scope="col">Recorded By</th>
+                            <th>Room</th>
+                            <th>Invoice No.</th>
+                            <th>Amt</th>
+                            <th>Tax</th>
+                            <th>Total Amt</th>
+                            {{-- <th scope="col">Recorded By</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -250,6 +253,10 @@
                     name: 'guest'
                 },
                 {
+                    data: 'guest_type',
+                    name: 'guest_type'
+                },
+                {
                     data: 'arrival_date',
                     name: 'arrival_date'
                 },
@@ -266,17 +273,25 @@
                     name: 'room_number'
                 },
                 {
-                    data: 'discount_percent',
-                    name: 'discount_percent'
+                    data: 'invoice_number',
+                    name: 'invoice_number'
+                },
+                {
+                    data: 'amount',
+                    name: 'amount'
+                },
+                {
+                    data: 'tax',
+                    name: 'tax'
                 },
                 {
                     data: 'total_amount',
                     name: 'total_amount'
                 },
-                {
-                    data: 'created_by',
-                    name: 'created_by'
-                },
+                // {
+                //     data: 'created_by',
+                //     name: 'created_by'
+                // },
                 {
                     data: 'action',
                     name: 'action',
