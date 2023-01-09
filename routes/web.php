@@ -139,6 +139,8 @@ Route::get('accounting/general-ledger', 'AccountingController@generateGeneralLed
 
 Route::put('kitchen-order/update/{id}', 'KitchenOrderController@changeKitchenOrderStatus')->name('kitchen-order.status.update');
 
+Route::get('reports/expenses/monthly', 'ReportsController@monthlyExpensesReportIndex')->name('reports.expenses.monthly');
+Route::get('reports/expenses/monthly/ajax', 'ReportsController@getMonthlyExpensesReport')->name('reports.expenses.monthly.ajax');
 
 
 Route::resources([

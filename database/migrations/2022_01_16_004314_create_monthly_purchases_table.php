@@ -24,7 +24,8 @@ class CreateMonthlyPurchasesTable extends Migration
         sum(`total_cost_price`) AS total_purchases from `purchases` 
         group by month_year,month_int, month_name, purchase_year order by purchase_year desc");
 
-    }
+  
+}
 
     /**
      * Reverse the migrations.

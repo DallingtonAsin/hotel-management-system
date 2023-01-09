@@ -423,8 +423,10 @@ class Helper
     $data = $months = $years = $sales = $profits = array();
     $totalProfits = 0;
     foreach ($result as $row) {
+
       $profitForEachMonth = Helper::getProfitsForAGivenMonth($row->SalesYear, $row->month_int);
       $totalProfits += $profitForEachMonth;
+      
       array_push($months, date("F", mktime(0, 0, 0, $row->month_int, 10)));
       array_push($profits, $profitForEachMonth);
       array_push($years, $row->SalesYear);
