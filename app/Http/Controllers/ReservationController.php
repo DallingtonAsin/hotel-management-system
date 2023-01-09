@@ -134,7 +134,8 @@ class ReservationController extends Controller
                 }
 
                 $nights = Carbon::parse($arrival_date)->diffInDays(Carbon::parse($departure_date));
-                $total = intval($nights) * floatval($price_rate);
+                $amount = intval($nights) * floatval($price_rate);
+                $tax_amount = 0.18 * $amount;
 
                 $guestData = [
                     'first_name' => $first_name,
@@ -187,7 +188,8 @@ class ReservationController extends Controller
                         'invoice_number' => $guestInvoiceNumber,
                         'reservation_id' => $reservation_id,
                         'discount_percent' => 0,
-                        'total' => $total,
+                        'amount' => $amount,
+                        'tax' => $tax_amount,
                         'ts_issued' => Carbon::now(),
                         'issued_by' => $created_by
                     ];

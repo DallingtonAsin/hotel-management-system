@@ -38,8 +38,9 @@
                             <th scope="col">Days</th>
                             <th>Room</th>
                             <th>Invoice No.</th>
-                            <th>Disc (%)</th>
-                            <th>T. Price</th>
+                            <th>Amt</th>
+                            <th>Tax</th>
+                            <th>Total Amt</th>
                             {{-- <th scope="col">Recorded By</th> --}}
                             <th>Action</th>
                         </tr>
@@ -276,8 +277,12 @@
                     name: 'invoice_number'
                 },
                 {
-                    data: 'discount_percent',
-                    name: 'discount_percent'
+                    data: 'amount',
+                    name: 'amount'
+                },
+                {
+                    data: 'tax',
+                    name: 'tax'
                 },
                 {
                     data: 'total_amount',

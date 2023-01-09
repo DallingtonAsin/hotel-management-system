@@ -55,15 +55,15 @@
     <table>
       <tr>
         <th>Room Charge:</th>
-        <td class="text-right">${{number_format($invoice->total)}}</td>
+        <td class="text-right">${{number_format($invoice->amount)}}</td>
       </tr>
       <tr>
-        <th>Taxes and Fees:</th>
-        <td class="text-right">${{number_format($tax_fees)}}</td>
+        <th>Tax Fees:</th>
+        <td class="text-right">${{number_format($invoice->tax)}}</td>
       </tr>
       <tr>
         <th>Total:</th>
-        <td class="text-right">${{number_format($total_amount)}}</td>
+        <td class="text-right">${{number_format($invoice->total_amount)}}</td>
       </tr>
     </table>
     <p>Thank you for choosing our hotel. We hope you had a pleasant stay.</p>

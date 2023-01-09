@@ -19,10 +19,14 @@ class InvoiceGuestFactory extends Factory
         $ts_issued = $this->faker->dateTimeBetween($date, $date->format('Y-m-d H:i:s').' +2 days');
         $guestInvoiceNumber  = Helper::getOrderNumber('invoice_guests', 'invoice_number', 10, 'CMH');
 
+        $amount = $this->faker->numberBetween(10000, 90000);
+        $tax = 0.18*$amount;
+
         return [
             'invoice_number' => $guestInvoiceNumber,
             'reservation_id' => $this->faker->randomElement([1,2]),
-            'total' => $this->faker->numberBetween(10000, 90000),
+            'amount' => $amount,
+            'tax' => $tax,
             'ts_issued' => $ts_issued,
             "issued_by"  => $this->faker->randomElement([1,2,3,4,5])
         ];

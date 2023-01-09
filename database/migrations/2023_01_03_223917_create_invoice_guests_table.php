@@ -19,7 +19,9 @@ class CreateInvoiceGuestsTable extends Migration
             $table->string('invoice_number');
             $table->unsignedBigInteger('reservation_id');
             $table->decimal('discount_percent')->default(0);
-            $table->decimal('total',8 , 2);
+            $table->decimal('amount',8 , 2);
+            $table->decimal('tax',8 , 2);
+            $table->decimal('total_amount', 8, 2)->storedAs('amount + tax');
             $table->timestamp('ts_issued');
             $table->integer('issued_by')->unsigned();
             $table->integer('cancelled_by')->unsigned()->nullable();

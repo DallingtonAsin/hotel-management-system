@@ -62,8 +62,14 @@ class ReservationsDataTable extends DataTable
         })->addColumn('discount_percent', function ($reservation) {
             $discount_percent = InvoiceGuest::where('reservation_id', $reservation->id)->value('discount_percent');
             return $discount_percent;
+        })->addColumn('tax', function ($reservation) {
+            $tax_amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('tax');
+            return number_format($tax_amount);
+        })->addColumn('amount', function ($reservation) {
+            $amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('amount');
+            return number_format($amount);
         })->addColumn('total_amount', function ($reservation) {
-            $total_amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('total');
+            $total_amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('total_amount');
             $total_amount = number_format($total_amount);
             return $total_amount;
         })->addColumn('checkbox', function ($reservation) {
