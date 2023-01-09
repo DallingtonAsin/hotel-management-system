@@ -228,8 +228,10 @@
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3];
             let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'order_number',
