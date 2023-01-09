@@ -137,6 +137,8 @@ Route::get('accounting/balance-sheet', 'AccountingController@generateBalanceShee
 Route::get('accounting/cash-flow-statement', 'AccountingController@generateCashFlowStatement')->name('accounting.cash_flow_statement');
 Route::get('accounting/general-ledger', 'AccountingController@generateGeneralLedger')->name('accounting.general_ledger');
 
+Route::put('kitchen-order/update/{id}', 'KitchenOrderController@changeKitchenOrderStatus')->name('kitchen-order.status.update');
+
 
 
 Route::resources([
