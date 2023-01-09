@@ -454,10 +454,12 @@
                     type: "DELETE",
                     url: deleteUrl,
                     success: function(data) {
+                        
                         let resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
                         displayResponse('.response', resp, 'success');
+
                         ResetTblInfo(data);
                         let tbl = $('#kitchen-orders-table').DataTable();
                         tbl.ajax.reload();

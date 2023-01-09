@@ -3,75 +3,38 @@
 @section('content')
 
       <div class="card">
-        <div class="card-header">
-
-            <div class="row nunito-font">
-              <div class="col-lg-2">
-                <h6 class="text-dark">
-                  <i class="fa fa-home text-success"> /</i>
-                  <strong>Suppliers</strong>
-                  <span class="badge badge-info  totl_suppliers">
-                      @isset($number_of_suppliers)
+        <div class="card-header d-flex justify-content-between">
+          <span class="response"></span>
+          <h6 class="card-title mb-0 text-dark">
+              <i class="fa fa-home text-success"> /</i>
+              <strong>Suppliers</strong>
+              <span class="badge badge-info total_suppliers">
+                  @isset($number_of_suppliers)
                       {{ number_format($number_of_suppliers) }}
-                      @endisset
-                    </span>
-                </h6>
-              </div>
+                  @endisset
+              </span>
+          </h6>
 
-              <div class="col-lg-3">
-                <h6>
-                  Credit: shs.<strong class="text-success totl_credit">
-                      @isset($total_credit)
-                      {{ number_format($total_credit) }}
-                      @endisset
+          <h6 class="ml-5">
+            Credit: shs.<strong class="text-success total_credit">
+                @isset($total_credit)
+                {{ number_format($total_credit) }}
+                @endisset
 
-                    </strong>
-                </h6>
-              </div>
+              </strong>
+          </h6>
 
-              <div class="col-lg-3">
-                <h6>
-                  Debts: shs.<label class="text-danger totl_debt">
-                      @isset($total_debts)
-                      {{ number_format($total_debts) }}
-                      @endisset
+          <h6 class="ml-5">
+            Debts: shs.<label class="text-danger total_debt">
+                @isset($total_debts)
+                {{ number_format($total_debts) }}
+                @endisset
 
-                    </label>
-                </h6>
-              </div>
-
-              <div class="col-lg-2">
-                <h6>
-                    <a class=" bolded" href="javascript:void(0)"
-                     id="createNewSupplier"> Add supplier</a>
-                </h6>
-              </div>
-
-              <div class="col-lg-2">
-               <div class="btn-group">
-                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Action
-               </button>
-               <ul class="dropdown-menu">
-                 @can('isAdmin')
-
-
-                   <li><a href=""  class="add-link text-dark text-decoration-none"
-                     data-bs-toggle="modal" data-bs-target="#importSuppliers"><strong>Import suppliers</strong>
-                   </a></li>
-
-                 <li>
-                <a class="text-decoration-none text-dark
-                nunito-font"
-                href="javascript:void(0)"
-                id="removeAllSuppliers"> Delete all suppliers</a>
-                 </li>
-                @endcan
-                </ul>
-              </div>
-            </div>
-
-          </div>
+              </label>
+          </h6>
+          
+          <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="createNewSupplier">
+              <i class="fa fa-plus-circle pr-1"></i>Add supplier</button>
       </div>
 
       <div class="card-body">
@@ -146,25 +109,25 @@ role="dialog" aria-labelledby="myModalLabel">
           </div>
 
         <div class="form-group">
-          <span>Name</span>
-          <input type="text" class="form-control name bg-white" name="name" placeholder="Enter supplier name" Required autofocus>
+          <span><i class="text-danger pr-1">*</i>Name</span>
+          <input type="text" class="form-control name bg-white" name="name" placeholder="Enter supplier name" autofocus>
         </div>
 
         <div class="form-group">
-          <span>Address</span>
-          <input type="text" class="form-control address bg-white" name="address" placeholder="Enter address" Required autofocus>
+          <span><i class="text-danger pr-1">*</i>Address</span>
+          <input type="text" class="form-control address bg-white" name="address" placeholder="Enter address">
         </div>
 
 
         <div class="form-group">
-          <span>Contact</span>
-          <input type="text" class="form-control contact bg-white" name="contact" placeholder="Enter contact" Required autofocus>
+          <span><i class="text-danger pr-1">*</i>Phone Number</span>
+          <input type="text" class="form-control contact bg-white" name="contact" placeholder="Enter phone number">
         </div>
 
 
         <div class="form-group">
           <span>Email</span>
-          <input type="email" class="form-control email bg-white" name="email" placeholder="Email (optional)">
+          <input type="email" class="form-control email bg-white" name="email" placeholder="Email">
         </div>
 
 
@@ -180,9 +143,8 @@ role="dialog" aria-labelledby="myModalLabel">
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary addsupplierBtn"  name="AddsupplierBtn">Save</button>
+          <button type="submit" class="btn btn-primary addSupplierBtn"  name="addSupplierBtn">Save</button>
           <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
         </div>
 
         <div class="form-group">
@@ -275,8 +237,9 @@ role="dialog" aria-labelledby="myModalLabel">
 </div> <!-- end of modal Deletesuppliers-->
 
 
-<script>
-  $.ajaxSetup({
+<script type="text/javascript">
+
+ $.ajaxSetup({
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
            }
@@ -285,17 +248,15 @@ role="dialog" aria-labelledby="myModalLabel">
   const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
   const cat = 'supplier';
   const token = "{{ csrf_token() }}";
-</script>
 
-<script type="text/javascript">
   $(document).ready(function(){
    
 
      //code that displays results of the table index()
-    var table = $('#suppliers-table');
-    var title = "List of registered suppliers in the system";
-    var columns = [1,2,3,4];
-    var dataColumns = [
+    let table = $('#suppliers-table');
+    let title = "List of registered suppliers in the system";
+    let columns = [1,2,3,4];
+    let dataColumns = [
          {data: 'checkbox', name:'checkbox'},
         //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
          {data: 'id', name:'id'},
@@ -314,10 +275,10 @@ role="dialog" aria-labelledby="myModalLabel">
          e.preventDefault();
          DisableTableFields(false);
          ShowBtns();
-        $('.addsupplierBtn').text("Register supplier");
+        $('.addSupplierBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('.supplierId').val('');
         $('#SuppliersForm').trigger("reset");
-        $('#modalHeading').html("Register new supplier");
+        $('#modalHeading').html("Add new supplier");
         $('#addSuppliersModal').modal('show');
     });
 
@@ -327,7 +288,7 @@ Numberize(".credit");
 
 //modal used to edit suppliers details [each row of the tbl]
     $('body').on('click', '#edit-supplier', function (event) {
-      var supplier_id = $(this).data('id');
+      let supplier_id = $(this).data('id');
       event.preventDefault();
 
       $.get("{{ route('suppliers.index') }}" +'/' + supplier_id +'/edit', function (data) {
@@ -350,7 +311,7 @@ Numberize(".credit");
 
    //View Modal used to view each row [suppliers details]
    $('body').on('click', '#view-supplier', function (event) {
-      var supplier_id = $(this).data('id');
+      let supplier_id = $(this).data('id');
       event.preventDefault();
 
       $.get("{{ route('suppliers.index') }}" +'/' + supplier_id +'', function (data) {
@@ -374,8 +335,9 @@ Numberize(".credit");
 
         e.preventDefault();
 
-        var Errors = validateForm();
+        let Errors = validateForm();
         if(Errors.length == 0){
+          $('.errors-section').html('');
         $(this).html('Sending..');
 
         $.ajax({
@@ -387,23 +349,30 @@ Numberize(".credit");
 
               $('#SuppliersForm').trigger("reset");
               $('#addSuppliersModal').modal("hide");
-              var resp = data.success;
-              displayResponse('.response', resp, 'success');
-              ResetTblInfo(data);
-              var tbl = $('#suppliers-table').DataTable();
+              $('.addSupplierBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+
+              let resp = data.success || data.error;
+              let type = data.success ? 'success' : 'error';
+              displayResponse('.response', resp,  type);
+
+              if(data.success){
+                ResetTblInfo(data);
+              let tbl = $('#suppliers-table').DataTable();
               tbl.ajax.reload();
+              }
+            
 
           },
           error: function (data) {
               console.log('Error:', data.error);
               displayResponse('.response', data.error, 'error');
-              $('.addsupplierBtn').html('Save Changes');
+              $('.addSupplierBtn').html('Save Changes');
           }
       });
         }else
         {
-            var i;
-            var message ="";
+            let i;
+            let message ="";
             for(i=0; i<Errors.length; i++){
                 message += Errors[i] + "<br>";
             }
@@ -415,7 +384,7 @@ Numberize(".credit");
 
    //this pops up confirm delete modal
     $('body').on('click', '#delete-supplier', function (e) {
-            var supplier_id = $(this).data("id");
+            let supplier_id = $(this).data("id");
             e.preventDefault();
             $("#deleteSuppliersModal").modal('show');
             $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
@@ -427,19 +396,21 @@ Numberize(".credit");
 
 
  function ListenAndDoDeletion(id){
-    var deleteUrl = '{{ route("suppliers.destroy", ":id") }}';
+    let deleteUrl = '{{ route("suppliers.destroy", ":id") }}';
     deleteUrl = deleteUrl.replace(':id', id);
      $('.delete-ok-btn').html('Deleting...');
         $.ajax({
          type: "DELETE",
          url: deleteUrl,
          success: function (data) {
-              var resp = data.success;
+
+              let resp = data.success;
               $('.delete-ok-btn').html('Yes');
               $('#deleteSuppliersModal').modal("hide");
               displayResponse('.response', resp, 'success');
+
               ResetTblInfo(data);
-              var tbl = $('#suppliers-table').DataTable();
+              let tbl = $('#suppliers-table').DataTable();
               tbl.ajax.reload();
          },
          error: function (data) {
@@ -474,38 +445,39 @@ Numberize(".credit");
   }
 
   function FormatNumber(number){
-   var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+   let FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
    return FormattedNumber;
   }
 
 function ResetTblInfo(response)
  {
-     var totl_number , sum_of_credits, sum_of_debts;
+    
+     let totl_number , sum_of_credits, sum_of_debts;
      totl_number = FormatNumber(response.totl_no);
      sum_of_credits = FormatNumber(response.totl_credit);
      sum_of_debts = FormatNumber(response.totl_debt);
 
-     $('.totl_suppliers').html(totl_number);
-     $('.totl_credit').html(sum_of_credits);
-     $('.totl_debt').html(sum_of_debts);
+     $('.total_suppliers').html(totl_number);
+     $('.total_credit').html(sum_of_credits);
+     $('.total_debt').html(sum_of_debts);
  }
 
  function validateForm()
  {
-    var name = $('.name').val();
-    var address = $('.address').val();
-    var contact = $('.contact').val();
-    var errors = [];
+    let name = $('.name').val();
+    let address = $('.address').val();
+    let contact = $('.contact').val();
+    let errors = [];
     if(name.length < 1){
-      var nameErr = "Please enter the name of the supplier";
+      let nameErr = "Please enter the name of the supplier";
       errors.push(nameErr);
     }
     if(address.length < 1){
-      var addressErr = "Please enter the address of the supplier";
+      let addressErr = "Please enter the address of the supplier";
       errors.push(addressErr);
     }
     if(contact.length < 1){
-     var contactErr = "Please enter supplier's contact";
+     let contactErr = "Please enter supplier's contact";
      errors.push(contactErr);
     }
 
@@ -531,7 +503,7 @@ function ResetTblInfo(response)
    content:'Are you sure you want to remove all suppliers',
    buttons:{
        confirm:function(){
-     var self = this;
+     let self = this;
      return $.ajax({
          data: {
              "_token": "{{ csrf_token() }}",
@@ -545,10 +517,10 @@ function ResetTblInfo(response)
              title: 'Message',
              content: data.success,
          });
-          $(".totl_suppliers").text(data.totl_no);
-          $(".totl_credit").text(data.totl_credit);
-          $(".totl_debt").text(data.totl_debt);
-          var tbl = $('#suppliers-table').DataTable();
+          $(".total_suppliers").text(data.totl_no);
+          $(".total_credit").text(data.totl_credit);
+          $(".total_debt").text(data.totl_debt);
+          let tbl = $('#suppliers-table').DataTable();
           tbl.ajax.reload();
 
 
