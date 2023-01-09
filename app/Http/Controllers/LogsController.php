@@ -185,7 +185,7 @@ public static function logger(Request $request, $action, $date){
     $newLog = new Logs();
     $user = $request->user();
     $newLog->name =$name =  $user->firsname. ' '.$user->last_name;
-    $newLog->role = $userPosition = LogsController::getRole($request->user()->department_id);
+    $newLog->role = $userPosition = Helper::getDesignation($request->user()->designation_id);
     $newLog->logged_action = $action;
     $newLog->ip_address = \Request::getClientIp();
     $newLog->date = $date;
@@ -193,12 +193,6 @@ public static function logger(Request $request, $action, $date){
     $newLog->save();
     Log::channel('poslogs')->notice("".$userPosition." ".$name." ".$action."");
 
-}
-
-protected static function getRole($id)
-{
-  $department = 'Manager'; // Department::where('id', $id)->value('role');
-  return $department;
 }
 
 

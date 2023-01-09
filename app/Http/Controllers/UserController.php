@@ -41,7 +41,7 @@ class UserController extends Controller
 
       try {
         $users = User::where('id', "!=", $request->user()->id)->get();
-        $number_of_users = User::count();
+        $number_of_users = User::where('is_deleted', false)->count();
         return view('pages.users.index', ['total_staff' => $number_of_users])
           ->with(compact('users', 'number_of_users'));
 
@@ -71,49 +71,10 @@ class UserController extends Controller
     return $dataTable->render('pages.users.managers');
   }
 
-  public function fetchManagers()
-  {
-
-    try {
-
-      $role = 'Administrator';
-      $number_of_managers = $this->GetRoleStats($role);
-      $roles = Helper::getRoles();
-
-      return view('pages.users.managers')->with([
-        'number_of_managers' => $number_of_managers,
-        'registeredRoles' => $roles,
-      ]);
-
-    } catch (\Exception $ex) {
-      return abort("405", "We have caught exception " . $ex->getMessage() . " for you");
-    }
-  }
-
-
   public function GetCashiers(CashiersDataTable $dataTable)
   {
     return $dataTable->render('pages.users.cashiers');
   }
-
-  public function fetchCashiers()
-  {
-
-    try {
-
-      $role = 'cashier';
-      $number_of_cashiers = $this->GetRoleStats($role);
-
-      return view('pages.users.cashiers')->with([
-        'number_of_cashiers' => $number_of_cashiers
-
-      ]);
-
-    } catch (\Exception $ex) {
-      return abort("405", "We have caught exception " . $ex->getMessage() . " for you");
-    }
-  }
-
 
   public function ActiveUsersAjax(ActiveUserAccountsDataTable $dataTable)
   {
@@ -354,34 +315,10 @@ class UserController extends Controller
     return view('pages.users.register');
   }
 
-  protected function getRole($id)
-  {
-
-    $role = DB::table('departments')->where('id', $id)
-      ->value('role');
-    return $role;
-  }
-
 
   protected function Enqueue($data)
   {
     MailRegistration::dispatch($data);
-  }
-
-
-  private function GetRoleStats($role = null)
-  {
-    try {
-      if (!empty($role)) {
-        $id = Helper::getRoleId($role);
-        $number_of_users = User::where('department_id', '=', $id)->count();
-      } else {
-        $number_of_users = User::count();
-      }
-      return $number_of_users;
-    } catch (\Exception $ex) {
-      dd($ex->getMessage());
-    }
   }
 
   /**
@@ -632,7 +569,7 @@ class UserController extends Controller
     $name = $request->input('name');
     $address = $request->input('address');
     $primary_telno = $request->input('contact1');
-    $roleId = 3; //$request->input('roleID');
+    $designationId = $request->input('designation');
 
     ($request->has('email') && $request->filled('email'))
       ? $email = $request->input('email')
@@ -649,12 +586,12 @@ class UserController extends Controller
     $user->tel_no = $primary_telno;
     $user->alt_telno = $alt_telno;
     $user->email = $email;
-    $user->department_id = $roleId;
+    $user->department_id = $designationId;
 
     $registra = $request->user()->name;
     $userEmail = $request->email;
-    $user_position = $this->getRole($roleId);
-    $registraPosition = $this->getRole($request->user()->department_id);
+    $user_position = Helper::getDesignation($designationId);
+    $registraPosition = Helper::getDesignation($request->user()->designation_id);
     $registraEmail = $request->user()->email;
     $default_password = "didn't change your password";
     $now = now();
@@ -717,7 +654,7 @@ class UserController extends Controller
    * Remove the specified resource from storage.
    *
    * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * return \Illuminate\Http\Response
    */
   public function destroy(Request $request, $id)
   {
@@ -726,11 +663,11 @@ class UserController extends Controller
     $hasRights = Gate::inspect('isSuperAdmin');
     $hasRights1 = Gate::inspect('isAdmin');
     $user = User::find($id);
-    $user_position = Helper::getRole($user->department_id);
+    $user_position = Helper::getDesignation($user->designation_id);
     if ($hasRights->allowed() || $hasRights1->allowed()) {
 
       $method = "UserController@destroy";
-      $isDeleted = $user->delete();
+      $isDeleted = User::where('id', $id)->update(['is_deleted' => true]);
 
       if ($isDeleted) {
         $name = $user->name;
@@ -763,7 +700,7 @@ class UserController extends Controller
       return response()
         ->json([
           $sessionVariable => $message,
-          'totl_no' => $number_of_users,
+          'total' => $number_of_users,
         ]);
 
     }
@@ -853,7 +790,7 @@ class UserController extends Controller
 
       if (count($ids) > 0) {
         $extUser = User::find($ids[0]);
-        $user_position = Helper::getRole($extUser->department_id);
+        $user_position = Helper::getDesignation($extUser->designation_id);
         foreach ($ids as $id) {
           $user = User::find($id);
           $user->delete();

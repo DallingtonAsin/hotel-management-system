@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class CreateUsersTable extends Migration
@@ -36,6 +37,7 @@ class CreateUsersTable extends Migration
                 $table->string('otp_code')->nullable();
                 $table->string('is_verified')->default(true);
                 $table->boolean('is_active')->default(true);
+                $table->boolean('is_deleted')->default(false);
                 $table->string('created_by')->nullable();
                 $table->rememberToken()->nullable();
                 $table->timestamps();
@@ -51,6 +53,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('users');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

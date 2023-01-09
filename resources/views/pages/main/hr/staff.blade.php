@@ -10,7 +10,7 @@
                 <form mname="user" id="userForm">
                     @csrf
                     <div class="modal-header text-center">
-                        <h5 class="modal-title w-100 font-weight-bold modalHeading" id="modalHeading">Add new manager</h5>
+                        <h5 class="modal-title w-100 font-weight-bold modalHeading" id="modalHeading">Add new staff</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -111,9 +111,6 @@
                         <span class="response"></span>
                         </div>
 
-        
-
-
                     </div>
                 </form>
             </div>
@@ -121,8 +118,8 @@
     </div>
 
 
-    <!--Import managers -->
-    <div class="modal fade nunito-font" id="importmanagers" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <!--Import staff -->
+    <div class="modal fade nunito-font" id="importStaff" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -132,7 +129,7 @@
 
                     <div class="modal-header text-center">
                         <h5 class="modal-title w-100 font-weight-bold">
-                            Import an excel file of managers </h5>
+                            Import an excel file of staff </h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -172,7 +169,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete manager</h5>
+                    <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete staff</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -182,7 +179,7 @@
 
                     <div class="form-group">
                         <div class="text-center">
-                            <label class="text-danger delete-alert-text">Are you sure you want to delete this manager
+                            <label class="text-danger delete-alert-text">Are you sure you want to delete this staff
                                 <small class="text-dark text-muted bolded">
                                 </small>
                                 ?
@@ -198,7 +195,7 @@
                 </div>
             </div>
         </div>
-    </div> <!-- end of modal Deletemanagers-->
+    </div> <!-- end of modal Deletestaff-->
 
 
     <div class="modal fade" id="accountChangeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -275,7 +272,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered table-hover managers-table" id="managers-table">
+                <table class="table table-bordered table-hover staff-table" id="staff-table">
 
                     <thead>
                         <tr>
@@ -312,7 +309,7 @@
         });
         const ajaxUrl = @json(route('staff.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-users.remove'));
-        const cat = 'manager';
+        const cat = 'staff';
         const token = "{{ csrf_token() }}";
     </script>
 
@@ -320,8 +317,8 @@
         $(document).ready(function() {
 
             //code that displays results of the table index()
-            let table = $('#managers-table');
-            let title = "List of registered managers in the system";
+            let table = $('#staff-table');
+            let title = "List of registered staff in the system";
             let columns = [0, 1];
             let dataColumns = [{
                     data: 'checkbox',
@@ -376,7 +373,7 @@
                 DisableTableFields(false);
                 ShowBtns();
                 $('.addStaffBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.managerId').val('');
+                $('.staffId').val('');
                 $('#userForm').trigger("reset");
                 $('#modalHeading').html("Add new staff");
                 $('#addStaffModal').modal('show');
@@ -448,25 +445,26 @@
             }
 
     
-            //modal used to edit managers details [each row of the tbl]
-            $('body').on('click', '#edit-user', function(event) {
-                let manager_id = $(this).data('id');
+            //modal used to edit staff details [each row of the tbl]
+            $('body').on('click', '#edit-staff', function(event) {
+                let staff_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('users.index') }}" + '/' + manager_id + '/edit', function(data) {
+                $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
 
-                    $('#modalHeading').html("Edit details of manager " + data.name + "");
-                    $('.addStaffBtn').text("Edit manager");
+                    $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
+                    $('.addStaffBtn').text("Edit staff");
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
                     $('.first_name').val(data.first_name);
                     $('.last_name').val(data.last_name);
                     $('.address').val(data.address);
                     $('.email').val(data.email);
+                    $('.employee_id').val(data.staff_id);
                     $('.nin').val(data.nationalID_no);
-                    $('.tel_no').val(data.tel_no);
-                    $('.alt_telno').val(data.alt_telno);
-                    $('.designation_section').val(data.designtion_id);
+                    $('.tel_no').val(data.phone_number);
+                    $('.alt_telno').val(data.other_phone_number);
+                    $('.designation_section').val(data.designation_id);
                     $('.departments_section').val(data.department_id);
                     $('.gender').val(data.gender);
                     DisableTableFields(false);
@@ -474,24 +472,25 @@
                 })
             });
 
-            //View Modal used to view each row [managers details]
-            $('body').on('click', '#view-user', function(event) {
-                let manager_id = $(this).data('id');
+            //View Modal used to view each row [staff details]
+            $('body').on('click', '#view-staff', function(event) {
+                let staff_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('users.index') }}" + '/' + manager_id + '', function(data) {
+                $.get("{{ route('users.index') }}" + '/' + staff_id + '', function(data) {
 
-                    $('#modalHeading').html("Details of manager " + data.name + "");
+                    $('#modalHeading').html(`Details of staff ${data.first_name} ${data.last_name} `);
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
                     $('.first_name').val(data.first_name);
                     $('.last_name').val(data.last_name);
                     $('.address').val(data.address);
                     $('.email').val(data.email);
-                    $('.national_id').val(data.nationalID_no);
-                    $('.tel_no').val(data.tel_no);
-                    $('.alt_telno').val(data.alt_telno);
-                    $('.designation_section').val(data.designtion_id);
+                    $('.employee_id').val(data.staff_id);
+                    $('.nin').val(data.nationalID_no);
+                    $('.tel_no').val(data.phone_number);
+                    $('.alt_telno').val(data.other_phone_number);
+                    $('.designation_section').val(data.designation_id);
                     $('.departments_section').val(data.department_id);
                     $('.gender').val(data.gender);
                     DisableTableFields(true);
@@ -516,7 +515,7 @@
 
                             $('#userForm').trigger("reset");
                             $('#addStaffModal').modal("hide");
-                            let tbl = $('#managers-table').DataTable();
+                            let tbl = $('#staff-table').DataTable();
                             tbl.ajax.reload();
                             let resp = data.success;
                             displayResponse('.response', resp, 'success');
@@ -542,13 +541,13 @@
             });
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-user', function(e) {
-                let manager_id = $(this).data("id");
+            $('body').on('click', '#delete-staff', function(e) {
+                let staff_id = $(this).data("id");
                 e.preventDefault();
                 $("#deleteStaffModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this manager?");
+                $(".delete-alert-text").html("Are you sure you want to delete this staff?");
                 $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(manager_id);
+                    ListenAndDoDeletion(staff_id);
                 });
 
             });
@@ -566,7 +565,7 @@
                         $('#deleteStaffModal').modal("hide");
                         displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
-                        let tbl = $('#managers-table').DataTable();
+                        let tbl = $('#staff-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
@@ -617,7 +616,7 @@
                         $('.confirm-changeAccount-ok-btn').html('Yes');
                         $('#accountChangeModal').modal("hide");
                         displayResponse('.response', resp, 'success');
-                        let tbl = $('#managers-table').DataTable();
+                        let tbl = $('#staff-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
@@ -702,11 +701,11 @@
 
             }
 
-            $("#removeAllmanagers").bind("click", function() {
-                RemoveAllmanagers();
+            $("#removeAllStaffs").bind("click", function() {
+                RemoveAllStaff();
             });
 
-            function RemoveAllmanagers() {
+            function RemoveAllStaff() {
                 $.confirm({
                     boxWidth: '30%',
                     icon: 'fa fa-warning',
@@ -714,8 +713,8 @@
                     closeIcon: true,
                     draggable: true,
                     closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all managers',
-                    content: 'Are you sure you want to remove all managers',
+                    title: 'Delete all staff',
+                    content: 'Are you sure you want to remove all staff',
                     buttons: {
                         confirm: function() {
                             let self = this;
@@ -735,14 +734,14 @@
                                 $(".total_staff").text(data.totl_no);
                                 $(".totl_credit").text(data.totl_credit);
                                 $(".totl_debt").text(data.totl_debt);
-                                let tbl = $('#managers-table').DataTable();
+                                let tbl = $('#staff-table').DataTable();
                                 tbl.ajax.reload();
 
 
                             }).fail(function(data) {
                                 $.alert({
                                     title: 'Response',
-                                    content: "managers not deleted:" + data.fail,
+                                    content: "staff not deleted:" + data.fail,
                                 });
                                 console.log(data);
 

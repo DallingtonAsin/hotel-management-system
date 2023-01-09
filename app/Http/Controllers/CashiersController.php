@@ -31,47 +31,6 @@ class CashiersController extends Controller
         $this->controller = 'CashiersController';
     }
 
-
-    protected function getUserRoleId($role)
-    {
-        try {
-            $roleId = Role::where('role', 'like', '%'.$role.'%')
-                     ->value('id');
-            return $roleId;
-        } catch (\Exception $ex) {
-            $data = array(
-                'username' => auth()->user()->username,
-                'error_code' => $ex->getCode(),
-                'error_message' => $ex->getMessage(),
-                'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
-                'controller' => $this->controller,
-                'method' => 'getRole'
-            );
-            Helper::logError($data);
-            abort(409, $ex->getMessage());
-        }
-    }
-
-    protected function getRole($id)
-    {
-        try {
-            $role = Role::where('id', $id)
-                   ->value('role');
-            return $role;
-        } catch (\Exception $ex) {
-            $data = array(
-      'username' => auth()->user()->username,
-      'error_code' => $ex->getCode(),
-      'error_message' => $ex->getMessage(),
-      'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
-      'controller' => $this->controller,
-      'method' => 'getRole'
-  );
-            Helper::logError($data);
-            abort(409, $ex->getMessage());
-        }
-    }
-
     protected function GetCashierStats()
     {
         try {
@@ -211,7 +170,7 @@ class CashiersController extends Controller
                 if ($save_status) {
                     $subject = 'User Registration';
                     $CashierEmail = $request->email;
-                    $registraPosition = $this->getRole($request->user()->department_id);
+                    $registraPosition = Helper::getDesignation($request->user()->designation_id);
                     $registraEmail = $request->user()->email;
                     $default_password = $defaultPwd;
                     $now = now();
@@ -521,7 +480,7 @@ class CashiersController extends Controller
             if ($res) {
                 $subject = 'Update about User Details Change';
                 $CashierEmail = $request->email;
-                $registraPosition = $this->getRole($request->user()->department_id);
+                $registraPosition = Helper::getDesignation($request->user()->designation_id);
                 $registraEmail = $request->user()->email;
                 $now = now();
 
