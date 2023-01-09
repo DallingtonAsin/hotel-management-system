@@ -382,6 +382,14 @@
                 confirmOrderStatusChange(kot_id, status);
             });
 
+
+            $('body').on('click', '#mark-pending', function(e) {
+                let kot_id = $(this).data("id");
+                let status = 'In Progress';
+                e.preventDefault();
+                confirmOrderStatusChange(kot_id, status);
+            });
+
             function confirmOrderStatusChange(kot_id, status) {
                 $("#changeOrderStatusModal").modal('show');
                 $(".order-status-text-alert").html(`Are you sure you want to mark this order ${status}?`);
@@ -391,7 +399,7 @@
             }
 
             function updateOrderStatus(id, status) {
-                
+
                 let url = "{{ route('kitchen-order.status.update', ':id') }}";
                 url = url.replace(':id', id);
                 $('.change-status-btn').html('Updating...');

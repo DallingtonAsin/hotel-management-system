@@ -27,21 +27,28 @@ class KitchenOrdersDataTable extends DataTable
             })->addIndexColumn()
             ->addColumn('action', function ($order) {
 
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-        data-id="' . $order->id . '" data-status="completed" data-original-title="Edit" id="mark-completed"
-          class="btn btn-xs btn-success edit-order mr-2">
-         <span class="fa fa-check-circle pr-1"></span>Mark Completed</a>';
+                $btn = "";
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                  data-id="' . $order->id . '" data-status="completed" data-original-title="Mark Completed" id="mark-completed"
+                  class="btn btn-xs btn-success edit-order mr-2">
+                  <span class="fa fa-check-circle pr-1"></span>Mark Completed</a>';
 
                 $btn .= '<a href="javascript:void(0);" id="mark-cancelled" 
-        data-toggle="tooltip" data-original-title="Delete"
-         data-id="' . $order->id . '" data-status="cancelled" class="btn btn-xs btn-danger ml-2"">
-        <span class="fa fa-times-circle pr-1" ></span>Mark Cancelled</a>';
+                        data-toggle="tooltip" data-original-title="Mark Cancelled"
+                        data-id="' . $order->id . '" data-status="cancelled" class="btn btn-xs btn-danger mr-2"">
+                        <span class="fa fa-times-circle pr-1" ></span>Mark Cancelled</a>';
 
-    //             $btn .= '<a href="javascript:void(0);" id="view-order" 
-    //    data-toggle="tooltip" data-original-title="View"
-    //     data-id="' . $order->id . '" class="text-info bolded">
-    //    <i class="fa fa-eye" ></i></a>';
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                        data-id="' . $order->id . '" data-status="pending" data-original-title="Mark Pending" id="mark-pending"
+                        class="btn btn-xs btn-warning edit-order ml-2">
+                        <span class="fa fa-check-circle pr-1"></span>Mark Pending</a>';
 
+                //             $btn .= '<a href="javascript:void(0);" id="view-order" 
+                //    data-toggle="tooltip" data-original-title="View"
+                //     data-id="' . $order->id . '" class="text-info bolded">
+                //    <i class="fa fa-eye" ></i></a>';
+    
                 return $btn;
 
             })->addColumn('checkbox', function ($order) {
@@ -50,11 +57,11 @@ class KitchenOrdersDataTable extends DataTable
         })->editColumn('status', function ($order) {
 
             if (stripos($order->status, 'progress') !== false) {
-                $statusText = "<span class='text-warning'>".$order->status."</span>";
-            } else if(stripos($order->status, 'completed') !== false) {
-                $statusText = "<span class='text-success'>".$order->status."</span>";
-            }else if(stripos($order->status, 'cancelled') !== false){
-                $statusText = "<span class='text-danger'>".$order->status."</span>";
+                $statusText = "<span class='text-warning'>" . $order->status . "</span>";
+            } else if (stripos($order->status, 'completed') !== false) {
+                $statusText = "<span class='text-success'>" . $order->status . "</span>";
+            } else if (stripos($order->status, 'cancelled') !== false) {
+                $statusText = "<span class='text-danger'>" . $order->status . "</span>";
             }
 
             return $statusText;
