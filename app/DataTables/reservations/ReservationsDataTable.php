@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Guest;
+use App\Models\GuestType;
 use App\Models\InvoiceGuest;
 use App\Models\Room;
 use Carbon\Carbon;
@@ -13,6 +14,8 @@ use App\Helpers\Helper;
 
 class ReservationsDataTable extends DataTable
 {
+
+   
 
     /**
      * Build DataTable class.
@@ -36,6 +39,17 @@ class ReservationsDataTable extends DataTable
 
             })->editColumn('created_by', function ($reservation) {
             return Helper::getUserNames($reservation->created_by);
+        })->addColumn('guest_type', function ($reservation) {
+            $guestTypeObj = GuestType::find($reservation->guest_type_id);
+            return $guestTypeObj->name;
+        })->addColumn('invoice_number', function ($reservation) {
+            $invoiceGuest = InvoiceGuest::find($reservation->id);
+            if(isset($invoiceGuest->invoice_number)){
+                $invoice_number = $invoiceGuest->invoice_number;
+            }else{
+                $invoice_number = '00000';
+            }
+            return $invoice_number;
         })->addColumn('guest', function ($reservation) {
             $guest = Guest::find($reservation->guest_id);
             return $guest->first_name . ' ' . $guest->last_name;

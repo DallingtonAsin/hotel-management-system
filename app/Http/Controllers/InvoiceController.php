@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\InvoiceGuest;
 use App\Models\Guest;
+use App\Models\GuestType;
 use App\Models\Company;
 
 use App\Models\Room;
@@ -63,6 +64,11 @@ class InvoiceController extends Controller
 
             $invoice = InvoiceGuest::where('reservation_id', $id)->first();
             $reservation = Reservation::find($id);
+            $guest_type_id = $reservation->guest_type_id;
+            $guestTypeObj = GuestType::find($guest_type_id);
+            $guestType = $guestTypeObj->name;
+
+            $is_corporate = (stripos($guestType, 'corporate') !== false);
 
             $occupancy_type = $reservation->occupancy_type;
             $guest_id = $reservation->guest_id;
@@ -86,6 +92,7 @@ class InvoiceController extends Controller
             $total_amount = $invoice->total + $tax_fees;
 
             $pdf = PDF::loadView('pages.main.invoices.reservation', [
+                'is_corporate' => $is_corporate,
                 'invoice' => $invoice,
                 'guest' => $guest,
                 'company' => $company,

@@ -100,8 +100,7 @@ class KitchenOrderController extends Controller
     private function generateKotOrderNo()
     {
         try {
-            $prefix = "#";
-            $order_number = IdGenerator::generate(['table' => 'kitchen_orders', 'field' => 'order_number',  'length' => 10, 'prefix' => $prefix]);
+            $order_number = Helper::getOrderNumber('kitchen_orders', 'order_number', 10, '#');
             return $order_number;
         } catch (\Exception $ex) {
             throw $ex;

@@ -181,8 +181,10 @@ class ReservationController extends Controller
 
                     $reservationDetails = $resp['data'];
                     $reservation_id = $reservationDetails->id;
+                    $guestInvoiceNumber  = Helper::getOrderNumber('invoice_guests', 'invoice_number', 10, 'CMH');
 
                     $invoiceData = [
+                        'invoice_number' => $guestInvoiceNumber,
                         'reservation_id' => $reservation_id,
                         'discount_percent' => 0,
                         'total' => $total,

@@ -19,7 +19,7 @@
     <table>
       <tr>
         <th>Invoice Number:</th>
-        <td>{{ $invoice->id }}</td>
+        <td>{{ $invoice->invoice_number }}</td>
       </tr>
       <tr>
         <th>Date:</th>
@@ -31,6 +31,14 @@
           <p>Name: {{$guest->first_name}} {{$guest->last_name}}</p>
           <p>Email: {{$guest->email}}</p>
           <p>Phone: {{$guest->phone_number}}</p>
+
+          @if($is_corporate == true)
+          <p>Company Name: {{$guest->company_name}}</p>
+          <p>Company Phone: {{$guest->company_contact}}</p>
+          <p>Company Email: {{$guest->company_email}}</p>
+          <p>TIN: {{$guest->tax_number}}</p>
+          @endif
+
         </td>
       </tr>
       <tr>

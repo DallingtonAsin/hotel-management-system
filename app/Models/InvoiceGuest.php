@@ -14,6 +14,7 @@ class InvoiceGuest extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'invoice_number',
         'reservation_id',
         'discount_percent',
         'total',
