@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Http\Controllers\LogsController;
-use App\Models\Role;
+use App\Helpers\Helper;
 use App\User;
 
 class ProfileController extends Controller
@@ -83,20 +83,6 @@ class ProfileController extends Controller
         return $bool;
     }
 
-    protected function getUserRoleId($role)
-    {
-      $roleId = Role::where('role', $role)->value('id');
-      return $roleId;
-  }
-
-  protected function getRole($id)
-  {
-      $role = Role::where('id', $id)->value('role');
-      return $role;
-  }
-
-
-
 /**
      * Update the specified resource in storage.
      *
@@ -126,7 +112,7 @@ public function updates(Request $request, $id)
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension(); //getting image extension
             $filename = time().'.'.$extension;
-            $file->move("uploads/images/".$this->getRole(Auth::user()->department_id)."",$filename);
+            $file->move("uploads/images/".Helper::getDesignation(Auth::user()->designation_id)."",$filename);
             $user->image = $filename;
         }
         else
@@ -241,7 +227,7 @@ return response()
                 // ]);
 
                 // $fileName = time().'.'.$request->file('image')->getClientOriginalExtension();
-                // $filePath = $request->file('image')->storeAs("avatars/".strtolower(Helper::getRole(Auth::user()->role)), $fileName, 'public');
+                // $filePath = $request->file('image')->storeAs("avatars/".strtolower(Helper::getDesignation(Auth::user()->designation_id)), $fileName, 'public');
                 // $user->image = $filePath;
 
 
@@ -252,7 +238,7 @@ return response()
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension(); //getting image extension
                 $filename = time().'.'.$extension;
-                $file->move("uploads/images/".$this->getRole(Auth::user()->department_id)."",$filename);
+                $file->move("uploads/images/".Helper::getDesignation(Auth::user()->designation_id)."",$filename);
                 $user->image = $filename;
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Designation;
 use Illuminate\Http\Request;
 use App\Models\ErrorLog;
 use App\Models\Stock;
@@ -69,7 +70,7 @@ class Helper
       return $item;
 
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+     throw $ex;
     }
   }
 
@@ -79,7 +80,7 @@ class Helper
       $result = floatval(preg_replace('/[^\d.]/', '', $input));
       return $result;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+     throw $ex;
     }
   }
 
@@ -89,17 +90,27 @@ class Helper
       $departmentId = Department::where('role', 'like', '%' . $role . '%')->value('id');
       return $departmentId;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+      throw $ex;
     }
   }
 
   public static function getDepartment($departmentId)
   {
     try {
-      $department = Department::where('id', $departmentId)->value('role');
+      $department = Department::where('id', $departmentId)->value('name');
       return $department;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+     throw $ex;
+    }
+  }
+
+  public static function getDesignation($designationId)
+  {
+    try {
+      $designation = Designation::where('id', $designationId)->value('name');
+      return $designation;
+    } catch (\Exception $ex) {
+     throw $ex;
     }
   }
 
@@ -109,7 +120,7 @@ class Helper
       $roles = Department::get();
       return $roles;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+     throw $ex;
     }
   }
 
@@ -286,7 +297,7 @@ class Helper
       ]);
       return true;
     } catch (Exception $ex) {
-      dd($ex->getMessage());
+     throw $ex;
     }
   }
 
@@ -347,7 +358,7 @@ class Helper
     try {
 
       $staff = User::all();
-      $total_staff = User::count();
+      $total_staff = User::where('is_deleted', false)->count();
       $data = array(
         'list' => $staff,
         'totl' => $total_staff
@@ -412,8 +423,10 @@ class Helper
     $data = $months = $years = $sales = $profits = array();
     $totalProfits = 0;
     foreach ($result as $row) {
+
       $profitForEachMonth = Helper::getProfitsForAGivenMonth($row->SalesYear, $row->month_int);
       $totalProfits += $profitForEachMonth;
+      
       array_push($months, date("F", mktime(0, 0, 0, $row->month_int, 10)));
       array_push($profits, $profitForEachMonth);
       array_push($years, $row->SalesYear);

@@ -54,11 +54,11 @@
               @endisset
 
               @empty(Auth::user()->image)
-              <img src="{{ asset('uploads/images/default/user.png') }}" alt="{{Auth::user()->name}}" class="az-img-user pull-right">
+              <img src="{{ asset('uploads/images/default/user.png') }}" alt="{{Auth::user()->firt_name}}" class="az-img-user pull-right">
               @endempty
             </div>
             <div class="text-center">
-              <label class="text-cap">{{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}}</label>
+              <label class="text-cap">{{{ isset(Auth::user()->first_name) ? Auth::user()->first_name. ' '.Auth::user()->last_name : Auth::user()->email }}}</label>
               <span>{{{ $department_id }}}</span>
             </div>
           </div>

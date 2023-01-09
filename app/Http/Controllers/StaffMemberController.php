@@ -11,7 +11,7 @@ class StaffMemberController extends Controller
     
     public function index()
     {
-        $total_staff = User::count();
+        $total_staff = User::where('is_deleted', false)->count();
         return view('pages.main.hr.staff', ['total_staff' => $total_staff]);
     }
 

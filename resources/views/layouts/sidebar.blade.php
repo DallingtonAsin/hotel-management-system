@@ -159,16 +159,11 @@
             <li class="nav-item">
                 <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                 <ul class="nav-sub">
-                    <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales
-                            Report</a></li>
-                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Expense
-                            Report</a></li>
-                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Revenue
-                            Report</a></li>
-                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Occupancy
-                            Report</a></li>
-                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Employee
-                            Performance</a></li>
+                    <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales Report</a></li>
+                    <li class="nav-sub-item"><a href="{{ route('reports.expenses.monthly') }}" class="nav-sub-link">Expense Report</a></li>
+                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Revenue Report</a></li>
+                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Occupancy Report</a></li>
+                    <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Employee Performance</a></li>
                 </ul>
             </li>
 
@@ -187,8 +182,7 @@
                 <ul class="nav-sub">
                     <li class="nav-sub-item"><a href="{{ route('companies.create') }}"
                             class="nav-sub-link">Settings</a></li>
-                    <li class="nav-sub-item"><a href="{{ route('mail.index') }}" class="nav-sub-link">Send Email</a>
-                    </li>
+                    {{-- <li class="nav-sub-item"><a href="{{ route('mail.index') }}" class="nav-sub-link">Send Email</a></li> --}}
                     <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link"> Audit
                             Trail</a></li>
                 </ul>

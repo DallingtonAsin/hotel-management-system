@@ -37,17 +37,6 @@ class MailController extends Controller
         return view('pages.main.messages.mail');
     }
 
-    protected function getRole($id)
-    {
-        $role = Role::where('id', $id)->value('role');
-        return $role;
-    }
-
-    protected function GetRoleId($role)
-    {
-        $id = Role::where('role', $role)->value('id');
-        return $id;
-    }
 
     protected function GetUserData($UserRoleId)
     {
@@ -119,7 +108,7 @@ class MailController extends Controller
         if($toAllCashiers == 'yes')
         {
             $role = 'Cashier';
-            $CashierRoleId = $this->GetRoleId($role);
+            $CashierRoleId = Helper::getDesignation($role);
             $CashiersData = $this->GetUserData($CashierRoleId);
             foreach($CashiersData as $cashier){
                 array_push($emails, $cashier->email);
@@ -131,7 +120,7 @@ class MailController extends Controller
         if($toAllManagers == 'yes')
         {
             $role = 'Administrator';
-            $AdminRoleId = $this->GetRoleId($role);
+            $AdminRoleId = Helper::getDesignation($role);
             $AdminData = $this->GetUserData($AdminRoleId);
             foreach($AdminData as $admin){
                 array_push($emails, $admin->email);
@@ -158,7 +147,7 @@ class MailController extends Controller
 
     }
 
-        $position = $this->getRole($request->user()->department_id); //position of the person sending the email
+        $position = Helper::getDesignation($request->user()->designation_id); //position of the person sending the email
         
         $data = array(
             'type' => 'mail',
