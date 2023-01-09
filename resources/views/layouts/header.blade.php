@@ -20,7 +20,8 @@
       <div class="az-header-center pr-5 row mt-2">
 
         <div class="col-lg-3">
-        <a href="{{ route('pos.index') }}"><img src="{{ asset('vendors/img/pos1.png')}}"/>
+        <a href="{{ route('pos.index') }}">
+          <img src="{{ asset('vendors/img/pos1.png')}}"/>
             <h6 class="text-white">POS</h6></a>
          </div>
 
@@ -31,12 +32,12 @@
 
          <div class="col-lg-3">
          <a href="{{ route('reservations.index') }}"><img src="{{ asset('vendors/img/bed1.png')}}"/>
-            <h6>Reservations</h6></a>
+            <h6 class="mt-1">Reservations</h6></a>
          </div>
 
          <div class="col-lg-3">
          <a href="{{ route('staff.index') }}"><img src="{{ asset('vendors/img/users.png')}}"/>
-            <h6>Staff</h6></a>
+            <h6 class="mt-1">Staff</h6></a>
          </div>
       </div>
 
