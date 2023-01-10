@@ -24,7 +24,7 @@
                 <table class="table table-bordered table-hover kitchen-orders-table" id="kitchen-orders-table">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            {{-- <th>#</th> --}}
                             <th>Order #</th>
                             <th>Table #</th>
                             <th>Room #</th>
@@ -44,9 +44,8 @@
     </div>
 
 
-
     <!--Add Kitchen Order -->
-    <div class="modal fade nunito-font addDesignationModal" id="addDesignationModal" tabindex="-1"
+    <div class="modal fade nunito-font addKitchenOrderModal" id="addKitchenOrderModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -120,7 +119,8 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-xs border border-dark text-dark addMenuItemToCartBtn"
                                 name="addKotBtn">Add to Cart</button>
-                            <button type="reset" class="btn btn-xs btn-danger clearBtn"><i class="fa fa-times-circle pr-1"></i>Clear</button>
+                            <button type="reset" class="btn btn-xs btn-danger clearBtn"><i
+                                    class="fa fa-times-circle pr-1"></i>Clear</button>
                         </div>
 
                         <div class="form-group">
@@ -148,16 +148,23 @@
 
                         <div class="d-flex justify-content-between" id="menu-cart-footer">
                             <div class="float-left">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle pr-1"></i>Submit Order</button>
+                                <button type="submit" class="btn btn-primary submit-order-btn"><i
+                                        class="fa fa-plus-circle pr-1"></i>Submit Order</button>
                             </div>
                             <div id="totals" class="float-right">
-                                <div class="d-flex"> <h5 class="mr-2">Subtotal:</h5> $<span id="subtotal">0.00</span></div>
-                                <div class="d-flex"> <h5 class="mr-2">Tax (18%):</h5> $<span id="tax">0.00</span></div>
-                                <div class="d-flex"> <h5 class="mr-2">Total:</h5>$<span id="total">0.00</span></div>
+                                <div class="d-flex">
+                                    <h5 class="mr-2">Subtotal:</h5> $<span id="subtotal">0.00</span>
+                                </div>
+                                <div class="d-flex">
+                                    <h5 class="mr-2">Tax (18%):</h5> $<span id="tax">0.00</span>
+                                </div>
+                                <div class="d-flex">
+                                    <h5 class="mr-2">Total:</h5>$<span id="total">0.00</span>
+                                </div>
                             </div>
                         </div>
-                      
-                       
+
+
                     </div>
                 </div>
 
@@ -255,16 +262,17 @@
         populateMenuItems();
 
         hideCartFooterIfEmptyTable();
-        function hideCartFooterIfEmptyTable(){
-                        let table = document.getElementById('menu-item-cart');
-                        let rowCount = (table.rows.length - 1);
-                        $("#menu-cart-footer").hide();
-                        // if(rowCount > 0){
-                        //     $("#menu-cart-footer").show();
-                        // }else{
-                        //     $("#menu-cart-footer").hide();
-                        // }
-            }
+
+        function hideCartFooterIfEmptyTable() {
+            let table = document.getElementById('menu-item-cart');
+            let rowCount = (table.rows.length - 1);
+            $("#menu-cart-footer").hide();
+            // if(rowCount > 0){
+            //     $("#menu-cart-footer").show();
+            // }else{
+            //     $("#menu-cart-footer").hide();
+            // }
+        }
 
 
         $(document).ready(function() {
@@ -272,12 +280,13 @@
             let table = $('#kitchen-orders-table');
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3];
-            let dataColumns = [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
+            let dataColumns = [
+                // {
+                //     data: 'DT_RowIndex',
+                //     name: 'DT_RowIndex',
+                //     orderable: false,
+                //     searchable: false
+                // },
                 {
                     data: 'order_number',
                     name: 'order_number'
@@ -321,7 +330,7 @@
                 $('.kotId').val('');
                 $('#KotForm').trigger("reset");
                 $('#modalHeading').html("Add new kitchen order");
-                $('#addDesignationModal').modal('show');
+                $('#addKitchenOrderModal').modal('show');
             });
 
 
@@ -369,6 +378,90 @@
                 AddMenuItemToCart(menu_item_id);
             });
 
+            $('.submit-order-btn').on('click', function(){
+               let table = document.getElementById('menu-item-cart');
+                let rowCount = (table.rows.length - 1);
+                if(rowCount > 0){
+                    submitKitchenOrder();
+                }else{
+                    alert('Add order items to the cart');
+                }
+            });
+
+            function submitKitchenOrder() {
+
+                let TableData = new Array();
+                let credit_arr = [];
+
+                $('#menu-item-cart tbody tr').each(function(row, tr) {
+
+                    TableData[row] = {
+                        "item": $(tr).find('td:eq(0)').text(),
+                        "quantity": $(tr).find('td:eq(1)').text(),
+                        "price": $(tr).find('td:eq(2)').text(),
+                        "total": $(tr).find('td:eq(2)').text(),
+                    }
+
+                });
+
+                let table_number = $(".table_number").val();
+                let room_number = $(".room_number").val();
+                let status = $(".status").val();
+
+                let selected_menu = JSON.stringify(TableData);
+                console.log("Table data", selected_menu);
+
+                $('.print-btn-text').html("saving...");
+
+                let url = '{{ route('kitchen-order.submit') }}';
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        table_data: selected_menu,
+                        table_number: table_number,
+                        room_number: room_number,
+                        status: status,
+                    },
+
+                    success: function(data) {
+                        console.log('Response', data);
+                        let message = data.success || data.error;
+                        if(data.error){
+                            alert("Error message: "+message);
+                        }
+                        if(data.success){
+                            EmptyCartTable();
+                            let message = data.success;
+                            displayResponse('.response', message, 'success');
+                        }
+                       
+
+                    },
+                    error: function(data) {
+                        console.log('Error data', data);
+                        let message = data.response;
+                        console.log('Error message', message);
+                        alert("Error message: "+message);
+                        displayResponse('.response', message, 'error');
+                    }
+                });
+
+            }
+
+            function EmptyCartTable() {
+
+                let tbl = $('#kitchen-orders-table').DataTable();
+                tbl.ajax.reload();
+                $("#menu-item-cart > tbody").empty();
+                $(".table_number").val('');
+                $(".room_number").val('');
+                $('.submit-order-btn').html("<i class='fa fa-plus-circle pr-1'></i>Submit Order");
+                updateSubTotal();
+                $("#addKitchenOrderModal").modal('hide');
+
+            }
 
             function AddMenuItemToCart(menu_item_id) {
 
@@ -380,10 +473,8 @@
                 quantity ? quantity = Convert2Num(quantity) : quantity = 1;
 
                 let inc = 0;
-
                 let url = "{{ route('menu-item.get', ':menu_item_id') }}";
                 url = url.replace(':menu_item_id', menu_item_id);
-
 
                 $.ajax({
                     url: url,
@@ -404,7 +495,6 @@
 
                             let subTotal = FormatNumber(sub_total);
                             let total = FormatNumber(sub_total);
-
 
                             bodyData += "<tr data-name='" + row.name + "' data-quantity='" +
                                 quantity + "' data-sprice='" + selling_price + "'>"
@@ -456,21 +546,21 @@
                 });
             }
 
-            function updateSubTotal(){
-                        let table = document.getElementById('menu-item-cart');
-                        let subTotal = Array.from(table.rows).slice(1).reduce((total, row) => {
-                          let Total =  row.cells[3].innerHTML;
-                          let subTotl =  Total.replace(/,/g , '').trim();
-                          return total + parseFloat(subTotl);
-                        }, 0);
-                        
-                        let tax = 0.18*subTotal;
-                        let total = subTotal + tax;
-                        document.getElementById('subtotal').innerHTML = FormatNumber(subTotal.toFixed(0));
-                        document.getElementById('tax').innerHTML = FormatNumber(tax.toFixed(0));
-                        document.getElementById('total').innerHTML = FormatNumber(total.toFixed(0));
-             }
-                
+            function updateSubTotal() {
+                let table = document.getElementById('menu-item-cart');
+                let subTotal = Array.from(table.rows).slice(1).reduce((total, row) => {
+                    let Total = row.cells[3].innerHTML;
+                    let subTotl = Total.replace(/,/g, '').trim();
+                    return total + parseFloat(subTotl);
+                }, 0);
+
+                let tax = 0.18 * subTotal;
+                let total = subTotal + tax;
+                document.getElementById('subtotal').innerHTML = FormatNumber(subTotal.toFixed(0));
+                document.getElementById('tax').innerHTML = FormatNumber(tax.toFixed(0));
+                document.getElementById('total').innerHTML = FormatNumber(total.toFixed(0));
+            }
+
 
             $(document).on("click", ".btn-edit-cart", function() {
 
@@ -479,9 +569,13 @@
 
                 quantity = Convert2Num(quantity);
                 price = Convert2Num(price);
-                
-                $(this).parents('tr').find('td:eq(1)').html('<input name="edit_quantity" class="edit_quantity" value="' + quantity + '" style="width:80px">');
-                $(this).parents('tr').find('td:eq(4)').prepend('<button class="btn btn-info btn-xs btn-update-cart">Update</button><button class="btn btn-warning ml-3 btn-xs btn-cancel-cart">Cancel</button>');
+
+                $(this).parents('tr').find('td:eq(1)').html(
+                    '<input name="edit_quantity" class="edit_quantity" value="' + quantity +
+                    '" style="width:80px">');
+                $(this).parents('tr').find('td:eq(4)').prepend(
+                    '<button class="btn btn-info btn-xs btn-update-cart">Update</button><button class="btn btn-warning ml-3 btn-xs btn-cancel-cart">Cancel</button>'
+                    );
                 $(this).hide();
                 $('.btn-delete-cart').hide();
 
@@ -524,20 +618,10 @@
             });
 
             $(document).on("click", ".btn-delete-cart", function() {
-                  $(this).parent().parent('tr').remove();
-                  updateSubTotal();
+                $(this).parent().parent('tr').remove();
+                updateSubTotal();
                 //   ComputeBalance();
-                });
-
-
-
-
-
-
-
-
-
-
+            });
 
 
             //modal used to edit kitchen-orders details [each row of the tbl]
@@ -549,7 +633,7 @@
 
                     $('#modalHeading').html("Edit details of kot " + data.name + "");
                     $('.addKotBtn').text("Edit kot");
-                    $('#addDesignationModal').modal('show');
+                    $('#addKitchenOrderModal').modal('show');
                     $('.kotId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
@@ -571,7 +655,7 @@
                 $.get("{{ route('kitchen-orders.index') }}" + '/' + kot_id + '', function(data) {
 
                     $('#modalHeading').html("Details of kot " + data.name + "");
-                    $('#addDesignationModal').modal('show');
+                    $('#addKitchenOrderModal').modal('show');
                     $('.kotId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
@@ -621,7 +705,7 @@
                         success: function(data) {
 
                             $('#KotForm').trigger("reset");
-                            $('#addDesignationModal').modal("hide");
+                            $('#addKitchenOrderModal').modal("hide");
                             let resp = data.success;
                             displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);

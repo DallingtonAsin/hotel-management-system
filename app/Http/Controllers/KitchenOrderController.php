@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KitchenMenuItem;
 use Illuminate\Http\Request;
 use App\DataTables\pos\KitchenOrdersDataTable;
-use App\Models\KitchenOrder;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
+use App\Models\Room;
+use App\Models\KitchenOrder;
+use App\Models\KitchenOrderItem;
+use App\Models\KitchenOrderInvoice;
 
 class KitchenOrderController extends Controller
 {
+
+    private $sold_menu_items = array();
+    private $total_amount_of_sales = 0;
     /**
      * Display a listing of the resource.
      *
@@ -131,7 +136,7 @@ class KitchenOrderController extends Controller
                 ];
 
                 if ($kitchen_order->update($kot)) {
-                    $message = "Kitchen order ".$order_number." has been marked ".lcfirst($order_status)." successfully";
+                    $message = "Kitchen order " . $order_number . " has been marked " . lcfirst($order_status) . " successfully";
                     $stats = $this->GetKitchenOrderStats();
                     $data = [
                         'success' => $message,
@@ -148,6 +153,137 @@ class KitchenOrderController extends Controller
             }
         } catch (\Exception $ex) {
             throw $ex;
+        }
+    }
+
+
+    public function storeKitchenOrder(Request $req)
+    {
+
+        try {
+
+            $method = "KitchenOrderController@storeKitchenOrder";
+            $data = $req->input('table_data');
+
+            $order_number = Helper::getOrderNumber('kitchen_orders', 'order_number', 10, 'KOT_');
+            $table_number = $req->input('table_number');
+           
+            $status = $req->input('status');
+            $order_date = date('Y-m-d');
+            $created_by = Helper::getLoggedInUserId();
+            
+
+            if($req->filled('room_number')){
+                $room_number = $req->input('room_number');
+                $room = Room::where('number', $room_number);
+                if (!$room->exists()) {
+                    return response()->json(['error' => 'Unable to find sepcified room number']);
+                }else{
+                    $room_id = $room->value('id');
+                }
+            }else{
+                $room_id = null;
+            }
+         
+                $kitchenOrderData = [
+                    'order_number' => $order_number,
+                    'table_number' => $table_number,
+                    'room_id' => $room_id,
+                    'status' => $status,
+                    'order_date' => $order_date,
+                    'created_by' => $created_by,
+                ];
+
+                $isKOCreated = KitchenOrder::create($kitchenOrderData);
+                if ($isKOCreated) {
+
+                    // store kitchen order items
+                    $dataArr = json_decode($data, true);
+                    if (is_array($dataArr) && count($dataArr) > 0) {
+
+                        foreach ($dataArr as $key) {
+
+                            $item = $key['item'];
+                            $this->sold_menu_items[] = $item;
+
+                            $menu_item = KitchenMenuItem::where('name', 'like', "%" . $item . "%")->first();
+                            $menu_item_id = $menu_item->id;
+                            $price = $menu_item->price;
+                            $quantity = Helper::Numberize($key['quantity']);
+
+                            if (!empty($price)) {
+                                $price = Helper::Numberize($key['price']);
+                            }
+
+                            $subtotal = $quantity * $price;
+                            $this->total_amount_of_sales += floatval($subtotal);
+
+                            KitchenOrderItem::create([
+                                'order_number' => $order_number,
+                                'item_id' => $menu_item_id,
+                                'quantity' => $quantity,
+                                'price' => $price,
+                                'total' => $subtotal,
+                            ]);
+
+                        }
+
+                        $subtotal = $this->total_amount_of_sales;
+                        $tax_amount = 0.18 * $subtotal;
+                        $total_amount = $tax_amount + $subtotal;
+
+                        $kitchenOrderInvoice = [
+                            'order_number' => $order_number,
+                            'subtotal' => $subtotal,
+                            'tax' => $tax_amount,
+                            'total' => $total_amount,
+                            'status' => $status
+                        ];
+
+                        $hasInsertedInKOITbl = KitchenOrderInvoice::create($kitchenOrderInvoice);
+
+                        //If insertion is OK, reduce stock levels and clear cart
+                        if ($hasInsertedInKOITbl) {
+                            $message = "Kitchen order has been successfully recorded";
+                            $responseData = [
+                                'success' => $message
+                            ];
+                            $action = "recorded a sale of items " . json_encode($this->sold_menu_items) . " at
+                        " . number_format($total_amount) . " with tax inclusive";
+
+                            LogsController::logger($req, $action, now());
+                            $dataArr = array("code" => '200', "message" => $action, "method" => $method);
+                            LogAfterRequest::LogRequest($req, $dataArr);
+
+                        } else {
+
+                            $message = "Failed to create invoice for the kitchen order";
+                            $responseData = [
+                                'error' => $message
+                            ];
+                            $dataArr = array(
+                                "code" => '101',
+                                "message" => $message,
+                                "method" => $method
+                            );
+                            LogAfterRequest::LogRequest($req, $dataArr);
+
+                        }
+
+                    }else{
+                        $message = "Invalid kitchen order data";
+                        $responseData = [
+                            'error' => $message
+                        ];
+                    }
+
+                    return response()->json($responseData);
+                } else {
+                    return response()->json(['error' => 'Unable to record order in kitchen orders']);
+                }
+            
+        }catch(\Exception $ex){
+            return response()->json(['error' =>  $ex->getMessage()]);
         }
     }
 

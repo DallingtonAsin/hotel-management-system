@@ -39,9 +39,9 @@ class CreateKitchenOrdersTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        // Schema::table('kitchen_orders', function (Blueprint $table) {
-        //     $table->dropIndex(['order_number']);
-        // });
+        Schema::table('kitchen_orders', function (Blueprint $table) {
+            $table->dropIndex(['order_number']);
+        });
         Schema::dropIfExists('kitchen_orders');
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
        

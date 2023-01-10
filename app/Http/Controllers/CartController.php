@@ -639,8 +639,8 @@ class CartController extends Controller
 
                         }
                         return array("bprice" => $bprice,
-                            "sprice" => $sprice,
-                        );
+                                     "sprice" => $sprice,
+                                    );
                     }
 
                     protected function getQtyBeforeSale($item)

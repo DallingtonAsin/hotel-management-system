@@ -9,10 +9,10 @@ class KitchenOrderItem extends Model
 {
     use HasFactory;
 
-    protected $table = 'kitchen_order_invoices';
+    protected $table = 'kitchen_order_items';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = ['order_number', 'item_id', 'quantity', 'price'];
+    protected $fillable = ['order_number', 'item_id', 'quantity', 'price', 'total'];
 
 }
