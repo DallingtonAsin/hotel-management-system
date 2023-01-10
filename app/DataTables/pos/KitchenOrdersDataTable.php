@@ -9,10 +9,6 @@ use App\Helpers\Helper;
 
 class KitchenOrdersDataTable extends DataTable
 {
-
-
-
-
     /**
      * Build DataTable class.
      *
@@ -30,6 +26,11 @@ class KitchenOrdersDataTable extends DataTable
                 $btn = "";
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                data-id="' . $order->id . '" data-status="pending" data-original-title="Mark Pending" id="mark-pending"
+                class="btn btn-xs btn-default border-secondary text-dark mr-2">
+                <span class="fa fa-clock-o pr-1"></span>Mark Pending</a>';
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                   data-id="' . $order->id . '" data-status="completed" data-original-title="Mark Completed" id="mark-completed"
                   class="btn btn-xs btn-success edit-order mr-2">
                   <span class="fa fa-check-circle pr-1"></span>Mark Completed</a>';
@@ -40,18 +41,20 @@ class KitchenOrdersDataTable extends DataTable
                         <span class="fa fa-times-circle pr-1" ></span>Mark Cancelled</a>';
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                        data-id="' . $order->id . '" data-status="pending" data-original-title="Mark Pending" id="mark-pending"
-                        class="btn btn-xs btn-warning edit-order ml-2">
-                        <span class="fa fa-check-circle pr-1"></span>Mark Pending</a>';
+                        data-id="' . $order->id . '" data-original-title="Download Invoice" id="download-invoice"
+                        class="btn btn-xs btn-secondary edit-order ml-2">
+                        <span class="fa fa-download pr-1"></span>Invoice</a>';
 
-                //             $btn .= '<a href="javascript:void(0);" id="view-order" 
-                //    data-toggle="tooltip" data-original-title="View"
-                //     data-id="' . $order->id . '" class="text-info bolded">
-                //    <i class="fa fa-eye" ></i></a>';
-    
                 return $btn;
 
-            })->addColumn('checkbox', function ($order) {
+            })->addColumn('room_number', function ($order) {
+            $room_number = null;
+            if (isset($order->room_id)) {
+                $room = Helper::findRoom(($order->room_id));
+                $room_number = $room->number;
+            }
+            return $room_number;
+        })->addColumn('checkbox', function ($order) {
             $checkBox = '<input type="checkbox" id="' . $order->id . '"/>';
             return $checkBox;
         })->editColumn('status', function ($order) {
@@ -114,9 +117,9 @@ class KitchenOrdersDataTable extends DataTable
         return [
             'order_number',
             'table_number',
-            'item',
-            'quantity',
+            'room_id',
             'status',
+            'order_date',
             'created_by'
         ];
     }

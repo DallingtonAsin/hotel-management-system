@@ -9,8 +9,12 @@ class KitchenOrderInvoice extends Model
 {
     use HasFactory;
 
+
+    protected $table = 'kitchen_order_invoices';
+    public $timestamps = true;
+
     // Fillable fields
-    protected $fillable = ['kitchen_order_id', 'invoice_total', 'paid_at'];
+    protected $fillable = ['order_number', 'invoice_total', 'status'];
 
     // Relationships
     public function kitchenOrder()

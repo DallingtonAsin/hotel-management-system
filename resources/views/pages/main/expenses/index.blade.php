@@ -275,16 +275,6 @@
 
             Numberize(".amount");
 
-
-            function FormatNumber(number) {
-                var FormattedNumber = parseFloat(number).toLocaleString('us', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                });
-                return FormattedNumber;
-            }
-
-
             //modal used to edit expenses details [each row of the tbl]
             $('body').on('click', '#edit-expense', function(event) {
                 var expense_id = $(this).data('id');
@@ -428,14 +418,6 @@
                 $('.closeBtn').show();
             }
 
-
-            function FormatNumber(number) {
-                var FormattedNumber = parseFloat(number).toLocaleString('us', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                });
-                return FormattedNumber;
-            }
 
             function ResetTblInfo(response) {
                 var totl_amt, totl_no;

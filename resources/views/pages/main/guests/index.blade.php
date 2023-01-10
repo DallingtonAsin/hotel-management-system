@@ -288,14 +288,7 @@
                 $('.closeBtn').show();
             }
 
-            function FormatNumber(number) {
-                var FormattedNumber = parseFloat(number).toLocaleString('us', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                });
-                return FormattedNumber;
-            }
-
+         
             function ResetTblInfo(response) {
                 var totl_number, sum_of_credits, sum_of_debts;
                 totl_number = FormatNumber(response.totl_no);

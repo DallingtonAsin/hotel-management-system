@@ -59,10 +59,10 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
-                <form name="suppliers" id="SuppliersForm">
+                <form name="reservations" id="SuppliersForm">
                     @csrf
                     <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new supplier</h6>
+                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new reservation</h6>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -72,14 +72,14 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-                            <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
-                                placeholder="Enter supplier id" Required autofocus>
+                            <input type="hidden" class="form-control reservationId bg-white reservationId" name="id"
+                                placeholder="Enter reservation id" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span>Name</span>
                             <input type="text" class="form-control name bg-white" name="name"
-                                placeholder="Enter supplier name" Required autofocus>
+                                placeholder="Enter reservation name" Required autofocus>
                         </div>
 
                         <div class="form-group">
@@ -117,8 +117,8 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addsupplierBtn"
-                                name="AddsupplierBtn">Save</button>
+                            <button type="submit" class="btn btn-primary addReservationBtn"
+                                name="addReservationBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                             <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -139,13 +139,12 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
-                <form action="{{ Route('suppliers.import') }}" method="post" enctype="multipart/form-data"
-                    name="inportExpensesForm">
+                <form action="" method="post" enctype="multipart/form-data" name="inportExpensesForm">
                     @csrf
 
                     <div class="modal-header text-center">
                         <h6 class="modal-title w-100 font-weight-bold">
-                            Import an excel file of suppliers </h6>
+                            Import an excel file of reservations </h6>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -181,14 +180,14 @@
     </div>
 
 
-    <!--Modal Deletesuppliers -->
+    <!--Modal Deletereservations -->
     <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
         aria-labelledby="ModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier</h6>
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete reservation</h6>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -198,7 +197,7 @@
 
                     <div class="form-group">
                         <div class="text-center">
-                            <label class="text-danger delete-alert-text">Are you sure you want to delete this supplier
+                            <label class="text-danger delete-alert-text">Are you sure you want to delete this reservation
                                 <small class="text-dark text-muted bolded">
                                 </small>
                                 ?
@@ -214,13 +213,7 @@
                 </div>
             </div>
         </div>
-    </div> <!-- end of modal Deletesuppliers-->
-
-
-
-    {{-- <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script> --}}
-
+    </div> <!-- end of modal Delete reservations-->
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -229,8 +222,8 @@
             }
         });
         const ajaxUrl = @json(route('reservations.index.ajax'));
-        const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
-        const cat = 'supplier';
+        const deletedSeletectedUrl = @json(route('reservations.index.ajax'));
+        const cat = 'reservation';
         const token = "{{ csrf_token() }}";
 
         $(document).ready(function() {
@@ -306,10 +299,10 @@
                 e.preventDefault();
                 DisableTableFields(false);
                 ShowBtns();
-                $('.addsupplierBtn').text("Register supplier");
-                $('.supplierId').val('');
+                $('.addReservationBtn').text("Register reservation");
+                $('.reservationId').val('');
                 $('#SuppliersForm').trigger("reset");
-                $('#modalHeading').html("Register new supplier");
+                $('#modalHeading').html("Register new reservation");
                 $('#addSuppliersModal').modal('show');
             });
 
@@ -317,7 +310,7 @@
             Numberize(".debt");
             Numberize(".credit");
 
-    
+
             //Generate invoice
             $('body').on('click', '#generate-invoice', function(event) {
 
@@ -338,17 +331,17 @@
                 });
             });
 
-            //modal used to edit suppliers details [each row of the tbl]
-            $('body').on('click', '#edit-supplier', function(event) {
-                var supplier_id = $(this).data('id');
+            //modal used to edit reservations details [each row of the tbl]
+            $('body').on('click', '#edit-reservation', function(event) {
+                var reservation_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '/edit', function(data) {
+                $.get("{{ route('reservations.index') }}" + '/' + reservation_id + '/edit', function(data) {
 
-                    $('#modalHeading').html("Edit details of supplier " + data.name + "");
-                    $('.addsupplierBtn').text("Edit supplier");
+                    $('#modalHeading').html("Edit details of reservation " + data.name + "");
+                    $('.addReservationBtn').text("Edit reservation");
                     $('#addSuppliersModal').modal('show');
-                    $('.supplierId').val(data.id);
+                    $('.reservationId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -361,16 +354,16 @@
             });
 
 
-            //View Modal used to view each row [suppliers details]
-            $('body').on('click', '#view-supplier', function(event) {
-                var supplier_id = $(this).data('id');
+            //View Modal used to view each row [reservations details]
+            $('body').on('click', '#view-reservation', function(event) {
+                var reservation_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '', function(data) {
+                $.get("{{ route('reservations.index') }}" + '/' + reservation_id + '', function(data) {
 
-                    $('#modalHeading').html("Details of supplier " + data.name + "");
+                    $('#modalHeading').html("Details of reservation " + data.name + "");
                     $('#addSuppliersModal').modal('show');
-                    $('.supplierId').val(data.id);
+                    $('.reservationId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -393,7 +386,7 @@
 
                     $.ajax({
                         data: $('#SuppliersForm').serialize(),
-                        url: "{{ route('suppliers.store') }}",
+                        url: "{{ route('reservations.store') }}",
                         type: "POST",
                         dataType: 'json',
                         success: function(data) {
@@ -410,7 +403,7 @@
                         error: function(data) {
                             console.log('Error:', data.error);
                             displayResponse('.response', data.error, 'error');
-                            $('.addsupplierBtn').html('Save Changes');
+                            $('.addReservationBtn').html('Save Changes');
                         }
                     });
                 } else {
@@ -426,20 +419,20 @@
             });
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-supplier', function(e) {
-                var supplier_id = $(this).data("id");
+            $('body').on('click', '#delete-reservation', function(e) {
+                var reservation_id = $(this).data("id");
                 e.preventDefault();
                 $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
+                $(".delete-alert-text").html("Are you sure you want to delete this reservation?");
                 $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(supplier_id);
+                    ListenAndDoDeletion(reservation_id);
                 });
 
             });
 
 
             function ListenAndDoDeletion(id) {
-                var deleteUrl = '{{ route('suppliers.destroy', ':id') }}';
+                var deleteUrl = '{{ route('reservations.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
@@ -464,7 +457,7 @@
 
             function DisableTableFields(bool) {
 
-                $('.supplierId').attr('disabled', bool);
+                $('.reservationId').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
                 $('.address').attr('disabled', bool);
                 $('.contact').attr('disabled', bool);
@@ -474,25 +467,18 @@
             }
 
             function HideBtns() {
-                $('.addsupplierBtn').hide();
+                $('.addReservationBtn').hide();
                 $('.clearBtn').hide();
                 $('.closeBtn').hide();
             }
 
             function ShowBtns() {
-                $('.addsupplierBtn').show();
+                $('.addReservationBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
             }
 
-            function FormatNumber(number) {
-                var FormattedNumber = parseFloat(number).toLocaleString('us', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                });
-                return FormattedNumber;
-            }
-
+      
             function ResetTblInfo(response) {
                 var totl_number, sum_of_credits, sum_of_debts;
                 totl_number = FormatNumber(response.totl_no);
@@ -510,15 +496,15 @@
                 var contact = $('.contact').val();
                 var errors = [];
                 if (name.length < 1) {
-                    var nameErr = "Please enter the name of the supplier";
+                    var nameErr = "Please enter the name of the reservation";
                     errors.push(nameErr);
                 }
                 if (address.length < 1) {
-                    var addressErr = "Please enter the address of the supplier";
+                    var addressErr = "Please enter the address of the reservation";
                     errors.push(addressErr);
                 }
                 if (contact.length < 1) {
-                    var contactErr = "Please enter supplier's contact";
+                    var contactErr = "Please enter reservation's contact";
                     errors.push(contactErr);
                 }
 
@@ -538,8 +524,8 @@
                     closeIcon: true,
                     draggable: true,
                     closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all suppliers',
-                    content: 'Are you sure you want to remove all suppliers',
+                    title: 'Delete all reservations',
+                    content: 'Are you sure you want to remove all reservations',
                     buttons: {
                         confirm: function() {
                             var self = this;
@@ -547,7 +533,7 @@
                                 data: {
                                     "_token": "{{ csrf_token() }}",
                                 },
-                                url: '{{ Route('suppliers.truncate') }}',
+                                url: '',
                                 type: 'POST',
                             }).done(function(data) {
 
@@ -581,4 +567,5 @@
             }
         });
     </script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

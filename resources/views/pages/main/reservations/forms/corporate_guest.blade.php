@@ -4,12 +4,7 @@
 
         <div class="form-group">
             <input type="hidden" class="form-control bg-white"  
-             name="guest_type" value="Corporate" autocomplete="on">
-        </div>
-
-        <div class="form-group">
-            <input type="text" class="form-control bg-white"  placeholder="Enter guest type"
-                name="name" value="Corporate" autocomplete="on" hidden="true">
+             name="guest_type" value="Corporate" autocomplete="off">
         </div>
 
         <div class="row form-group">

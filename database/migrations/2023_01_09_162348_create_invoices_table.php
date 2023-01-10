@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKitchenOrderInvoicesTable extends Migration
+class CreateInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateKitchenOrderInvoicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('kitchen_order_invoices', function (Blueprint $table) {
-          
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('order_number');
             $table->double('total', 10, 2);
             $table->string('status');
             $table->timestamps();
-            $table->foreign('order_number')->references('order_number')->on('kitchen_orders')->onDelete('cascade');
-
+            $table->foreign('order_number')->references('order_number')->on('orders')->onDelete('cascade');
         });
     }
 
@@ -32,6 +30,6 @@ class CreateKitchenOrderInvoicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kitchen_order_invoices');
+        Schema::dropIfExists('invoices');
     }
 }

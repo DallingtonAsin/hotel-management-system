@@ -396,10 +396,7 @@ $.ajax({
           $('.closeBtn').show();
   }
 
-  function FormatNumber(number){
-   var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
-   return FormattedNumber;
-  }
+
 
 function ResetTblInfo(response)
  {

@@ -151,3 +151,17 @@ table {
   line-height: 2px !important;
 }
 
+
+tfoot tr {
+  display: flex;
+  justify-content: flex-end;
+}
+
+tfoot {
+  text-align: right;
+  float:right;
+}
+
+#subtotal, #tax, #total{
+  text-align: right;
+}

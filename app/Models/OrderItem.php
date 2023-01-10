@@ -5,22 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KitchenOrder extends Model
+class OrderItem extends Model
 {
     use HasFactory;
 
-    protected $table = 'kitchen_orders';
+    protected $table = 'order_items';
     public $timestamps = true;
-
     protected $fillable = [
         'order_number',
-        'table_number',
-        'room_id',
+        'item_id',
         'quantity',
-        'status',
-        'order_date',
-        'created_by'
+        'price'
     ];
-
-
 }
