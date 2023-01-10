@@ -152,11 +152,16 @@ table {
 }
 
 
-.modal-exlg{
-  width: 200000px !important;
-  /* min-height: 80%;
+tfoot tr {
   display: flex;
-  align-items: center;
-  justify-content: center; */
+  justify-content: flex-end;
 }
 
+tfoot {
+  text-align: right;
+  float:right;
+}
+
+#subtotal, #tax, #total{
+  text-align: right;
+}

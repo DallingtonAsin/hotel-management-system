@@ -35,33 +35,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- <tr>
-                            <td>1</td>
-                            <td>5</td>
-                            <td>Cheeseburger</td>
-                            <td>2</td>
-                            <td>
-                                <span class="badge badge-warning">In Progress</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>Chicken Caesar Salad</td>
-                            <td>1</td>
-                            <td>
-                                <span class="badge badge-success">Completed</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>7</td>
-                            <td>Spaghetti Carbonara</td>
-                            <td>3</td>
-                            <td>
-                                <span class="badge badge-danger">Cancelled</span>
-                            </td>
-                        </tr> --}}
                     </tbody>
                 </table>
 
@@ -160,7 +133,7 @@
 
                 <div class="card-body">
                     <div class="table-response">
-                        <table class="table table-bordered menu-item-cart">
+                        <table class="table table-bordered menu-item-cart" id="menu-item-cart">
                             <thead>
                                 <tr>
                                     <th>Item</th>
@@ -172,6 +145,13 @@
                             </thead>
                             <tbody class="menu-item-cart-body"></tbody>
                         </table>
+
+                        <div id="totals" class="float-right">
+                            <div class="d-flex"> <h5 class="mr-2">Subtotal:</h5> $<span id="subtotal">30.00</span></div>
+                            <div class="d-flex"> <h5 class="mr-2">Tax (10%):</h5> $<span id="tax">3.00</span></div>
+                            <div class="d-flex"> <h5 class="mr-2">Total:</h5>$<span id="total">33.00</span></div>
+                        </div>
+                       
                     </div>
                 </div>
 
@@ -436,7 +416,7 @@
                                     $(this).children(":eq(3)").text(FormatNumber(
                                         newTotal));
 
-                                    // updateSubTotal();
+                                    updateSubTotal();
                                     // ComputeBalance();
 
                                     inc += 1;
@@ -447,7 +427,7 @@
                             if (inc == 0) {
                                 $(".menu-item-cart-body").append(bodyData);
                                 $('.quantity').val("");
-                                // updateSubTotal();
+                                updateSubTotal();
                                 // ComputeBalance();
                             }
 
@@ -455,6 +435,22 @@
                     }
                 });
             }
+
+            function updateSubTotal(){
+                        let table = document.getElementById('menu-item-cart');
+                        let subTotal = Array.from(table.rows).slice(1).reduce((total, row) => {
+                          let Total =  row.cells[3].innerHTML;
+                          let subTotl =  Total.replace(/,/g , '').trim();
+                          return total + parseFloat(subTotl);
+                        }, 0);
+                        
+                        let tax = 0.18*subTotal;
+                        let total = subTotal + tax;
+                        document.getElementById('subtotal').innerHTML = FormatNumber(subTotal.toFixed(0));
+                        document.getElementById('tax').innerHTML = FormatNumber(tax.toFixed(0));
+                        document.getElementById('total').innerHTML = FormatNumber(total.toFixed(0));
+             }
+                
 
             $(document).on("click", ".btn-edit-cart", function() {
 
@@ -485,7 +481,7 @@
                 $(this).parents('tr').find('td:eq(3)').html(FormatNumber(newTotal));
                 $(this).parents('tr').attr('data-quantity', quantity);
 
-                // updateSubTotal();
+                updateSubTotal();
                 // ComputeBalance();
 
                 $(this).parents('tr').find('.btn-edit-cart').show();
@@ -509,7 +505,7 @@
 
             $(document).on("click", ".btn-delete-cart", function() {
                   $(this).parent().parent('tr').remove();
-                //   updateSubTotal();
+                  updateSubTotal();
                 //   ComputeBalance();
                 });
 
