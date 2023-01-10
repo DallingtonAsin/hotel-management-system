@@ -146,15 +146,14 @@
                         </table>
 
 
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between" id="menu-cart-footer">
                             <div class="float-left">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle pr-1"></i>Submit Order</button>
                             </div>
-    
                             <div id="totals" class="float-right">
-                                <div class="d-flex"> <h5 class="mr-2">Subtotal:</h5> $<span id="subtotal">30.00</span></div>
-                                <div class="d-flex"> <h5 class="mr-2">Tax (10%):</h5> $<span id="tax">3.00</span></div>
-                                <div class="d-flex"> <h5 class="mr-2">Total:</h5>$<span id="total">33.00</span></div>
+                                <div class="d-flex"> <h5 class="mr-2">Subtotal:</h5> $<span id="subtotal">0.00</span></div>
+                                <div class="d-flex"> <h5 class="mr-2">Tax (18%):</h5> $<span id="tax">0.00</span></div>
+                                <div class="d-flex"> <h5 class="mr-2">Total:</h5>$<span id="total">0.00</span></div>
                             </div>
                         </div>
                       
@@ -255,6 +254,19 @@
         const cat = 'kitchen-orders';
         populateMenuItems();
 
+        hideCartFooterIfEmptyTable();
+        function hideCartFooterIfEmptyTable(){
+                        let table = document.getElementById('menu-item-cart');
+                        let rowCount = (table.rows.length - 1);
+                        $("#menu-cart-footer").hide();
+                        // if(rowCount > 0){
+                        //     $("#menu-cart-footer").show();
+                        // }else{
+                        //     $("#menu-cart-footer").hide();
+                        // }
+            }
+
+
         $(document).ready(function() {
 
             let table = $('#kitchen-orders-table');
@@ -325,6 +337,7 @@
                     }
                 });
             }
+
 
             function populateMenuItemPrice(menu_item_id) {
 

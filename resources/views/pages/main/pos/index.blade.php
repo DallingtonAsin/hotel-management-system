@@ -125,28 +125,7 @@
     <div class="card-body">
       
       <span class="response"></span>
-      <div class="row">
-        <div class="col-lg-12 text-center nunito-font">
-          @if(session('success'))
-          <div class='alert alert-success alert-dismissible' role='alert'>
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-              <span aria-hidden='true'>&times;</span></button>
-              <strong>Yello!</strong> {{ session('success') }}<i class="fa fa-check-circle"></i>
-            </div>
-            @endif
-            
-            @if(session('fail'))
-            <div class='alert alert-danger alert-dismissible' role='alert'>
-              <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                <span aria-hidden='true'>&times;</span></button>
-                <strong>Sorry!</strong> {{ session('fail') }}
-              </div>
-              @endif
-              
-            </div>
-            
-          </div>
-
+  
          <main>
        
           <div class="table table-responsive fixedTableHead" id="cart-div">
