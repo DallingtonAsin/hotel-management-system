@@ -108,7 +108,6 @@
                             <div class="col-md-4">
                                 <label for="status"><span class="text-danger pr-1">*</span>Status</label>
                                 <select class="form-control status" name="status" id="status">
-                                    {{-- <option value="">Select order status</option> --}}
                                     <option value="In Progress" selected>In Progress</option>
                                     <option value="Completed">Completed</option>
                                     <option value="Cancelled">Cancelled</option>
@@ -119,9 +118,9 @@
 
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addMenuItemToCartBtn"
-                                name="addKotBtn">Add</button>
-                            <button type="reset" class="btn btn-danger clearBtn">Clear</button>
+                            <button type="submit" class="btn btn-xs border border-dark text-dark addMenuItemToCartBtn"
+                                name="addKotBtn">Add to Cart</button>
+                            <button type="reset" class="btn btn-xs btn-danger clearBtn"><i class="fa fa-times-circle pr-1"></i>Clear</button>
                         </div>
 
                         <div class="form-group">
@@ -146,11 +145,19 @@
                             <tbody class="menu-item-cart-body"></tbody>
                         </table>
 
-                        <div id="totals" class="float-right">
-                            <div class="d-flex"> <h5 class="mr-2">Subtotal:</h5> $<span id="subtotal">30.00</span></div>
-                            <div class="d-flex"> <h5 class="mr-2">Tax (10%):</h5> $<span id="tax">3.00</span></div>
-                            <div class="d-flex"> <h5 class="mr-2">Total:</h5>$<span id="total">33.00</span></div>
+
+                        <div class="d-flex justify-content-between">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle pr-1"></i>Submit Order</button>
+                            </div>
+    
+                            <div id="totals" class="float-right">
+                                <div class="d-flex"> <h5 class="mr-2">Subtotal:</h5> $<span id="subtotal">30.00</span></div>
+                                <div class="d-flex"> <h5 class="mr-2">Tax (10%):</h5> $<span id="tax">3.00</span></div>
+                                <div class="d-flex"> <h5 class="mr-2">Total:</h5>$<span id="total">33.00</span></div>
+                            </div>
                         </div>
+                      
                        
                     </div>
                 </div>
@@ -298,7 +305,7 @@
                 e.preventDefault();
                 DisableTableFields(false);
                 ShowBtns();
-                $('.addMenuItemToCartBtn').html("<i class='fa fa-plus-circle pr-1'></i>Add");
+                $('.addMenuItemToCartBtn').html("<i class='fa fa-plus-circle pr-1'></i>Add to Cart");
                 $('.kotId').val('');
                 $('#KotForm').trigger("reset");
                 $('#modalHeading').html("Add new kitchen order");
