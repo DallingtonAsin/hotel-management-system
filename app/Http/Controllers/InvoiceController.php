@@ -16,6 +16,12 @@ use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Reservation;
 
+use App\Models\KitchenOrder;
+use App\Models\KitchenMenuItem;
+use App\Models\KitchenOrderItem;
+use App\Models\KitchenOrderInvoice;
+
+
 
 
 class InvoiceController extends Controller
@@ -122,58 +128,57 @@ class InvoiceController extends Controller
     {
 
         try {
+        
+            $kitchenOrder = KitchenOrder::find($id);
+            $order_number = $kitchenOrder->order_number;
+
+            $order_items = KitchenOrderItem::where('order_number', $order_number)->get();
+            foreach($order_items as $item){
+                $item->name = KitchenMenuItem::where('id', $item->item_id)->value('name');
+            }
+            $invoice = KitchenOrderInvoice::where('order_number', $order_number)->first();
+
+            // dd($kitchenOrder);
             // $invoice = InvoiceGuest::find($id);
             $directory = 'invoices';
             $this->createInvoicesDirIfnotExists(($directory));
    
             $count = Company::count();
-            $company = [];
+            $hotel = [];
             if($count > 0){
-                $company = Company::first();
+                $hotel = Company::first();
             }
 
-            $invoice = InvoiceGuest::where('reservation_id', $id)->first();
-            $reservation = Reservation::find($id);
-            $guest_type_id = $reservation->guest_type_id;
-            $guestTypeObj = GuestType::find($guest_type_id);
-            $guestType = $guestTypeObj->name;
+            // $invoice = InvoiceGuest::where('reservation_id', $id)->first();
+            // $reservation = Reservation::find($id);
+            // $guest_type_id = $reservation->guest_type_id;
+            // $guestTypeObj = GuestType::find($guest_type_id);
+            // $guestType = $guestTypeObj->name;
 
-            $is_corporate = (stripos($guestType, 'corporate') !== false);
+            // $is_corporate = (stripos($guestType, 'corporate') !== false);
 
-            $occupancy_type = $reservation->occupancy_type;
-            $guest_id = $reservation->guest_id;
-            $guest = Guest::find($guest_id);
+            // $occupancy_type = $reservation->occupancy_type;
+            // $guest_id = $reservation->guest_id;
+            // $guest = Guest::find($guest_id);
          
-            $room = Room::find($reservation->room_id);
-            $room_type_id = $room->type_id;
+            // $room = Room::find($reservation->room_id);
+            // $room_type_id = $room->type_id;
            
-            $roomType = RoomType::find($room_type_id);
-            $room_type = $roomType->name;
-
-            $tax_fees = $invoice->total * 0.18;
+            // $roomType = RoomType::find($room_type_id);
+            // $room_type = $roomType->name;
 
 
-            if (stripos($occupancy_type, 'single') !== false) {
-                $price_rate = number_format($roomType->single_occupancy_rate);
-            } else {
-                $price_rate = number_format($roomType->double_occupancy_rate);
-            }
+            $filename = 'invoice-'.$kitchenOrder->order_number.'-' . $kitchenOrder->id . '.pdf';
 
-            $total_amount = $invoice->total + $tax_fees;
 
-            $filename = 'invoice-'.$guest->first_name.'-'.$guest->last_name.'-' . $id . '.pdf';
+            // $filename = 'invoice-'.$guest->first_name.'-'.$guest->last_name.'-' . $id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
 
             $pdf = PDF::loadView('pages.main.invoices.kitchen_order', [
-                'is_corporate' => $is_corporate,
+                'kitchenOrder' => $kitchenOrder,
+                'order_items' => $order_items,
+                'hotel' => $hotel,
                 'invoice' => $invoice,
-                'guest' => $guest,
-                'company' => $company,
-                'reservation' => $reservation,
-                'room_type' => $room_type,
-                'price_rate' => $price_rate,
-                'tax_fees' => $tax_fees,
-                'total_amount' => $total_amount
             ]);
             $pdf->save($path);
 
@@ -184,6 +189,7 @@ class InvoiceController extends Controller
             return response()->json(['url' => $url]);
 
         } catch (\Exception $ex) {
+            dd($ex->getMessage());
             return back()->with('error', $ex->getMessage());
         }
 

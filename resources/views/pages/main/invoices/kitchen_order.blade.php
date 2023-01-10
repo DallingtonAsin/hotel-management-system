@@ -8,21 +8,21 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1 class="text-center">Hotel Kitchen Order Invoice</h1>
+        <h1 class="text-center">Casa Miltu Hotel Kitchen Order Invoice</h1>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
-        <p>Order ID: {{ $order->id }}</p>
-        <p>Order Date: {{ $order->created_at }}</p>
-        <p>Room Number: {{ $order->room_number }}</p>
-        <p>Guest Name: {{ $order->guest_name }}</p>
+        <p>Order ID: {{ $kitchenOrder->order_number }}</p>
+        <p>Order Date: {{ $kitchenOrder->order_date }}</p>
+        <p>Room Number: {{ $kitchenOrder->room_id }}</p>
+        {{-- <p>Guest Name: {{ $order->guest_name }}</p> --}}
       </div>
       <div class="col-md-6">
-        <p>Hotel Name: {{ $hotel->name }}</p>
+        {{-- <p>Hotel Name: {{ $hotel->name }}</p>
         <p>Address: {{ $hotel->address }}</p>
         <p>Phone: {{ $hotel->phone }}</p>
-        <p>Email: {{ $hotel->email }}</p>
+        <p>Email: {{ $hotel->email }}</p> --}}
       </div>
     </div>
     <div class="row">
@@ -32,22 +32,22 @@
             <tr>
               <th>Item</th>
               <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
+              <th>Price($)</th>
+              <th>Total($)</th>
             </tr>
           </thead>
           <tbody>
-            {{-- @foreach($order->items as $item)
+            @foreach($order_items as $item)
               <tr>
                 <td>{{ $item->name }}</td>
-                <td>{{ $item->pivot->quantity }}</td>
-                <td>{{ $item->price }}</td>
-                <td>{{ $item->pivot->quantity * $item->price }}</td>
+                <td>{{ number_format($item->quantity) }}</td>
+                <td>{{ number_format($item->price) }}</td>
+                <td>{{ number_format($item->total) }}</td>
               </tr>
-            @endforeach --}}
+            @endforeach
             <tr>
               <td colspan="3" class="text-right">Total:</td>
-              {{-- <td>{{ $order->total_price }}</td> --}}
+              <td>{{ number_format($invoice->total) }}</td>
             </tr>
           </tbody>
         </table>
