@@ -20,6 +20,7 @@ class CreateKitchenOrderItemsTable extends Migration
             $table->unsignedBigInteger('item_id');
             $table->integer('quantity');
             $table->double('price', 10, 2);
+            $table->double('total', 10, 2);
             $table->timestamps();
 
             $table->foreign('order_number')->references('order_number')->on('kitchen_orders')->onDelete('cascade');
@@ -34,6 +35,8 @@ class CreateKitchenOrderItemsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('kitchen_order_items');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

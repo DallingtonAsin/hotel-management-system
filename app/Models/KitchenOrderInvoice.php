@@ -14,7 +14,7 @@ class KitchenOrderInvoice extends Model
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = ['order_number', 'invoice_total', 'status'];
+    protected $fillable = ['order_number', 'subtotal', 'tax', 'total', 'status'];
 
     // Relationships
     public function kitchenOrder()

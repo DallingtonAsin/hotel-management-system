@@ -135,14 +135,14 @@ Route::get('/kitchen-orders/fetch/ajax', 'KitchenOrderController@getKitchenOrder
 
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
 Route::get('invoice/reservation/download/{id}', 'InvoiceController@downloadReservationInvoice')->name('invoice.generate');
-Route::get('invoice/kitchen-order/download/{id}', 'InvoiceController@downloadKitchenOrderInvoice')->name('kitchen-order.invoice.generate');
-
 
 Route::get('accounting/balance-sheet', 'AccountingController@generateBalanceSheet')->name('accounting.balance_sheet');
 Route::get('accounting/cash-flow-statement', 'AccountingController@generateCashFlowStatement')->name('accounting.cash_flow_statement');
 Route::get('accounting/general-ledger', 'AccountingController@generateGeneralLedger')->name('accounting.general_ledger');
 
+Route::get('invoice/kitchen-order/download/{id}', 'InvoiceController@downloadKitchenOrderInvoice')->name('kitchen-order.invoice.generate');
 Route::put('kitchen-order/update/{id}', 'KitchenOrderController@changeKitchenOrderStatus')->name('kitchen-order.status.update');
+Route::post('kitchen-order/post','KitchenOrderController@storeKitchenOrder')->name('kitchen-order.submit');
 
 Route::get('reports/expenses/monthly', 'ReportsController@monthlyExpensesReportIndex')->name('reports.expenses.monthly');
 Route::get('reports/expenses/monthly/ajax', 'ReportsController@getMonthlyExpensesReport')->name('reports.expenses.monthly.ajax');

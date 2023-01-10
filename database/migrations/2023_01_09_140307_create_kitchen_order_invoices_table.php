@@ -17,6 +17,8 @@ class CreateKitchenOrderInvoicesTable extends Migration
           
             $table->id();
             $table->string('order_number');
+            $table->double('subtotal', 10, 2);
+            $table->double('tax', 10, 2);
             $table->double('total', 10, 2);
             $table->string('status');
             $table->timestamps();
@@ -32,6 +34,8 @@ class CreateKitchenOrderInvoicesTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('kitchen_order_invoices');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

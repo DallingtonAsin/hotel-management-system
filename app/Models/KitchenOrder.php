@@ -16,7 +16,6 @@ class KitchenOrder extends Model
         'order_number',
         'table_number',
         'room_id',
-        'quantity',
         'status',
         'order_date',
         'created_by'
