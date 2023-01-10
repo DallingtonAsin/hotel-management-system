@@ -76,3 +76,19 @@ function populateGuests() {
         }
     });
 }
+
+
+function populateMenuItems() {
+    $.ajax({
+        type: "GET",
+        url: menuItemsAjaxUrl,
+        success: function (resp) {
+            let obj = JSON.parse(resp);
+            for (let i = 0; i < obj.length; i++) {
+                let id = obj[i]['id'];
+                let menu_item = obj[i]['name'];
+                $('.menu-items-section').append('<option value=' + id + '>' + menu_item + '</option>');
+            }
+        }
+    });
+}

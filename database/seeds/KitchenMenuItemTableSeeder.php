@@ -28,15 +28,6 @@ class KitchenMenuItemTableSeeder extends Seeder
             'category' => 'Breakfast',
         ]);
 
-
-        KitchenMenuItem::create([
-            'name' => 'French Toast',
-            'description' =>  'Thick slices of bread dipped in a rich egg and milk mixture and grilled to perfection, served with maple syrup and butter.',
-            'price' => 5000,
-            'category' => 'Breakfast',
-        ]);
-
-
         KitchenMenuItem::create([
             'name' => 'Fried Calamari',
             'description' =>  'Lightly fried calamari strips served with a spicy marinara sauce for dipping.',

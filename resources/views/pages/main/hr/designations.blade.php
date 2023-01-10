@@ -254,10 +254,6 @@
                 $('#addDesignationModal').modal('show');
             });
 
-
-            Numberize(".debt");
-            Numberize(".credit");
-
             //modal used to edit designations details [each row of the tbl]
             $('body').on('click', '#edit-designation', function(event) {
                 let designation_id = $(this).data('id');
@@ -403,14 +399,7 @@
                 $('.closeBtn').show();
             }
 
-            function FormatNumber(number) {
-                let FormattedNumber = parseFloat(number).toLocaleString('us', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                });
-                return FormattedNumber;
-            }
-
+        
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
                 $('.total_designations').html(totl_number);

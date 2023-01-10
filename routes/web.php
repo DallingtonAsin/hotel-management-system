@@ -51,6 +51,9 @@ Route::get('rooms/ajax','RoomController@fetchRoomsAjax')->name('rooms.ajax.fetch
 Route::post('rooms/ajax/suggestions','RoomController@suggestRooms')->name('rooms.ajax.suggest');
 Route::get('staff-members/ajax','UserController@fetchStaffAjax')->name('staff.ajax.fetch');
 Route::get('guests/ajax','GuestController@fetchGuestsAjax')->name('guests.ajax.fetch');
+Route::get('kitchen/menu-items/ajax','kitchen\MenuItemController@fetchMenuItemsAjax')->name('kitchen-menu-items.ajax.fetch');
+Route::get('kitchen/menu-item/price/{menu_item_id}','kitchen\MenuItemController@getMenuItemPrice')->name('menu-item.price.ajax.fetch');
+Route::get('kitchen/item/{menu_item_id}','kitchen\MenuItemController@getMenuItem')->name('menu-item.get');
 
 
 
@@ -191,6 +194,7 @@ Route::post('pos/record','CartController@MakeSaleGateway')->name('sale.transact'
 Route::post('sale/transact','CartController@recordSale')->name('sale.record');
 
 Route::post('pos/barcode/getItem','CartController@GetCartData')->name('item.get');
+
 Route::post('pos/search','CartController@searchItem')->name('item.search');
 Route::post('pos/searchprice','CartController@getItemPrice')->name('cart.searchprice');
 Route::post('users/search/role','UserController@searchRole')->name('user.searchrole');

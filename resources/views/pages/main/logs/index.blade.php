@@ -252,11 +252,6 @@ function ResetTblInfo(response)
      $('.totl_logs').html(totl_logs);
  }
 
- function FormatNumber(number){
-   var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
-   return FormattedNumber;
-  }
-
 
 function DisableTableFields(bool){
       $('.log').attr('disabled', bool);

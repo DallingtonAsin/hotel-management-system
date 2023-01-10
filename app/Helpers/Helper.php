@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Designation;
+use App\Models\KitchenMenuItem;
 use Illuminate\Http\Request;
 use App\Models\ErrorLog;
 use App\Models\Stock;
@@ -514,6 +515,16 @@ class Helper
     try{
       $room = Room::find($room_id);
       return $room;
+
+    }catch(\Exception $ex){
+      throw $ex;
+    }
+  }
+
+  public static function getMenuItem($menu_item_id){
+    try{
+      $menuItem = KitchenMenuItem::find($menu_item_id);
+      return $menuItem;
 
     }catch(\Exception $ex){
       throw $ex;

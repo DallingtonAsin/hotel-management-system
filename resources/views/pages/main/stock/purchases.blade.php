@@ -510,11 +510,6 @@ Numberize(".wholesale_price");
 
    });
 
-   function FormatNumber(number){
-   var FormattedNumber = parseInt(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
-   return FormattedNumber;
-  }
-
   function FormatDate(givenDate)
   {
     var result = moment(givenDate).format('dd-MM-yyyy');

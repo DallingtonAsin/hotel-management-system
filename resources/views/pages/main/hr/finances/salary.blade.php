@@ -383,13 +383,6 @@
                 $('.closeBtn').show();
             }
 
-            function FormatNumber(number) {
-                let FormattedNumber = parseFloat(number).toLocaleString('us', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                });
-                return FormattedNumber;
-            }
 
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);

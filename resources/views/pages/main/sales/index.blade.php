@@ -655,11 +655,7 @@
     $('.date').attr('disabled', boolx);
   }
 
-  function FormatNumber(number){
-   var FormattedNumber = parseFloat(number).toLocaleString('us', {minimumFractionDigits: 0, maximumFractionDigits: 0});
-   return FormattedNumber;
- }
-
+ 
  function ShowHideBtns(action){
 
   if(action == 'hide'){
