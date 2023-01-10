@@ -153,10 +153,13 @@ class ReservationController extends Controller
                 ];
 
                 $exists = $this->checkIfGuestExists($phone_number, $email);
-
+           
                 if ($exists) {
+
                     $findGuest = Guest::where('phone_number', $phone_number)->first();
+                    Guest::where('phone_number', $phone_number)->update($guestData);
                     $guest_id = $findGuest->id;
+
                 } else {
                     $guest = $this->addNewGuest($guestData);
                     if ($guest) {
@@ -228,9 +231,9 @@ class ReservationController extends Controller
     {
         try {
             $obj = Guest::where('phone_number', $phone_number);
-            if ($email) {
-                $obj = $obj->where('email', $email);
-            }
+            // if ($email) {
+            //     $obj = $obj->where('email', $email);
+            // }
             $exists = $obj->exists();
             return $exists;
 

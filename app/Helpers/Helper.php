@@ -12,6 +12,7 @@ use App\Models\Sale;
 use App\Models\Expense;
 use App\Models\Damage;
 use App\Models\Supplier;
+use App\Models\Room;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
@@ -504,6 +505,16 @@ class Helper
     try{
       $order_number = IdGenerator::generate(['table' => $table, 'field' => $column,  'length' => $length, 'prefix' => $prefix]);
       return $order_number;
+    }catch(\Exception $ex){
+      throw $ex;
+    }
+  }
+
+  public static function findRoom($room_id){
+    try{
+      $room = Room::find($room_id);
+      return $room;
+
     }catch(\Exception $ex){
       throw $ex;
     }

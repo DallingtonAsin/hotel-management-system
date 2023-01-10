@@ -131,7 +131,9 @@ Route::get('/kitchen-orders/fetch/ajax', 'KitchenOrderController@getKitchenOrder
 
 
 Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
-Route::get('invoice/download/{id}', 'InvoiceController@download')->name('invoice.generate');
+Route::get('invoice/reservation/download/{id}', 'InvoiceController@downloadReservationInvoice')->name('invoice.generate');
+Route::get('invoice/kitchen-order/download/{id}', 'InvoiceController@downloadKitchenOrderInvoice')->name('kitchen-order.invoice.generate');
+
 
 Route::get('accounting/balance-sheet', 'AccountingController@generateBalanceSheet')->name('accounting.balance_sheet');
 Route::get('accounting/cash-flow-statement', 'AccountingController@generateCashFlowStatement')->name('accounting.cash_flow_statement');

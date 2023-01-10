@@ -27,9 +27,9 @@
                             <th>#</th>
                             <th>Order #</th>
                             <th>Table #</th>
-                            <th>Item</th>
-                            <th>Quantity</th>
+                            <th>Room #</th>
                             <th>Status</th>
+                            <th>Order date</th>
                             <th>Created By</th>
                             <th>Action</th>
                         </tr>
@@ -242,17 +242,17 @@
                     name: 'table_number'
                 },
                 {
-                    data: 'item',
-                    name: 'item'
+                    data: 'room_number',
+                    name: 'room_number'
                 },
 
                 {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
-                {
                     data: 'status',
                     name: 'status'
+                },
+                {
+                    data: 'order_date',
+                    name: 'order_date'
                 },
                 {
                     data: 'created_by',
@@ -324,6 +324,26 @@
                     DisableTableFields(true);
                     HideBtns();
                 })
+            });
+
+            //Generate invoice
+            $('body').on('click', '#download-invoice', function(event) {
+
+                var invoice_id = $(this).data('id');
+                let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
+                url = url.replace(':id', invoice_id);
+
+                event.preventDefault();
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(response) {
+
+                        let returned_url = response.url;
+                        console.log('Returned url is', response.url);
+                        window.open(returned_url, '_blank');
+                    }
+                });
             });
 
 
@@ -454,7 +474,7 @@
                     type: "DELETE",
                     url: deleteUrl,
                     success: function(data) {
-                        
+
                         let resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");

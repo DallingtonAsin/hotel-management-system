@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             PaymentTableSeeder::class,
 
             KitchenOrderTableSeeder::Class,
+            KitchenMenuItemTableSeeder::class,
 
             StockTableSeeder::class,
             CustomersTableSeeder::class,
@@ -40,6 +41,8 @@ class DatabaseSeeder extends Seeder
             StockCategoriesTableSeeder::class,
             SuppliersTableSeeder::class,
             PurchasesTableSeeder::class,
+
+
         ]);
         
     }
