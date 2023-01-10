@@ -20,7 +20,7 @@ use App\Models\KitchenOrder;
 use App\Models\KitchenMenuItem;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
-
+use App\Helpers\Helper;
 
 
 
@@ -55,8 +55,8 @@ class InvoiceController extends Controller
     {
 
         try {
-            // $invoice = InvoiceGuest::find($id);
-            $directory = 'invoices';
+
+            $directory = 'invoices/reservations';
             $this->createInvoicesDirIfnotExists(($directory));
    
             $count = Company::count();
@@ -129,8 +129,22 @@ class InvoiceController extends Controller
 
         try {
         
+
+            $directory = 'invoices/kitchen_orders';
+            $this->createInvoicesDirIfnotExists(($directory));
+
             $kitchenOrder = KitchenOrder::find($id);
             $order_number = $kitchenOrder->order_number;
+            $guest = null;
+
+            if(isset($kitchenOrder->room_id)){
+              $room_id = $kitchenOrder->room_id;
+              $room = Helper::findRoom($room_id);
+              $kitchenOrder->room_number = $room->number;
+              $reservation = Reservation::where('room_id', $room_id)->latest()->first();
+              $guest_id = $reservation->guest_id;
+              $guest = Guest::find($guest_id);
+            }
 
             $order_items = KitchenOrderItem::where('order_number', $order_number)->get();
             foreach($order_items as $item){
@@ -138,10 +152,6 @@ class InvoiceController extends Controller
             }
             $invoice = KitchenOrderInvoice::where('order_number', $order_number)->first();
 
-            // dd($kitchenOrder);
-            // $invoice = InvoiceGuest::find($id);
-            $directory = 'invoices';
-            $this->createInvoicesDirIfnotExists(($directory));
    
             $count = Company::count();
             $hotel = [];
@@ -149,27 +159,7 @@ class InvoiceController extends Controller
                 $hotel = Company::first();
             }
 
-            // $invoice = InvoiceGuest::where('reservation_id', $id)->first();
-            // $reservation = Reservation::find($id);
-            // $guest_type_id = $reservation->guest_type_id;
-            // $guestTypeObj = GuestType::find($guest_type_id);
-            // $guestType = $guestTypeObj->name;
-
-            // $is_corporate = (stripos($guestType, 'corporate') !== false);
-
-            // $occupancy_type = $reservation->occupancy_type;
-            // $guest_id = $reservation->guest_id;
-            // $guest = Guest::find($guest_id);
-         
-            // $room = Room::find($reservation->room_id);
-            // $room_type_id = $room->type_id;
-           
-            // $roomType = RoomType::find($room_type_id);
-            // $room_type = $roomType->name;
-
-
             $filename = 'invoice-'.$kitchenOrder->order_number.'-' . $kitchenOrder->id . '.pdf';
-
 
             // $filename = 'invoice-'.$guest->first_name.'-'.$guest->last_name.'-' . $id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
@@ -179,10 +169,11 @@ class InvoiceController extends Controller
                 'order_items' => $order_items,
                 'hotel' => $hotel,
                 'invoice' => $invoice,
+                'guest' => $guest
             ]);
             $pdf->save($path);
 
-            $subpath = 'invoices/' . $filename;
+            $subpath = ''.$directory.'/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
           
           

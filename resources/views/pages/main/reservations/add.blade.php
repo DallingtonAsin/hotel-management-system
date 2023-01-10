@@ -45,6 +45,7 @@
 
     <script>
         const roomsAjaxUrl = @json(route('rooms.ajax.fetch'));
+        const searchRoomUrl = @json(route('rooms.ajax.suggest'));
         populateRooms();
         onSelectGuestType();
 
@@ -80,33 +81,7 @@
             });
         });
 
-    
-        onTypingRoomNumber();
-
-        function onTypingRoomNumber() {
-            let search_qry = $('.room_number').val();
-            $('.room_number').typeahead({
-                source: function(search_qry, result) {
-                    $.ajax({
-                        url: "{{ route('rooms.ajax.suggest') }}",
-                        method: 'post',
-                        data: {
-                            query: search_qry,
-                        },
-                        dataType: 'json',
-                        success: function(data) {
-                            console.log(`Got data`, data);
-                            result($.map(data, function(item) {
-                                return item;
-                            }));
-                        },
-                        error: function(data) {
-                            console.log(data);
-                        },
-                    });
-                }
-            });
-        }
+        onTypingRoomNumber('.room_number');
 
         let urlParams = new URLSearchParams(window.location.search);
         let tab = urlParams.get('tab');
