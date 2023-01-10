@@ -73,7 +73,7 @@ class Helper
       return $item;
 
     } catch (\Exception $ex) {
-     throw $ex;
+      throw $ex;
     }
   }
 
@@ -83,7 +83,7 @@ class Helper
       $result = floatval(preg_replace('/[^\d.]/', '', $input));
       return $result;
     } catch (\Exception $ex) {
-     throw $ex;
+      throw $ex;
     }
   }
 
@@ -103,7 +103,7 @@ class Helper
       $department = Department::where('id', $departmentId)->value('name');
       return $department;
     } catch (\Exception $ex) {
-     throw $ex;
+      throw $ex;
     }
   }
 
@@ -113,7 +113,7 @@ class Helper
       $designation = Designation::where('id', $designationId)->value('name');
       return $designation;
     } catch (\Exception $ex) {
-     throw $ex;
+      throw $ex;
     }
   }
 
@@ -123,7 +123,7 @@ class Helper
       $roles = Department::get();
       return $roles;
     } catch (\Exception $ex) {
-     throw $ex;
+      throw $ex;
     }
   }
 
@@ -300,7 +300,7 @@ class Helper
       ]);
       return true;
     } catch (Exception $ex) {
-     throw $ex;
+      throw $ex;
     }
   }
 
@@ -429,7 +429,7 @@ class Helper
 
       $profitForEachMonth = Helper::getProfitsForAGivenMonth($row->SalesYear, $row->month_int);
       $totalProfits += $profitForEachMonth;
-      
+
       array_push($months, date("F", mktime(0, 0, 0, $row->month_int, 10)));
       array_push($profits, $profitForEachMonth);
       array_push($years, $row->SalesYear);
@@ -502,33 +502,87 @@ class Helper
     return $user;
   }
 
-  public static function getOrderNumber($table, $column, $length, $prefix){
-    try{
-      $order_number = IdGenerator::generate(['table' => $table, 'field' => $column,  'length' => $length, 'prefix' => $prefix]);
+  public static function getOrderNumber($table, $column, $length, $prefix)
+  {
+    try {
+      $order_number = IdGenerator::generate(['table' => $table, 'field' => $column, 'length' => $length, 'prefix' => $prefix]);
       return $order_number;
-    }catch(\Exception $ex){
+    } catch (\Exception $ex) {
       throw $ex;
     }
   }
 
-  public static function findRoom($room_id){
-    try{
+  public static function findRoom($room_id)
+  {
+    try {
       $room = Room::find($room_id);
       return $room;
 
-    }catch(\Exception $ex){
+    } catch (\Exception $ex) {
       throw $ex;
     }
   }
 
-  public static function getMenuItem($menu_item_id){
-    try{
+  public static function getMenuItem($menu_item_id)
+  {
+    try {
       $menuItem = KitchenMenuItem::find($menu_item_id);
       return $menuItem;
 
-    }catch(\Exception $ex){
+    } catch (\Exception $ex) {
       throw $ex;
     }
+  }
+
+  public static function createOrUpdatePurchase($row)
+  {
+
+    try {
+
+      $id = $row['id'];
+      if (isset($id)) {
+
+        $purchaseArr = [
+          'serial_no' => $row['sno'],
+          'receipt_no' => $row['receipt_no'],
+          'item_id' => $row['item_id'],
+          'item' => $row['item'],
+          'quantity' => Helper::Numberize($row['qty']),
+          'cost_price_per_item' => Helper::Numberize($row['price_per_item']),
+          'retail_price' => Helper::Numberize($row['retail_price']),
+          'wholesale_price' => Helper::Numberize($row['wholesale_price']),
+          'supplier' => $row['supplier'],
+          'supplier_contact' => $row['suppliers_contact'],
+          'recorded_by' => Auth::user()->name,
+          'date_of_purchase' => $row['date_of_purchase'],
+        ];
+
+        Purchase::where('id', $id)
+          ->update($purchaseArr);
+
+      } else {
+
+        $purchase = new Purchase();
+        $purchase->serial_no = $row['sno'];
+        $purchase->receipt_no = $row['receipt_no'];
+        $purchase->item_id = $row['item_id'];
+        $purchase->item = $row['item'];
+        $purchase->quantity = Helper::Numberize($row['qty']);
+        $purchase->cost_price_per_item = Helper::Numberize($row['price_per_item']);
+        $purchase->retail_price = Helper::Numberize($row['retail_price']);
+        $purchase->wholesale_price = Helper::Numberize($row['wholesale_price']);
+        $purchase->supplier = $row['supplier'];
+        $purchase->supplier_contact = $row['suppliers_contact'];
+        $purchase->recorded_by = Auth::user()->name;
+        $purchase->date_of_purchase = $row['date_of_purchase'];
+        $purchase->save();
+
+      }
+      return true;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+
   }
 
 }

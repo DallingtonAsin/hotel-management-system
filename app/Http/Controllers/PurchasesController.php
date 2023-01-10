@@ -59,62 +59,64 @@ class PurchasesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-   
-      $message = '';
-      $purchase_id = $request->input('id');
-      $serial_no = $request->input('serial_no');
-      $receipt_no = $request->input('receipt_no');
-      $item_code = $request->input('item_code');
-      $item = $request->input('item');
-      $quantity = floatval($request->input('quantity'));
-      $cost_price_per_item = floatval(Helper::Numberize($request->input('cost_price')));
-      $retail_price = floatval(Helper::Numberize($request->input('retail_price')));
-      $wholesale_price = floatval(Helper::Numberize($request->input('wholesale_price')));
-      $supplier = $request->input('supplier');
-      $supplier_contact = $request->input('supplier_contact');
-      $created_by = Auth::user()->name;
-      $date_of_purchase = $request->input('date_of_purchase');
-
-try {
-
-
-  if(Helper::isItemInStock($item)){
-        $qty = Helper::getItemQty($item);
-        $newQty = $qty + floatval($quantity);
-         Stock::where('item', $item)
-           ->update(['quantity' => $newQty]);
-          $sessionVariable = 'success';
-          $message .= 'added purchased item in purchases collection and updated quantity in stock';  
-  } else{
-
+  
+      try {
+  
+        $purchase_id = $request->input('id');
+        $serial_no = $request->input('serial_no');
+        $receipt_no = $request->input('receipt_no');
+        $item_code = $request->input('item_code');
+        $item = $request->input('item');
+        $quantity = floatval($request->input('quantity'));
+        $cost_price_per_item = floatval(Helper::Numberize($request->input('cost_price')));
+        $retail_price = floatval(Helper::Numberize($request->input('retail_price')));
+        $wholesale_price = floatval(Helper::Numberize($request->input('wholesale_price')));
+        $supplier = $request->input('supplier');
+        $supplier_contact = $request->input('supplier_contact');
+        $recorded_by = Auth::user()->first_name . ' ' . Auth::user()->last_name;
+        $date_of_purchase = $request->input('date_of_purchase');
+  
         $purchase_data = [
-          'id' => $purchase_id,
-          'sno' => $serial_no,
+          'serial_no' => $serial_no,
           'receipt_no' => $receipt_no,
           'item_code' => $item_code,
           'item' => $item,
-          'qty' => $quantity,
-          'price_per_item' => $cost_price_per_item,
+          'quantity' => $quantity,
+          'cost_price_per_item' => $cost_price_per_item,
           'retail_price' => $retail_price,
           'wholesale_price' => $wholesale_price,
           'supplier' => $supplier,
-          'suppliers_contact' => $created_by,
-          'date_of_purchase' => $date_of_purchase,
+          'suppliers_contact' => $supplier_contact,
+          'created_by' => $recorded_by,
+          'date_of_purchase' => $date_of_purchase
         ];
   
-         $result = Helper::insertOrUpdatePurchase($purchase_data);
-         if($result){
-
-              $sessionVariable = 'success';
-                isset($purchase_id)
-                ? $message .= 'updated purchased item in purchases collection'
-                : $message .= 'added purchased item in purchases collection';
-
-              $stock_data = [
+        $isStored = Purchase::create($purchase_data);
+        if ($isStored) {
+          if (Helper::isItemInStock($item)) {
+  
+            $qty = Helper::getItemQty($item);
+            $newQty = $qty + floatval($quantity);
+            $isUpdated = Stock::where('item', $item)->update(['quantity' => $newQty]);
+  
+            if ($isUpdated) {
+              $arr = $this->GetPurchaseDetails();
+              return response()->json([
+                'success' => 'You have successfully added purchased item in purchases collection and updated quantity in stock',
+                'totl_no' => $arr['totl_no'],
+                'totl_purchases' => $arr['totl_purchases']
+              ]);
+            }else{
+              return response()->json(['error' => 'System has failed to update quantity in stock']);
+            }
+    
+          } else {
+    
+            $stock_data = [
               'item_code' => $item_code,
               'item' => $item,
               'qty' => $quantity,
@@ -122,62 +124,45 @@ try {
               'retail_price' => $retail_price,
               'wholesale_price' => $wholesale_price,
               'supplier' => $supplier
-              ];
+            ];
 
-            if(empty($purchase_id)){
-              $insertStockInserted =  Helper::createStock($stock_data);
-              if($insertStockInserted){
-                $sessionVariable = 'success';
-              $message .= ' and also in stock collection';
-              }else{
-                $sessionVariable = 'success';
-                $message .= ' but failed to add purchased item in stock collection';
-              }
+            $insertStockInserted = Helper::createStock($stock_data);
+            if ($insertStockInserted) {
+              $arr = $this->GetPurchaseDetails();
+              return response()->json([
+                'success' => 'You have successfully recorded purchase',
+                'totl_no' => $arr['totl_no'],
+                'totl_purchases' => $arr['totl_purchases']
+              ]);
+            } else {
+              return response()->json(['error' => 'System has failed to add new purchased item in stock']);
             }
-
-         }else{
-                $sessionVariable = 'error';
-                $message .= ' failed to add purchased item in purchases collection';
-         }
-
+    
+          }
+  
+        } else {
+          return response()->json(['error' => 'System has failed to record purchase']);
         }
-
-       } catch (\Exception $ex) {
-            $data = array(
+  
+      
+      } catch (\Exception $ex) {
+  
+        $data = array(
           'username' => auth()->user()->username,
           'error_code' => $ex->getCode(),
           'error_message' => $ex->getMessage(),
           'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
           'controller' => $this->controller,
-          'method' => 'RemoveSelected'
+          'method' => 'store'
         );
-            Helper::logError($data);
-            abort(409, $ex->getMessage());
-        }
-
-  $arr = $this->GetSumupDetails();
-  $sessionVariable == 'success' 
-  ? $message = $this->SuccessMessage($message)
-  : $message = $this->FailedMessage($message);
-
-   return response()
-   ->json([$sessionVariable => $message,
-           'totl_no' => $arr['totl'],
-           'totl_purchases' => $arr['value'],
-   ]);
-        
-
-}
-
- protected function GetSumupDetails(){
-      $totl = Purchase::count();
-      $totalValue = Purchase::sum('total_cost_price');
-      $data = array(
-          'totl' => $totl,
-          'value' => $totalValue,
-      );
-      return $data;
-  }
+  
+        Helper::logError($data);
+        return response()->json(['error' => $ex->getMessage()]);
+  
+      }
+  
+  
+    }
 
     /**
      * Display the specified resource.
@@ -208,7 +193,7 @@ try {
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response
      */
 
      public function update(Request $request, $id){
@@ -252,7 +237,7 @@ try {
           'date_of_purchase' => $date_of_purchase,
         ];
   
-         $result = Helper::insertOrUpdatePurchase($purchase_data);
+         $result = Helper::createOrUpdatePurchase($purchase_data);
          $sessionVariable = 'success'; 
          isset($purchase_id)
                 ? $message .= 'updated purchased item in purchases collection'
@@ -306,7 +291,7 @@ try {
             abort(409, $ex->getMessage());
         }
 
-        $arr = $this->GetSumupDetails();
+        $arr = $this->GetPurchaseDetails();
         $sessionVariable == 'success' 
         ? $message = $this->SuccessMessage($message)
         : $message = $this->FailedMessage($message);

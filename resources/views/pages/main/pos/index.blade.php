@@ -169,6 +169,9 @@
       
       
       <script type="text/javascript">
+
+        const onSearchItemUrl = @json(route('item.search'));
+        onSearchItem('#item-name');
         
         $.ajaxSetup({
           headers: {
@@ -561,28 +564,7 @@
                       
                   }
                     
-                    let item_name = $('#item-name').val();
-                    $("#item-name").typeahead({
-                      source:function(item_name,result){
-                        $.ajax({
-                          url:"{{ Route('item.search') }}",
-                          method:'post',
-                          data:{
-                            query: item_name,
-                          },
-                          dataType:'json',
-                          success: function(data){
-                            result($.map(data, function(item){
-                              return item;
-                            }));
-                          },
-                          error:function(data){
-                            console.log(data);
-                          },
-                        });
-                      }
-                    });
-                    
+
                     $("#UpdateCartForm").submit(function(e){
                       return false;
                     });

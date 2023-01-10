@@ -118,3 +118,28 @@ function onTypingRoomNumber(element) {
         }
     });
 }
+
+
+function onSearchItem(element){
+    let item_name = $().val();
+    $(element).typeahead({
+      source:function(item_name,result){
+        $.ajax({
+          url: onSearchItemUrl,
+          method:'post',
+          data:{
+            query: item_name,
+          },
+          dataType:'json',
+          success: function(data){
+            result($.map(data, function(item){
+              return item;
+            }));
+          },
+          error:function(data){
+            console.log(data);
+          },
+        });
+      }
+    });
+}
