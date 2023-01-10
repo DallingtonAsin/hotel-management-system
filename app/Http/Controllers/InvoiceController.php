@@ -3,25 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use PDF;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\InvoiceGuest;
 use App\Models\Guest;
 use App\Models\GuestType;
 use App\Models\Company;
-
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Reservation;
-
 use App\Models\KitchenOrder;
 use App\Models\KitchenMenuItem;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
 use App\Helpers\Helper;
-
+use PDF;
 
 
 class InvoiceController extends Controller
@@ -60,9 +56,9 @@ class InvoiceController extends Controller
             $this->createInvoicesDirIfnotExists(($directory));
    
             $count = Company::count();
-            $company = [];
+            $hotel = [];
             if($count > 0){
-                $company = Company::first();
+                $hotel = Company::first();
             }
 
             $invoice = InvoiceGuest::where('reservation_id', $id)->first();
@@ -101,7 +97,7 @@ class InvoiceController extends Controller
                 'is_corporate' => $is_corporate,
                 'invoice' => $invoice,
                 'guest' => $guest,
-                'company' => $company,
+                'hotel' => $hotel,
                 'reservation' => $reservation,
                 'room_type' => $room_type,
                 'price_rate' => $price_rate,
@@ -110,7 +106,7 @@ class InvoiceController extends Controller
             ]);
             $pdf->save($path);
 
-            $subpath = 'invoices/' . $filename;
+            $subpath = ''.$directory.'/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
           
           
@@ -152,7 +148,6 @@ class InvoiceController extends Controller
             }
             $invoice = KitchenOrderInvoice::where('order_number', $order_number)->first();
 
-   
             $count = Company::count();
             $hotel = [];
             if($count > 0){
@@ -160,8 +155,6 @@ class InvoiceController extends Controller
             }
 
             $filename = 'invoice-'.$kitchenOrder->order_number.'-' . $kitchenOrder->id . '.pdf';
-
-            // $filename = 'invoice-'.$guest->first_name.'-'.$guest->last_name.'-' . $id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
 
             $pdf = PDF::loadView('pages.main.invoices.kitchen_order', [
@@ -180,11 +173,9 @@ class InvoiceController extends Controller
             return response()->json(['url' => $url]);
 
         } catch (\Exception $ex) {
-            dd($ex->getMessage());
             return back()->with('error', $ex->getMessage());
         }
 
-        // return $pdf->stream('nicesnippets.pdf');
     }
 
     /**

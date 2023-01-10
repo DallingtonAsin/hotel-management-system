@@ -4,17 +4,13 @@
     <link href="{{ asset('css/reservation_invoice.css') }}" rel="stylesheet">
   </head>
   <body>
-    <h1>
-      @isset($company)
-      @if (isset($company->name))
-       {{ $company->name }}
-      @else
-      {{ config('app.name') }}
-      @endif
- 
-      @endisset
+  
+    @if(isset($hotel->name))
+    <h1>{{ $hotel->name }}</h1>
+   @else
+    <h1>{{ config('app.HOTEL_NAME') }}</h1>
+   @endif
     
-    </h1>
     <h2>Invoice</h2>
     <table>
       <tr>

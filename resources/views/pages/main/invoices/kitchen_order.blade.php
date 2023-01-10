@@ -5,7 +5,12 @@
   </head>
   <body>
     <header>
-      <h1>Casa Miltu Hotel</h1>
+      @if(isset($hotel->name))
+      <h1>{{ $hotel->name }}</h1>
+     @else
+      <h1>{{ config('app.HOTEL_NAME') }}</h1>
+     @endif
+
       <h2>Kitchen Order Invoice</h2>
     </header>
 
@@ -44,15 +49,15 @@
         @endforeach
         <tr>
           <td colspan="3" class="text-right">SubTotal:</td>
-          <td>USh. {{ number_format($invoice->subtotal) }}</td>
+          <td>USh. <strong>{{ number_format($invoice->subtotal) }}</strong></td>
         </tr>
         <tr>
           <td colspan="3" class="text-right">Tax:</td>
-          <td>USh. {{ number_format($invoice->tax) }}</td>
+          <td>USh. <strong>{{ number_format($invoice->tax) }}</strong></td>
         </tr>
         <tr>
           <td colspan="3" class="text-right">Total:</td>
-          <td>USh. {{ number_format($invoice->total) }}</td>
+          <td>USh. <strong>{{ number_format($invoice->total) }}</strong></td>
         </tr>
       </tbody>
     </table>
