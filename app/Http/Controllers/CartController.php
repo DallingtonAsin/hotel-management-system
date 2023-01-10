@@ -449,11 +449,12 @@ class CartController extends Controller
         public function recordSale(Request $req){
 
             $method = "CartController@recordSale";
-            $cashier = $req->user()->name;
+            $cashier = $req->user()->first_name. ' '.$req->user()->last_name;
             $data = $req->input('tabledata');
             $customer = $req->input('customer');
             $workedon_by = $req->input('workedon_by');
             $extra_money = $req->input('extra_money');
+
             if(!empty($extra_money)){
                 $extra_money = floatval($extra_money);
             }else{

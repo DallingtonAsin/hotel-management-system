@@ -53,16 +53,16 @@
         <div class="form-group col-lg-2">
           <label>Workedon By</label>
           <input type="text" class="form-control bg-white workedon_by" id="workedon_by"
-           name="workedon_by" value="{{Auth::user()->name}}"  placeholder="WorkedOn By" disabled="true">
+           name="workedon_by" value="{{Auth::user()->first_name}} {{Auth::user()->last_name}}"  placeholder="WorkedOn By" disabled="true">
         </div>
 
         <div class="form-group col-lg-3 mt-4">
           <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
-            <i class="fa f-10 fa-minus-circle text-white"></i>Empty cart
+            <i class="fa f-10 fa-minus-circle text-white pr-1"></i>Empty cart
           </a>
    
             <a  id="printBtn" class="btn btn-sm btn-success text-white ml-3">
-              <i class="fa fa-print"></i> <strong class="f-15 print-btn-text">Print Receipt</strong>
+              <i class="fa fa-print pr-1"></i><strong class="f-15 print-btn-text">Submit</strong>
             </a>
           </div>
 
