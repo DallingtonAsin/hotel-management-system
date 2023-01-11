@@ -4,12 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Http\Controllers\LogsController;
-use App\Http\Controllers\MailController;
-use App\Http\Controllers\LogicHandler;
-use App\Models\Sales;
-use App\User;
-use App\Models\Role;
 
 
 class Kernel extends ConsoleKernel

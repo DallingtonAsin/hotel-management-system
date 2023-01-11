@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Carbon;
-use Illuminate\Auth\Middleware\Authenticate;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\LogsController;
+use App\Helpers\Helper;
 
 class CustomLoginController extends Controller
 {
@@ -24,6 +22,15 @@ class CustomLoginController extends Controller
 		$this->tbl = 'users';
 		$this->dateTime = now();
 		$this->middleware('guest')->except('logout');
+	}
+
+
+	public function retryLogin(){
+		try{
+			return view('auth/login');
+		}catch(\Exception $ex){
+			throw $ex;
+		}
 	}
 
 
@@ -65,7 +72,7 @@ class CustomLoginController extends Controller
 				}
 				if($status == 1){
 					$action = "logged into the system";
-					LogsController::logger($request, $action, $this->dateTime);
+					Helper::logger($request, $action, $this->dateTime);
 					return redirect('/home');
            
 				}
@@ -86,7 +93,7 @@ class CustomLoginController extends Controller
 
 		$action = "logged out of the system";
 		if(!empty($request->name)){
-		 LogsController::logger($request, $action, $this->dateTime);
+		 Helper::logger($request, $action, $this->dateTime);
 		}
 		Auth::logout();
 		$this->flushSessionData($request);

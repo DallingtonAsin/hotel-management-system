@@ -32,6 +32,9 @@ class DatabaseSeeder extends Seeder
             KitchenOrderTableSeeder::Class,
             KitchenMenuItemTableSeeder::class,
 
+            CurrencyTableSeeder::class,
+            FrequentContactTableSeeder::class,
+
             StockTableSeeder::class,
             CustomersTableSeeder::class,
             DamagesTableSeeder::class,
