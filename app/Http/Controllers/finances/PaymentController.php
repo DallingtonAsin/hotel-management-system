@@ -40,13 +40,13 @@ class PaymentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'guest' => 'required',
-            'invoice_id' => 'required',
+            'invoice_number' => 'required',
             'payment_method' => 'required',
             'amount' => 'required',
             'payment_date' => 'required',
@@ -59,20 +59,20 @@ class PaymentController extends Controller
             } else {
 
                 $guest_id = $request->input('guest');
-                $invoice_id = $request->input('invoice_id');
+                $invoice_number = $request->input('invoice_number');
                 $amount = Helper::Numberize($request->input('amount'));
                 $payment_method = $request->input('payment_method');
                 $payment_date = $request->input('payment_date');
                 $guest = Guest::find($guest_id);
                 $guest_name = $guest->first_name . ' ' . $guest->last_name;
 
-                $doesInvoiceExist = InvoiceGuest::where('id', $invoice_id)->exists();
+                $doesInvoiceExist = InvoiceGuest::where('invoice_number', $invoice_number)->exists();
                 if ($doesInvoiceExist) {
 
                     $created_by = Helper::getLoggedInUserId();
                     $payment_details = [
                         'guest_id' => $guest_id,
-                        'invoice_id' => $invoice_id,
+                        'invoice_number' => $invoice_number,
                         'amount' => $amount,
                         'method' => $payment_method,
                         'date' => $payment_date,

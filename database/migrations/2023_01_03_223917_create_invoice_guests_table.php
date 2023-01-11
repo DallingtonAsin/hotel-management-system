@@ -29,6 +29,7 @@ class CreateInvoiceGuestsTable extends Migration
             $table->timestamp('ts_cancelled')->nullable();
             $table->timestamps();
 
+            $table->index('invoice_number');
             $table->foreign('issued_by')->references('id')->on('users');
             $table->foreign('cancelled_by')->references('id')->on('users');
             $table->foreign('reservation_id')->references('id')->on('reservations');

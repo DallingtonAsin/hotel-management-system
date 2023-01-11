@@ -54,7 +54,7 @@
         <td class="text-right">${{number_format($invoice->amount)}}</td>
       </tr>
       <tr>
-        <th>Tax Fees:</th>
+        <th>Tax Fees (18%):</th>
         <td class="text-right">${{number_format($invoice->tax)}}</td>
       </tr>
       <tr>

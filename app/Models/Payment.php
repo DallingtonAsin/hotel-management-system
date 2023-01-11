@@ -14,7 +14,7 @@ class Payment extends Model
 	public $timestamps = true;
 	protected $fillable = [
 		'guest_id',
-		'invoice_id',
+		'invoice_number',
 		'amount',
 		'method',
 		'date',
