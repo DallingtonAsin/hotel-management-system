@@ -19,6 +19,7 @@ class KitchenMenuItemTableSeeder extends Seeder
             'description' =>  'Thick slices of bread dipped in a rich egg and milk mixture and grilled to perfection, served with maple syrup and butter.',
             'price' => 25000,
             'category' => 'Breakfast',
+            'created_by' => 1
         ]);
 
         KitchenMenuItem::create([
@@ -26,6 +27,7 @@ class KitchenMenuItemTableSeeder extends Seeder
             'description' =>  'Two eggs cooked to your liking, crispy bacon, sausage links, hash browns, and toast.',
             'price' => 35000,
             'category' => 'Breakfast',
+            'created_by' => 2
         ]);
 
         KitchenMenuItem::create([
@@ -33,6 +35,8 @@ class KitchenMenuItemTableSeeder extends Seeder
             'description' =>  'Lightly fried calamari strips served with a spicy marinara sauce for dipping.',
             'price' => 15000,
             'category' => 'Appetizers',
+            'created_by' => 1
+
         ]);
 
         KitchenMenuItem::create([
@@ -40,6 +44,7 @@ class KitchenMenuItemTableSeeder extends Seeder
             'description' =>  'A creamy blend of spinach, artichoke, and parmesan cheese, served with warm pita bread.',
             'price' => 10000,
             'category' => 'Appetizers',
+            'created_by' => 2
         ]);
 
 
@@ -49,6 +54,7 @@ class KitchenMenuItemTableSeeder extends Seeder
             'description' =>  'A 12 oz. New York strip steak, grilled to your liking and served with a herb butter.',
             'price' => 8000,
             'category' => 'Entrees',
+            'created_by' => 1
         ]);
 
 
@@ -57,6 +63,7 @@ class KitchenMenuItemTableSeeder extends Seeder
             'description' =>  'Breaded chicken breast topped with marinara sauce and melted mozzarella, served over spaghetti.',
             'price' => 12000,
             'category' => 'Entrees',
+            'created_by' => 1
         ]);
 
         KitchenMenuItem::create([
@@ -64,6 +71,7 @@ class KitchenMenuItemTableSeeder extends Seeder
             'description' =>  'A warm chocolate brownie topped with vanilla ice cream, chocolate sauce, and whipped cream.',
             'price' => 19500,
             'category' => 'Desserts',
+            'created_by' => 2
         ]);
 
 

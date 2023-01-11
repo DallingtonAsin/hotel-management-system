@@ -4,8 +4,8 @@ namespace App\DataTables\Kitchen;
 
 use App\Models\KitchenMenuItem;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
 
 class MenuItemDataTable extends DataTable
 {
@@ -17,9 +17,35 @@ class MenuItemDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'kitchen/menuitem.action');
+        return datatables($query)
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($menu_item) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+                        data-id="' . $menu_item->id . '" data-original-title="Edit" id="edit-menu-item"
+                        class="edit-btn edit-menu-item pr-4">
+                        <span class="fa fa-pen"></span></a>';
+
+                $btn .= '<a href="javascript:void(0);" id="delete-menu-item" 
+                        data-toggle="tooltip" data-original-title="Delete"
+                        data-id="' . $menu_item->id . '" class="trash-btn pr-4"">
+                        <span class="fa fa-trash-alt" ></span></a>';
+
+                $btn .= '<a href="javascript:void(0);" id="view-menu-item" 
+                        data-toggle="tooltip" data-original-title="View"
+                            data-id="' . $menu_item->id . '" class="text-info bolded">
+                        <i class="fa fa-eye" ></i></a>';
+
+                return $btn;
+
+            })->addColumn('checkbox', function ($menu_item) {
+            $checkBox = '<input type="checkbox" id="' . $menu_item->id . '"/>';
+            return $checkBox;
+        })->editColumn('created_by', function ($menu_item) {
+            return Helper::getUserNames($menu_item->created_by);
+        })->rawColumns(['checkbox', 'action']);
     }
 
     /**
@@ -63,15 +89,11 @@ class MenuItemDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+           'id',
+           'name',
+           'description',
+           'price',
+           'category'
         ];
     }
 

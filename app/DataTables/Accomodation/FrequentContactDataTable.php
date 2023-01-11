@@ -4,8 +4,8 @@ namespace App\DataTables\Accomodation;
 
 use App\Models\FrequentContact;
 use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
 
 class FrequentContactDataTable extends DataTable
 {
@@ -17,9 +17,35 @@ class FrequentContactDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'accomodation/frequentcontact.action');
+        return datatables($query)
+        ->order(function ($query) {
+            $query->orderBy('created_at', 'desc');
+        })->addIndexColumn()
+        ->addColumn('action', function ($freqContact) {
+
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+                    data-id="' . $freqContact->id . '" data-original-title="Edit" id="edit-freq-contact"
+                    class="edit-btn edit-freq-contact pr-4">
+                    <span class="fa fa-pen"></span></a>';
+
+            $btn .= '<a href="javascript:void(0);" id="delete-freq-contact" 
+                    data-toggle="tooltip" data-original-title="Delete"
+                    data-id="' . $freqContact->id . '" class="trash-btn pr-4"">
+                    <span class="fa fa-trash-alt" ></span></a>';
+
+            $btn .= '<a href="javascript:void(0);" id="view-freq-contact" 
+                    data-toggle="tooltip" data-original-title="View"
+                        data-id="' . $freqContact->id . '" class="text-info bolded">
+                    <i class="fa fa-eye" ></i></a>';
+
+            return $btn;
+
+        })->addColumn('checkbox', function ($freqContact) {
+        $checkBox = '<input type="checkbox" id="' . $freqContact->id . '"/>';
+        return $checkBox;
+    })->editColumn('created_by', function ($freqContact) {
+        return Helper::getUserNames($freqContact->created_by);
+    })->rawColumns(['checkbox', 'action']);
     }
 
     /**
@@ -63,15 +89,15 @@ class FrequentContactDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            'id',
+           'name',
+           'email',
+           'phone_number',
+           'tin',
+           'contact_person',
+           'price',
+           'currency_code',
+           'created_by'
         ];
     }
 

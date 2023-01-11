@@ -17,7 +17,8 @@ class KitchenMenuItem extends Model
         'description',
         'discount_percent',
         'price',
-        'category'
+        'category',
+        'created_by'
     ];
 
 }

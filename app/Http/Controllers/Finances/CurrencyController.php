@@ -1,20 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\HR;
+namespace App\Http\Controllers\Finances;
 
 use App\Http\Controllers\Controller;
+use App\Models\Currency;
 use Illuminate\Http\Request;
+use App\DataTables\Finances\CurrencyDataTable;
 
 class CurrencyController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $total_currencies = Currency::count();
+        return view('pages.main.hr.finances.currency')->with(compact('total_currencies'));
+    }
+
+    public function getCurrencyDataTable(CurrencyDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.hr.finances.currency');
     }
 
     /**

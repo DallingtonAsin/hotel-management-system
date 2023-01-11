@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Accomodation;
 
+use App\DataTables\Accomodation\FrequentContactDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\FrequentContact;
 use Illuminate\Http\Request;
 
 class FrequentContactController extends Controller
@@ -12,9 +14,15 @@ class FrequentContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+     public function index()
     {
-        //
+        $total_frequent_contacts = FrequentContact::count();
+        return view('pages.main.hr.frequent_contacts')->with(compact('total_frequent_contacts'));
+    }
+
+    public function getFrequentContactsDataTable(FrequentContactDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.hr.frequent_contacts');
     }
 
     /**
