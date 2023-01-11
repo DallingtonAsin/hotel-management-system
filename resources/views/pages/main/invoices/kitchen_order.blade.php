@@ -52,7 +52,7 @@
           <td>USh. <strong>{{ number_format($invoice->subtotal) }}</strong></td>
         </tr>
         <tr>
-          <td colspan="3" class="text-right">Tax:</td>
+          <td colspan="3" class="text-right">Tax (18%):</td>
           <td>USh. <strong>{{ number_format($invoice->tax) }}</strong></td>
         </tr>
         <tr>

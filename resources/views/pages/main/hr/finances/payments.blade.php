@@ -77,7 +77,7 @@
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Invoice No.</span>
-                            <input type="text" class="form-control name bg-white invoice_id" name="invoice_id"
+                            <input type="text" class="form-control name bg-white invoice_number" name="invoice_number"
                             placeholder="Enter invoice number" required autofocus>
                         </div>
 
@@ -93,7 +93,7 @@
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Amount</span>
-                            <input type="text" class="form-control bg-white amount" name="amount" placeholder="Enter salary amount" required autofocus>
+                            <input type="text" class="form-control bg-white amount" name="amount" placeholder="Enter amount" required autofocus>
                         </div>
 
                         <div class="form-group">
@@ -230,8 +230,8 @@
                     name: 'guest_name'
                 },
                 {
-                    data: 'invoice_id',
-                    name: 'invoice_id'
+                    data: 'invoice_number',
+                    name: 'invoice_number'
                 },
                 {
                     data: 'amount',
@@ -435,7 +435,7 @@
             function validateForm() {
 
                 let guest_section = $('.guest_section').val();
-                let invoice_id = $('.invoice_id').val();
+                let invoice_number = $('.invoice_number').val();
                 let amount = $('.amount').val();
                 let payment_method = $('.payment_method').val();
                 let payment_date = $('.payment_date').val();
@@ -444,7 +444,7 @@
                 if (guest_section.length < 1) {
                     errors.push(`Please select guest`);
                 }
-                if (invoice_id.length < 1) {
+                if (invoice_number.length < 1) {
                     errors.push(`Please enter invoice number`);
                 }
                 if (amount.length < 1) {

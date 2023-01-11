@@ -16,7 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedBigInteger('guest_id');
-            $table->unsignedBigInteger('invoice_id');
+            $table->string('invoice_number');
             $table->decimal('amount', 8, 2);
             $table->string('method'); 
             $table->date('date'); 
@@ -24,7 +24,7 @@ class CreatePaymentsTable extends Migration
             $table->timestamps();
 
             $table->foreign('guest_id')->references('id')->on('guests');
-            $table->foreign('invoice_id')->references('id')->on('invoice_guests');
+            $table->foreign('invoice_number')->references('invoice_number')->on('invoice_guests');
             $table->foreign('created_by')->references('id')->on('users');
         });
     }

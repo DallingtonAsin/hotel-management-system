@@ -97,7 +97,7 @@ class PaymentsDataTable extends DataTable
         return [
             'id',
             'guest_id',
-            'invoice_id',
+            'invoice_number',
             'amount',
             'method',
             'date'
