@@ -31,10 +31,10 @@ class DamagesDataTable extends DataTable
              <span class="fa fa-pen"></span></a>';
 
 
-            $btn .= '<a href="javascript:void(0);" id="delete-damage"
-            data-toggle="tooltip" data-original-title="Delete" data-id="'.$damage->id.'" 
-            class="trash-btn pr-4">
-            <span class="fa fa-trash-alt" ></span></a>';
+            // $btn .= '<a href="javascript:void(0);" id="delete-damage"
+            // data-toggle="tooltip" data-original-title="Delete" data-id="'.$damage->id.'" 
+            // class="trash-btn pr-4">
+            // <span class="fa fa-trash-alt" ></span></a>';
 
             }
 

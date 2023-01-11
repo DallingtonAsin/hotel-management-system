@@ -1,89 +1,47 @@
 @extends('layouts.template')
 
 @section('content')
-
+      <span class="response"></span>
       <div class="card">
-        <div class="card-header">
-          <div class="panel-title">
-            <span class="pl-0 mt-4 response"></span>
-            <div class="row nunito-font">
-              <div class="col-lg-3 text-dark">
-                <h6>
+        <div class="card-header row d-flex justify-content-between align-items-center">
+
+          <div class="col">
+              <h6 class="text-left text-dark">
                   <i class="fa fa-home text-success"> /</i>
-                  <strong>Recorded Damages</strong>
-                  <span class="badge badge-info  totl_damages">
-                    @isset($number_of_damages)
-                    {{ number_format($number_of_damages) }}
-                    @endisset
+                  <strong>Recorded Damaged Items</strong>
+                  <span class="badge badge-info totl_damages">
+                      @isset($number_of_damages)
+                          {{ number_format($number_of_damages) }}
+                      @endisset
                   </span>
-                </h6>
-              </div>
-              @can('isAdmin')
-              <div class="col-lg-3">
-                <h6>
-                  <strong>Cost of damage: shs.</strong>
-                  <label class="text-danger totl_cost">
-                    @isset($cost_of_damages)
-                    {{ number_format($cost_of_damages) }}
-                    @endisset
-                  </label>
-                </h6>
-              </div>
-              @endcan
-
-              <div class="col-lg-2">
-                <h6>
-                  <a class=" bolded" href="javascript:void(0)"
-                  id="createNewDamage"> Add damage</a>
-                </h6>
-              </div>
-
-
-              <div class="col-lg-2">
-                <h6><a href=""  class="add-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#importDamages"><strong>Import Damages</strong></a></h6>
-              </div>
-
-            @can('isAdmin')
-              <div class="col-lg-2">
-                <div class="btn-group">
-                  <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Action
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="text-decoration-none text-dark nunito-font" href="javascript:void(0)"
-                       id="removeAllDamages"> Delete all damages</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              @endcan
-
-            </div>
+              </h6>
           </div>
-        </div>
+
+          <div class="col">
+              <h6 class="text-center">
+                Cost of damages: shs:
+                  <span class="text-success text-center">shs.
+                      <strong class="totl_cost">
+                          @isset($cost_of_damages)
+                              {{ number_format($cost_of_damages) }}
+                          @endisset
+                      </strong>
+                  </span>
+              </h6>
+          </div>
+
+          <div class="col">
+              <div class="btn-group float-right justify-content-between mb-2">
+                  <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewDamage"><i
+                          class="fa fa-plus-circle pr-1"></i>Add damage</button>
+                  {{-- <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                      data-bs-target="#importStock"><i class="fa fa-file-import pr-1"></i>Import file</button> --}}
+              </div>
+          </div>
+
+      </div>
 
         <div class="card-body">
-
-          <div class="col-lg-8 text-center">
-            @if(session()->get('success'))
-            <div class='alert alert-success alert-dismissible' role='alert'>
-              <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                <span aria-hidden='true'>&times;</span></button>
-                <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-              </div>
-              @endif
-
-              @if(session()->get('fail'))
-              <div class='alert alert-danger alert-dismissible' role='alert'>
-                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                  <span aria-hidden='true'>&times;</span></button>
-                  <strong>Oops!</strong> {{ session()->get('fail') }}
-                </div>
-                @endif
-
-              </div>
-
 
               <div class="table table-responsive">
                 <table class="table table-bordered" id="damages-table">
@@ -284,15 +242,15 @@ $.ajaxSetup({
   const deletedSeletectedUrl = @json(route('selected-damages.remove'));
   const cat = 'damages';
   const token = "{{ csrf_token() }}";
-  var table = $('#damages-table');
-  var title = "List of recorded damaged items in the system";
-  var columns = [0,1,2,3,4,5,6,7];
+  let table = $('#damages-table');
+  let title = "List of recorded damaged items in the system";
+  let columns = [0,1,2,3,4,5,6,7];
 
 </script>
 
 @can('isAdmin')
 <script>
-      var dataColumns = [
+      let dataColumns = [
       {data: 'checkbox', name:'checkbox'},
       // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
          // {data: 'id', name:'id'},
@@ -312,7 +270,7 @@ $.ajaxSetup({
 
 @can('isCashier')
 <script>
-      var dataColumns = [
+      let dataColumns = [
       // {data: 'checkbox', name:'checkbox'},
       {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
          // {data: 'id', name:'id'},
@@ -332,15 +290,15 @@ $.ajaxSetup({
 
   <script type="text/javascript">
 
+       const onSearchItemUrl = @json(route('item.search'));
+        onSearchItem('.item-name');
+
     $(document).ready(function(){
       $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
-
-    
-    
 
       OnclickingSubmitBtn();
      
@@ -356,17 +314,17 @@ $.ajaxSetup({
         $('#addDamagesModal').modal('show');
       });
 
-Numberize(".quantity");
+       Numberize(".quantity");
 
       //modal used to edit damages details [each row of the tbl]
 
       $('body').on('click', '#edit-damage', function (event) {
-        var damage_id = $(this).data('id');
+        let damage_id = $(this).data('id');
         event.preventDefault();
         ShowHideContent('hide');
         $('.addDamageBtn').text("Edit damage");
 
-        var Url = "{{ route('damaged-stock-items.show', ':id') }}";
+        let Url = "{{ route('damaged-stock-items.show', ':id') }}";
         Url = Url.replace(':id', damage_id);
         $.ajax({
 
@@ -401,7 +359,7 @@ Numberize(".quantity");
 
       //View Modal used to view each row [damages details]
       $('body').on('click', '#view-damage', function (event) {
-        var damage_id = $(this).data('id');
+        let damage_id = $(this).data('id');
         event.preventDefault();
 
         $.get("{{ route('damaged-stock-items.index') }}" +'/' +damage_id +'', function (data) {
@@ -434,11 +392,17 @@ Numberize(".quantity");
 
             $('#damagesForm').trigger("reset");
             $('#addDamagesModal').modal("hide");
-            var resp = data.success;
-            displayResponse('.response', resp, 'success');
-            ResetTblInfo(data);
-            var tbl = $('#damages-table').DataTable();
-            tbl.ajax.reload();
+            let resp = data.success || data.error;
+            let type = data.success ? 'success' : 'error';
+
+            if(data.success){
+              ResetTblInfo(data);
+              let tbl = $('#damages-table').DataTable();
+              tbl.ajax.reload();
+            }
+
+            displayResponse('.response', resp, type);
+           
 
           },
           error: function (data) {
@@ -452,7 +416,7 @@ Numberize(".quantity");
 
       function UpdateDamagedItem(damageId){
        // alert(damageId);
-        var updateUrl =  '{{ route("damaged-stock-items.update", ":id") }}';
+        let updateUrl =  '{{ route("damaged-stock-items.update", ":id") }}';
         updateUrl  = updateUrl .replace(':id', damageId);
 
         $('.addDamageBtn').html('Updating...');
@@ -465,10 +429,10 @@ Numberize(".quantity");
 
             $('#damagesForm').trigger("reset");
             $('#addDamagesModal').modal("hide");
-            var resp = data.success;
+            let resp = data.success;
             displayResponse('.response', resp, 'success');
             ResetTblInfo(data);
-            var tbl = $('#damages-table').DataTable();
+            let tbl = $('#damages-table').DataTable();
             tbl.ajax.reload();
 
           },
@@ -484,10 +448,10 @@ Numberize(".quantity");
 
       function OnclickingSubmitBtn(){
         $('.addDamageBtn').click(function (e) {
-          var id = $('.damageId').val();
+          let id = $('.damageId').val();
           console.log(id);
           e.preventDefault();
-          var Errors = validateForm();
+          let Errors = validateForm();
           console.log(Errors);
           if(Errors.length == 0){
             $('.errors-section').html('');
@@ -499,8 +463,8 @@ Numberize(".quantity");
 
           }else
           {
-            var i;
-            var message ="";
+            let i;
+            let message ="";
             for(i=0; i<Errors.length; i++){
               message += Errors[i] + "<br>";
             }
@@ -514,7 +478,7 @@ Numberize(".quantity");
 
       //this pops up confirm delete modal
       $('body').on('click', '#delete-damage', function (e) {
-        var damage_id = $(this).data("id");
+        let damage_id = $(this).data("id");
         e.preventDefault();
         $("#deleteDamageModal").modal('show');
         $('.delete-ok-btn').on('click', function(){
@@ -547,19 +511,19 @@ Numberize(".quantity");
 
 
       function ListenAndDoDeletion(id){
-        var deleteUrl = '{{ route("damaged-stock-items.destroy", ":id") }}';
+        let deleteUrl = '{{ route("damaged-stock-items.destroy", ":id") }}';
         deleteUrl = deleteUrl.replace(':id', id);
         $('.delete-ok-btn').html('Deleting...');
         $.ajax({
           type: "DELETE",
           url: deleteUrl,
           success: function (data) {
-            var resp = data.success;
+            let resp = data.success;
             $('.delete-ok-btn').html('Yes');
             $('#deleteDamageModal').modal("hide");
             displayResponse('.response', resp, 'success');
             ResetTblInfo(data);
-            var tbl = $('#damages-table').DataTable();
+            let tbl = $('#damages-table').DataTable();
             tbl.ajax.reload();
           },
           error: function (data) {
@@ -628,7 +592,7 @@ Numberize(".quantity");
 
       function ResetTblInfo(response)
       {
-        var  totl_damages , totl_cost;
+        let  totl_damages , totl_cost;
         totl_damages = FormatNumber(response.totl_no);
         totl_cost = FormatNumber(response.totl_amt);
 
@@ -638,15 +602,15 @@ Numberize(".quantity");
 
       function validateForm()
       {
-        var item_name = $('.item-name').val();
-        var qty = $('#qty').val();
-        var errors = [];
+        let item_name = $('.item-name').val();
+        let qty = $('#qty').val();
+        let errors = [];
         if(item_name.length < 1){
-          var nameErr = "Please enter the damaged item";
+          let nameErr = "Please enter the damaged item";
           errors.push(nameErr);
         }
         if(qty == "" || parseInt(qty) <= 0){
-          var qtyErr = "Please enter valid quantity of the damaged item "+qty+"";
+          let qtyErr = "Please enter valid quantity of the damaged item "+qty+"";
           errors.push(qtyErr);
         }
 
@@ -671,7 +635,7 @@ Numberize(".quantity");
         content:'Are you sure you want to remove all damages',
         buttons:{
             confirm:function(){
-          var self = this;
+          let self = this;
           return $.ajax({
               data: {
                   "_token": "{{ csrf_token() }}",
@@ -686,7 +650,7 @@ Numberize(".quantity");
               });
                $(".totl_damages").text(data.totl_no);
                $(".totl_cost").text(data.totl_amt);
-               var tbl = $('#damages-table').DataTable();
+               let tbl = $('#damages-table').DataTable();
                tbl.ajax.reload();
 
           }).fail(function(data){
