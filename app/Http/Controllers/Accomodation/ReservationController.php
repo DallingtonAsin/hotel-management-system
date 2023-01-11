@@ -21,12 +21,12 @@ class ReservationController extends Controller
     public function index()
     {
         $total_reservations = Reservation::count();
-        return view('pages.main.reservations.index', ['total_reservations' => $total_reservations]);
+        return view('pages.main.accomodation.reservations.index', ['total_reservations' => $total_reservations]);
     }
 
     public function getReservations(ReservationsDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.reservations.index');
+        return $dataTable->render('pages.main.accomodation.reservations.index');
     }
 
     /**
@@ -36,7 +36,7 @@ class ReservationController extends Controller
     public function create()
     {
         $guest_types = GuestType::all();
-        return view('pages.main.reservations.add', ['guest_types' => $guest_types]);
+        return view('pages.main.accomodation.reservations.add', ['guest_types' => $guest_types]);
     }
 
     /**

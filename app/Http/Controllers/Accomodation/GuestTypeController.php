@@ -15,12 +15,12 @@ class GuestTypeController extends Controller
     public function index()
     {
         $total_guest_types = GuestType::count();
-        return view('pages.main.guests.types')->with(compact('total_guest_types'));
+        return view('pages.main.accomodation.guests.types')->with(compact('total_guest_types'));
     }
 
     public function getGuestTypesDataTable(GuestTypesDatatable $dataTable)
     {
-        return $dataTable->render('pages.main.guests.types');
+        return $dataTable->render('pages.main.accomodation.guests.types');
     }
 
     /**

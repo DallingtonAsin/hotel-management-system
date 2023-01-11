@@ -15,12 +15,12 @@ class RoomTypeController extends Controller
     public function index()
     {
         $total_room_types = RoomType::count();
-        return view('pages.main.rooms.types', ['total_room_types' => $total_room_types]);
+        return view('pages.main.accomodation.rooms.types', ['total_room_types' => $total_room_types]);
     }
 
     public function RoomTypesDataTable(RoomTypesDatatable $dataTable)
     {
-        return $dataTable->render('pages.main.rooms.types');
+        return $dataTable->render('pages.main.accomodation.rooms.types');
     }
 
     /**
