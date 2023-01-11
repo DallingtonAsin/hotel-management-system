@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\kitchen;
 
+use App\DataTables\Kitchen\MenuItemDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\KitchenMenuItem;
@@ -16,7 +17,13 @@ class MenuItemController extends Controller
      */
     public function index()
     {
-        //
+        $total_menu_items = KitchenMenuItem::count();
+        return view('pages.main.kitchen.menu_items')->with(compact('total_menu_items'));
+    }
+
+    public function getMenuItemsDataTable(MenuItemDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.kitchen.menu_items');
     }
 
     /**

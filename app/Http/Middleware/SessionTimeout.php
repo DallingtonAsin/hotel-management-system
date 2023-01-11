@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\LogsController;
+use App\Helpers\Helper;
 use App\User;
 
 class SessionTimeout

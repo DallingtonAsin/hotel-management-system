@@ -24,7 +24,7 @@ class PaymentFactory extends Factory
         
         return [
             'guest_id' => $this->faker->randomElement([1, 2]),
-            'invoice_id' => $this->faker->randomElement([1, 2, 3, 4, 5, 6]),
+            'invoice_number' => $this->faker->randomElement([1, 2, 3, 4, 5, 6]),
             'amount' => $this->faker->numberBetween(50000, 90000),
             'method' => $this->faker->randomElement(['cash', 'credit card']),
             'date' => $this->faker->dateTimeBetween('next Monday', 'next Monday +7 days'),

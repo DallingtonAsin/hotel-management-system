@@ -16,12 +16,12 @@ class RoomController extends Controller
     public function index()
     {
         $total_rooms = Room::count();
-        return view('pages.main.rooms.index', ['total_rooms' => $total_rooms]);
+        return view('pages.main.accomodation.rooms.index', ['total_rooms' => $total_rooms]);
     }
 
     public function RoomsDataTable(RoomsDatatable $dataTable)
     {
-        return $dataTable->render('pages.main.rooms.index');
+        return $dataTable->render('pages.main.accomodation.rooms.index');
     }
 
     /**

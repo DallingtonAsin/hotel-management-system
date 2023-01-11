@@ -24,12 +24,12 @@ class KitchenOrderController extends Controller
     public function index()
     {
         $total_orders = KitchenOrder::count();
-        return view('pages.main.pos.kots')->with(compact('total_orders'));
+        return view('pages.main.kitchen.kots')->with(compact('total_orders'));
     }
 
     public function getKitchenOrdersDataTable(KitchenOrdersDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.pos.kots');
+        return $dataTable->render('pages.main.kitchen.kots');
     }
 
 

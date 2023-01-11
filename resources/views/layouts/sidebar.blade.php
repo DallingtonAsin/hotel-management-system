@@ -47,7 +47,8 @@
             <li class="nav-label">Main Menu</li>
 
 
-            <li><a href="{{ route('home') }}" class="nav-link mt-3"><i class="typcn typcn-home"></i>Dashboard</a></li>
+            <li><a href="{{ route('home') }}" class="nav-link mt-3">
+                <i class="fa fa-laptop"></i>Dashboard</a></li>
 
             <li class="nav-item">
                 <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i
@@ -55,9 +56,29 @@
                 <ul class="nav-sub">
                     <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link">Point of Sale</a>
                     </li>
-                    <li class="nav-sub-item"><a href="{{ route('kitchen-orders.index') }}" class="nav-sub-link">Kitchen Order
-                            Tickets</a></li>
+                </ul>
+            </li>
 
+            <li class="nav-item">
+                <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i
+                        class="fa fa-coffee"></i>Kitchen</a>
+                <ul class="nav-sub">
+                  
+                    <li class="nav-item">
+                        <a href="" class="nav-link with-sub">Orders</a>
+                        <ul class="nav-sub">
+                            <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}" class="nav-sub-link">Pending Orders</a></li>
+                            <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}" class="nav-sub-link">Completed Orders</a></li>
+                            <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}" class="nav-sub-link">Cancelled Orders</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link with-sub">Kitchen Menu</a>
+                        <ul class="nav-sub">
+                            <li class="nav-sub-item"><a href="{{ Route('menu-items.index') }}" class="nav-sub-link">Menu Items</a></li>
+                            <li class="nav-sub-item"><a href="{{ Route('menu-item-categories.index') }}" class="nav-sub-link">Menu Item Categories</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 
@@ -78,7 +99,7 @@
                         </ul>
                     </li>
                     <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
-                            Suppliers</a>
+                     Suppliers</a>
                     </li>
                     <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
                     Expenses</a>
@@ -87,7 +108,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>House Keeping</a>
+                <a href="" class="nav-link with-sub"><i class="fa fa-clipboard"></i>House Keeping</a>
 
                 <ul class="nav-sub">
                     <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
@@ -101,6 +122,10 @@
                 <a href="" class="nav-link with-sub"><i class="fa fa-bed"></i>Accomodation</a>
 
                 <ul class="nav-sub">
+
+                    <li class="nav-sub-item"><a href="{{ Route('frequent-contacts.index') }}" class="nav-sub-link">Frequent Contacts</a>
+                       </li>
+
                     <li class="nav-item">
                         <a href="" class="nav-link with-sub">Rooms</a>
                         <ul class="nav-sub">
@@ -149,6 +174,7 @@
                   <li class="nav-item">
                     <a href="" class="nav-link with-sub">Finances</a>
                     <ul class="nav-sub">
+                        <li class="nav-sub-item"><a href="{{ Route('currencies.index') }}" class="nav-sub-link">Currencies</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('salary.index') }}" class="nav-sub-link">Salaries</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('payments.index') }}" class="nav-sub-link">Payments</a></li>
                     </ul>
@@ -177,7 +203,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="typcn typcn-cog"></i>Others</a>
+                <a href="" class="nav-link with-sub"><i class="fa fa-cog"></i>Others</a>
 
                 <ul class="nav-sub">
                     <li class="nav-sub-item"><a href="{{ route('companies.create') }}"

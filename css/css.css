@@ -612,9 +612,7 @@ td {
 	color: silver !important;
    }
 
-   .az-sidebar-body .typcn,  .az-sidebar-body .fa{
-	color: #009688 !important;
-   }
+ 
 
    .nav-item .nav-item a{
 	 font-size: 13px !important;
@@ -624,11 +622,7 @@ td {
 	 font-size: 15px !important;
    }
 
-    li ul li .fa{
-	 font-size: 13.5px !important;
-   }
-
-
+  
   .nav-item .nav-link .fa,  .nav-item .nav-link .glyphicon{
 	font-size: 16px !important;
    } 

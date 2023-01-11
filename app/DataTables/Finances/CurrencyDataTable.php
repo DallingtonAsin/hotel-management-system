@@ -1,14 +1,13 @@
 <?php
 
-namespace App\DataTables\Kitchen;
+namespace App\DataTables\Finances;
 
-use App\Models\KitchenMenuItem;
-use App\Models\KitchenMenuItemCategory;
+use App\Models\Currency;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Helpers\Helper;
 
-class MenuItemDataTable extends DataTable
+class CurrencyDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -22,43 +21,44 @@ class MenuItemDataTable extends DataTable
             ->order(function ($query) {
                 $query->orderBy('created_at', 'desc');
             })->addIndexColumn()
-            ->addColumn('action', function ($menu_item) {
+            ->addColumn('action', function ($currency) {
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-                        data-id="' . $menu_item->id . '" data-original-title="Edit" id="edit-menu-item"
-                        class="edit-btn edit-menu-item pr-4">
+                        data-id="' . $currency->id . '" data-original-title="Edit" id="edit-currency"
+                        class="edit-btn edit-currency pr-4">
                         <span class="fa fa-pen"></span></a>';
 
-                $btn .= '<a href="javascript:void(0);" id="delete-menu-item" 
+                $btn .= '<a href="javascript:void(0);" id="delete-currency" 
                         data-toggle="tooltip" data-original-title="Delete"
-                        data-id="' . $menu_item->id . '" class="trash-btn pr-4"">
+                        data-id="' . $currency->id . '" class="trash-btn pr-4"">
                         <span class="fa fa-trash-alt" ></span></a>';
 
-                $btn .= '<a href="javascript:void(0);" id="view-menu-item" 
+                $btn .= '<a href="javascript:void(0);" id="view-currency" 
                         data-toggle="tooltip" data-original-title="View"
-                            data-id="' . $menu_item->id . '" class="text-info bolded">
+                            data-id="' . $currency->id . '" class="text-info bolded">
                         <i class="fa fa-eye" ></i></a>';
 
                 return $btn;
 
-            })->addColumn('category', function ($menu_item) {
-            $category = KitchenMenuItemCategory::find($menu_item->category_id);
-            return $category->name;
-        })->addColumn('checkbox', function ($menu_item) {
-            $checkBox = '<input type="checkbox" id="' . $menu_item->id . '"/>';
+        })->editColumn('rate', function ($currency) {
+            return number_format($currency->rate);
+        })->addColumn('currency_code', function ($currency) {
+            return '<strong>'.$currency->code.'</strong>';
+        })->addColumn('checkbox', function ($currency) {
+            $checkBox = '<input type="checkbox" id="' . $currency->id . '"/>';
             return $checkBox;
-        })->editColumn('created_by', function ($menu_item) {
-            return Helper::getUserNames($menu_item->created_by);
-        })->rawColumns(['checkbox', 'action']);
+        })->editColumn('created_by', function ($currency) {
+            return Helper::getUserNames($currency->created_by);
+        })->rawColumns(['checkbox', 'currency_code', 'action']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\KitchenMenuItem $model
+     * @param \App\Models\Currency $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(KitchenMenuItem $model)
+    public function query(Currency $model)
     {
         return $model->newQuery();
     }
@@ -71,7 +71,7 @@ class MenuItemDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('kitchen/menuitem-table')
+            ->setTableId('hr/currency-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -94,10 +94,10 @@ class MenuItemDataTable extends DataTable
     {
         return [
             'id',
-            'name',
-            'description',
-            'price',
-            'category_id'
+            'country',
+            'code',
+            'rate',
+            'created_by'
         ];
     }
 
@@ -108,6 +108,6 @@ class MenuItemDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'kitchen_menu_items_' . date('YmdHis');
+        return 'HR/Currency_' . date('YmdHis');
     }
 }

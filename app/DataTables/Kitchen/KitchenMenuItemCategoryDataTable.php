@@ -2,13 +2,12 @@
 
 namespace App\DataTables\Kitchen;
 
-use App\Models\KitchenMenuItem;
 use App\Models\KitchenMenuItemCategory;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Helpers\Helper;
 
-class MenuItemDataTable extends DataTable
+class KitchenMenuItemCategoryDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -22,43 +21,41 @@ class MenuItemDataTable extends DataTable
             ->order(function ($query) {
                 $query->orderBy('created_at', 'desc');
             })->addIndexColumn()
-            ->addColumn('action', function ($menu_item) {
+            ->addColumn('action', function ($menu_item_cat) {
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-                        data-id="' . $menu_item->id . '" data-original-title="Edit" id="edit-menu-item"
-                        class="edit-btn edit-menu-item pr-4">
-                        <span class="fa fa-pen"></span></a>';
+                    data-id="' . $menu_item_cat->id . '" data-original-title="Edit" id="edit-menu-item-cat"
+                    class="edit-btn edit-menu-item-cat pr-4">
+                    <span class="fa fa-pen"></span></a>';
 
-                $btn .= '<a href="javascript:void(0);" id="delete-menu-item" 
-                        data-toggle="tooltip" data-original-title="Delete"
-                        data-id="' . $menu_item->id . '" class="trash-btn pr-4"">
-                        <span class="fa fa-trash-alt" ></span></a>';
+                $btn .= '<a href="javascript:void(0);" id="delete-menu-item-cat" 
+                    data-toggle="tooltip" data-original-title="Delete"
+                    data-id="' . $menu_item_cat->id . '" class="trash-btn pr-4"">
+                    <span class="fa fa-trash-alt" ></span></a>';
 
-                $btn .= '<a href="javascript:void(0);" id="view-menu-item" 
-                        data-toggle="tooltip" data-original-title="View"
-                            data-id="' . $menu_item->id . '" class="text-info bolded">
-                        <i class="fa fa-eye" ></i></a>';
+                $btn .= '<a href="javascript:void(0);" id="view-menu-item-cat" 
+                    data-toggle="tooltip" data-original-title="View"
+                        data-id="' . $menu_item_cat->id . '" class="text-info bolded">
+                    <i class="fa fa-eye" ></i></a>';
 
                 return $btn;
 
-            })->addColumn('category', function ($menu_item) {
-            $category = KitchenMenuItemCategory::find($menu_item->category_id);
-            return $category->name;
-        })->addColumn('checkbox', function ($menu_item) {
-            $checkBox = '<input type="checkbox" id="' . $menu_item->id . '"/>';
+            })->addColumn('checkbox', function ($menu_item_cat) {
+            $checkBox = '<input type="checkbox" id="' . $menu_item_cat->id . '"/>';
             return $checkBox;
-        })->editColumn('created_by', function ($menu_item) {
-            return Helper::getUserNames($menu_item->created_by);
+        })->editColumn('created_by', function ($menu_item_cat) {
+            return Helper::getUserNames($menu_item_cat->created_by);
         })->rawColumns(['checkbox', 'action']);
+
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\KitchenMenuItem $model
+     * @param \App\Models\KitchenMenuItemCategory $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(KitchenMenuItem $model)
+    public function query(KitchenMenuItemCategory $model)
     {
         return $model->newQuery();
     }
@@ -71,7 +68,7 @@ class MenuItemDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('kitchen/menuitem-table')
+            ->setTableId('kitchenmenuitemcategory-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -94,10 +91,7 @@ class MenuItemDataTable extends DataTable
     {
         return [
             'id',
-            'name',
-            'description',
-            'price',
-            'category_id'
+            'name'
         ];
     }
 
@@ -108,6 +102,6 @@ class MenuItemDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'kitchen_menu_items_' . date('YmdHis');
+        return 'KitchenMenuItemCategories_' . date('YmdHis');
     }
 }

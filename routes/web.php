@@ -19,6 +19,7 @@ use App\Http\Controllers\Accounting\ExpensesController;
 use App\Http\Controllers\Audit\LogsController;
 
 // Finances Controllers
+use App\Http\Controllers\Finances\CurrencyController;
 use App\Http\Controllers\Finances\PaymentController;
 use App\Http\Controllers\Finances\SalaryController;
 
@@ -26,7 +27,6 @@ use App\Http\Controllers\Finances\SalaryController;
 use App\Http\Controllers\Home\HomeController;
 
 // HR Controllers
-use App\Http\Controllers\HR\CurrencyController;
 use App\Http\Controllers\HR\DepartmentController;
 use App\Http\Controllers\HR\DesignationController;
 
@@ -43,6 +43,7 @@ use App\Http\Controllers\Invoices\InvoiceGuestController;
 // Kitchen Controllers
 use App\Http\Controllers\Kitchen\KitchenOrderController;
 use App\Http\Controllers\Kitchen\MenuItemController;
+use App\Http\Controllers\Kitchen\KitchenMenuItemCategoryController;
 
 // Messages Controllers
 use App\Http\Controllers\Messages\CalendarController;
@@ -93,6 +94,8 @@ Route::get('guests-types/fetch/ajax', [GuestTypeController::class, 'getGuestType
 Route::get('guests/fetch/ajax', [GuestController::class, 'getGuests'])->name('guests.index.ajax');
 Route::get('guests/ajax', [GuestController::class, 'fetchGuestsAjax'])->name('guests.ajax.fetch');
 Route::get('reservations/fetch/ajax', [ReservationController::class, 'getReservations'])->name('reservations.index.ajax');
+Route::get('reservations/frequent-contacts/fetch/ajax', [FrequentContactController::class, 'getFrequentContactsDataTable'])->name('frequent-contacts.index.ajax');
+Route::get('currencies/fetch/ajax', [CurrencyController::class, 'getCurrencyDataTable'])->name('currencies.index.ajax');
 
 
 // Accounting Routes
@@ -167,6 +170,8 @@ Route::get('kitchen/item/{menu_item_id}', [MenuItemController::class, 'getMenuIt
 Route::get('kitchen/order/fetch/ajax', [KitchenOrderController::class, 'getKitchenOrdersDataTable'])->name('kitchen_orders.index.ajax');
 Route::put('kitchen/order/update/{id}', [KitchenOrderController::class, 'changeKitchenOrderStatus'])->name('kitchen-order.status.update');
 Route::post('kitchen/order/post', [KitchenOrderController::class, 'storeKitchenOrder'])->name('kitchen-order.submit');
+Route::get('kitchen/menu-items/fetch/ajax', [MenuItemController::class, 'getMenuItemsDataTable'])->name('menu-items.index.ajax');
+Route::get('kitchen/menu-items-categories/fetch/ajax', [KitchenMenuItemCategoryController::class, 'getKitchenMenuCategoriesOrdersDataTable'])->name('menu-item-categories.index.ajax');
 
 
 // Messages Routes
@@ -271,8 +276,6 @@ Route::group(['middleware' => 'restricted'], function () {
 
 	Route::resources([
 		'stock' => StockController::class,
-		'pos' => CartController::class,
-		'kitchen-orders' => KitchenOrderController::class,
 		'sales' => SalesController::class,
 		'product-categories' => StockCategoryController::class,
 		'damaged-stock-items' => DamagesController::class,
@@ -282,23 +285,27 @@ Route::group(['middleware' => 'restricted'], function () {
 		'profile' => ProfileController::class,
 		'mail' => MailController::class,
 		'logs' => LogsController::class,
-		'users' => UserController::class,
 		'calendar' => CalendarController::class,
-		'company' => SettingsController::class,
-		'departments' => DepartmentController::class,
+		'users' => UserController::class,
+		'pos' => CartController::class,
+		'kitchen-orders' => KitchenOrderController::class,
 		'room_types' => RoomTypeController::class,
 		'rooms' => RoomController::class,
 		'guest_types' => GuestTypeController::class,
 		'guests' => GuestController::class,
 		'invoice_guests' => InvoiceGuestController::class,
 		'reservations' => ReservationController::class,
+		'departments' => DepartmentController::class,
 		'designations' => DesignationController::class,
 		'staff' => StaffMemberController::class,
 		'payments' => PaymentController::class,
 		'salary' => SalaryController::class,
 		'customers' => CustomersController::class,
+		'menu-items' => MenuItemController::class,
 		'currencies' => CurrencyController::class,
 		'frequent-contacts' => FrequentContactController::class,
+		'company' => SettingsController::class,
+		'menu-item-categories' => KitchenMenuItemCategoryController::class,
 	]);
 
 
