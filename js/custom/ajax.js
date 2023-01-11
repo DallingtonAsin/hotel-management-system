@@ -143,3 +143,19 @@ function onSearchItem(element){
       }
     });
 }
+
+
+function populateMenuItemCategories(select_element) {
+    $.ajax({
+        type: "GET",
+        url: menuItemCatAjaxUrl,
+        success: function (resp) {
+            let obj = JSON.parse(resp);
+            for (let i = 0; i < obj.length; i++) {
+                let id = obj[i]['id'];
+                let category_name = obj[i]['name'];
+                $(select_element).append('<option value=' + id + '>' + category_name + '</option>');
+            }
+        }
+    });
+}

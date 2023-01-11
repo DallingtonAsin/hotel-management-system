@@ -4,7 +4,9 @@ namespace App\Http\Controllers\kitchen;
 
 use App\DataTables\Kitchen\MenuItemDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\KitchenMenuItemCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\KitchenMenuItem;
 use App\Helpers\Helper;
 
@@ -40,11 +42,85 @@ class MenuItemController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+       
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'price' => 'required',
+            'category' => 'required',
+            'description' => 'sometimes|nullable'
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $name = ucfirst($request->input('name'));
+                $category_id = $request->input('category');
+
+                $category = KitchenMenuItemCategory::where('id', $category_id)->value('name');
+
+                $exists = KitchenMenuItem::where('name', $name)->where('category_id', $category_id)->exists();
+                if ($exists) {
+                    return response()->json(['error' => 'Menu item ' . $name . ' already exists in category '.$category.'']);
+                } else {
+
+                    $description = $request->input('description');
+                    $price = Helper::Numberize($request->input('price'));
+                    $created_by = Helper::getLoggedInUserId();
+
+                    $data = [
+                        'name' => $name,
+                        'description' => $description,
+                        'price' => $price,
+                        'category_id' => $category_id,
+                        'created_by' => $created_by
+                    ];
+
+                    if (KitchenMenuItem::create($data)) {
+                        $message = "Menu item " . $name . " has been added successfully";
+                        $stats = $this->getMenuItemStats();
+                        $data = [
+                            'success' => $message,
+                            'data' => $stats['data'],
+                            'total' => $stats['total']
+                        ];
+                    } else {
+
+                        $message = "Technical error in adding menu item";
+                        $data = [
+                            'error' => $message
+                        ];
+                    }
+                    return response()->json($data);
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
+    private function getMenuItemStats()
+    {
+        try {
+
+            $menu_items = KitchenMenuItem::all();
+            $total_menu_items = KitchenMenuItem::count();
+
+            $data = array(
+                'data' => $menu_items,
+                'total' => $total_menu_items
+            );
+
+            return $data;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**

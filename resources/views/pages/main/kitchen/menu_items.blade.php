@@ -75,15 +75,15 @@
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Category</span>
-                            <input type="text" class="form-control category bg-white" name="category"
-                                placeholder="Enter menu item category" required>
+                            <span><span class="text-danger pr-1">*</span>Category</span>
+                            <select class="form-control menu_item_category_section bg-white" name="category">
+                                <option value="">select menu item category</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <span>Description</span>
                             <textarea name="description" class="form-control description" placeholder="{{ __('Description is optional...') }}">
-
                             </textarea>
                         </div>
 
@@ -105,9 +105,8 @@
 
 
     <!--Modal Delete Menu Item -->
-    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
-        aria-labelledby="ModalLabel">
+    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -146,9 +145,12 @@
             }
         });
         const ajaxUrl = @json(route('menu-items.index.ajax'));
+        const menuItemCatAjaxUrl = @json(route('menu-item-categories.ajax.fetch'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const cat = 'menu_items';
         const token = "{{ csrf_token() }}";
+
+        populateMenuItemCategories('.menu_item_category_section');
     </script>
 
     <script type="text/javascript">
@@ -176,7 +178,7 @@
                     data: 'category',
                     name: 'category'
                 },
-               
+
                 {
                     data: 'created_by',
                     name: 'created_by'
@@ -225,11 +227,16 @@
 
                             $('#MenuItemsForm').trigger("reset");
                             $('#addMenuItemModal').modal("hide");
-                            let resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            let tbl = $('#menu-items-table').DataTable();
-                            tbl.ajax.reload();
+
+                            let resp = data.success || data.error;
+                            let type = data.success ? 'success' : 'error';
+
+                            if (data.success) {
+                                ResetTblInfo(data);
+                                let tbl = $('#menu-items-table').DataTable();
+                                tbl.ajax.reload();
+                            }
+                            displayResponse('.response', resp, type);
 
                         },
                         error: function(data) {
@@ -353,21 +360,29 @@
                 $('.closeBtn').show();
             }
 
-         
+
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
                 $('.total_meu_items').html(totl_number);
             }
 
             function validateForm() {
+
                 let name = $('.name').val();
+                let price = $('.price').val();
+                let category = $('.menu_item_category_section').val();
 
                 let errors = [];
                 if (name.length < 1) {
-                    let nameErr = "Please enter the name of the menu item";
-                    errors.push(nameErr);
+                    errors.push('Please enter the name of the menu item');
                 }
-        
+                if (price.length < 1) {
+                    errors.push('Please enter the price of the menu item');
+                }
+                if (category.length < 1) {
+                    errors.push('Please select menu item category');
+                }
+
                 return errors;
 
             }
@@ -426,6 +441,5 @@
             }
         });
     </script>
-     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection
