@@ -172,6 +172,7 @@ Route::put('kitchen/order/update/{id}', [KitchenOrderController::class, 'changeK
 Route::post('kitchen/order/post', [KitchenOrderController::class, 'storeKitchenOrder'])->name('kitchen-order.submit');
 Route::get('kitchen/menu-items/fetch/ajax', [MenuItemController::class, 'getMenuItemsDataTable'])->name('menu-items.index.ajax');
 Route::get('kitchen/menu-items-categories/fetch/ajax', [KitchenMenuItemCategoryController::class, 'getKitchenMenuCategoriesOrdersDataTable'])->name('menu-item-categories.index.ajax');
+Route::get('kitchen/menu-item-categories/ajax', [KitchenMenuItemCategoryController::class, 'fetchMenuItemCatAjax'])->name('menu-item-categories.ajax.fetch');
 
 
 // Messages Routes

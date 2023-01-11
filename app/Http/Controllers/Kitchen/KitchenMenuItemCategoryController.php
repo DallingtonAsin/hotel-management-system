@@ -92,6 +92,19 @@ class KitchenMenuItemCategoryController extends Controller
         }
     }
 
+    public function fetchMenuItemCatAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $departments = KitchenMenuItemCategory::get();
+                echo json_encode($departments);
+                die();
+
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
 
     private function getMenuItemCatStats()
     {

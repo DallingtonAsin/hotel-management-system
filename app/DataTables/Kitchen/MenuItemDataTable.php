@@ -47,6 +47,8 @@ class MenuItemDataTable extends DataTable
         })->addColumn('checkbox', function ($menu_item) {
             $checkBox = '<input type="checkbox" id="' . $menu_item->id . '"/>';
             return $checkBox;
+        })->editColumn('price', function ($menu_item) {
+            return number_format($menu_item->price);
         })->editColumn('created_by', function ($menu_item) {
             return Helper::getUserNames($menu_item->created_by);
         })->rawColumns(['checkbox', 'action']);
