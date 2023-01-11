@@ -19,8 +19,12 @@ return [
     'companyEmail' => env('CO_EMAIL '),
     'MinimumQty' => env('STOCK_MIN_QTY'),
     'cipherKey' => env('APP_CIPHER'),
-    
 
+    'HOTEL_NAME' => env('HOTEL_NAME' , 'CASA MILTU HOTEL'),
+    'HOTEL_ADDRESS' => env('HOTEL_ADDRESS', 'Plot 137/139 Ntinda-Nakawa Road, Kampala'),
+    'HOTEL_PHONE_NUMBER' => env('HOTEL_PHONE_NUMBER', '041 4288706'),
+    'HOTEL_EMAIL' => env('HOTEL_EMAIL', 'info@casamiltu.com'),
+   
 
     /*
     |--------------------------------------------------------------------------

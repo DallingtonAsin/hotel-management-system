@@ -258,6 +258,8 @@
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const menuItemsAjaxUrl = @json(route('kitchen-menu-items.ajax.fetch'));
+        const searchRoomUrl = @json(route('rooms.ajax.suggest'));
+
         const cat = 'kitchen-orders';
         populateMenuItems();
 
@@ -274,6 +276,7 @@
             // }
         }
 
+        onTypingRoomNumber('.room_number');
 
         $(document).ready(function() {
 

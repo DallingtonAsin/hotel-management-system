@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use PDF;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\InvoiceGuest;
 use App\Models\Guest;
 use App\Models\GuestType;
 use App\Models\Company;
-
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Reservation;
-
+use App\Models\KitchenOrder;
+use App\Models\KitchenMenuItem;
+use App\Models\KitchenOrderItem;
+use App\Models\KitchenOrderInvoice;
+use App\Helpers\Helper;
+use PDF;
 
 
 class InvoiceController extends Controller
@@ -49,14 +51,14 @@ class InvoiceController extends Controller
     {
 
         try {
-            // $invoice = InvoiceGuest::find($id);
-            $directory = 'invoices';
+
+            $directory = 'invoices/reservations';
             $this->createInvoicesDirIfnotExists(($directory));
    
             $count = Company::count();
-            $company = [];
+            $hotel = [];
             if($count > 0){
-                $company = Company::first();
+                $hotel = Company::first();
             }
 
             $invoice = InvoiceGuest::where('reservation_id', $id)->first();
@@ -95,7 +97,7 @@ class InvoiceController extends Controller
                 'is_corporate' => $is_corporate,
                 'invoice' => $invoice,
                 'guest' => $guest,
-                'company' => $company,
+                'hotel' => $hotel,
                 'reservation' => $reservation,
                 'room_type' => $room_type,
                 'price_rate' => $price_rate,
@@ -104,7 +106,7 @@ class InvoiceController extends Controller
             ]);
             $pdf->save($path);
 
-            $subpath = 'invoices/' . $filename;
+            $subpath = ''.$directory.'/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
           
           
@@ -122,62 +124,49 @@ class InvoiceController extends Controller
     {
 
         try {
-            // $invoice = InvoiceGuest::find($id);
-            $directory = 'invoices';
+        
+
+            $directory = 'invoices/kitchen_orders';
             $this->createInvoicesDirIfnotExists(($directory));
-   
+
+            $kitchenOrder = KitchenOrder::find($id);
+            $order_number = $kitchenOrder->order_number;
+            $guest = null;
+
+            if(isset($kitchenOrder->room_id)){
+              $room_id = $kitchenOrder->room_id;
+              $room = Helper::findRoom($room_id);
+              $kitchenOrder->room_number = $room->number;
+              $reservation = Reservation::where('room_id', $room_id)->latest()->first();
+              $guest_id = $reservation->guest_id;
+              $guest = Guest::find($guest_id);
+            }
+
+            $order_items = KitchenOrderItem::where('order_number', $order_number)->get();
+            foreach($order_items as $item){
+                $item->name = KitchenMenuItem::where('id', $item->item_id)->value('name');
+            }
+            $invoice = KitchenOrderInvoice::where('order_number', $order_number)->first();
+
             $count = Company::count();
-            $company = [];
+            $hotel = [];
             if($count > 0){
-                $company = Company::first();
+                $hotel = Company::first();
             }
 
-            $invoice = InvoiceGuest::where('reservation_id', $id)->first();
-            $reservation = Reservation::find($id);
-            $guest_type_id = $reservation->guest_type_id;
-            $guestTypeObj = GuestType::find($guest_type_id);
-            $guestType = $guestTypeObj->name;
-
-            $is_corporate = (stripos($guestType, 'corporate') !== false);
-
-            $occupancy_type = $reservation->occupancy_type;
-            $guest_id = $reservation->guest_id;
-            $guest = Guest::find($guest_id);
-         
-            $room = Room::find($reservation->room_id);
-            $room_type_id = $room->type_id;
-           
-            $roomType = RoomType::find($room_type_id);
-            $room_type = $roomType->name;
-
-            $tax_fees = $invoice->total * 0.18;
-
-
-            if (stripos($occupancy_type, 'single') !== false) {
-                $price_rate = number_format($roomType->single_occupancy_rate);
-            } else {
-                $price_rate = number_format($roomType->double_occupancy_rate);
-            }
-
-            $total_amount = $invoice->total + $tax_fees;
-
-            $filename = 'invoice-'.$guest->first_name.'-'.$guest->last_name.'-' . $id . '.pdf';
+            $filename = 'invoice-'.$kitchenOrder->order_number.'-' . $kitchenOrder->id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
 
             $pdf = PDF::loadView('pages.main.invoices.kitchen_order', [
-                'is_corporate' => $is_corporate,
+                'kitchenOrder' => $kitchenOrder,
+                'order_items' => $order_items,
+                'hotel' => $hotel,
                 'invoice' => $invoice,
-                'guest' => $guest,
-                'company' => $company,
-                'reservation' => $reservation,
-                'room_type' => $room_type,
-                'price_rate' => $price_rate,
-                'tax_fees' => $tax_fees,
-                'total_amount' => $total_amount
+                'guest' => $guest
             ]);
             $pdf->save($path);
 
-            $subpath = 'invoices/' . $filename;
+            $subpath = ''.$directory.'/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
           
           
@@ -187,7 +176,6 @@ class InvoiceController extends Controller
             return back()->with('error', $ex->getMessage());
         }
 
-        // return $pdf->stream('nicesnippets.pdf');
     }
 
     /**

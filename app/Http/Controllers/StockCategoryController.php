@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Constant;
 use Excel;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Validator;
 
 class StockCategoryController extends Controller
 {
@@ -29,7 +30,7 @@ class StockCategoryController extends Controller
 
   public function StockCatAjaxIndex(StockCatsDataTable $dataTable)
   {
-      return $dataTable->render('pages.main.stock.product-categories');
+    return $dataTable->render('pages.main.stock.product-categories');
   }
 
   /**
@@ -42,7 +43,7 @@ class StockCategoryController extends Controller
     $pdt_categories = StockCat::all();
     $total_categories = StockCat::count();
     return view('pages.main.stock.product-categories', ['total_categories' => $total_categories])
-                ->with(compact('pdt_categories', 'total_categories'));
+      ->with(compact('pdt_categories', 'total_categories'));
   }
 
   /**
@@ -59,55 +60,64 @@ class StockCategoryController extends Controller
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
+   * return \Illuminate\Http\Response
    */
   public function store(Request $request)
   {
-    $request->validate([
-      'item-category' => 'required',
 
+    $validator = Validator::make($request->all(), [
+      'item-category' => 'required'
     ]);
 
-    $pdt_category = new StockCat;
-    $pdt_category->item_category = $itemCategory = request('item-category');
+    try {
+      if ($validator->fails()) {
+        $message = $validator->errors()->all();
+        return response()->json(['error' => $message]);
+      } else {
 
+        $pdt_category = new StockCat;
+        $pdt_category->item_category = $itemCategory = request('item-category');
 
-    $item_category_update_status = $pdt_category->save();
-    if ($item_category_update_status) {
+        $isSaved = $pdt_category->save();
+        if ($isSaved) {
 
-      $action = "recorded stock category " . $itemCategory . " into the system";
-      LogsController::logger($request, $action, now());
-      $dataArr = array(
-        "code" => '200',
-        "message" => $action,
-        "method" => "StockCategoryController@store"
-      );
-      LogAfterRequest::LogRequest($request, $dataArr);
-      $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
+          $action = "recorded stock category " . $itemCategory . " into the system";
+          LogsController::logger($request, $action, now());
+          $dataArr = array(
+            "code" => '200',
+            "message" => $action,
+            "method" => "StockCategoryController@store"
+          );
 
+          LogAfterRequest::LogRequest($request, $dataArr);
+          $message = $this->SuccessMessage($action);
+          $totl = $this->GetStockCatStats();
 
-    } else {
-      $messageErr = 'Item category not recorded!';
-      $dataArr = array(
-        "code" => '101',
-        "message" => $messageErr,
-        "method" => "StockCategoryController@store"
-      );
-      LogAfterRequest::LogRequest($request, $dataArr);
-
-       $sessionVariable = 'fail';
-       $responseInfo = $this->FailedMessage($messageErr);
-
-    }
-
-    $totl = $this->GetStockCatStats();
-
-    return response()
-    ->json([$sessionVariable => $responseInfo,
+          return response()->json([
+            'success' => $message,
             'totl_no' => $totl,
-    ]);
+          ]);
 
+
+        } else {
+
+          $messageErr = 'Item category not recorded!';
+          $dataArr = array(
+            "code" => '101',
+            "message" => $messageErr,
+            "method" => "StockCategoryController@store"
+          );
+
+          LogAfterRequest::LogRequest($request, $dataArr);
+          $message = $this->FailedMessage($messageErr);
+          return response()->json(['error' => $message]);
+
+        }
+
+      }
+    } catch (\Exception $ex) {
+      return response()->json(['error' => $ex->getMessage()]);
+    }
 
 
   }
@@ -115,8 +125,8 @@ class StockCategoryController extends Controller
 
   protected function GetStockCatStats()
   {
-      $totl_catItems = StockCat::count();
-      return $totl_catItems;
+    $totl_catItems = StockCat::count();
+    return $totl_catItems;
   }
 
   /**
@@ -193,56 +203,64 @@ class StockCategoryController extends Controller
     $totl = $this->GetStockCatStats();
 
     return response()
-    ->json([$sessionVariable => $responseInfo,
-            'totl_no' => $totl,
-    ]);
+      ->json([
+        $sessionVariable => $responseInfo,
+        'totl_no' => $totl,
+      ]);
   }
 
   /**
    * Remove the specified resource from storage.
    *
    * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @eturn \Illuminate\Http\Response
    */
   public function destroy(Request $request, $id)
   {
-    $pdt_category = StockCat::find($id);
-    $itemCategory = $pdt_category->item_category;
 
-    $pdt_category_delete_status = $pdt_category->delete();
+    try {
 
-    if ($pdt_category_delete_status) {
+      $method = "StockCategoryController@destroy";
+      $pdt_category = StockCat::find($id);
+      $itemCategory = $pdt_category->item_category;
+      $isDeleted = $pdt_category->delete();
 
-      $action = "removed stock category " . $itemCategory . "";
-      LogsController::logger($request, $action, now());
-      $dataArr = array(
-        "code" => '200',
-        "message" => $action,
-        "method" => "StockCategoryController@destroy"
-      );
-      LogAfterRequest::LogRequest($request, $dataArr);
+      if ($isDeleted) {
 
-      $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
-    } else {
+        $action = "removed stock category " . $itemCategory . "";
+        LogsController::logger($request, $action, now());
+        $dataArr = array(
+          "code" => '200',
+          "message" => $action,
+          "method" => $method
+        );
 
-      $messageErr = 'Item category not deleted!!';
-      $dataArr = array(
-        "code" => '101',
-        "message" => $messageErr,
-        "method" => "StockCategoryController@destroy"
-      );
-      LogAfterRequest::LogRequest($request, $dataArr);
-      $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
-    }
+        LogAfterRequest::LogRequest($request, $dataArr);
+        $message = $this->SuccessMessage($action);
+        $totl = $this->GetStockCatStats();
 
-    $totl = $this->GetStockCatStats();
-
-    return response()
-    ->json([$sessionVariable => $responseInfo,
+        return response()
+          ->json([
+            'success' => $message,
             'totl_no' => $totl,
-    ]);
+          ]);
+
+      } else {
+
+        $messageErr = 'Item category not deleted!!';
+        $dataArr = array(
+          "code" => '101',
+          "message" => $messageErr,
+          "method" => $method
+        );
+        LogAfterRequest::LogRequest($request, $dataArr);
+        $message = $this->FailedMessage($messageErr);
+        return response()->json(['error' => $message]);
+      }
+    } catch (\Exception $ex) {
+      return response()->json(['error' => $ex->getMessage()]);
+
+    }
 
   }
 
@@ -279,61 +297,64 @@ class StockCategoryController extends Controller
     $totl = $this->GetStockCatStats();
 
     return response()
-    ->json([$sessionVariable => $responseInfo,
-            'totl_no' => $totl,
-    ]);
+      ->json([
+        $sessionVariable => $responseInfo,
+        'totl_no' => $totl,
+      ]);
 
   }
 
 
   public function RemoveSelected(Request $request)
-    {
-        try {
-            $ids =  $request->input('selected_rows');
-            $deletedStockCats = array();
+  {
+    try {
+      $ids = $request->input('selected_rows');
+      $deletedStockCats = array();
 
-            if (count($ids) > 0) {
-                foreach ($ids as $id) {
-                    $findId = StockCat::find($id);
-                    $findId->delete();
-                    array_push($deletedStockCats, $findId->item_category);
-                }
-            }
-            $sessionVariable = 'success';
-            $deletedStockCatsStr = implode(", ", $deletedStockCats);
-            $action = "removed stock categories ".$deletedStockCatsStr." from the system";
-            if (count($ids) == 1) {
-                $action = Str::replaceFirst('categories', 'category', $action);
-            }
-            $response = $this->SuccessMessage($action);
-
-            $dataArr = array("code" => '200',
-                "message" => $action,
-                "method" => "".$this->controller."@RemoveSelected"
-            );
-            LogsController::logger($request, $action, now());
-            LogAfterRequest::LogRequest($request, $dataArr);
-
-              $totl = $this->GetStockCatStats();
-              return response()
-              ->json([$sessionVariable => $response,
-                      'totl_no' => $totl,
-              ]);
-
-           
-        } catch (\Exception $ex) {
-            $data = array(
-          'username' => auth()->user()->username,
-          'error_code' => $ex->getCode(),
-          'error_message' => $ex->getMessage(),
-          'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
-          'controller' => $this->controller,
-          'method' => 'RemoveSelected'
-        );
-            Helper::logError($data);
-            abort(409, $ex->getMessage());
+      if (count($ids) > 0) {
+        foreach ($ids as $id) {
+          $findId = StockCat::find($id);
+          $findId->delete();
+          array_push($deletedStockCats, $findId->item_category);
         }
+      }
+      $sessionVariable = 'success';
+      $deletedStockCatsStr = implode(", ", $deletedStockCats);
+      $action = "removed stock categories " . $deletedStockCatsStr . " from the system";
+      if (count($ids) == 1) {
+        $action = Str::replaceFirst('categories', 'category', $action);
+      }
+      $response = $this->SuccessMessage($action);
+
+      $dataArr = array(
+        "code" => '200',
+        "message" => $action,
+        "method" => "" . $this->controller . "@RemoveSelected"
+      );
+      LogsController::logger($request, $action, now());
+      LogAfterRequest::LogRequest($request, $dataArr);
+
+      $totl = $this->GetStockCatStats();
+      return response()
+        ->json([
+          $sessionVariable => $response,
+          'totl_no' => $totl,
+        ]);
+
+
+    } catch (\Exception $ex) {
+      $data = array(
+        'username' => auth()->user()->username,
+        'error_code' => $ex->getCode(),
+        'error_message' => $ex->getMessage(),
+        'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
+        'controller' => $this->controller,
+        'method' => 'RemoveSelected'
+      );
+      Helper::logError($data);
+      abort(409, $ex->getMessage());
     }
+  }
 
 
   public function importCategories(Request $request)
@@ -380,7 +401,7 @@ class StockCategoryController extends Controller
 
   protected function SuccessMessage($action)
   {
-    $message = "You have successfully ".$action."";
+    $message = "You have successfully " . $action . "";
     return $message;
   }
 

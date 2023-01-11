@@ -37,7 +37,7 @@ class DepartmentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -70,7 +70,7 @@ class DepartmentController extends Controller
                 return response()->json($data);
             }
         } catch (\Exception $ex) {
-            throw $ex;
+            return response()->json(['error' => $ex->getMessage()]);
         }
     }
 

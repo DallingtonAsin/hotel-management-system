@@ -92,3 +92,54 @@ function populateMenuItems() {
         }
     });
 }
+
+function onTypingRoomNumber(element) {
+
+    let search_qry = $(element).val();
+    $(element).typeahead({
+        source: function(search_qry, result) {
+            $.ajax({
+                url: searchRoomUrl,
+                method: 'post',
+                data: {
+                    query: search_qry,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    console.log(`Got rooms`, data);
+                    result($.map(data, function(item) {
+                        return item;
+                    }));
+                },
+                error: function(data) {
+                    console.log(data);
+                },
+            });
+        }
+    });
+}
+
+
+function onSearchItem(element){
+    let item_name = $().val();
+    $(element).typeahead({
+      source:function(item_name,result){
+        $.ajax({
+          url: onSearchItemUrl,
+          method:'post',
+          data:{
+            query: item_name,
+          },
+          dataType:'json',
+          success: function(data){
+            result($.map(data, function(item){
+              return item;
+            }));
+          },
+          error:function(data){
+            console.log(data);
+          },
+        });
+      }
+    });
+}
