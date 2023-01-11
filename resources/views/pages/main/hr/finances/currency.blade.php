@@ -7,42 +7,19 @@
             <h6 class="card-title mb-0 text-dark">
                 <i class="fa fa-home text-success"> /</i>
                 <strong>Currencies</strong>
-                <span class="badge badge-info total_departments">
+                <span class="badge badge-info total_currencies">
                     @isset($total_currencies)
                         {{ number_format($total_currencies) }}
                     @endisset
                 </span>
             </h6>
-            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewDepartment">
+            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewCurrency">
                 <i class="fa fa-plus-circle pr-1"></i>Add currency</button>
         </div>
 
         <div class="card-body">
-
-            <div class="col-lg-8 text-center nunito-font">
-
-                @if (session()->get('success'))
-                    <div class='alert alert-success alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                    </div>
-                @endif
-
-                @if (session()->get('fail'))
-                    <div class='alert alert-danger alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Oops!</strong> {{ session()->get('fail') }}
-                    </div>
-                @endif
-
-            </div>
-
-            <div class="table table-sm table-responsive">
-
-                <table class="table table-bordered table-hover departments-table" id="departments-table">
-
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover currencies-table" id="currencies-table">
                     <thead>
                         <tr>
                             <th></th>
@@ -60,17 +37,17 @@
 
 
 
-    <!--Add department -->
-    <div class="modal fade nunito-font addDepartmentModal" id="addDepartmentModal" tabindex="-1"
+    <!--Add currency -->
+    <div class="modal fade nunito-font addCurrencyModal" id="addCurrencyModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
-                <form name="departments" id="DepartmentsForm">
+                <form name="currencies" id="CurrencyForm">
                     @csrf
                     <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new department</h6>
+                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new currency</h6>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -80,19 +57,31 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control departmentId bg-white departmentId" name="id"
-                                placeholder="Enter department id" required autofocus>
+                            <input type="hidden" class="form-control currencyId bg-white currencyId" name="id"
+                                placeholder="Enter currency id" required autofocus>
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
-                                placeholder="Enter department name" required autofocus>
+                            <span><i class="text-danger pr-1">*</i>Country</span>
+                            <input type="text" class="form-control country_name bg-white" name="country_name"
+                                placeholder="Enter country name" required autofocus>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addDepartmentBtn"
-                                name="addDepartmentBtn">Save</button>
+                            <span><i class="text-danger pr-1">*</i>Currency Code</span>
+                            <input type="text" class="form-control currency_code bg-white" name="currency_code"
+                                placeholder="Enter currency code" required autofocus>
+                        </div>
+
+                        <div class="form-group">
+                            <span><i class="text-danger pr-1">*</i>Rate</span>
+                            <input type="text" class="form-control rate bg-white" name="rate"
+                                placeholder="Enter rate" required autofocus>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary addCurrencyBtn"
+                                name="addCurrencyBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                         </div>
 
@@ -118,7 +107,7 @@
 
                     <div class="modal-header text-center">
                         <h6 class="modal-title w-100 font-weight-bold">
-                            Import an excel file of departments </h6>
+                            Import an excel file of currencies </h6>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -161,7 +150,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete department</h6>
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete currency</h6>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -171,7 +160,7 @@
 
                     <div class="form-group">
                         <div class="text-center">
-                            <label class="text-danger delete-alert-text">Are you sure you want to delete this department
+                            <label class="text-danger delete-alert-text">Are you sure you want to delete this currency
                                 <small class="text-dark text-muted bolded">
                                 </small>
                                 ?
@@ -197,7 +186,7 @@
         });
         const ajaxUrl = @json(route('currencies.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
-        const cat = 'department';
+        const cat = 'currencies';
         const token = "{{ csrf_token() }}";
     </script>
 
@@ -205,8 +194,8 @@
         $(document).ready(function() {
         
             //code that displays results of the table index()
-            let table = $('#departments-table');
-            let title = "List of registered departments in the system";
+            let table = $('#currencies-table');
+            let title = "List of recorded currencies in the system";
             let columns = [1, 2, 3, 4];
             let dataColumns = [{
                     data: 'checkbox',
@@ -238,49 +227,55 @@
 
             makeDataTable(table, title, columns, dataColumns);
 
-            $('#addNewDepartment').click(function(e) {
+            $('#addNewCurrency').click(function(e) {
                 e.preventDefault();
                 DisableTableFields(false);
                 ShowBtns();
-                $('.addDepartmentBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.departmentId').val('');
-                $('#DepartmentsForm').trigger("reset");
-                $('#modalHeading').html("Register new department");
-                $('#addDepartmentModal').modal('show');
+                $('.addCurrencyBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                $('.currencyId').val('');
+                $('#CurrencyForm').trigger("reset");
+                $('#modalHeading').html("Add new currency");
+                $('#addCurrencyModal').modal('show');
             });
 
 
-            Numberize(".debt");
-            Numberize(".credit");
+            Numberize(".rate");
 
-            $('.addDepartmentBtn').click(function(e) {
+            $('.addCurrencyBtn').click(function(e) {
 
                 e.preventDefault();
 
                 let Errors = validateForm();
                 if (Errors.length == 0) {
+
                     $(this).html('Sending..');
+                    $('.errors-section').html('');
 
                     $.ajax({
-                        data: $('#DepartmentsForm').serialize(),
-                        url: "{{ route('departments.store') }}",
+                        data: $('#CurrencyForm').serialize(),
+                        url: "{{ route('currencies.store') }}",
                         type: "POST",
                         dataType: 'json',
                         success: function(data) {
 
-                            $('#DepartmentsForm').trigger("reset");
-                            $('#addDepartmentModal').modal("hide");
-                            let resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            let tbl = $('#departments-table').DataTable();
-                            tbl.ajax.reload();
+                            $('#CurrencyForm').trigger("reset");
+                            $('#addCurrencyModal').modal("hide");
+                            let resp = data.success || data.error;
+                            let type = data.success ? 'success' : 'error';
 
+                            if(data.success){
+                                ResetTblInfo(data);
+                                let tbl = $('#currencies-table').DataTable();
+                                tbl.ajax.reload();
+                            }
+
+                            displayResponse('.response', resp, type);
+                      
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
                             displayResponse('.response', data.error, 'error');
-                            $('.addDepartmentBtn').html('Save Changes');
+                            $('.addCurrencyBtn').html('Save Changes');
                         }
                     });
                 } else {
@@ -295,17 +290,17 @@
 
             });
 
-            //modal used to edit departments details [each row of the tbl]
-            $('body').on('click', '#edit-department', function(event) {
-                let department_id = $(this).data('id');
+            //modal used to edit currencies details [each row of the tbl]
+            $('body').on('click', '#edit-currency', function(event) {
+                let currency_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('departments.index') }}" + '/' + department_id + '/edit', function(data) {
+                $.get("{{ route('currencies.index') }}" + '/' + currency_id + '/edit', function(data) {
 
-                    $('#modalHeading').html("Edit details of department " + data.name + "");
-                    $('.addDepartmentBtn').text("Edit department");
-                    $('#addDepartmentModal').modal('show');
-                    $('.departmentId').val(data.id);
+                    $('#modalHeading').html("Edit details of currency " + data.name + "");
+                    $('.addCurrencyBtn').text("Edit currency");
+                    $('#addCurrencyModal').modal('show');
+                    $('.currencyId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -318,16 +313,16 @@
             });
 
 
-            //View Modal used to view each row [departments details]
-            $('body').on('click', '#view-department', function(event) {
-                let department_id = $(this).data('id');
+            //View Modal used to view each row [currencies details]
+            $('body').on('click', '#view-currency', function(event) {
+                let currency_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('departments.index') }}" + '/' + department_id + '', function(data) {
+                $.get("{{ route('currencies.index') }}" + '/' + currency_id + '', function(data) {
 
-                    $('#modalHeading').html("Details of department " + data.name + "");
-                    $('#addDepartmentModal').modal('show');
-                    $('.departmentId').val(data.id);
+                    $('#modalHeading').html("Details of currency " + data.name + "");
+                    $('#addCurrencyModal').modal('show');
+                    $('.currencyId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -340,20 +335,20 @@
             });
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-department', function(e) {
-                let department_id = $(this).data("id");
+            $('body').on('click', '#delete-currency', function(e) {
+                let currency_id = $(this).data("id");
                 e.preventDefault();
                 $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this department?");
+                $(".delete-alert-text").html("Are you sure you want to delete this currency?");
                 $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(department_id);
+                    ListenAndDoDeletion(currency_id);
                 });
 
             });
 
 
             function ListenAndDoDeletion(id) {
-                let deleteUrl = '{{ route('departments.destroy', ':id') }}';
+                let deleteUrl = '{{ route('currencies.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
@@ -365,7 +360,7 @@
                         $('#deleteSuppliersModal').modal("hide");
                         displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
-                        let tbl = $('#departments-table').DataTable();
+                        let tbl = $('#currencies-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
@@ -377,7 +372,7 @@
 
             function DisableTableFields(bool) {
 
-                $('.departmentId').attr('disabled', bool);
+                $('.currencyId').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
                 $('.address').attr('disabled', bool);
                 $('.contact').attr('disabled', bool);
@@ -387,13 +382,13 @@
             }
 
             function HideBtns() {
-                $('.addDepartmentBtn').hide();
+                $('.addCurrencyBtn').hide();
                 $('.clearBtn').hide();
                 $('.closeBtn').hide();
             }
 
             function ShowBtns() {
-                $('.addDepartmentBtn').show();
+                $('.addCurrencyBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
             }
@@ -401,16 +396,24 @@
          
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
-                $('.total_departments').html(totl_number);
+                $('.total_currencies').html(totl_number);
             }
 
             function validateForm() {
-                let name = $('.name').val();
+                let country_name = $('.country_name').val();
+                let currency_code = $('.currency_code').val();
+                let rate = $('.rate').val();
 
                 let errors = [];
-                if (name.length < 1) {
-                    let nameErr = "Please enter the name of the department";
-                    errors.push(nameErr);
+                if (country_name.length < 1) {
+                    errors.push("Please enter country name");
+                }
+                if (currency_code.length < 1) {
+                    errors.push("Please enter currency code");
+                }
+
+                if (rate.length < 1) {
+                    errors.push("Please enter the rate");
                 }
         
                 return errors;
@@ -429,8 +432,8 @@
                     closeIcon: true,
                     draggable: true,
                     closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all departments',
-                    content: 'Are you sure you want to remove all departments',
+                    title: 'Delete all currencies',
+                    content: 'Are you sure you want to remove all currencies',
                     buttons: {
                         confirm: function() {
                             let self = this;
@@ -447,8 +450,8 @@
                                     title: 'Message',
                                     content: data.success,
                                 });
-                                $(".total_departments").text(data.total);
-                                let tbl = $('#departments-table').DataTable();
+                                $(".total_currencies").text(data.total);
+                                let tbl = $('#currencies-table').DataTable();
                                 tbl.ajax.reload();
 
 
