@@ -1,10 +1,10 @@
 @extends('layouts.template')
 
 @section('content')
-   @include('pages.main.messages.response')
+   
     <div class="card">
+        <span class="response"></span>
         <div class="card-header row d-flex justify-content-between align-items-center">
-
             <div class="col">
                 <h6 class="text-left text-dark">
                     <i class="fa fa-home text-success"> /</i>
@@ -336,11 +336,17 @@
 
                             $('#ExpensesForm').trigger("reset");
                             $('#addExpensesModal').modal("hide");
-                            var resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            var tbl = $('.expenses-table').DataTable();
-                            tbl.ajax.reload();
+
+                            var resp = data.success || data.error;
+                            let type = data.success ? 'success' : 'error';
+
+                            if (data.success) {
+                                ResetTblInfo(data);
+                                var tbl = $('.expenses-table').DataTable();
+                                tbl.ajax.reload();
+                            }
+
+                            displayResponse('.response', resp, type);
 
                         },
                         error: function(data) {
@@ -385,10 +391,17 @@
                         var resp = data.success;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteExpensesModal').modal("hide");
-                        displayResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
-                        var tbl = $('.expenses-table').DataTable();
-                        tbl.ajax.reload();
+
+                        var resp = data.success || data.error;
+                        let type = data.success ? 'success' : 'error';
+
+                        if (data.success) {
+                            ResetTblInfo(data);
+                            var tbl = $('.expenses-table').DataTable();
+                            tbl.ajax.reload();
+                        }
+
+                        displayResponse('.response', resp, type);
                     },
                     error: function(data) {
                         console.log('Error:', data);
