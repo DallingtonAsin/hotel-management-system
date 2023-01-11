@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             // PaymentTableSeeder::class,
 
             KitchenOrderTableSeeder::Class,
+            KitchenMenuItemCategoryTableSeeder::class,
             KitchenMenuItemTableSeeder::class,
 
             CurrencyTableSeeder::class,

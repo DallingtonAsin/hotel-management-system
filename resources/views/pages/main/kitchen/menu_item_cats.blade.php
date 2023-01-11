@@ -6,27 +6,25 @@
             <span class="response"></span>
             <h6 class="card-title mb-0 text-dark">
                 <i class="fa fa-home text-success"> /</i>
-                <strong>Kitchen Menu Items</strong>
-                <span class="badge badge-info total_meu_items">
-                    @isset($total_menu_items)
-                        {{ number_format($total_menu_items) }}
+                <strong>Kitchen Menu Item Categories</strong>
+                <span class="badge badge-info total_menu_items_cats">
+                    @isset($total_menu_item_cats)
+                        {{ number_format($total_menu_item_cats) }}
                     @endisset
                 </span>
             </h6>
-            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewMenuItem">
+            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewMenuItemCategory">
                 <i class="fa fa-plus-circle pr-1"></i>Add Menu Item</button>
         </div>
 
         <div class="card-body">
 
             <div class="table-responsive">
-                <table class="table table-bordered table-hover menu-items-table" id="menu-items-table">
+                <table class="table table-bordered table-hover menu-items-cats-table" id="menu-items-cats-table">
                     <thead>
                         <tr>
                             <th></th>
                             <th>name</th>
-                            <th>price</th>
-                            <th>category</th>
                             <th>created by</th>
                             <th>Action</th>
                         </tr>
@@ -39,16 +37,16 @@
 
 
     <!--Add menu item -->
-    <div class="modal fade nunito-font addMenuItemModal" id="addMenuItemModal" tabindex="-1"
+    <div class="modal fade nunito-font addMenuItemCategoryModal" id="addMenuItemCategoryModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
-                <form name="menu-items" id="MenuItemsForm">
+                <form name="menu-items" id="MenuItemCatForm">
                     @csrf
                     <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new menu item</h6>
+                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new menu item category</h6>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -58,38 +56,19 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control menuItemId bg-white menuItemId" name="id"
+                            <input type="hidden" class="form-control menuItemCatId bg-white menuItemCatId" name="id"
                                 placeholder="Enter menu item id" required>
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Name</span>
+                            <span><i class="text-danger pr-1">*</i>Category Name</span>
                             <input type="text" class="form-control name bg-white" name="name"
                                 placeholder="Enter menu item name" required autofocus>
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Price</span>
-                            <input type="text" class="form-control price bg-white" name="price"
-                                placeholder="Enter price of the menu item" required>
-                        </div>
-
-                        <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Category</span>
-                            <input type="text" class="form-control category bg-white" name="category"
-                                placeholder="Enter menu item category" required>
-                        </div>
-
-                        <div class="form-group">
-                            <span>Description</span>
-                            <textarea name="description" class="form-control description" placeholder="{{ __('Description is optional...') }}">
-
-                            </textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary addMenuItemBtn"
-                                name="addMenuItemBtn">Save</button>
+                            <button type="submit" class="btn btn-primary addMenuItemCatBtn"
+                                name="addMenuItemCatBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                         </div>
 
@@ -105,9 +84,8 @@
 
 
     <!--Modal Delete Menu Item -->
-    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
-        aria-labelledby="ModalLabel">
+    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -145,7 +123,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        const ajaxUrl = @json(route('menu-items.index.ajax'));
+        const ajaxUrl = @json(route('menu-item-categories.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const cat = 'menu_items';
         const token = "{{ csrf_token() }}";
@@ -154,10 +132,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-
-            //code that displays results of the table index()
-            let table = $('#menu-items-table');
-            let title = "List of recorded menu items in the system";
+            let table = $('#menu-items-cats-table');
+            let title = "List of recorded menu item categories in the system";
             let columns = [1, 2, 3, 4];
             let dataColumns = [{
                     data: 'checkbox',
@@ -167,16 +143,7 @@
                     data: 'name',
                     name: 'name'
                 },
-                {
-                    data: 'price',
-                    name: 'price'
-                },
 
-                {
-                    data: 'category',
-                    name: 'category'
-                },
-               
                 {
                     data: 'created_by',
                     name: 'created_by'
@@ -191,21 +158,18 @@
 
             makeDataTable(table, title, columns, dataColumns);
 
-            $('#addNewMenuItem').click(function(e) {
+            $('#addNewMenuItemCategory').click(function(e) {
                 e.preventDefault();
                 DisableTableFields(false);
                 ShowBtns();
-                $('.addMenuItemBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.menuItemId').val('');
-                $('#MenuItemsForm').trigger("reset");
-                $('#modalHeading').html("Add new menu item");
-                $('#addMenuItemModal').modal('show');
+                $('.addMenuItemCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                $('.menuItemCatId').val('');
+                $('#MenuItemCatForm').trigger("reset");
+                $('#modalHeading').html("Add new menu item category");
+                $('#addMenuItemCategoryModal').modal('show');
             });
 
-
-            Numberize(".price");
-
-            $('.addMenuItemBtn').click(function(e) {
+            $('.addMenuItemCatBtn').click(function(e) {
 
                 e.preventDefault();
 
@@ -217,25 +181,29 @@
 
 
                     $.ajax({
-                        data: $('#MenuItemsForm').serialize(),
-                        url: "{{ route('menu-items.store') }}",
+                        data: $('#MenuItemCatForm').serialize(),
+                        url: "{{ route('menu-item-categories.store') }}",
                         type: "POST",
                         dataType: 'json',
                         success: function(data) {
 
-                            $('#MenuItemsForm').trigger("reset");
-                            $('#addMenuItemModal').modal("hide");
-                            let resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            let tbl = $('#menu-items-table').DataTable();
-                            tbl.ajax.reload();
+                            $('#MenuItemCatForm').trigger("reset");
+                            $('#addMenuItemCategoryModal').modal("hide");
+                            let resp = data.success || data.error;
+                            let type = data.success ? 'success' : 'error';
+                            if (data.success) {
+                                ResetTblInfo(data);
+                                let tbl = $('#menu-items-cats-table').DataTable();
+                                tbl.ajax.reload();
+                            }
+                            displayResponse('.response', resp, type);
+
 
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
                             displayResponse('.response', data.error, 'error');
-                            $('.addMenuItemBtn').html('Save Changes');
+                            $('.addMenuItemCatBtn').html('Save Changes');
                         }
                     });
                 } else {
@@ -251,16 +219,17 @@
             });
 
             //modal used to edit menu-items details [each row of the tbl]
-            $('body').on('click', '#edit-menu-item', function(event) {
+            $('body').on('click', '#edit-menu-item-cat', function(event) {
                 let menu_item_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('menu-items.index') }}" + '/' + menu_item_id + '/edit', function(data) {
+                $.get("{{ route('menu-item-categories.index') }}" + '/' + menu_item_id + '/edit', function(
+                    data) {
 
                     $('#modalHeading').html("Edit details of menu item " + data.name + "");
-                    $('.addMenuItemBtn').text("Edit menu item");
-                    $('#addMenuItemModal').modal('show');
-                    $('.menuItemId').val(data.id);
+                    $('.addMenuItemCatBtn').text("Edit menu item");
+                    $('#addMenuItemCategoryModal').modal('show');
+                    $('.menuItemCatId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -274,15 +243,16 @@
 
 
             //View Modal used to view each row [menu items details]
-            $('body').on('click', '#view-menu-item', function(event) {
+            $('body').on('click', '#view-menu-item-cat', function(event) {
                 let menu_item_id = $(this).data('id');
                 event.preventDefault();
 
-                $.get("{{ route('menu-items.index') }}" + '/' + menu_item_id + '', function(data) {
+                $.get("{{ route('menu-item-categories.index') }}" + '/' + menu_item_id + '', function(
+                data) {
 
                     $('#modalHeading').html("Details of menu item " + data.name + "");
-                    $('#addMenuItemModal').modal('show');
-                    $('.menuItemId').val(data.id);
+                    $('#addMenuItemCategoryModal').modal('show');
+                    $('.menuItemCatId').val(data.id);
                     $('.name').val(data.name);
                     $('.address').val(data.address);
                     $('.contact').val(data.contact);
@@ -295,7 +265,7 @@
             });
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-menu-item', function(e) {
+            $('body').on('click', '#delete-menu-item-cat', function(e) {
                 let menu_item_id = $(this).data("id");
                 e.preventDefault();
                 $("#deleteSuppliersModal").modal('show');
@@ -308,7 +278,7 @@
 
 
             function ListenAndDoDeletion(id) {
-                let deleteUrl = '{{ route('menu-items.destroy', ':id') }}';
+                let deleteUrl = '{{ route('menu-item-categories.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
@@ -320,7 +290,7 @@
                         $('#deleteSuppliersModal').modal("hide");
                         displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
-                        let tbl = $('#menu-items-table').DataTable();
+                        let tbl = $('#menu-items-cats-table').DataTable();
                         tbl.ajax.reload();
                     },
                     error: function(data) {
@@ -332,7 +302,7 @@
 
             function DisableTableFields(bool) {
 
-                $('.menuItemId').attr('disabled', bool);
+                $('.menuItemCatId').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
                 $('.address').attr('disabled', bool);
                 $('.contact').attr('disabled', bool);
@@ -342,21 +312,21 @@
             }
 
             function HideBtns() {
-                $('.addMenuItemBtn').hide();
+                $('.addMenuItemCatBtn').hide();
                 $('.clearBtn').hide();
                 $('.closeBtn').hide();
             }
 
             function ShowBtns() {
-                $('.addMenuItemBtn').show();
+                $('.addMenuItemCatBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
             }
 
-         
+
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
-                $('.total_meu_items').html(totl_number);
+                $('.total_menu_items_cats').html(totl_number);
             }
 
             function validateForm() {
@@ -364,10 +334,9 @@
 
                 let errors = [];
                 if (name.length < 1) {
-                    let nameErr = "Please enter the name of the menu item";
-                    errors.push(nameErr);
+                    errors.push("Please enter the name of the menu item category");
                 }
-        
+
                 return errors;
 
             }
@@ -402,8 +371,8 @@
                                     title: 'Message',
                                     content: data.success,
                                 });
-                                $(".total_meu_items").text(data.total);
-                                let tbl = $('#menu-items-table').DataTable();
+                                $(".total_menu_items_cats").text(data.total);
+                                let tbl = $('#menu-items-cats-table').DataTable();
                                 tbl.ajax.reload();
 
 
@@ -426,6 +395,6 @@
             }
         });
     </script>
-     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

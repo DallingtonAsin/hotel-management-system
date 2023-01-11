@@ -5,20 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KitchenMenuItem extends Model
+class KitchenMenuItemCategory extends Model
 {
     use HasFactory;
-    
-    protected $table = 'kitchen_menu_items';
+
+    protected $table = 'kitchen_menu_item_categories';
     public $timestamps = true;
 
     protected $fillable = [
         'name',
-        'description',
-        'discount_percent',
-        'price',
-        'category_id',
         'created_by'
     ];
-
 }

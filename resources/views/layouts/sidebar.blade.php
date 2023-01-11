@@ -63,14 +63,20 @@
                 <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i
                         class="fa fa-coffee"></i>Kitchen</a>
                 <ul class="nav-sub">
-                    <li class="nav-sub-item"><a href="{{ route('menu-items.index') }}" class="nav-sub-link">Menu Items</a>
-                    </li>
+                  
                     <li class="nav-item">
                         <a href="" class="nav-link with-sub">Orders</a>
                         <ul class="nav-sub">
                             <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}" class="nav-sub-link">Pending Orders</a></li>
                             <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}" class="nav-sub-link">Completed Orders</a></li>
                             <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}" class="nav-sub-link">Cancelled Orders</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link with-sub">Kitchen Menu</a>
+                        <ul class="nav-sub">
+                            <li class="nav-sub-item"><a href="{{ Route('menu-items.index') }}" class="nav-sub-link">Menu Items</a></li>
+                            <li class="nav-sub-item"><a href="{{ Route('menu-item-categories.index') }}" class="nav-sub-link">Menu Item Categories</a></li>
                         </ul>
                     </li>
                 </ul>

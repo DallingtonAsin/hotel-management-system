@@ -43,6 +43,7 @@ use App\Http\Controllers\Invoices\InvoiceGuestController;
 // Kitchen Controllers
 use App\Http\Controllers\Kitchen\KitchenOrderController;
 use App\Http\Controllers\Kitchen\MenuItemController;
+use App\Http\Controllers\Kitchen\KitchenMenuItemCategoryController;
 
 // Messages Controllers
 use App\Http\Controllers\Messages\CalendarController;
@@ -170,6 +171,7 @@ Route::get('kitchen/order/fetch/ajax', [KitchenOrderController::class, 'getKitch
 Route::put('kitchen/order/update/{id}', [KitchenOrderController::class, 'changeKitchenOrderStatus'])->name('kitchen-order.status.update');
 Route::post('kitchen/order/post', [KitchenOrderController::class, 'storeKitchenOrder'])->name('kitchen-order.submit');
 Route::get('kitchen/menu-items/fetch/ajax', [MenuItemController::class, 'getMenuItemsDataTable'])->name('menu-items.index.ajax');
+Route::get('kitchen/menu-items-categories/fetch/ajax', [KitchenMenuItemCategoryController::class, 'getKitchenMenuCategoriesOrdersDataTable'])->name('menu-item-categories.index.ajax');
 
 
 // Messages Routes
@@ -303,6 +305,7 @@ Route::group(['middleware' => 'restricted'], function () {
 		'currencies' => CurrencyController::class,
 		'frequent-contacts' => FrequentContactController::class,
 		'company' => SettingsController::class,
+		'menu-item-categories' => KitchenMenuItemCategoryController::class,
 	]);
 
 
