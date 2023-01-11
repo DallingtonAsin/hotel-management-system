@@ -3,304 +3,303 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|f
-*/
+// Accomodation Controllers
+use App\Http\Controllers\Accomodation\FrequentContactController;
+use App\Http\Controllers\Accomodation\GuestController;
+use App\Http\Controllers\Accomodation\GuestTypeController;
+use App\Http\Controllers\Accomodation\ReservationController;
+use App\Http\Controllers\Accomodation\RoomController;
+use App\Http\Controllers\Accomodation\RoomTypeController;
 
-Route::get('/', function () {
-	return view('auth/login');
-})->name('re-login');
+// Accounting Controllers
+use App\Http\Controllers\Accounting\AccountingController;
+use App\Http\Controllers\Accounting\ExpensesController;
 
+// Audit Controllers
+use App\Http\Controllers\Audit\LogsController;
+
+// Finances Controllers
+use App\Http\Controllers\Finances\PaymentController;
+use App\Http\Controllers\Finances\SalaryController;
+
+// Home Controllers
+use App\Http\Controllers\Home\HomeController;
+
+// HR Controllers
+use App\Http\Controllers\HR\CurrencyController;
+use App\Http\Controllers\HR\DepartmentController;
+use App\Http\Controllers\HR\DesignationController;
+
+// Inventory Controllers
+use App\Http\Controllers\Inventory\DamagesController;
+use App\Http\Controllers\Inventory\PurchasesController;
+use App\Http\Controllers\Inventory\StockCategoryController;
+use App\Http\Controllers\Inventory\StockController;
+
+// Invoice Controllers
+use App\Http\Controllers\Invoices\InvoiceController;
+use App\Http\Controllers\Invoices\InvoiceGuestController;
+
+// Kitchen Controllers
+use App\Http\Controllers\Kitchen\KitchenOrderController;
+use App\Http\Controllers\Kitchen\MenuItemController;
+
+// Messages Controllers
+use App\Http\Controllers\Messages\CalendarController;
+use App\Http\Controllers\Messages\MailController;
+use App\Http\Controllers\Messages\NotificationController;
+use App\Http\Controllers\Messages\SmsController;
+
+// Pos Controllers
+use App\Http\Controllers\Pos\CartController;
+use App\Http\Controllers\Pos\SalesController;
+
+// Reports Controllers
+use App\Http\Controllers\Reports\ReportsController;
+
+// Settings Controllers
+use App\Http\Controllers\Settings\SettingsController;
+
+// User Controllers
+use App\Http\Controllers\User\CustomersController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\StaffMemberController;
+use App\Http\Controllers\User\SuppliersController;
+use App\Http\Controllers\User\UserController;
+
+// Authentication Controllers
+use App\Http\Controllers\Auth\CustomLoginController;
+
+
+
+// Login Routes
 Auth::routes();
-
-//Auth::routes(['register' => false]);
-// Auth::route(['login'])->middleware(CheckStatus::class)
-
-Route::post('/user/validate', 'Auth\CustomLoginController@authenticate')->name('authenticate');
-Route::get('/sign-out', 'Auth\CustomLoginController@logout')->name('signout');
-
-Route::group(["middleware" =>"OTPlayer"], function(){
-    Route::post('login/verifyOTP', 'Auth\CustomLoginController@VerifyUserOTPRequest')->name('verifyOTP');
-    Route::get('login/OTP', 'Auth\CustomLoginController@getOTPPage');
+Route::get('', [CustomLoginController::class, 'retryLogin'])->name('re-login');
+Route::post('user/validate', [CustomLoginController::class, 'authenticate'])->name('authenticate');
+Route::get('sign-out', [CustomLoginController::class, 'logout'])->name('signout');
+Route::group(['middleware' => 'OTPlayer'], function () {
+	Route::post('login/verifyOTP', [CustomLoginController::class, 'VerifyUserOTPRequest'])->name('verifyOTP');
+	Route::get('login/OTP', [CustomLoginController::class, 'getOTPPage']);
 });
 
 
+// Accomodation Routes
+Route::get('room-types/ajax', [RoomTypeController::class, 'fetchRoomTypesAjax'])->name('room_types.ajax.fetch');
+Route::get('rooms/ajax', [RoomController::class, 'fetchRoomsAjax'])->name('rooms.ajax.fetch');
+Route::get('rooms/fetch/ajax', [RoomController::class, 'RoomsDataTable'])->name('rooms.index.ajax');
+Route::get('rooms-types/fetch/ajax', [RoomTypeController::class, 'RoomTypesDataTable'])->name('roomstypes.index.ajax');
+Route::post('rooms/ajax/suggestions', [RoomController::class, 'suggestRooms'])->name('rooms.ajax.suggest');
+Route::get('guests-types/fetch/ajax', [GuestTypeController::class, 'getGuestTypesDataTable'])->name('guesttypes.index.ajax');
+Route::get('guests/fetch/ajax', [GuestController::class, 'getGuests'])->name('guests.index.ajax');
+Route::get('guests/ajax', [GuestController::class, 'fetchGuestsAjax'])->name('guests.ajax.fetch');
+Route::get('reservations/fetch/ajax', [ReservationController::class, 'getReservations'])->name('reservations.index.ajax');
+
+
+// Accounting Routes
+Route::get('accounting/balance-sheet', [AccountingController::class, 'generateBalanceSheet'])->name('accounting.balance_sheet');
+Route::get('accounting/cash-flow-statement', [AccountingController::class, 'generateCashFlowStatement'])->name('accounting.cash_flow_statement');
+Route::get('accounting/general-ledger', [AccountingController::class, 'generateGeneralLedger'])->name('accounting.general_ledger');
+Route::post('expenses/import-expenses', [ExpensesController::class, 'importExpenses'])->name('expenses.import');
+Route::get('expenses/export-expenses', [ExpensesController::class, 'exportExpenses'])->name('expenses.export');
+Route::post('expenses/remove/selected', [ExpensesController::class, 'RemoveSelected'])->name('selected-expenses.remove');
+Route::post('expenses/deleteAll', [ExpensesController::class, 'deleteAllExpenses'])->name('expenses.truncate');
+Route::get('expenses/get-data', [ExpensesController::class, 'GetExpenses'])->name('get-expenses');
+
+
+// Audit Routes
+Route::get('logs/get-data', [LogsController::class, 'GetLogs'])->name('get-logs');
+Route::post('logs/truncate', [LogsController::class, 'truncateLogs'])->name('logs.truncate');
+
+
+// Finance Routes
+Route::get('payments/fetch/ajax', [PaymentController::class, 'getPaymentsDataTable'])->name('payments.index.ajax');
+Route::get('salaries/fetch/ajax', [SalaryController::class, 'getSalariesDataTable'])->name('salaries.index.ajax');
+
+
+// Home Routes
+Route::get('home', [HomeController::class, 'index'])->name('home');
+Route::get('overview', [HomeController::class, 'overview'])->name('overview');
+
+
+// HR Routes
+Route::get('departments/ajax', [DepartmentController::class, 'fetchDepartmentsAjax'])->name('departments.ajax.fetch');
+Route::get('departments/fetch/ajax', [DepartmentController::class, 'getDepartmentsDataTable'])->name('departments.index.ajax');
+Route::get('designations/fetch/{department_id}', [DesignationController::class, 'fetchDesignationsByDepartment'])->name('designations.ajax.fetch');
+Route::get('designations/index/ajax', [DesignationController::class, 'getDesignationsDataTable'])->name('designations.index.fetch');
+Route::get('designations/fetch/ajax', [DesignationController::class, 'getDesignationsDataTable'])->name('designations.index.ajax');
+Route::get('staff-members/ajax', [UserController::class, 'fetchStaffAjax'])->name('staff.ajax.fetch');
+Route::get('staff/fetch/ajax', [StaffMemberController::class, 'GetStaffMemebers'])->name('staff.index.ajax');
+
+
+// Inventory Routes
+Route::get('stock/get-data', [StockController::class, 'GetStock'])->name('get-stock');
+Route::get('stock/fetch', [StockController::class, 'fetchStockItemsAjax'])->name('stock.ajax.fetch');
+Route::get('stock/export-stock', [StockController::class, 'exportStock'])->name('stock.export');
+Route::post('stock/remove/selected', [StockController::class, 'RemoveSelected'])->name('selected-stock.remove');
+Route::post('stock/import-stock', [StockController::class, 'importStock'])->name('stock.import');
+Route::post('stock/search/item', [DamagesController::class, 'searchItem'])->name('stock-item.search');
+Route::post('stock/deleteAll', [StockController::class, 'deleteAllStockItems'])->name('stock.truncate');
+Route::post('damaged-stock-items/deleteAll', [DamagesController::class, 'deleteAllDamages'])->name('damages.truncate');
+Route::post('damaged-stock-items/import-damages', [DamagesController::class, 'importDamages'])->name('damages.import');
+Route::get('damaged-stock-items/export-damages', [DamagesController::class, 'exportDamages'])->name('damages.export');
+Route::post('damaged-stock-items/remove/selected', [DamagesController::class, 'RemoveSelected'])->name('selected-damages.remove');
+Route::get('damaged-stock-items/get-data', [DamagesController::class, 'GetDamages'])->name('get-damages');
+Route::get('product-categories/load/', [StockCategoryController::class, 'StockCatAjaxIndex'])->name('get-stockItems');
+Route::post('product-categories/import-categories', [StockCategoryController::class, 'importCategories'])->name('categories.import');
+Route::get('product-categories/export-categories', [StockCategoryController::class, 'exportCategories'])->name('categories.export');
+Route::post('product-categories/deleteAll', [StockCategoryController::class, 'deleteAllStockCategories'])->name('categories.truncate');
+Route::post('product-categories/remove/selected', [StockCategoryController::class, 'RemoveSelected'])->name('selected-stockcats.remove');
+Route::post('purchases/import-purchases', [SuppliersController::class, 'importPurchasedItems'])->name('purchases.import');
+Route::post('purchases/remove/selected', [PurchasesController::class, 'RemoveSelected'])->name('selected-purchases.remove');
+Route::get('purchases/get/', [PurchasesController::class, 'GetPurchases'])->name('get-purchases');
+Route::post('purchases/deleteAll', [PurchasesController::class, 'deleteAllPurchases'])->name('purchases.truncate');
+
+
+// Invoice Routes
+Route::get('invoice/reservation/download/{id}', [InvoiceController::class, 'downloadReservationInvoice'])->name('invoice.generate');
+Route::get('invoice/kitchen-order/download/{id}', [InvoiceController::class, 'downloadKitchenOrderInvoice'])->name('kitchen-order.invoice.generate');
+
+
+// Kitchen Routes
+Route::get('kitchen/menu-items/ajax', [MenuItemController::class, 'fetchMenuItemsAjax'])->name('kitchen-menu-items.ajax.fetch');
+Route::get('kitchen/menu-item/price/{menu_item_id}', [MenuItemController::class, 'getMenuItemPrice'])->name('menu-item.price.ajax.fetch');
+Route::get('kitchen/item/{menu_item_id}', [MenuItemController::class, 'getMenuItem'])->name('menu-item.get');
+Route::get('kitchen/order/fetch/ajax', [KitchenOrderController::class, 'getKitchenOrdersDataTable'])->name('kitchen_orders.index.ajax');
+Route::put('kitchen/order/update/{id}', [KitchenOrderController::class, 'changeKitchenOrderStatus'])->name('kitchen-order.status.update');
+Route::post('kitchen/order/post', [KitchenOrderController::class, 'storeKitchenOrder'])->name('kitchen-order.submit');
+
+
+// Messages Routes
+Route::post('notifications/get', [NotificationController::class, '@GetOtherNotifications'])->name('unreadNotifications');
+Route::post('notification/unreadEmailNotifications', [NotificationController::class, '@GetUnReadEmailNotifications'])->name('unreadEmailNotifications');
+Route::get('notifications', [NotificationController::class, '@markAllRead'])->name('readAll');
+Route::get('sms', [SmsController::class, 'index'])->name('sms');
+Route::post('send-sms', [SmsController::class, 'SendSMS'])->name('sms.store');
+Route::get('email', [MailController::class, 'MailWelcome']);
+
+
+// Pos Routes
+Route::get('sales/get-data', [SalesController::class, 'GetSales'])->name('get-sales');
+Route::get('sales/fetch/today', [SalesController::class, 'GetTodaySales'])->name('get-daily-sales');
+Route::get('sales/today', [SalesController::class, 'salesForToday'])->name('dailysales.index');
+Route::get('sales/item/{id}', [SalesController::class, 'GetItem'])->name('getItemName');
+Route::get('sales/debts', [SalesController::class, 'salesWithDebtsIndex'])->name('sales.debts');
+Route::get('sales/debts/ajax', [SalesController::class, 'GetSalesWithDebts'])->name('get-sales-with-debts');
+Route::get('sales/today/debts/ajax', [SalesController::class, 'GetTodaySalesWithDebts'])->name('get-daily-sales-with-debts');
+Route::post('sale/transact', [CartController::class, 'recordSale'])->name('sale.record');
+Route::post('sales/remove/selected', [SalesController::class, 'RemoveSelected'])->name('selected-sales.remove');
+Route::post('sales/filtered-sales', [SalesController::class, 'filterSales'])->name('filtersales');
+Route::post('sales/debts/search', [SalesController::class, 'filterSalesWithDebts'])->name('sales.debts.filter');
+Route::put('sales/records/update/', [SalesController::class, 'updateSaleRecord'])->name('sales.records.update');
+Route::get('sale/make-receipt', [CartController::class, 'getReceipt']);
+Route::post('pos/session/update', [CartController::class, 'updateItemInSession'])->name('session.update');
+Route::post('pos/record', [CartController::class, 'MakeSaleGateway'])->name('sale.transact');
+Route::post('pos/barcode/getItem', [CartController::class, 'GetCartData'])->name('item.get');
+Route::post('pos/search', [CartController::class, 'searchItem'])->name('item.search');
+Route::post('pos/searchprice', [CartController::class, 'getItemPrice'])->name('cart.searchprice');
+Route::post('pos/clear', [CartController::class, 'ClearCart'])->middleware('password.confirm');
+Route::post('pos/handler', [CartController::class, 'PopulateCart'])->name('cart.handle');
+
+// Reports Routes
+Route::get('reports/ajax/monthly-sales', [ReportsController::class, 'GetMonthlySalesDT'])->name('monthly-sales.ajax');
+Route::get('reports/ajax/low-running-stock/{qty?}', [ReportsController::class, 'GetLowStockDT'])->name('low-stock.ajax');
+Route::get('reports/ajax/best-selling-items', [ReportsController::class, 'GetBestSellingItemsDT'])->name('best-selling-items.ajax');
+Route::get('reports/ajax/cashiers-performance', [ReportsController::class, 'GetCashiersReportDT'])->name('top-cashiers.ajax');
+Route::get('reports/ajax/debtors/suppliers', [ReportsController::class, 'GetSupplierDebtorsDT'])->name('debtors-suppliers.ajax');
+Route::get('reports/ajax/top-customers', [ReportsController::class, 'GetTopCustomersDT'])->name('top-customers.ajax');
+Route::get('reports/ajax/debtors/customers', [ReportsController::class, 'GetCustomerDebtorsDT'])->name('debtors-customers.ajax');
+Route::get('reports/low-running-stock/{qty?}', [ReportsController::class, 'lowRunningStock'])->name('low-stock');
+Route::get('reports/monthly-sales', [ReportsController::class, 'MonthlySales'])->name('m-sales');
+Route::get('reports/best-selling-items', [ReportsController::class, 'BestSellingItems'])->name('best-selling-items');
+Route::get('reports/top-customers', [ReportsController::class, 'topCustomers'])->name('top-customers');
+Route::get('reports/cashiers-performance', [ReportsController::class, 'topCashiers'])->name('top-cashiers');
+Route::get('reports/debtors/customers', [ReportsController::class, 'debtorsCustomersList'])->name('debtors-customers');
+Route::get('reports/debtors/suppliers', [ReportsController::class, 'debtorsSuppliersList'])->name('debtors-suppliers');
+Route::get('reports/charts/purchases', [ReportsController::class, 'purchaseReports'])->name('reports.charts.purchases');
+Route::get('reports/chartdata', [ReportsController::class, 'getMonthlySalesData'])->name('chartdata');
+Route::get('reports/expenses/monthly', [ReportsController::class, 'monthlyExpensesReportIndex'])->name('reports.expenses.monthly');
+Route::get('reports/expenses/monthly/ajax', [ReportsController::class, 'getMonthlyExpensesReport'])->name('reports.expenses.monthly.ajax');
+Route::get('reports', [ReportsController::class, 'index'])->name('reports');
+
+
+// Settings Routes
+Route::get('settings/profile', [ProfileController::class, '@accountSettings'])->name('account-settings');
+Route::get('settings/company', [SettingsController::class, 'showCreateCoForm'])->name('companies.create');
+Route::post('settings/company/{id}', [SettingsController::class, 'addUpdateCompany'])->name('companies.register');
+Route::get('settings/company-details', [SettingsController::class, 'GetCompanies'])->name('companies.home');
+
+
+
+// User Routes
+Route::get('users/active', [UserController::class, 'ActiveUsersIndex'])->name('user.account.active');
+Route::get('users/locked', [UserController::class, 'LockedUsersIndex'])->name('user.account.locked');
+Route::get('users/active/fetch', [UserController::class, 'ActiveUsersAjax'])->name('active_user.ajax.fetch');
+Route::get('users/locked/fetch', [UserController::class, 'LockedUsersAjax'])->name('locked_user.ajax.fetch');
+Route::get('users/managers', [UserController::class, 'fetchManagers'])->name('managers.home');
+Route::get('users/managers/ajax', [UserController::class, 'GetManagers'])->name('managers.index.ajax');
+Route::get('users/cashiers', [UserController::class, 'fetchCashiers'])->name('cashiers.home');
+Route::get('users/cashiers/ajax', [UserController::class, 'GetCashiers'])->name('cashiers.index.ajax');
+Route::get('users/fetch/ajax', [UserController::class, 'GetUsers'])->name('users.index.ajax');
+Route::get('users/active/remove', [UserController::class, 'RemoveAllActiveUsers'])->name('active-users.remove')->middleware('password.confirm');
+Route::get('users/locked/remove', [UserController::class, 'RemoveAllLockedUsers'])->name('locked-users.remove')->middleware('password.confirm');
+Route::get('user/lockunlock/{id}/{status}/{name}', [UserController::class, 'LockUnlockAccount'])->name('user.lockunlock');
+Route::post('user/lockunlock/', [UserController::class, 'LockUnlockUserAccount'])->name('account.change');
+Route::post('users/remove/selected', [UserController::class, 'RemoveSelected'])->name('selected-users.remove');
+Route::post('users/search/role', [UserController::class, 'searchRole'])->name('user.searchrole');
+
+Route::get('customers/with-debts/ajax', [CustomersController::class, 'GetCustomersWithDebts'])->name('customers.with.debts.ajax');
+Route::get('customers/debt-payments', [CustomersController::class, 'customerDebtPaymentsIndex'])->name('customers.debts.payments.index');
+Route::get('customers/debt-payments/ajax', [CustomersController::class, 'GetCustomerDebtPayments'])->name('customers.debts.payments.ajax');
+Route::post('customers/remove/selected', [CustomersController::class, 'RemoveSelected'])->name('selected-customers.remove');
+Route::post('suppliers/remove/selected', [SuppliersController::class, 'RemoveSelected'])->name('selected-suppliers.remove');
+Route::get('customers/home', [CustomersController::class, 'GetCustomers'])->name('customers.home');
+Route::post('customers/import', [CustomersController::class, 'importCustomers'])->name('customers.import');
+Route::get('customers/export', [CustomersController::class, 'exportCustomers'])->name('customers.export');
+Route::get('customers/with-debts', [CustomersController::class, 'customersWithDebtsIndex'])->name('customers.with.debts');
+Route::get('customers/with-debts/{id}', [CustomersController::class, 'showCustomerWithDebt']);
+Route::post('customer/debts/update', [CustomersController::class, 'updateCustomerDebts'])->name('customer.debt.update');
+Route::post('customers/delete/all', [CustomersController::class, 'deleteAllCustomers'])->name('customers.truncate');
+Route::post('suppliers/import', [SuppliersController::class, 'importSuppliers'])->name('suppliers.import');
+Route::get('suppliers/export', [SuppliersController::class, 'exportSuppliers'])->name('suppliers.export');
+Route::get('suppliers/getSuppliers4DT', [SuppliersController::class, 'GetSuppliersData'])->name('getSuppliers4DT');
+Route::get('suppliers/home', [SuppliersController::class, 'GetSuppliers'])->name('suppliers.home');
+Route::post('suppliers/delete/all', [SuppliersController::class, 'deleteAllSuppliers'])->name('suppliers.truncate');
+
+
+// Resource Routes
+Route::group(['middleware' => 'restricted'], function () {
+
+	Route::resources([
+		'stock' => StockController::class,
+		'pos' => CartController::class,
+		'kitchen-orders' => KitchenOrderController::class,
+		'sales' => SalesController::class,
+		'product-categories' => StockCategoryController::class,
+		'damaged-stock-items' => DamagesController::class,
+		'suppliers' => SuppliersController::class,
+		'purchases' => PurchasesController::class,
+		'expenses' => ExpensesController::class,
+		'profile' => ProfileController::class,
+		'mail' => MailController::class,
+		'logs' => LogsController::class,
+		'users' => UserController::class,
+		'calendar' => CalendarController::class,
+		'company' => SettingsController::class,
+		'departments' => DepartmentController::class,
+		'room_types' => RoomTypeController::class,
+		'rooms' => RoomController::class,
+		'guest_types' => GuestTypeController::class,
+		'guests' => GuestController::class,
+		'invoice_guests' => InvoiceGuestController::class,
+		'reservations' => ReservationController::class,
+		'designations' => DesignationController::class,
+		'staff' => StaffMemberController::class,
+		'payments' => PaymentController::class,
+		'salary' => SalaryController::class,
+		'customers' => CustomersController::class,
+		'currencies' => CurrencyController::class,
+		'frequent-contacts' => FrequentContactController::class,
+	]);
 
-Route::get("/export/excel", "SalesController@GetSalesExcelFileReport");
-
-Route::get("/sale/make-receipt", "CartController@getReceipt");
-
-
-// Route::get("/users/active", "UserController@ActiveUsersIndex")->name('user-account.active');
-// Route::get("/users/locked", "UserController@LockedUsersIndex")->name('user-account.locked');
-Route::get('/fetch/company-details', 'SettingsController@GetCompanies')->name('companies.home');
-Route::get('stock/fetch','StockController@fetchStockItemsAjax')->name('stock.ajax.fetch');
-Route::get('designations/fetch/{department_id}','DesignationController@fetchDesignationsByDepartment')->name('designations.ajax.fetch');
-Route::get('designations/index/ajax','DesignationController@getDesignationsDataTable')->name('designations.index.fetch');
-
-Route::get('departments/ajax','DepartmentController@fetchDepartmentsAjax')->name('departments.ajax.fetch');
-Route::get('room-types/ajax','RoomTypeController@fetchRoomTypesAjax')->name('room_types.ajax.fetch');
-Route::get('rooms/ajax','RoomController@fetchRoomsAjax')->name('rooms.ajax.fetch');
-Route::post('rooms/ajax/suggestions','RoomController@suggestRooms')->name('rooms.ajax.suggest');
-Route::get('staff-members/ajax','UserController@fetchStaffAjax')->name('staff.ajax.fetch');
-Route::get('guests/ajax','GuestController@fetchGuestsAjax')->name('guests.ajax.fetch');
-Route::get('kitchen/menu-items/ajax','kitchen\MenuItemController@fetchMenuItemsAjax')->name('kitchen-menu-items.ajax.fetch');
-Route::get('kitchen/menu-item/price/{menu_item_id}','kitchen\MenuItemController@getMenuItemPrice')->name('menu-item.price.ajax.fetch');
-Route::get('kitchen/item/{menu_item_id}','kitchen\MenuItemController@getMenuItem')->name('menu-item.get');
-
-
-
-
-Route::get('reports/ajax/monthly-sales','ReportsController@GetMonthlySalesDT')->name('monthly-sales.ajax');
-Route::get('reports/ajax/low-running-stock/{qty?}','ReportsController@GetLowStockDT')->name('low-stock.ajax');
-Route::get('reports/ajax/best-selling-items','ReportsController@GetBestSellingItemsDT')->name('best-selling-items.ajax');
-Route::get('reports/ajax/cashiers-performance','ReportsController@GetCashiersReportDT')->name('top-cashiers.ajax');
-Route::get('reports/ajax/debtors/suppliers','ReportsController@GetSupplierDebtorsDT')->name('debtors-suppliers.ajax');
-
-
-Route::get("users/active", "UserController@ActiveUsersIndex")->name('user.account.active');
-Route::get("users/locked", "UserController@LockedUsersIndex")->name('user.account.locked');
-Route::get('users/active/fetch', 'UserController@ActiveUsersAjax')->name('active_user.ajax.fetch');
-Route::get('users/locked/fetch', 'UserController@LockedUsersAjax')->name('locked_user.ajax.fetch');
-
-
-Route::get('reports/ajax/top-customers','ReportsController@GetTopCustomersDT')->name('top-customers.ajax');
-Route::get('reports/ajax/debtors/customers','ReportsController@GetCustomerDebtorsDT')->name('debtors-customers.ajax');
-Route::get('/customers/with-debts/ajax', 'CustomersController@GetCustomersWithDebts')->name('customers.with.debts.ajax');
-
-Route::get('/customers/debt-payments', 'CustomersController@customerDebtPaymentsIndex')->name('customers.debts.payments.index');
-Route::get('/customers/debt-payments/ajax', 'CustomersController@GetCustomerDebtPayments')->name('customers.debts.payments.ajax');
-
-
-
-Route::match(['get', 'post'], '/botman', 'ChatBotController@handle');
-
-Route::group(["middleware" => "restricted"], function(){
-
-Route::get('/customers/with-debts/{id}', 'CustomersController@showCustomerWithDebt');
-Route::post('update/customer/debts', 'CustomersController@updateCustomerDebts')->name('customer.debt.update');
-
-
-Route::get('/stock/get-data', 'StockController@GetStock')->name('get-stock');
-Route::get('/suppliers/home', 'SuppliersController@GetSuppliers')->name('suppliers.home');
-Route::get('/expenses/get-data', 'ExpensesController@GetExpenses')->name('get-expenses');
-Route::get('/logs/get-data', 'LogsController@GetLogs')->name('get-logs');
-Route::get('/damages/get-data', 'DamagesController@GetDamages')->name('get-damages');
-
-
-Route::get('/sales/get-data', 'SalesController@GetSales')->name('get-sales');
-Route::get('/sales/fetch/today', 'SalesController@GetTodaySales')->name('get-daily-sales');
-Route::get('/sales/today', 'SalesController@salesForToday')->name('dailysales.index');
-Route::get('/sales/item/{id}', 'SalesController@GetItem')->name('getItemName');
-
-Route::get('/sales/debts', 'SalesController@salesWithDebtsIndex')->name('sales.debts');
-Route::get('/sales/debts/ajax', 'SalesController@GetSalesWithDebts')->name('get-sales-with-debts');
-Route::get('/sales/today/debts/ajax', 'SalesController@GetTodaySalesWithDebts')->name('get-daily-sales-with-debts');
-
-
-Route::get('/events/get', 'EventsController@GetEvents')->name('get-events');
-Route::get('/events/getTitle/{id}', 'EventsController@GetEventTitle')->name('getEventTitle');
-Route::get('purchases/get/', 'PurchasesController@GetPurchases')->name('get-purchases');
-Route::get('StockCats/load/', 'StockCategoryController@StockCatAjaxIndex')->name('get-stockItems');
-
-Route::get('/create/company', 'SettingsController@showCreateCoForm')->name('companies.create');
-Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
-Route::get('/users/managers', 'UserController@fetchManagers')->name('managers.home');
-
-Route::get('/users/managers/ajax', 'UserController@GetManagers')->name('managers.index.ajax');
-Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.home');
-Route::get('/users/cashiers/ajax', 'UserController@GetCashiers')->name('cashiers.index.ajax');
-Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.ajax');
-
-Route::get('/rooms/fetch/ajax', 'RoomController@RoomsDataTable')->name('rooms.index.ajax');
-Route::get('/rooms-types/fetch/ajax', 'RoomTypeController@RoomTypesDataTable')->name('roomstypes.index.ajax');
-Route::get('/guests-types/fetch/ajax', 'GuestTypeController@getGuestTypesDataTable')->name('guesttypes.index.ajax');
-Route::get('/departments/fetch/ajax', 'DepartmentController@getDepartmentsDataTable')->name('departments.index.ajax');
-Route::get('/designations/fetch/ajax', 'DesignationController@getDesignationsDataTable')->name('designations.index.ajax');
-Route::get('/staff/fetch/ajax', 'StaffMemberController@GetStaffMemebers')->name('staff.index.ajax');
-Route::get('/reservations/fetch/ajax', 'ReservationController@getReservations')->name('reservations.index.ajax');
-Route::get('/guests/fetch/ajax', 'GuestController@getGuests')->name('guests.index.ajax');
-
-Route::get('/payments/fetch/ajax', 'finances\PaymentController@getPaymentsDataTable')->name('payments.index.ajax');
-Route::get('/salaries/fetch/ajax', 'finances\SalaryController@getSalariesDataTable')->name('salaries.index.ajax');
-Route::get('/kitchen-orders/fetch/ajax', 'KitchenOrderController@getKitchenOrdersDataTable')->name('kitchen_orders.index.ajax');
-
-
-Route::get('generate-invoice-pdf', 'InvoiceController@generateInvoicePDF')->name('booking_invoice.generate');
-Route::get('invoice/reservation/download/{id}', 'InvoiceController@downloadReservationInvoice')->name('invoice.generate');
-
-Route::get('accounting/balance-sheet', 'AccountingController@generateBalanceSheet')->name('accounting.balance_sheet');
-Route::get('accounting/cash-flow-statement', 'AccountingController@generateCashFlowStatement')->name('accounting.cash_flow_statement');
-Route::get('accounting/general-ledger', 'AccountingController@generateGeneralLedger')->name('accounting.general_ledger');
-
-Route::get('invoice/kitchen-order/download/{id}', 'InvoiceController@downloadKitchenOrderInvoice')->name('kitchen-order.invoice.generate');
-Route::put('kitchen-order/update/{id}', 'KitchenOrderController@changeKitchenOrderStatus')->name('kitchen-order.status.update');
-Route::post('kitchen-order/post','KitchenOrderController@storeKitchenOrder')->name('kitchen-order.submit');
-
-Route::get('reports/expenses/monthly', 'ReportsController@monthlyExpensesReportIndex')->name('reports.expenses.monthly');
-Route::get('reports/expenses/monthly/ajax', 'ReportsController@getMonthlyExpensesReport')->name('reports.expenses.monthly.ajax');
-
-
-Route::resources([
-	'payments' => 'finances\PaymentController',
-	'salary' => 'finances\SalaryController',
-]);
-
-Route::resources([
-	'stock' => 'StockController',
-	'pos' => 'CartController',
-	'kitchen-orders' => 'KitchenOrderController',
-	'sales' => 'SalesController',
-	'product-categories' => 'StockCategoryController',
-	'cashiers' => 'CashiersController',
-	'damaged-stock-items' => 'DamagesController',
-	'suppliers'=> 'SuppliersController',
-	'purchases' => 'PurchasesController',
-	'events' => 'EventsController',
-	'expenses' => 'ExpensesController',
-	'profile' => 'ProfileController',
-	'mail' =>'MailController',
-    'logs' => 'LogsController',
-    'users' => 'UserController',
-    'calendar' => 'CalendarController',
-    'command' => 'ChatBotController',
-	'company' => 'SettingsController',
-	'departments' => 'DepartmentController',
-	'room_types' => 'RoomTypeController',
-	'rooms' => 'RoomController',
-	'guest_types' => 'GuestTypeController',
-	'guests' => 'GuestController',
-	'invoice_guests' => 'InvoiceGuestController',
-	'reservations' => 'ReservationController',
-	'designations' => 'DesignationController',
-	'staff' => 'StaffMemberController',
-]);
-
-Route::get('/email','MailController@MailWelcome');
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/overview', 'HomeController@overview')->name('overview');
-Route::get('/reports', 'ReportsController@index')->name('reports');
-Route::get('/reports/charts/purchases', 'ReportsController@purchaseReports')->name('reports.charts.purchases');
-
-Route::post('pos/session/update','CartController@updateItemInSession')->name('session.update');
-Route::post('pos/record','CartController@MakeSaleGateway')->name('sale.transact');
-Route::post('sale/transact','CartController@recordSale')->name('sale.record');
-
-Route::post('pos/barcode/getItem','CartController@GetCartData')->name('item.get');
-
-Route::post('pos/search','CartController@searchItem')->name('item.search');
-Route::post('pos/searchprice','CartController@getItemPrice')->name('cart.searchprice');
-Route::post('users/search/role','UserController@searchRole')->name('user.searchrole');
-
-Route::post('/sales/filtered-sales','SalesController@filterSales')->name('filtersales'); 
-Route::post('/sales/debts/search','SalesController@filterSalesWithDebts')->name('sales.debts.filter'); 
-
-
-Route::put('/sales/records/update/','SalesController@updateSaleRecord')->name('sales.records.update');
-Route::get('sales/export-sales','SalesController@exportSales')->name('sales.export');
-
-Route::post('stock/import-stock','StockController@importStock')->name('stock.import');
-Route::post('purchases/import-purchases','PurchasesController@importPurchasedItems')->name('purchases.import');
-Route::get('stock/export-stock','StockController@exportStock')->name('stock.export');
-
-
-Route::post('/expenses/import-expenses','ExpensesController@importExpenses')->name('expenses.import');
-Route::get('/expenses/export-expenses','ExpensesController@exportExpenses')->name('expenses.export');
-
-
-Route::post('/cashiers/import-cashiers','CashiersController@importCashiers')->name('cashiers.import');
-Route::get('/cashiers/export-cashiers','CashiersController@exportCashiers')->name('cashiers.export');
-
-Route::post("/cashiers/remove/selected", "CashiersController@RemoveSelectedCashiers")->name("selected-cashiers.remove");
-Route::post("/suppliers/remove/selected", "SuppliersController@RemoveSelected")->name("selected-suppliers.remove");
-Route::post("/stock/remove/selected", "StockController@RemoveSelected")->name("selected-stock.remove");
-Route::post("/expenses/remove/selected", "ExpensesController@RemoveSelected")->name("selected-expenses.remove");
-Route::post("/damages/remove/selected", "DamagesController@RemoveSelected")->name("selected-damages.remove");
-
-Route::post("/purchases/remove/selected", "PurchasesController@RemoveSelected")->name("selected-purchases.remove");
-Route::post("/customers/remove/selected", "CustomersController@RemoveSelected")->name("selected-customers.remove");
-Route::post("/stockcat/remove/selected", "StockCategoryController@RemoveSelected")->name("selected-stockcats.remove");
-Route::post("/sales/remove/selected", "SalesController@RemoveSelected")->name("selected-sales.remove");
-Route::post("/users/remove/selected", "UserController@RemoveSelected")->name("selected-users.remove");
-
-
-Route::get('/customers/home', 'CustomersController@GetCustomers')->name('customers.home');
-Route::post('/customers/import-customers','CustomersController@importCustomers')->name('customers.import');
-Route::get('/customers/export-customers','CustomersController@exportCustomers')->name('customers.export');
-Route::get('/customers/with-debts', 'CustomersController@customersWithDebtsIndex')->name('customers.with.debts');
-
-
-
-
-Route::post('suppliers/import-suppliers','SuppliersController@importSuppliers')->name('suppliers.import');
-Route::get('suppliers/export-suppliers','SuppliersController@exportSuppliers')->name('suppliers.export');
-Route::get('suppliers/getSuppliers4DT','SuppliersController@GetSuppliersData')->name('getSuppliers4DT');
-
-
-Route::post('product-categories/import-categories','StockCategoryController@importCategories')->name('categories.import');
-Route::get('product-categories/export-categories','StockCategoryController@exportCategories')->name('categories.export');
-
-Route::post('damaged-stock-items/import-damages','DamagesController@importDamages')->name('damages.import');
-Route::get('damaged-stock-items/export-damages','DamagesController@exportDamages')->name('damages.export');
-Route::post('stock/search/item','DamagesController@searchItem')->name('stock-item.search');
-
-Route::get('get-chartdata','ReportsController@getMonthlySalesData')->name('chartdata');
-Route::resource('customers','CustomersController');
-Route::get('account-settings','ProfileController@accountSettings')->name('account-settings');
-
-
-Route::get('reports/low-running-stock/{qty?}','ReportsController@lowRunningStock')->name('low-stock');
-Route::get('reports/monthly-sales','ReportsController@MonthlySales')->name('m-sales');
-Route::get('reports/best-selling-items','ReportsController@BestSellingItems')->name('best-selling-items');
-Route::get('reports/top-customers','ReportsController@topCustomers')->name('top-customers');
-Route::get('reports/cashiers-performance','ReportsController@topCashiers')->name('top-cashiers');
-Route::get('reports/debtors/customers','ReportsController@debtorsCustomersList')->name('debtors-customers');
-Route::get('reports/debtors/suppliers','ReportsController@debtorsSuppliersList')->name('debtors-suppliers');
-
-
-Route::post('notifications/get','NotificationController@GetOtherNotifications')->name('unreadNotifications');
-Route::post('notification/unreadEmailNotifications','NotificationController@GetUnReadEmailNotifications')->name('unreadEmailNotifications');
-Route::get('notifications','NotificationController@markAllRead')->name('readAll');
-
-Route::get('sms','SmsController@index')->name('sms');
-Route::post('send-sms','SmsController@SendSMS')->name('sms.store');
-Route::post('pos/handler','CartController@PopulateCart')->name('cart.handle');
-Route::get('events/event-form','EventsController@ShowEventForm')->name('events.showForm');
-
-
-Route::post('purchases/deleteAll','PurchasesController@deleteAllPurchases')->name('purchases.truncate');
-Route::post('pos/clear','CartController@ClearCart')->middleware('password.confirm');
-Route::post('stock/deleteAll','StockController@deleteAllStockItems')->name('stock.truncate');
-Route::post('suppliers/deleteAll','SuppliersController@deleteAllSuppliers')->name('suppliers.truncate');
-Route::post('expenses/deleteAll','ExpensesController@deleteAllExpenses')->name('expenses.truncate');
-Route::post('/cashiers/deleteAll','CashiersController@deleteAllCashiers')->name('cashiers.truncate');
-Route::post('/customers/deleteAll','CustomersController@deleteAllCustomers')->name('customers.truncate');
-Route::post('product-categories/deleteAll','StockCategoryController@deleteAllStockCategories')->name('categories.truncate');
-Route::post('damaged-stock-items/deleteAll','DamagesController@deleteAllDamages')->name('damages.truncate');
-Route::post('logs/truncate','LogsController@truncateLogs')->name('logs.truncate');
-
-
-Route::get('users/active/remove','UserController@RemoveAllActiveUsers')->name('active-users.remove')->middleware('password.confirm');
-Route::get('users/locked/remove','UserController@RemoveAllLockedUsers')->name('locked-users.remove')->middleware('password.confirm');
-
-Route::get('/user/lockunlock/{id}/{status}/{name}','UserController@LockUnlockAccount')->name('user.lockunlock');
-
-Route::post('/user/lockunlock/','UserController@LockUnlockUserAccount')->name('account.change');
-
-Route::get('/cashier/change-account/{id}/{status}/{name}','CashiersController@ChangeAccountStatus')->name('cashiers.changestatus');
-
-Route::post('chatbox/commands/import', "ChatBotController@importChatBotCommands")->name("command.import");
-Route::get('chatbox/commands/truncate', "ChatBotController@truncateChatBotCommands")
-                               ->name("command.truncate")->middleware("password.confirm");
-
-// Route::put('/profile/update/{id}', 'ProfileController@update')->name('profile.update');
-					   
 
 });

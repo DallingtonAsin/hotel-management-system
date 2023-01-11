@@ -7,6 +7,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Department;
 use App\Helpers\Helper;
+
 class DesignationsDataTable extends DataTable
 {
     /**

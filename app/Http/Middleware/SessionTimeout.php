@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LogsController;
-use App\Http\Controllers\LogAfterRequest;
 use App\User;
 
 class SessionTimeout
@@ -52,8 +51,8 @@ class SessionTimeout
         "message" => $msg,
         "method" => "Middleware@SessionTimeout@handle"
         );
-        LogAfterRequest::LogRequest($request, $dataArr); 
-        LogsController::logger($request, $msg, now());
+        Helper::LogRequest($request, $dataArr); 
+        Helper::logger($request, $msg, now());
 
 
           Auth::logout();

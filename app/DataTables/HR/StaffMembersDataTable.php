@@ -7,7 +7,6 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Department;
 use App\Models\Designation;
-use Illuminate\Support\Facades\Auth;
 
 class StaffMembersDataTable extends DataTable
 {
