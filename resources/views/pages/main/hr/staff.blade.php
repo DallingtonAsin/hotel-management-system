@@ -4,7 +4,7 @@
     <!--Add staff -->
     <div class="modal fade nunito-font" id="addStaffModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog mx-auto modal-dialog-xlg" role="document">
             <div class="modal-content">
 
                 <form mname="user" id="userForm">
@@ -17,57 +17,18 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="form-group">
-                            <input type="hidden" class="userId" name="id">
-                            <span><span class="text-danger">*</span> First Name</span>
-                            <input type="text" class="form-control first_name bg-white" name="firstName"
-                                placeholder="Enter first name" required autofocus>
-                        </div>
-
-                        <div class="form-group">
-                            <span><span class="text-danger">*</span> Last Name</span>
-                            <input type="text" class="form-control last_name bg-white" name="lastName"
-                                placeholder="Enter last name" required autofocus>
-                        </div>
-
-
-                        <div class="form-group">
-                            <span><span class="text-danger">*</span> Address</span>
-                            <input type="text" class="form-control address bg-white" name="address"
-                                placeholder="Enter address" required autofocus>
-                        </div>
-
-                        <div class="form-group">
-                            <span> Email</span>
-                            <input type="email" class="form-control email bg-white" name="email"
-                                placeholder="Email (optional)">
-                        </div>
-
                         <div class="row form-group">
                             <div class="col-md-6">
-                                <span><span class="text-danger">*</span> Employee Number</span>
-                                <input type="text" class="form-control employee_id bg-white" name="employee_id"
-                                    placeholder="Enter employee number" required autofocus>
+                                <input type="hidden" class="userId" name="id">
+                                <span><span class="text-danger">*</span> First Name</span>
+                                <input type="text" class="form-control first_name bg-white" name="first_name"
+                                    placeholder="Enter first name" required autofocus>
                             </div>
 
                             <div class="col-md-6">
-                                <span>NIN</span>
-                                <input type="text" class="form-control national_id bg-white" name="NationalIDNo"
-                                    placeholder="Enter NationalID number(optional)" required autofocus>
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col-md-6">
-                                <span><span class="text-danger">*</span> Primary Tel No.</span>
-                                <input type="text" class="form-control tel_no bg-white" name="tel_no"
-                                    placeholder="Enter primary telephone number" required autofocus>
-                            </div>
-
-                            <div class="col-md-6">
-                                <span>Alternative Tel No.</span>
-                                <input type="text" class="form-control alt_telno bg-white" name="alt_telno"
-                                    placeholder="Enter alternative telephone number (optional)">
+                                <span><span class="text-danger">*</span> Last Name</span>
+                                <input type="text" class="form-control last_name bg-white" name="last_name"
+                                    placeholder="Enter last name" required autofocus>
                             </div>
                         </div>
 
@@ -75,6 +36,64 @@
                         <div class="row form-group">
 
                             <div class="col-md-4">
+                                <span><span class="text-danger">*</span> Primary Tel No.</span>
+                                <input type="text" class="form-control phone_number bg-white" name="phone_number"
+                                    placeholder="Enter primary telephone number" required autofocus>
+                            </div>
+
+                            <div class="col-md-4">
+                                <span>Other Tel No.</span>
+                                <input type="text" class="form-control other_phone_number bg-white"
+                                    name="other_phone_number" placeholder="Enter other telephone number">
+                            </div>
+
+                            <div class="col-md-4">
+                                <span><span class="text-danger">*</span> Address</span>
+                                <input type="text" class="form-control address bg-white" name="address"
+                                    placeholder="Enter address" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span> Email</span>
+                            <input type="email" class="form-control email bg-white" name="email"
+                                placeholder="Enter email">
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <span>Tin Number</span>
+                                <input type="text" class="form-control tin_number bg-white" name="tin_number"
+                                    placeholder="Enter employee tin number" required autofocus>
+                            </div>
+
+                            <div class="col-md-4">
+                                <span>NSSF Number</span>
+                                <input type="text" class="form-control nssf_number bg-white" name="nssf_number"
+                                    placeholder="Enter employee nssf number" required autofocus>
+                            </div>
+
+                            <div class="col-md-4">
+                                <span>NIN</span>
+                                <input type="text" class="form-control nin bg-white" name="nin"
+                                    placeholder="Enter national id number" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+
+                        </div>
+
+
+                        <div class="row form-group">
+
+                            <div class="col-md-3">
+                                <span>Next of Kin</span>
+                                <input type="text" class="form-control next_of_kin bg-white" name="next_of_kin"
+                                    placeholder="Enter next of kin" required autofocus>
+                            </div>
+
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <span><span class="text-danger">*</span> Department</span>
                                     <select class="form-control departments_section bg-white" name="department">
@@ -83,7 +102,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <span><span class="text-danger">*</span> Designation</span>
                                     <select class="form-control bg-white designation_section" name="designation">
@@ -91,7 +110,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+
+                            <div class="col-md-3">
                                 <span><span class="text-danger">*</span> Gender</span>
                                 <select class="form-control gender bg-white" name="gender">
                                     <option value="">select gender</option>
@@ -99,6 +119,7 @@
                                     <option value="Male">Male</option>
                                 </select>
                             </div>
+
                             <span class="errors-section text-danger"></span>
                         </div>
 
@@ -108,7 +129,7 @@
                             <button type="reset" class="btn btn-danger"><i
                                     class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
 
-                        <span class="response"></span>
+                            <span class="response"></span>
                         </div>
 
                     </div>
@@ -116,52 +137,6 @@
             </div>
         </div>
     </div>
-
-
-    <!--Import staff -->
-    <div class="modal fade nunito-font" id="importStaff" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-
-                <form action="" method="post" enctype="multipart/form-data" name="inportExpensesForm">
-                    @csrf
-
-                    <div class="modal-header text-center">
-                        <h5 class="modal-title w-100 font-weight-bold">
-                            Import an excel file of staff </h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <span>Select file for Upload</span>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="file" class="form-control-file @error('select_file') is-invalid @enderror"
-                                name="select_file" required autofocus>
-                        </div>
-
-                        @error('select_file')
-                            <div class='alert alert-danger alert-dismissible text-center' role='alert'>
-                                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                    <span aria-hidden='true'>&times;</span></button>
-                                <strong>Sorry!</strong> {{ $message }}
-                            </div>
-                        @enderror
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
 
     <!--Modal Delete staff -->
     <div class="modal fade" id="deleteStaffModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -251,26 +226,6 @@
         </div>
 
         <div class="card-body">
-            <div class="row">
-                <div class="col-lg-8 text-center nunito-font">
-                    @if (session()->get('success'))
-                        <div class='alert alert-success alert-dismissible' role='alert'>
-                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                <span aria-hidden='true'>&times;</span></button>
-                            <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                        </div>
-                    @endif
-
-                    @if (session()->get('fail'))
-                        <div class='alert alert-danger alert-dismissible' role='alert'>
-                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                <span aria-hidden='true'>&times;</span></button>
-                            <strong>Oops!</strong> {{ session()->get('fail') }}
-                        </div>
-                    @endif
-                </div>
-            </div>
-
             <div class="table-responsive">
                 <table class="table table-bordered table-hover staff-table" id="staff-table">
 
@@ -280,11 +235,14 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Gender</th>
-                            <th>Staff ID</th>
+                            <th>Staff #</th>
                             <th>Department</th>
                             <th>Designation</th>
                             <th>Phone Number</th>
                             <th>NIN</th>
+                            {{-- <th>Tin #</th> --}}
+                            {{-- <th>NSSF #</th>
+                            <th>NOK</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -358,6 +316,19 @@
                     data: 'nin',
                     name: 'nin'
                 },
+                // {
+                //     data: 'tin_number',
+                //     name: 'tin_number'
+                // },
+
+                // {
+                //     data: 'nssf_number',
+                //     name: 'nssf_number'
+                // },
+                // {
+                //     data: 'next_of_kin',
+                //     name: 'next_of_kin'
+                // },
                 {
                     data: 'action',
                     name: 'action',
@@ -401,7 +372,8 @@
                     url: url,
                     success: function(resp) {
                         let obj = JSON.parse(resp);
-                        $('.designation_section').empty().append('<option selected="selected" value="">Select designation</option>');
+                        $('.designation_section').empty().append(
+                            '<option selected="selected" value="">Select designation</option>');
 
                         for (let i = 0; i < obj.length; i++) {
                             let id = obj[i]['id'];
@@ -440,7 +412,7 @@
                 });
             }
 
-    
+
             //modal used to edit staff details [each row of the tbl]
             $('body').on('click', '#edit-staff', function(event) {
                 let staff_id = $(this).data('id');
@@ -448,7 +420,8 @@
 
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
 
-                    $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
+                    $('#modalHeading').html(
+                        `Edit details of staff ${data.first_name} ${data.last_name} `);
                     $('.addStaffBtn').text("Edit staff");
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
@@ -458,8 +431,8 @@
                     $('.email').val(data.email);
                     $('.employee_id').val(data.staff_id);
                     $('.nin').val(data.nationalID_no);
-                    $('.tel_no').val(data.phone_number);
-                    $('.alt_telno').val(data.other_phone_number);
+                    $('.phone_number').val(data.phone_number);
+                    $('.other_phone_number').val(data.other_phone_number);
                     $('.designation_section').val(data.designation_id);
                     $('.departments_section').val(data.department_id);
                     $('.gender').val(data.gender);
@@ -475,7 +448,8 @@
 
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '', function(data) {
 
-                    $('#modalHeading').html(`Details of staff ${data.first_name} ${data.last_name} `);
+                    $('#modalHeading').html(
+                        `Details of staff ${data.first_name} ${data.last_name} `);
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
                     $('.first_name').val(data.first_name);
@@ -484,8 +458,8 @@
                     $('.email').val(data.email);
                     $('.employee_id').val(data.staff_id);
                     $('.nin').val(data.nationalID_no);
-                    $('.tel_no').val(data.phone_number);
-                    $('.alt_telno').val(data.other_phone_number);
+                    $('.phone_number').val(data.phone_number);
+                    $('.other_phone_number').val(data.other_phone_number);
                     $('.designation_section').val(data.designation_id);
                     $('.departments_section').val(data.department_id);
                     $('.gender').val(data.gender);
@@ -497,10 +471,12 @@
             $('.addStaffBtn').click(function(e) {
 
                 e.preventDefault();
-
                 let Errors = validateForm();
+
                 if (Errors.length == 0) {
+
                     $(this).html('Sending..');
+                    $('.errors-section').html('');
 
                     $.ajax({
                         data: $('#userForm').serialize(),
@@ -509,14 +485,18 @@
                         dataType: 'json',
                         success: function(data) {
 
-                            $('#userForm').trigger("reset");
                             $('#addStaffModal').modal("hide");
-                            let tbl = $('#staff-table').DataTable();
-                            tbl.ajax.reload();
-                            let resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
 
+                            let resp = data.success || data.error;
+                            let type = data.success ? 'success' : 'error';
+
+                            if (data.success) {
+                                $('#userForm').trigger("reset");
+                                ResetTblInfo(data);
+                                let tbl = $('#staff-table').DataTable();
+                                tbl.ajax.reload();
+                            }
+                            displayResponse('.response', resp, type);
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
@@ -531,7 +511,6 @@
                         message += Errors[i] + "<br>";
                     }
                     $('.errors-section').html(message);
-
                 }
 
             });
@@ -630,8 +609,8 @@
                 $('.address').attr('disabled', bool);
                 $('.email').attr('disabled', bool);
                 $('.national_id').attr('disabled', bool);
-                $('.tel_no').attr('disabled', bool);
-                $('.alt_telno').attr('disabled', bool);
+                $('.phone_number').attr('disabled', bool);
+                $('.other_phone_number').attr('disabled', bool);
                 $('.designation_section').attr('disabled', bool);
                 $('.gender').attr('disabled', bool);
             }
@@ -659,7 +638,7 @@
                 let last_name = $('.last_name').val();
                 let address = $('.address').val();
                 let national_id = $('.national_id').val();
-                let tel_no = $('.tel_no').val();
+                let phone_number = $('.phone_number').val();
                 let designation = $('.designation_section').val();
                 let gender = $('.gender').val();
 
@@ -674,7 +653,7 @@
                     errors.push("Please enter address");
                 }
 
-                if (tel_no.length < 1) {
+                if (phone_number.length < 1) {
                     errors.push("Please enter primary phone number");
                 }
                 if (designation.length < 1) {

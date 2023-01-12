@@ -5,14 +5,14 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\HR\StaffMembersDataTable;
-use App\User;
+use App\Staff;
 
 class StaffMemberController extends Controller
 {
     
     public function index()
     {
-        $total_staff = User::where('is_deleted', false)->count();
+        $total_staff = Staff::where('is_deleted', false)->count();
         return view('pages.main.hr.staff', ['total_staff' => $total_staff]);
     }
 

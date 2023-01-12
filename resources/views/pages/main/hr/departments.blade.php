@@ -46,7 +46,8 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>name</th>
+                            <th>Department Code</th>
+                            <th>Department Name</th>
                             <th>Added By</th>
                             <th>Action</th>
                         </tr>
@@ -85,7 +86,13 @@
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Name</span>
+                            <span><i class="text-danger pr-1">*</i>Department Code</span>
+                            <input type="text" class="form-control code bg-white" name="code"
+                                placeholder="Enter department code" required autofocus>
+                        </div>
+
+                        <div class="form-group">
+                            <span><i class="text-danger pr-1">*</i>Department Name</span>
                             <input type="text" class="form-control name bg-white" name="name"
                                 placeholder="Enter department name" required autofocus>
                         </div>
@@ -214,6 +221,10 @@
                     name: 'checkbox'
                 },
                 {
+                    data: 'code',
+                    name: 'code'
+                },
+                {
                     data: 'name',
                     name: 'name'
                 },
@@ -263,11 +274,17 @@
 
                             $('#DepartmentsForm').trigger("reset");
                             $('#addDepartmentModal').modal("hide");
-                            let resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            let tbl = $('#departments-table').DataTable();
-                            tbl.ajax.reload();
+                            let resp = data.success || data.error;
+                            let type = data.success ? 'success' : 'error';
+
+                            if (data.success) {
+                                ResetTblInfo(data);
+                                let tbl = $('#departments-table').DataTable();
+                                tbl.ajax.reload();
+                            }
+
+                            displayResponse('.response', resp, type);
+
 
                         },
                         error: function(data) {
@@ -391,21 +408,25 @@
                 $('.closeBtn').show();
             }
 
-         
+
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
                 $('.total_departments').html(totl_number);
             }
 
             function validateForm() {
+
+                let code = $('.code').val();
                 let name = $('.name').val();
 
                 let errors = [];
-                if (name.length < 1) {
-                    let nameErr = "Please enter the name of the department";
-                    errors.push(nameErr);
+                if (code.length < 1) {
+                    errors.push("Please enter department code");
                 }
-        
+                if (name.length < 1) {
+                    errors.push("Please enter the name of the department");
+                }
+
                 return errors;
 
             }
@@ -464,6 +485,6 @@
             }
         });
     </script>
-     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

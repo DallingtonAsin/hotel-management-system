@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
-use App\User;
+use App\Staff;
 use Constant;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Models\RequestResponse;
@@ -35,7 +35,7 @@ class Helper
   {
     try {
 
-      $user = User::find($id);
+      $user = Staff::find($id);
       return $user->first_name . ' ' . $user->last_name;
 
     } catch (\Exception $ex) {
@@ -363,8 +363,8 @@ class Helper
   {
     try {
 
-      $staff = User::all();
-      $total_staff = User::where('is_deleted', false)->count();
+      $staff = Staff::all();
+      $total_staff = Staff::where('is_deleted', false)->count();
       $data = array(
         'list' => $staff,
         'totl' => $total_staff
@@ -505,11 +505,23 @@ class Helper
     return $user;
   }
 
-  public static function getOrderNumber($table, $column, $length, $prefix)
+  public static function generateUniqueNumber($table, $column = null, $length, $prefix)
   {
     try {
-      $order_number = IdGenerator::generate(['table' => $table, 'field' => $column, 'length' => $length, 'prefix' => $prefix]);
+
+      $config = [
+        'table' => $table,
+        'length' => $length,
+        'prefix' => $prefix
+      ];
+
+      if($column != null){
+        $config['field'] = $column;
+      }
+
+      $order_number = IdGenerator::generate($config);
       return $order_number;
+      
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -525,7 +537,6 @@ class Helper
       throw $ex;
     }
   }
-
   public static function getMenuItem($menu_item_id)
   {
     try {

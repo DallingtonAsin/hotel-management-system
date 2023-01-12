@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\LogsController;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +16,10 @@ use App\DataTables\CashiersDataTable;
 use App\DataTables\UsersDataTable;
 use App\DataTables\ActiveUserAccountsDataTable;
 use App\DataTables\InactiveUserAccountsDataTable;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Designation;
-use App\User;
+use App\Staff;
 use App\Helpers\Helper;
 use Constant;
 
@@ -38,8 +39,8 @@ class UserController extends Controller
     if ($response->allowed()) {
 
       try {
-        $users = User::where('id', "!=", $request->user()->id)->get();
-        $number_of_users = User::where('is_deleted', false)->count();
+        $users = Staff::where('id', "!=", $request->user()->id)->get();
+        $number_of_users = Staff::where('is_deleted', false)->count();
         return view('pages.users.index', ['total_staff' => $number_of_users])
           ->with(compact('users', 'number_of_users'));
 
@@ -85,9 +86,9 @@ class UserController extends Controller
     try {
       $response = Gate::inspect('isSuperAdmin');
       if ($response->allowed()) {
-        $users = User::where('is_active', true)
+        $users = Staff::where('is_active', true)
           ->where('id', "!=", $request->user()->id)->get();
-        $number_of_users = User::where('is_active', true)->count();
+        $number_of_users = Staff::where('is_active', true)->count();
         return view('pages.users.active-users')
           ->with(compact('users', 'number_of_users'));
 
@@ -110,8 +111,8 @@ class UserController extends Controller
       $response = Gate::inspect('isSuperAdmin');
 
       if ($response->allowed()) {
-        $users = User::where('is_active', false)->get();
-        $number_of_users = User::where('is_active', false)->count();
+        $users = Staff::where('is_active', false)->get();
+        $number_of_users = Staff::where('is_active', false)->count();
         return view('pages.users.inactive-users')
           ->with(compact('users', 'number_of_users'));
       }
@@ -135,12 +136,12 @@ class UserController extends Controller
         $status = $request->input('status');
         // dd($id, $status);
 
-        $user = User::find($id);
+        $user = Staff::find($id);
         $name = $user->first_name . '' . $user->last_name;
         switch (true) {
 
           case ($status == true):
-            $deactivated = User::where('id', $id)
+            $deactivated = Staff::where('id', $id)
               ->update(['is_active' => false, 'created_by' => $admin]);
             if ($deactivated) {
 
@@ -170,7 +171,7 @@ class UserController extends Controller
             break;
 
           case ($status == false):
-            $activated = User::where('id', $id)
+            $activated = Staff::where('id', $id)
               ->update([
                 'is_active' => true,
                 'loginAttempts' => 0,
@@ -233,7 +234,7 @@ class UserController extends Controller
       switch (true) {
 
         case ($status == true):
-          $deactivated = User::where('id', $id)
+          $deactivated = Staff::where('id', $id)
             ->update(['is_active' => false, 'created_by' => $admin]);
           if ($deactivated) {
 
@@ -263,7 +264,7 @@ class UserController extends Controller
           break;
 
         case ($status == false):
-          $activated = User::where('id', $id)
+          $activated = Staff::where('id', $id)
             ->update([
               'is_active' => true,
               'loginAttempts' => 0,
@@ -323,168 +324,161 @@ class UserController extends Controller
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
+   * return \Illuminate\Http\Response
    */
   public function store(Request $request)
   {
 
-    try {
-      $method = "UserController@store";
-      $user_fname = trim($request->input('firstName'));
-      $user_lname = trim($request->input('lastName'));
-      $user_address = trim($request->input('address'));
-      $user_email = trim($request->input('email'));
-      $user_telno = trim($request->input('tel_no'));
-      $user_alt_telno = trim($request->input('alt_telno'));
-      $user_nin = trim($request->input('nin'));
-      $user_gender = trim($request->input('gender'));
+    $validator = Validator::make($request->all(), [
+      'first_name' => 'required',
+      'last_name' => 'required',
+      'address' => 'required',
+      'email' => 'sometimes|nullable|email',
+      'phone_number' => 'required',
+      'other_phone_number' => 'sometimes|nullable',
+      'gender' => 'required',
+      'nin' => 'sometimes|nullable',
+      'tin_number' => 'sometimes|nullable',
+      'nssf_number' => 'sometimes|nullable',
+      'next_of_kin' => 'sometimes|nullable',
+      'department' => 'required',
+      'designation' => 'required',
+  ]);
 
+  try {
+
+      if ($validator->fails()) {
+          $message = $validator->errors()->all();
+          return response()->json(['error' => $message]);
+      } else {
+
+      $method = "UserController@store";
+
+      $fname = $request->input('first_name');
+      $lname = $request->input('last_name');
+      $address = $request->input('address');
+      $email = $request->input('email');
+      $phone_number = $request->input('phone_number');
+      $other_phone_number = $request->input('other_phone_number');
+      $gender = $request->input('gender');
+      $nin = $request->input('nin');
+      $tin_number = $request->input('tin_number');
+      $nssf_number = $request->input('nssf_number');
+      $next_of_kin = $request->input('next_of_kin');
       $department_id = $request->input('department');
       $designation_id = $request->input('designation');
+
+      $departmentObj = Department::find($department_id);
+      $department_code = $departmentObj->code;
+      $latest_id = Staff::latest()->first()->id;
+      $staff_id = $department_code . str_pad($latest_id + 1, 4, '0', STR_PAD_LEFT);
+     
       $designation = Designation::where('id', $designation_id)->value('name');
 
-      $staff_id = $request->input('employee_id');
-
       $registra = $request->user()->name;
-      $name = $user_fname . " " . $user_lname;
+      $name = $fname . " " . $lname;
       $defaultPwd = '12345678';
 
       if ($request->has('id') && $request->filled('id')) {
-        $user = User::find($request->input('id'));
+        $user = Staff::find($request->input('id'));
         $username = $user->username;
         $password = $user->password;
 
       } else {
-        $user = new User();
-        $name = $user_fname . " " . $user_lname;
-        $username = strtolower(Str::random(6) . "." . $user_fname);
+        $user = new Staff();
+        $name = $fname . " " . $lname;
+        $username = strtolower(Str::random(6) . "." . $fname);
         $password = Hash::make($defaultPwd, ['rounds' => 12]);
       }
 
-      $bool_userExists = User::where('username', $username)->exists();
+      $bool_userExists = Staff::where('username', $username)->exists();
 
       if (!$request->filled('id') && $bool_userExists) {
+
         $message = "username " . $name . " has already been taken, choose another one";
         $dataArr = array(
           "code" => '101',
           "message" => $message,
           "method" => $method
         );
+
         Helper::LogRequest($request, $dataArr);
-        return back()->with('fail', $message);
-      } else {
-
-        $user->first_name = $user_fname;
-        $user->last_name = $user_lname;
-        $user->username = $username;
-        $user->gender = $user_gender;
-        $user->email = $user_email;
-        $user->staff_id = $staff_id;
-        $user->department_id = $department_id;
-        $user->designation_id = $designation_id;
-        $user->phone_number = $user_telno;
-        $user->other_phone_number = $user_alt_telno;
-        $user->address = $user_address;
-        $user->nin = $user_nin;
-        $user->password = $password;
-        $user->is_active = true;
-        $user->created_by = $registra;
-
-        $save_status = $user->save();
-        if ($save_status) {
-
-          $subject = 'User Registration';
-          $userEmail = $request->email;
-          $registraPosition = Designation::where('id', Auth::user()->designation_id)->value('name');
-          $registraEmail = $request->user()->email;
-          $default_password = $defaultPwd;
-          $now = now();
-
-          $action = "registered user " . $name . "";
-          $sendAction = "You have been registered as a
-                      " . $designation . " today at " . $now . "";
-          Helper::logger($request, $action, now());
-
-          $data = array(
-            'name' => $name,
-            'username' => $username,
-            'password' => $default_password,
-            'user_position' => 'user',
-            'registra' => $registra,
-            'registraPosition' => $registraPosition,
-            'registraEmail' => $registraEmail,
-            'email' => $userEmail,
-            'subject' => $subject,
-            'created_at' => $now,
-            'details' => $sendAction,
-            'activity' => 'registration',
-          );
-
-          $sessionVariable = 'success';
-
-          // $user->notify(new UserRegistration($data));
-
-          // $this->Enqueue($data);
-          //
-
-
-          //  if($this->is_connectedToInternet() == 1){
-
-          //   $text_message = "Hey ".$name."";
-          //   $text_message .= "".$sendAction."";
-          //   $text_message .= "Your username is
-          //   ".$username." and password is ".$default_password."";
-
-
-          //   $sms = new SmsController();
-          //   $from = config("app.name");
-          //   $isSmsSent = Helper::SendTextMessage($request, $user_telno, $text_message);
-
-          //   if($isSmsSent == true)
-          //   {
-
-          //   $SMSmessage = "SMS sent to registered ".$designation." ".$name." successfully";
-          //   $SMSdataArr = array("code" => '201',
-          //                         "message" => $SMSmessage,
-          //                         "method" => $method);
-          //   Helper::LogRequest($request,  $SMSdataArr);
-          //   }
-          //   else{
-          //       $SMSmessageErr = "SMS was never sent to registered ".$designation." ".$name."!";
-          //       $SMSdataErrArr = array("code" => '101',
-          //                        "message" => $SMSmessageErr,
-          //                         "method" => $method);
-          //       Helper::LogRequest($request,   $SMSdataErrArr);
-
-          //   }
-
-          // }else{
-          //   $message = "".ucwords($designation)." registration failed";
-          //   $sessionVariable = 'fail';
-          // }
-
-          $message = "User " . $name . " has been registered successfully";
-          $dataArr = array(
-            "code" => '201',
-            "message" => $message,
-            "method" => $method
-          );
-          Helper::LogRequest($request, $dataArr);
-
-          $statArr = Helper::GetUserStats();
-          $number_of_users = $statArr['totl'];
-
-          return response()->json([$sessionVariable => $message, 'total' => $number_of_users]);
+        return response()->json(['error' => $message]);
 
         } else {
-          $message = "User registration failed!";
-          $dataArr = array(
-            "code" => '101',
-            "message" => $message,
-            "method" => $method
-          );
-          Helper::LogRequest($request, $dataArr);
-          return back()->with('fail', $message);
+
+          $user->first_name = $fname;
+          $user->last_name = $lname;
+          $user->username = $username;
+          $user->gender = $gender;
+          $user->email = $email;
+          $user->staff_id = $staff_id;
+          $user->department_id = $department_id;
+          $user->designation_id = $designation_id;
+          $user->phone_number = $phone_number;
+          $user->other_phone_number = $other_phone_number;
+          $user->address = $address;
+          $user->nin = $nin;
+          $user->tin_number = $tin_number;
+          $user->nssf_number = $nssf_number;
+          $user->next_of_kin = $next_of_kin;
+          $user->password = $password;
+          $user->is_active = true;
+          $user->created_by = $registra;
+
+          $save_status = $user->save();
+          if ($save_status) {
+
+            $subject = 'User Registration';
+            $userEmail = $request->email;
+            $registraPosition = Designation::where('id', Auth::user()->designation_id)->value('name');
+            $registraEmail = $request->user()->email;
+            $default_password = $defaultPwd;
+            $now = now();
+
+            $action = "registered user " . $name . "";
+            $sendAction = "You have been registered as a
+                      " . $designation . " today at " . $now . "";
+            Helper::logger($request, $action, now());
+
+            $data = array(
+              'name' => $name,
+              'username' => $username,
+              'password' => $default_password,
+              'designation' => 'user',
+              'registra' => $registra,
+              'registraPosition' => $registraPosition,
+              'registraEmail' => $registraEmail,
+              'email' => $userEmail,
+              'subject' => $subject,
+              'created_at' => $now,
+              'details' => $sendAction,
+              'activity' => 'registration',
+            );
+
+            $message = "User " . $name . " has been registered successfully";
+            $dataArr = array(
+              "code" => '201',
+              "message" => $message,
+              "method" => $method
+            );
+
+            Helper::LogRequest($request, $dataArr);
+            $statArr = Helper::GetUserStats();
+            $number_of_users = $statArr['totl'];
+
+            return response()->json(['success' => $message, 'total' => $number_of_users]);
+
+          } else {
+            $message = "User registration failed!";
+            $dataArr = array(
+              "code" => '101',
+              "message" => $message,
+              "method" => $method
+            );
+            Helper::LogRequest($request, $dataArr);
+            return response()->json(['error', $message]);
+          }
         }
       }
     } catch (\Exception $ex) {
@@ -503,7 +497,7 @@ class UserController extends Controller
    */
   public function show($id)
   {
-    $user = User::find($id);
+    $user = Staff::find($id);
     return response()->json($user);
   }
 
@@ -515,7 +509,7 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-    $user = User::find($id);
+    $user = Staff::find($id);
     return response()->json($user);
   }
 
@@ -561,12 +555,12 @@ class UserController extends Controller
   {
     $this->validatorData($request);
 
-    $user = User::find($id);
+    $user = Staff::find($id);
     $method = "UserController@update";
 
     $name = $request->input('name');
     $address = $request->input('address');
-    $primary_telno = $request->input('contact1');
+    $primary_phone_number = $request->input('contact1');
     $designationId = $request->input('designation');
 
     ($request->has('email') && $request->filled('email'))
@@ -574,21 +568,22 @@ class UserController extends Controller
       : $email = $user->email;
 
     ($request->has('contact2') && $request->filled('contact2'))
-      ? $alt_telno = $request->input('contact2')
-      : $alt_telno = $user->alt_telno;
+      ? $other_phone_number = $request->input('contact2')
+      : $other_phone_number = $user->other_phone_number;
 
     $person = $user->name;
     $username = $user->username;
+
     $user->name = $name;
     $user->address = $address;
-    $user->tel_no = $primary_telno;
-    $user->alt_telno = $alt_telno;
+    $user->phone_number = $primary_phone_number;
+    $user->other_phone_number = $other_phone_number;
     $user->email = $email;
     $user->department_id = $designationId;
 
     $registra = $request->user()->name;
     $userEmail = $request->email;
-    $user_position = Helper::getDesignation($designationId);
+    $position = Helper::getDesignation($designationId);
     $registraPosition = Helper::getDesignation($request->user()->designation_id);
     $registraEmail = $request->user()->email;
     $default_password = "didn't change your password";
@@ -605,7 +600,7 @@ class UserController extends Controller
         'name' => $name,
         'username' => $username,
         'password' => $default_password,
-        'user_position' => $user_position,
+        'designation' => $position,
         'registra' => $registra,
         'registraPosition' => $registraPosition,
         'registraEmail' => $registraEmail,
@@ -660,12 +655,12 @@ class UserController extends Controller
     // dd($id);
     $hasRights = Gate::inspect('isSuperAdmin');
     $hasRights1 = Gate::inspect('isAdmin');
-    $user = User::find($id);
-    $user_position = Helper::getDesignation($user->designation_id);
+    $user = Staff::find($id);
+    $position = Helper::getDesignation($user->designation_id);
     if ($hasRights->allowed() || $hasRights1->allowed()) {
 
       $method = "UserController@destroy";
-      $isDeleted = User::where('id', $id)->update(['is_deleted' => true]);
+      $isDeleted = Staff::where('id', $id)->update(['is_deleted' => true]);
 
       if ($isDeleted) {
         $name = $user->name;
@@ -712,7 +707,7 @@ class UserController extends Controller
     if ($response->allowed()) {
 
       $method = "UserController@RemoveAllActiveUsers";
-      $isTruncated = User::where('is_active', true)->delete();
+      $isTruncated = Staff::where('is_active', true)->delete();
       if ($isTruncated) {
 
         $action = "removed all active users from the system";
@@ -749,7 +744,7 @@ class UserController extends Controller
 
     if ($response->allowed()) {
       $method = "UserController@RemoveAllLockedUsers";
-      $isTruncated = User::where('is_active', false)->delete();
+      $isTruncated = Staff::where('is_active', false)->delete();
       if ($isTruncated) {
 
         $action = "removed all locked users from the system";
@@ -787,10 +782,10 @@ class UserController extends Controller
       $DeletedUsers = array();
 
       if (count($ids) > 0) {
-        $extUser = User::find($ids[0]);
-        $user_position = Helper::getDesignation($extUser->designation_id);
+        $extUser = Staff::find($ids[0]);
+        $position = Helper::getDesignation($extUser->designation_id);
         foreach ($ids as $id) {
-          $user = User::find($id);
+          $user = Staff::find($id);
           $user->delete();
           array_push($DeletedUsers, $user->name);
         }
@@ -886,7 +881,7 @@ class UserController extends Controller
   {
       try {
           if ($request->ajax()) {
-              $staff_members = User::get();
+              $staff_members = Staff::get();
               echo json_encode($staff_members);
               die();
           }

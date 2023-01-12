@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\User;
+use App\Staff;
 
 class SendMail extends Mailable
 {
@@ -96,7 +96,7 @@ class SendMail extends Mailable
         
         protected function GetNameForUser($email)
         {
-            $names = User::where('email', $email)->value('name');
+            $names = Staff::where('email', $email)->value('name');
             return $names;
         }
         

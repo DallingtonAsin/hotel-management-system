@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\Role;
-use App\User;
+use App\Staff;
 
 class ImportCashiers implements ToModel, WithHeadingRow
 {
@@ -30,7 +30,7 @@ class ImportCashiers implements ToModel, WithHeadingRow
         ? $email =  $row["contact2"]
         : $email = null;
 
-        return new User([
+        return new Staff([
             'first_name' => $first_name,
             'last_name' => $row["lastname"],
             'name' => $row["firstname"]." ".$row["lastname"],

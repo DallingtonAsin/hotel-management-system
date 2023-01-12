@@ -26,7 +26,7 @@ class CreateKitchenOrdersTable extends Migration
             $table->timestamps();
 
             $table->foreign('room_id')->references('id')->on('rooms');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('staff');
             $table->index('order_number');
         });
     }

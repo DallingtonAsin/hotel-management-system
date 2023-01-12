@@ -6,7 +6,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use App\User;
+use App\Staff;
 use App\Models\Stock;
 use App\Models\Sale;
 use App\Models\Damage;
@@ -32,10 +32,10 @@ class ComposerOverview{
     $debtorsCustomers = DebtorsCustomer::paginate(4);
     $total_customersDebts = DebtorsCustomer::sum('debts');
     $total_suppliersDebts = DebtorsSupplier::sum('debts');
-    $totlSystemUsers = DB::table("users")->count();
-    $totlActiveUsers = DB::table("users")->where('is_active', true)->count();
-    $totlLockedUsers = DB::table("users")->where('is_active', false)->count();
-    $fiveSuperAdmin = User::limit(5)->get();
+    $totlSystemUsers = DB::table("staff")->count();
+    $totlActiveUsers = DB::table("staff")->where('is_active', true)->count();
+    $totlLockedUsers = DB::table("staff")->where('is_active', false)->count();
+    $fiveSuperAdmin = Staff::limit(5)->get();
 
 
 
@@ -110,7 +110,7 @@ class ComposerOverview{
     {
        $department = "SuperAdministrator";
        $userDepartmentId = $this->getDepartmentId($department);
-       $totl = User::where("department_id", $userDepartmentId)->count();
+       $totl = Staff::where("department_id", $userDepartmentId)->count();
        return $totl;
     }
 

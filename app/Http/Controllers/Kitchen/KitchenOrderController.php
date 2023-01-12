@@ -105,7 +105,7 @@ class KitchenOrderController extends Controller
     private function generateKotOrderNo()
     {
         try {
-            $order_number = Helper::getOrderNumber('kitchen_orders', 'order_number', 10, '#');
+            $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, '#');
             return $order_number;
         } catch (\Exception $ex) {
             throw $ex;
@@ -165,7 +165,7 @@ class KitchenOrderController extends Controller
             $method = "KitchenOrderController@storeKitchenOrder";
             $data = $req->input('table_data');
 
-            $order_number = Helper::getOrderNumber('kitchen_orders', 'order_number', 10, 'KOT_');
+            $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, 'KOT_');
             $table_number = $req->input('table_number');
            
             $status = $req->input('status');

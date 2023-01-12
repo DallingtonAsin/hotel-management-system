@@ -90,6 +90,7 @@ class DepartmentsDatatable extends DataTable
     {
         return [
             'id',
+            'code',
             'name',
             'created_by'
         ];

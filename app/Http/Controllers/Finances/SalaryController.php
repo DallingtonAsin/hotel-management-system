@@ -8,7 +8,7 @@ use App\DataTables\Finances\SalariesDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Salary;
 use App\Helpers\Helper;
-use App\User;
+use App\Staff;
 
 class SalaryController extends Controller
 {
@@ -57,7 +57,7 @@ class SalaryController extends Controller
                 $employee_id = $request->input('employee');
                 $amount = Helper::Numberize($request->input('amount'));
                 $payment_date = $request->input('payment_date');
-                $employee = User::find($employee_id);
+                $employee = Staff::find($employee_id);
                 $employee_name = $employee->first_name . ' ' . $employee->last_name;
 
                 $created_by = Helper::getLoggedInUserId();

@@ -20,7 +20,7 @@ class CreateRoomTypesTable extends Migration
             $table->double('double_occupancy_rate');
             $table->integer('created_by')->unsigned();
             $table->timestamps();
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('staff');
 
         });
     }

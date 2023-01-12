@@ -21,7 +21,7 @@ class CreateGuestTypesTable extends Migration
             $table->boolean('is_corporate')->default(false);
             $table->integer('created_by')->nullable()->unsigned();
             $table->timestamps();
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('staff');
         });
     }
 

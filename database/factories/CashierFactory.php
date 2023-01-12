@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\User;
+use App\Staff;
 use Illuminate\Support\Str;
 
 class CashierFactory extends Factory
@@ -13,7 +13,7 @@ class CashierFactory extends Factory
   *
   * @var string
   */
-  protected $model = User::class;
+  protected $model = Staff::class;
   
   /**
   * Define the model's default state.

@@ -19,7 +19,7 @@ class CreateKitchenMenuItemCategoriesTable extends Migration
             $table->integer('created_by')->unsigned();
             $table->timestamps();
 
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('staff');
         });
     }
 
