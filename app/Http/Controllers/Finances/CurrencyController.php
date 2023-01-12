@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\DataTables\Finances\CurrencyDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\Helper;
+use Symfony\Polyfill\Intl\Icu\Currencies;
 
 class CurrencyController extends Controller
 {
@@ -175,4 +176,20 @@ class CurrencyController extends Controller
     {
         //
     }
+
+    public function fetchCurrenciesAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $currencies = Currency::get();
+                echo json_encode($currencies);
+                die();
+
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
+
 }
