@@ -19,7 +19,7 @@ class CustomLoginController extends Controller
 	public function __construct()
 	{
 
-		$this->tbl = 'users';
+		$this->tbl = 'staff';
 		$this->dateTime = now();
 		$this->middleware('guest')->except('logout');
 	}

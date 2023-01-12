@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Models\CustomerDebtPayment;
 use App\Models\Sale;
-use App\User;
+use App\Staff;
 use App\Helpers\Helper;
 
 class CustomerDebtPaymentRecordsDataTable extends DataTable
@@ -52,7 +52,7 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
         })->editColumn('balance', function ($data) {
             return number_format($data->balance);
         })->editColumn('created_by', function ($data) {
-            return User::where('id', $data->created_by)->value('name');
+            return Staff::where('id', $data->created_by)->value('name');
         })->addColumn('item', function ($data) {
             return Sale::where('id', $data->sale_id)->value('item');
         })->addColumn('customer', function ($data) {

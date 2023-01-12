@@ -22,7 +22,7 @@ class CreateCurrenciesTable extends Migration
             $table->timestamps();
 
             $table->index('code');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('staff');
         });
     }
 

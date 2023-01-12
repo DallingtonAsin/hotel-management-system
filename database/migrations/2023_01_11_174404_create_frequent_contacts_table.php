@@ -26,7 +26,7 @@ class CreateFrequentContactsTable extends Migration
             $table->timestamps();
 
             $table->foreign('currency_code')->references('code')->on('currencies')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('staff');
         });
     }
 

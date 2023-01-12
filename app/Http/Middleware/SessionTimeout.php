@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
-use App\User;
+use App\Staff;
 
 class SessionTimeout
 {
@@ -43,7 +43,7 @@ class SessionTimeout
           $this->session->forget('lastActivityTime');
           $cookie = cookie('intend', $isLoggedIn ? url()->current() : 'dashboard');
           $email = $request->user()->email;
-          User::where("id", $request->user()->id)
+          Staff::where("id", $request->user()->id)
                ->update(["otp_code" => null, "is_verified" => false]);
 
         $msg = "session timed out after ".$this->timeout/60 ." ".$units." inactive";

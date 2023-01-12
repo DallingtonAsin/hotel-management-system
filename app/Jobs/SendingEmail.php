@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\QueuedEmail;
 use App\Events\EmailQueued;
 use App\Mail\SendMail;
-use App\User;
+use App\Staff;
 
 class SendingEmail implements ShouldQueue
 {

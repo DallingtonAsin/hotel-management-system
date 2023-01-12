@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
-class UserTableSeeder extends Seeder
+class StaffTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\User::factory()->count(10)->create();
+        \App\Staff::factory()->count(10)->create();
 
     }
 }

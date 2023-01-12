@@ -15,7 +15,8 @@ class CreateDepartmentsTable extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('code', 4)->unique();
+            $table->string('name', 50);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
         });
@@ -28,6 +29,8 @@ class CreateDepartmentsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('departments');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

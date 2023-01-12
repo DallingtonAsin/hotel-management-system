@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             DepartmentTableSeeder::class,
             DesignationTableSeeder::class,
           
-            UserTableSeeder::class,
+            StaffTableSeeder::class,
           
             RoomTypeTableSeeder::class,
             RoomTableSeeder::class,

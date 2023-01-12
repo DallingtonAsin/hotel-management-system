@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Reports;
 
-use App\User;
+use App\Staff;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\DebtorsSupplier;
 

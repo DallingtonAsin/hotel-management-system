@@ -95,7 +95,8 @@ Route::get('guests/fetch/ajax', [GuestController::class, 'getGuests'])->name('gu
 Route::get('guests/ajax', [GuestController::class, 'fetchGuestsAjax'])->name('guests.ajax.fetch');
 Route::get('reservations/fetch/ajax', [ReservationController::class, 'getReservations'])->name('reservations.index.ajax');
 Route::get('reservations/frequent-contacts/fetch/ajax', [FrequentContactController::class, 'getFrequentContactsDataTable'])->name('frequent-contacts.index.ajax');
-Route::get('currencies/fetch/ajax', [CurrencyController::class, 'getCurrencyDataTable'])->name('currencies.index.ajax');
+Route::get('reservations/frequent-contacts/ajax', [FrequentContactController::class, 'fetchFrequentContactsAjax'])->name('frequent-contacts.ajax.fetch');
+Route::get('reservations/fetch/{freq_contact_id}', [FrequentContactController::class, 'fetchFreqContactDetailsById'])->name('frequent-contact-details.ajax.fetch');
 
 
 // Accounting Routes
@@ -117,6 +118,8 @@ Route::post('logs/truncate', [LogsController::class, 'truncateLogs'])->name('log
 // Finance Routes
 Route::get('payments/fetch/ajax', [PaymentController::class, 'getPaymentsDataTable'])->name('payments.index.ajax');
 Route::get('salaries/fetch/ajax', [SalaryController::class, 'getSalariesDataTable'])->name('salaries.index.ajax');
+Route::get('currencies/fetch/ajax', [CurrencyController::class, 'getCurrencyDataTable'])->name('currencies.index.ajax');
+Route::get('currencies/ajax', [CurrencyController::class, 'fetchCurrenciesAjax'])->name('currencies.ajax.fetch');
 
 
 // Home Routes

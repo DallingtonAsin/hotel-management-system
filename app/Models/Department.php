@@ -10,6 +10,7 @@ class Department extends Model
     public $timestamps = true;
     protected $fillable = [
       'id',
+      'code',
       'name',
       'created_by',
     ];

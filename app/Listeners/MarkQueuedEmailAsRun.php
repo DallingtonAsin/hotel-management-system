@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\NewEmailNotifier;
 use App\Models\QueuedEmail;
 use App\Mail\SendMail;
-use App\User;
+use App\Staff;
 
 class MarkQueuedEmailAsRun
 {
@@ -69,7 +69,7 @@ class MarkQueuedEmailAsRun
 
     protected function GetUsersToNotify($email)
        {
-           $users = User::where('email', $email)->get();
+           $users = Staff::where('email', $email)->get();
            return $users;
        }
 

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class CreateUsersTable extends Migration
+class CreateStaffTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('staff', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('first_name');
                 $table->string('last_name');
@@ -29,6 +29,9 @@ class CreateUsersTable extends Migration
                 $table->string('gender');
                 $table->string('address');
                 $table->string('nin')->nullable();
+                $table->string('tin_number')->nullable();
+                $table->string('nssf_number')->nullable();
+                $table->string('next_of_kin')->nullable();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('image')->nullable();
                 $table->string('password', 255)->default(Hash::make('12345678'));
@@ -54,7 +57,7 @@ class CreateUsersTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('staff');
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

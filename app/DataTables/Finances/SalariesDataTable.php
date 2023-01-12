@@ -6,7 +6,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Helpers\Helper;
 use App\Models\Salary;
-use App\User;
+use App\Staff;
 
 class SalariesDataTable extends DataTable
 {
@@ -45,7 +45,7 @@ class SalariesDataTable extends DataTable
             $checkBox = '<input type="checkbox" id="' . $salary->id . '"/>';
             return $checkBox;
         })->addColumn('employee_name', function ($salary) {
-            $user = User::find($salary->employee_id);
+            $user = Staff::find($salary->employee_id);
             return $user->first_name . ' ' . $user->last_name;
         })->editColumn('amount', function ($salary) {
             return number_format($salary->amount);

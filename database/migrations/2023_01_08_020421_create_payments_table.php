@@ -25,7 +25,7 @@ class CreatePaymentsTable extends Migration
 
             $table->foreign('guest_id')->references('id')->on('guests');
             $table->foreign('invoice_number')->references('invoice_number')->on('invoice_guests');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('staff');
         });
     }
 

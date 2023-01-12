@@ -154,3 +154,8 @@ tfoot {
   color: #009688 !important;
   font-size: 18px !important;
 }
+
+.modal-dialog-xlg{
+  max-width: 950px;
+  margin: 2rem auto;
+}

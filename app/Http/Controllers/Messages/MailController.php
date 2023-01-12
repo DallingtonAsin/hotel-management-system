@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LogsController;
 use App\Jobs\SendingEmail;
-use App\User;
+use App\Staff;
 use App\Helpers\Helper;
 
 
@@ -33,7 +33,7 @@ class MailController extends Controller
 
     protected function GetUserData($UserRoleId)
     {
-        $userEmails = User::where('department_id', $UserRoleId)->get();
+        $userEmails = Staff::where('department_id', $UserRoleId)->get();
         return $userEmails;
     }
 
@@ -207,7 +207,7 @@ class MailController extends Controller
 
        protected function GetUsersToNotify($email)
        {
-           $users = User::where('email', $email)->get();
+           $users = Staff::where('email', $email)->get();
            return $users;
        }
 

@@ -2,7 +2,7 @@
 
 namespace App\DataTables\HR;
 
-use App\User;
+use App\Staff;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Department;
@@ -61,10 +61,10 @@ class StaffMembersDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\User $model
+     * @param \App\Staff $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query(Staff $model)
     {
         return $model->newQuery()->select(
             'id',
@@ -79,6 +79,9 @@ class StaffMembersDataTable extends DataTable
             'other_phone_number',
             'address',
             'nin',
+            'tin_number',
+            'nssf_number',
+            'next_of_kin',
             'image',
             'password'
         )->where('is_deleted', false);

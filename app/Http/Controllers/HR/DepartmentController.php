@@ -43,7 +43,8 @@ class DepartmentController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:55',
+            'code' => 'required',
+            'name' => 'required',
         ]);
 
         try {
@@ -51,23 +52,39 @@ class DepartmentController extends Controller
                 $message = $validator->errors()->all();
                 return response()->json(['error' => $message]);
             } else {
+
+                $code = $request->input('code');
                 $name = ucfirst($request->input('name'));
-                $created_by = Helper::getLoggedInUserId();
-                if (Department::create(['name' => $name, 'created_by' => $created_by])) {
-                    $message = "Department " . $name . " added successfully";
-                    $stats = $this->GetDepartmentStats();
-                    $data = [
-                        'success' => $message,
-                        'data' => $stats['data'],
-                        'total' => $stats['total']
-                    ];
+                $exists = Department::where('code', $code)
+                        ->orWhere('name', $name)->exists();
+                        
+                if($exists){
+                    return response()->json(['error' => 'Department code '.$code.' or name '.$name.' already exists']);
                 } else {
-                    $message = "Technical error in adding department";
+
+                    $created_by = Helper::getLoggedInUserId();
                     $data = [
-                        'error' => $message
+                        'code' => $code,
+                        'name' => $name,
+                        'created_by' => $created_by
                     ];
+
+                    if (Department::create($data)) {
+                        $message = "Department " . $name . " added successfully";
+                        $stats = $this->GetDepartmentStats();
+                        $data = [
+                            'success' => $message,
+                            'data' => $stats['data'],
+                            'total' => $stats['total']
+                        ];
+                    } else {
+                        $message = "Technical error in adding department";
+                        $data = [
+                            'error' => $message
+                        ];
+                    }
+                    return response()->json($data);
                 }
-                return response()->json($data);
             }
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);

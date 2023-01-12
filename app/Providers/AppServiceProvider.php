@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use App\User;
+use App\Staff;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View; 
 use Illuminate\Support\Facades\Queue; 
@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
 
        //Option2: View Composer you can attach data to specific views
        // View::composer(['pages.main.suppliers','pages.main.customers'], function($view){
-       //   $user = User::find(1);
+       //   $user = Staff::find(1);
        //   $messages = array();
        //   foreach ($user->notifications as $notification) {
        //     $rows = $notification->data;

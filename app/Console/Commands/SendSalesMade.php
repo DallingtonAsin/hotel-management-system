@@ -11,7 +11,7 @@ use App\Models\Customer;
 use App\Models\Role;
 use App\Jobs\MailDailySalesReport;
 use Illuminate\Support\Facades\DB;
-use App\User;
+use App\Staff;
 use App\Helpers\Helper;
 use Constant;
 
@@ -121,7 +121,7 @@ class SendSalesMade extends Command
     protected function GetManagerEmails(){
         $roleId = Role::where('is_admin', 1)->where('is_SuperAdmin', 0)
         ->value('id');
-        $rows = User::where('department_id', $roleId)->get();
+        $rows = Staff::where('department_id', $roleId)->get();
         $managersEmails = array();
         foreach ($rows as $row) {
             array_push($managersEmails, $row->email);

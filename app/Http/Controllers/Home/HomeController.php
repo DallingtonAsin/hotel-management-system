@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Room;
 use App\Models\Guest;
 use App\Models\Reservation;
-use App\User;
+use App\Staff;
 
 class HomeController extends Controller
 {
@@ -28,9 +28,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(Auth::check())
-        {
-            $total_staff = User::count();
+        // if(Auth::check())
+        // {
+            $total_staff = Staff::count();
             $total_rooms = Room::count();
             $total_bookings = Reservation::count();
             $total_guests = Guest::count();
@@ -41,19 +41,19 @@ class HomeController extends Controller
                     'total_rooms' => $total_rooms,
                     'total_guests' => $total_guests
                 ]);
-        }else{
-            return redirect('/');
-        }
+        // }else{
+        //     return redirect('/');
+        // }
     }
 
     public function overview()
     {
-        if(Auth::check())
-        {
+        // if(Auth::check())
+        // {
             return view('pages.main.overview');
-            }else{
-                return redirect('/');
-            }
+            // }else{
+            //     return redirect('/');
+            // }
        
     }
     

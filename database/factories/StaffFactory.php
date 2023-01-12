@@ -3,18 +3,18 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\User;
+use App\Staff;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
-class UserFactory extends Factory
+class StaffFactory extends Factory
 {
   /**
   * The name of the factory's corresponding model.
   *
   * @var string
   */
-  protected $model = User::class;
+  protected $model = Staff::class;
   
   /**
   * Define the model's default state.
@@ -36,6 +36,9 @@ class UserFactory extends Factory
       'other_phone_number' => $this->faker->phoneNumber,
       'address' => $this->faker->state,
       'nin' => strtoupper(Str::random(14)),
+      'tin_number'  => $this->faker->numberBetween(1000000, 2000000),
+      'nssf_number'  => $this->faker->numberBetween(2000000, 7000000),
+      'next_of_kin'  => $this->faker->name,
       'email_verified_at' => now(),
       'image' => NULL,
       'password' => Hash::make('12345678'),

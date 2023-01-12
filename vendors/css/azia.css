@@ -14758,7 +14758,7 @@ textarea.parsley-success:focus {
   border-radius: 100%;
 }
 
-/* .az-img-user::after {
+/* .az-img-Staff::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -16629,7 +16629,7 @@ body {
   height: 32px;
 }
 
-.az-profile-menu>.az-img-user::before {
+.az-profile-menu>.az-img-Staff::before {
   content: '';
   position: absolute;
   bottom: -33px;
@@ -16646,7 +16646,7 @@ body {
   display: none;
 }
 
-.az-profile-menu>.az-img-user::after {
+.az-profile-menu>.az-img-Staff::after {
   display: none;
 }
 
@@ -16715,7 +16715,7 @@ body {
 }
 
 @media (min-width: 576px) {
-  .az-profile-menu.show .az-img-user::before {
+  .az-profile-menu.show .az-img-Staff::before {
     display: block;
   }
 }
@@ -16744,7 +16744,7 @@ body {
   }
 }
 
-.az-header-profile .az-img-user::after {
+.az-header-profile .az-img-Staff::after {
   display: none;
 }
 
@@ -20892,7 +20892,7 @@ body {
   height: 100px;
 }
 
-.az-contact-info-header .az-img-user::after {
+.az-contact-info-header .az-img-Staff::after {
   display: none;
 }
 
@@ -21640,7 +21640,7 @@ body {
   margin-right: 15px;
 }
 
-.az-mail-item .az-img-user::after,
+.az-mail-item .az-img-Staff::after,
 .az-mail-item .az-avatar::after {
   display: none;
 }
@@ -22091,7 +22091,7 @@ body {
   margin-bottom: 20px;
 }
 
-.az-profile-overview .az-img-user::after {
+.az-profile-overview .az-img-Staff::after {
   display: none;
 }
 
@@ -24939,7 +24939,7 @@ body {
   height: 28px;
 }
 
-.card-dashboard-events .event-user .az-img-user::after {
+.card-dashboard-events .event-user .az-img-Staff::after {
   display: none;
 }
 
@@ -25191,7 +25191,7 @@ body {
   padding-left: 20px;
 }
 
-.card-dashboard-sixteen .az-img-user::after {
+.card-dashboard-sixteen .az-img-Staff::after {
   display: none;
 }
 
@@ -26739,7 +26739,7 @@ body {
   }
 }
 
-.az-header-primary .az-profile-menu.show .az-img-user::before {
+.az-header-primary .az-profile-menu.show .az-img-Staff::before {
   display: none;
 }
 
@@ -27384,7 +27384,7 @@ body {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.az-sidebar-indigo-dark .az-img-user::after {
+.az-sidebar-indigo-dark .az-img-Staff::after {
   box-shadow: none;
 }
 
@@ -28054,7 +28054,7 @@ body {
   padding-top: 0;
 }
 
-.az-iconbar-primary .az-img-user::after {
+.az-iconbar-primary .az-img-Staff::after {
   box-shadow: none;
 }
 
@@ -28550,7 +28550,7 @@ body {
   height: 32px;
 }
 
-.az-media-list-reviews .az-img-user::after {
+.az-media-list-reviews .az-img-Staff::after {
   display: none;
 }
 

@@ -27,7 +27,7 @@ class CreateCustomerDebtPaymentsTable extends Migration
 
         Schema::table('customer_debt_payments', function($table){
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('staff')->onDelete('cascade');
         });
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Http\Controllers\LogsController;
 use App\Helpers\Helper;
-use App\User;
+use App\Staff;
 
 class ProfileController extends Controller
 {
@@ -57,7 +57,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = Staff::find($id);
         return response()->json($user);
     }
 
@@ -69,7 +69,7 @@ class ProfileController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = Staff::find($id);
         return response()->json($user);
     }
 
@@ -94,7 +94,7 @@ class ProfileController extends Controller
 public function updates(Request $request, $id)
 {
   
-    $user = User::find($id);
+    $user = Staff::find($id);
     $old_username = $user->username;
     $user->username = $new_username = $request->input('Username');
     $user->email = $request->input('Email');
@@ -210,7 +210,7 @@ return response()
 
         try{
             
-            $user = User::find($id);
+            $user = Staff::find($id);
             $old_username = $user->username;
             $user->username = $new_username = $request->input('Username'); 
             $user->email = $request->input('Email');
@@ -343,7 +343,7 @@ return response()
 protected function getUsernamesArr()
 {
 
-  $usernames = User::pluck('username');
+  $usernames = Staff::pluck('username');
   $dataArr = array();
   foreach($usernames as $username)
   {
@@ -355,7 +355,7 @@ return $dataArr;
 
 public function getGender($id){
 
-   $gender = User::where('id', $id)->value('gender');
+   $gender = Staff::where('id', $id)->value('gender');
    (strtolower($gender) == 'male')
    ? $value = 'his'
    : $value = 'her';

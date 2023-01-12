@@ -44,31 +44,37 @@ class DepartmentTableSeeder extends Seeder
     {
        
         Department::create([
+            "code" => 'RB',
             "name" => "Restaurant and Bar",
             "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Department::create([
+            "code" => 'HR',
             "name" => "Human Resource",
             "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Department::create([
+            "code" => 'ST',
             "name" => "Store",
             "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Department::create([
+            "code" => 'HK',
             "name" => "House Keeping",
             "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Department::create([
+            "code" => 'AC',
             "name" => "Accomodation",
             "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);
 
         Department::create([
+            "code" => 'FA',
             "name" => "Finance & Accounting",
             "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
         ]);

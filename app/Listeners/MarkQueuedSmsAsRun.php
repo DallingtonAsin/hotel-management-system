@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\SMSNotifier;
 use App\Events\SmsQueued;
-use App\User;
+use App\Staff;
 
 class MarkQueuedSmsAsRun
 {
@@ -55,7 +55,7 @@ class MarkQueuedSmsAsRun
 
     protected function GetUsersToNotify($sendertel)
     {
-        $user = User::where('tel_no', $sendertel)->get();
+        $user = Staff::where('tel_no', $sendertel)->get();
         return $user;
     }
 

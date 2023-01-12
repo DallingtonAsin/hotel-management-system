@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Sheet;
-use App\User;
+use App\Staff;
 
 class ExportCashiers implements FromQuery, WithHeadings, ShouldAutoSize, WithEvents
 {
@@ -19,7 +19,7 @@ class ExportCashiers implements FromQuery, WithHeadings, ShouldAutoSize, WithEve
    
     public function query()
     {
-        return User::query()->select('id','name','email','contact','address','created_at')->where('position','Cashier');
+        return Staff::query()->select('id','name','email','contact','address','created_at')->where('position','Cashier');
     }
 
     public function headings():array{
