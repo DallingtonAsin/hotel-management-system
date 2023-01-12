@@ -20,13 +20,13 @@
                         <div class="row form-group">
                             <div class="col-md-6">
                                 <input type="hidden" class="userId" name="id">
-                                <span><span class="text-danger">*</span> First Name</span>
+                                <span><span class="text-danger pr-1">*</span>First Name</span>
                                 <input type="text" class="form-control first_name bg-white" name="first_name"
                                     placeholder="Enter first name" required autofocus>
                             </div>
 
                             <div class="col-md-6">
-                                <span><span class="text-danger">*</span> Last Name</span>
+                                <span><span class="text-danger pr-1">*</span>Last Name</span>
                                 <input type="text" class="form-control last_name bg-white" name="last_name"
                                     placeholder="Enter last name" required autofocus>
                             </div>
@@ -36,7 +36,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-4">
-                                <span><span class="text-danger">*</span> Primary Tel No.</span>
+                                <span><span class="text-danger pr-1">*</span>Primary Tel No.</span>
                                 <input type="text" class="form-control phone_number bg-white" name="phone_number"
                                     placeholder="Enter primary telephone number" required autofocus>
                             </div>
@@ -48,44 +48,47 @@
                             </div>
 
                             <div class="col-md-4">
-                                <span><span class="text-danger">*</span> Address</span>
+                                <span><span class="text-danger pr-1">*</span>Address</span>
                                 <input type="text" class="form-control address bg-white" name="address"
                                     placeholder="Enter address" required autofocus>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <span><span class="text-danger pr-1">*</span>Gender</span>
+                            <select class="form-control gender bg-white" name="gender">
+                                <option value="">Select gender</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
                             <span> Email</span>
                             <input type="email" class="form-control email bg-white" name="email"
                                 placeholder="Enter email">
                         </div>
+                    </div>
 
                         <div class="row form-group">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <span>Tin Number</span>
                                 <input type="text" class="form-control tin_number bg-white" name="tin_number"
-                                    placeholder="Enter employee tin number" required autofocus>
+                                    placeholder="Enter tin number" required autofocus>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <span>NSSF Number</span>
                                 <input type="text" class="form-control nssf_number bg-white" name="nssf_number"
-                                    placeholder="Enter employee nssf number" required autofocus>
+                                    placeholder="Enter nssf number" required autofocus>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <span>NIN</span>
                                 <input type="text" class="form-control nin bg-white" name="nin"
                                     placeholder="Enter national id number" required autofocus>
                             </div>
-                        </div>
-
-                        <div class="row form-group">
-
-                        </div>
-
-
-                        <div class="row form-group">
 
                             <div class="col-md-3">
                                 <span>Next of Kin</span>
@@ -93,30 +96,49 @@
                                     placeholder="Enter next of kin" required autofocus>
                             </div>
 
+                        </div>
+
+                        <div class="row form-group">
+
+                        </div>
+
+
+                        <div class="row form-group">
+
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <span><span class="text-danger">*</span> Department</span>
+                                    <span><span class="text-danger pr-1">*</span>Department</span>
                                     <select class="form-control departments_section bg-white" name="department">
-                                        <option value="">select department</option>
+                                        <option value="">Select department</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <span><span class="text-danger">*</span> Designation</span>
+                                    <span><span class="text-danger pr-1">*</span>Designation</span>
                                     <select class="form-control bg-white designation_section" name="designation">
-                                        <option value="">select designation</option>
+                                        <option value="">Select designation</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
-                                <span><span class="text-danger">*</span> Gender</span>
-                                <select class="form-control gender bg-white" name="gender">
-                                    <option value="">select gender</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Male">Male</option>
+                                <span><span class="text-danger pr-1">*</span>Staff Type</span>
+                                <select class="form-control staff_type bg-white" name="staff_type">
+                                    <option value="">Select staff type</option>
+                                    <option value="permanent">Permanent</option>
+                                    <option value="temporary">Temporary</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <span><span class="text-danger pr-1">*</span>Status</span>
+                                <select class="form-control status bg-white" name="status">
+                                    <option value="">Select status</option>
+                                    <option value="Available" selected="true">Available</option>
+                                    <option value="On Duty">On Duty</option>
+                                    <option value="On Leave">On Leave</option>
                                 </select>
                             </div>
 
@@ -641,6 +663,8 @@
                 let phone_number = $('.phone_number').val();
                 let designation = $('.designation_section').val();
                 let gender = $('.gender').val();
+                let staff_type = $('.staff_type').val();
+                let status = $('.status').val();
 
                 let errors = [];
                 if (first_name.length < 1) {
@@ -662,6 +686,14 @@
 
                 if (gender.length < 1) {
                     errors.push("Please select gender");
+                }
+
+                if (staff_type.length < 1) {
+                    errors.push("Please select staff type");
+                }
+
+                if (status.length < 1) {
+                    errors.push("Please select status");
                 }
 
                 return errors;

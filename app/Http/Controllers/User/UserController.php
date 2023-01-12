@@ -334,15 +334,17 @@ class UserController extends Controller
       'last_name' => 'required',
       'address' => 'required',
       'email' => 'sometimes|nullable|email',
-      'phone_number' => 'required',
-      'other_phone_number' => 'sometimes|nullable',
-      'gender' => 'required',
+      'phone_number' => 'required|min:10',
+      'other_phone_number' => 'sometimes|nullable|min:10',
       'nin' => 'sometimes|nullable',
       'tin_number' => 'sometimes|nullable',
       'nssf_number' => 'sometimes|nullable',
       'next_of_kin' => 'sometimes|nullable',
       'department' => 'required',
       'designation' => 'required',
+      'gender' => 'required',
+      'staff_type' => 'required',
+      'status' => 'required',
   ]);
 
   try {
@@ -367,6 +369,8 @@ class UserController extends Controller
       $next_of_kin = $request->input('next_of_kin');
       $department_id = $request->input('department');
       $designation_id = $request->input('designation');
+      $staff_type = ucfirst($request->input('staff_type'));
+      $status = ucfirst($request->input('status'));
 
       $departmentObj = Department::find($department_id);
       $department_code = $departmentObj->code;
@@ -422,6 +426,8 @@ class UserController extends Controller
           $user->tin_number = $tin_number;
           $user->nssf_number = $nssf_number;
           $user->next_of_kin = $next_of_kin;
+          $user->type = $staff_type;
+          $user->status = $status;
           $user->password = $password;
           $user->is_active = true;
           $user->created_by = $registra;
