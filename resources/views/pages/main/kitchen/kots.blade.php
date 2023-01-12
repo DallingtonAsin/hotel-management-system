@@ -48,7 +48,7 @@
     <div class="modal fade nunito-font addKitchenOrderModal" id="addKitchenOrderModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog mx-auto modal-dialog-xlg">
             <div class="modal-content">
 
                 <form name="kitchen-orders" id="KotForm">
@@ -92,19 +92,25 @@
 
                         <div class="row form-group">
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="table_number">Table Number</label>
                                 <input type="text" class="form-control table_number" id="table_number"
                                     name="table_number" placeholder="Enter table number">
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="room_number">Room No</label>
                                 <input type="text" class="form-control room_number" name="room_number" id="room_number"
                                     placeholder="Enter room number">
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <label for="guest_names-">Guest Names</label>
+                                <input type="text" class="form-control guest_names" name="guest_names" id="guest_names"
+                                    placeholder="Enter guest names">
+                            </div>
+
+                            <div class="col-md-3">
                                 <label for="status"><span class="text-danger pr-1">*</span>Status</label>
                                 <select class="form-control status" name="status" id="status">
                                     <option value="In Progress" selected>In Progress</option>
@@ -112,15 +118,44 @@
                                     <option value="Cancelled">Cancelled</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="row form-group">
+
+                            <div class="col-md-3">
+                                <label for="customer_name">Customer Names</label>
+                                <input type="email" class="form-control customer_name" name="customer_name" id="customer_name"
+                                    placeholder="Enter customer names">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="room_number">Telephone Number</label>
+                                <input type="text" class="form-control phone_number" name="phone_number" id="phone_number"
+                                    placeholder="Enter telephone number">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="table_number">Tin Number</label>
+                                <input type="text" class="form-control tin_number" id="tin_number"
+                                    name="tin_number" placeholder="Enter tin number">
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <label for="room_number">Email</label>
+                                <input type="email" class="form-control email" name="email" id="email"
+                                    placeholder="Enter email">
+                            </div>
 
                         </div>
 
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-xs border border-dark text-dark addMenuItemToCartBtn"
-                                name="addKotBtn">Add to Cart</button>
-                            <button type="reset" class="btn btn-xs btn-danger clearBtn"><i
-                                    class="fa fa-times-circle pr-1"></i>Clear</button>
+                                <button type="submit"
+                                    class="btn btn-xs border border-dark text-dark addMenuItemToCartBtn"
+                                    name="addKotBtn">Add to Cart</button>
+                                <button type="reset" class="btn btn-xs btn-danger mx-2 clearBtn">
+                                    <i class="fa fa-times-circle pr-1"></i>Clear</button>
                         </div>
 
                         <div class="form-group">
@@ -381,12 +416,12 @@
                 AddMenuItemToCart(menu_item_id);
             });
 
-            $('.submit-order-btn').on('click', function(){
-               let table = document.getElementById('menu-item-cart');
+            $('.submit-order-btn').on('click', function() {
+                let table = document.getElementById('menu-item-cart');
                 let rowCount = (table.rows.length - 1);
-                if(rowCount > 0){
+                if (rowCount > 0) {
                     submitKitchenOrder();
-                }else{
+                } else {
                     alert('Add order items to the cart');
                 }
             });
@@ -431,22 +466,22 @@
                     success: function(data) {
                         console.log('Response', data);
                         let message = data.success || data.error;
-                        if(data.error){
-                            alert("Error message: "+message);
+                        if (data.error) {
+                            alert("Error message: " + message);
                         }
-                        if(data.success){
+                        if (data.success) {
                             EmptyCartTable();
                             let message = data.success;
                             displayResponse('.response', message, 'success');
                         }
-                       
+
 
                     },
                     error: function(data) {
                         console.log('Error data', data);
                         let message = data.response;
                         console.log('Error message', message);
-                        alert("Error message: "+message);
+                        alert("Error message: " + message);
                         displayResponse('.response', message, 'error');
                     }
                 });
@@ -578,7 +613,7 @@
                     '" style="width:80px">');
                 $(this).parents('tr').find('td:eq(4)').prepend(
                     '<button class="btn btn-info btn-xs btn-update-cart">Update</button><button class="btn btn-warning ml-3 btn-xs btn-cancel-cart">Cancel</button>'
-                    );
+                );
                 $(this).hide();
                 $('.btn-delete-cart').hide();
 

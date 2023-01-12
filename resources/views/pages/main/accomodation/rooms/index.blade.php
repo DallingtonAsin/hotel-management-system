@@ -113,6 +113,7 @@ role="dialog" aria-labelledby="myModalLabel">
             <option value="">Select status</option>
             <option value="Occupied">Occupied</option>
             <option value="Occupied">Vacant</option>
+            <option value="Vacant Dirty">Vacant Dirty</option>
           </select>
         </div>
 
