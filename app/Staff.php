@@ -33,6 +33,8 @@ class Staff extends Authenticatable
       'tin_number',
       'nssf_number',
       'next_of_kin',
+      'type',
+      'status',
       'is_active',
       'password',
     ];
