@@ -175,3 +175,20 @@ function populateCurrencies(select_element) {
         }
     });
 }
+
+function populateFrequentContacts(select_element) {
+    $.ajax({
+        type: "GET",
+        url: freqContactAjaxUrl,
+        success: function (resp) {
+            let obj = JSON.parse(resp);
+            for (let i = 0; i < obj.length; i++) {
+                let id = obj[i]['id'];
+                let name = obj[i]['name'];
+                $(select_element).append('<option value=' + id + '>' + name + '</option>');
+            }
+        }
+    });
+}
+
+

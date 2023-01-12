@@ -21,11 +21,14 @@
         </div>
 
         <div class="row form-group">
+         
             <div class="col-md-6">
-                <span class="text-muted"><span class="text-danger pr-2">*</span>Company Name</span>
-                <input type="text" class="form-control company_name" name="company_name" value=""
-                    autocomplete="on">
+                <span><span class="text-danger pr-1">*</span>Company Name</span>
+                <select class="form-control company_name bg-white" name="company_name">
+                    <option value="">select company name</option>
+                </select>
             </div>
+
             <div class="col-md-6">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>TIN</span>
                 <input type="text" class="form-control tax_number" name="tax_number" value=""

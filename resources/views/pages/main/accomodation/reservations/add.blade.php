@@ -46,8 +46,11 @@
     <script>
         const roomsAjaxUrl = @json(route('rooms.ajax.fetch'));
         const searchRoomUrl = @json(route('rooms.ajax.suggest'));
+        const freqContactAjaxUrl = @json(route('frequent-contacts.ajax.fetch'));
+
         populateRooms();
         onSelectGuestType();
+        populateFrequentContacts('.company_name');
 
         function onSelectGuestType() {
             $('.guest_types_section').on('change', function() {

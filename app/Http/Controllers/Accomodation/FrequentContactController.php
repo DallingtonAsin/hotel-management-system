@@ -179,4 +179,17 @@ class FrequentContactController extends Controller
     {
         //
     }
+
+    public function fetchFrequentContactsAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $freq_contacts = FrequentContact::get();
+                echo json_encode($freq_contacts);
+                die();
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
 }
