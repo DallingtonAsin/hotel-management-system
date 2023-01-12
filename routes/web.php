@@ -96,6 +96,7 @@ Route::get('guests/ajax', [GuestController::class, 'fetchGuestsAjax'])->name('gu
 Route::get('reservations/fetch/ajax', [ReservationController::class, 'getReservations'])->name('reservations.index.ajax');
 Route::get('reservations/frequent-contacts/fetch/ajax', [FrequentContactController::class, 'getFrequentContactsDataTable'])->name('frequent-contacts.index.ajax');
 Route::get('reservations/frequent-contacts/ajax', [FrequentContactController::class, 'fetchFrequentContactsAjax'])->name('frequent-contacts.ajax.fetch');
+Route::get('reservations/fetch/{freq_contact_id}', [FrequentContactController::class, 'fetchFreqContactDetailsById'])->name('frequent-contact-details.ajax.fetch');
 
 
 // Accounting Routes

@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-body">
 
-           @include('pages.main.messages.response')
+            @include('pages.main.messages.response')
 
             <ul class="nav nav-tabs guest-types-tab" id="GuestTypesTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -82,6 +82,55 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+
+            onSelectFreqContactName();
+
+            function onSelectFreqContactName() {
+                $('.company_name').on('change', function() {
+                    let freq_contact_id = $(this).find(":selected").val();
+                    if (freq_contact_id) {
+                        populateFreqContactDetails(freq_contact_id);
+                    }
+                });
+            }
+
+            function populateFreqContactDetails(id) {
+
+                let url = '{{ route('frequent-contact-details.ajax.fetch', ':freq_contact_id') }}';
+                url = url.replace(':freq_contact_id', id);
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function(resp) {
+
+                        let obj = JSON.parse(resp);
+                        for (let i = 0; i < obj.length; i++) {
+                         
+                            let email = obj[i]['email'];
+                            let phone_number = obj[i]['phone_number'];
+                            let tin = obj[i]['tin'];
+                            let contact_person = obj[i]['contact_person'];
+                            let price = obj[i]['price'];
+
+                            $('.company_email').val(email);
+                            $('.company_contact').val(phone_number);
+                            $('.tax_number').val(tin);
+                            $('.contact_person').val(contact_person);
+                            $('.price').val(price);
+
+                        }
+                    },
+                    error: function(data) {
+                        console.log('Error on fetching designations', data);
+                        console.log('Error:', data.error);
+                        displayResponse('.response', data.error, 'error');
+                    }
+                });
+            }
+
+
         });
 
         onTypingRoomNumber('.room_number');

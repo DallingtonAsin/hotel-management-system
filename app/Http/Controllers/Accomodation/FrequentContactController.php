@@ -192,4 +192,19 @@ class FrequentContactController extends Controller
             return response()->json(['error' => $ex->getMessage()]);
         }
     }
+
+    public function fetchFreqContactDetailsById(Request $request, $freq_contact_id)
+    {
+        try {
+            if ($request->ajax()) {
+                $details = FrequentContact::where('id', $freq_contact_id)->get();
+                echo json_encode($details);
+                die();
+
+            }
+        } catch (\Exception $ex) {
+            echo "Error " . $ex->getMessage();
+        }
+    }
+
 }
