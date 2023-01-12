@@ -11,12 +11,12 @@
             <div class="col-md-6">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>First Name</span>
                 <input type="text" class="form-control first_name" name="first_name" value=""
-                    autocomplete="on">
+                    >
             </div>
             <div class="col-md-6">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Last Name</span>
                 <input type="text" class="form-control last_name" name="last_name" value=""
-                    autocomplete="on">
+                    >
             </div>
         </div>
 
@@ -25,14 +25,14 @@
             <div class="col-md-6">
                 <span><span class="text-danger pr-1">*</span>Company Name</span>
                 <select class="form-control company_name bg-white" name="company_name">
-                    <option value="">select company name</option>
+                    <option value="">Select company name</option>
                 </select>
             </div>
 
             <div class="col-md-6">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>TIN</span>
                 <input type="text" class="form-control tax_number" name="tax_number" value=""
-                    autocomplete="on">
+                     disabled>
             </div>
         </div>
 
@@ -40,41 +40,40 @@
             <div class="col-md-6">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Company Contact</span>
                 <input type="text" class="form-control company_contact" name="company_contact" value=""
-                    autocomplete="on">
+                     disabled>
             </div>
             <div class="col-md-6">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Company Email</span>
                 <input type="text" class="form-control company_email" name="company_email" value=""
-                    autocomplete="on">
+                disabled>
             </div>
         </div>
 
         <div class="row form-group">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Phone Number</span>
                 <input type="text" class="form-control phone_number" name="phone_number" value=""
-                    autocomplete="on">
+                    >
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <span class="text-muted">Email</span>
                 <input type="text" class="form-control email" name="email" placeholder="Enter email" value=""
-                    autocomplete="on">
+                    >
             </div>
-        </div>
 
-        <div class="row form-group">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <span class="text-muted">Passport</span>
                 <input type="text" class="form-control passport_number" name="passport_number" value=""
-                    autocomplete="on">
+                    >
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <span class="text-muted">NIN</span>
-                <input type="text" class="form-control nin" name="nin" value=""
-                    autocomplete="on">
+                <input type="text" class="form-control nin" name="nin" value="">
             </div>
+
         </div>
 
+   
 
         <div class="row form-group">
 
@@ -95,13 +94,13 @@
             <div class="col-md-3">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Arrival Time</span>
                 <input type="datetime-local" class="form-control arrival_date" name="arrival_date"
-                    value="{{ now()->format('Y-m-d\TH:i') }}" autocomplete="on">
+                    value="{{ now()->format('Y-m-d\TH:i') }}" >
             </div>
 
             <div class="col-md-3">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Departure Time</span>
                 <input type="datetime-local" class="form-control departure_date" name="departure_date"
-                    value="" autocomplete="on">
+                    value="" >
             </div>
         </div>
 
