@@ -371,11 +371,8 @@ class UserController extends Controller
       $designation_id = $request->input('designation');
       $staff_type = ucfirst($request->input('staff_type'));
       $status = ucfirst($request->input('status'));
-
-      $departmentObj = Department::find($department_id);
-      $department_code = $departmentObj->code;
-      $latest_id = Staff::latest()->first()->id;
-      $staff_id = $department_code . str_pad($latest_id + 1, 4, '0', STR_PAD_LEFT);
+      $staff_id = Helper::generateStaffId($department_id);
+     
      
       $designation = Designation::where('id', $designation_id)->value('name');
 

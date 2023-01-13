@@ -105,8 +105,8 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label for="guest_names-">Guest Names</label>
-                                <input type="text" class="form-control guest_names" name="guest_names" id="guest_names"
+                                <label for="guest-">Guest Names</label>
+                                <input type="text" class="form-control guest" name="guest" id="guest"
                                     placeholder="Enter guest names">
                             </div>
 
@@ -124,7 +124,7 @@
 
                             <div class="col-md-3">
                                 <label for="customer_name">Customer Names</label>
-                                <input type="email" class="form-control customer_name" name="customer_name" id="customer_name"
+                                <input type="text" class="form-control customer_name" name="customer_name" id="customer_name"
                                     placeholder="Enter customer names">
                             </div>
 
@@ -316,7 +316,7 @@
         $(document).ready(function() {
 
             let table = $('#kitchen-orders-table');
-            let title = "List of registered departments in the system";
+            let title = "List of recorded kitchen orders in the system";
             let columns = [1, 2, 3];
             let dataColumns = [
                 // {
@@ -420,7 +420,11 @@
                 let table = document.getElementById('menu-item-cart');
                 let rowCount = (table.rows.length - 1);
                 if (rowCount > 0) {
-                    submitKitchenOrder();
+                    if (confirm("Are you sure you want to submit this order?")) {
+                        submitKitchenOrder();
+                    } else {
+                         // do nothing
+                    }
                 } else {
                     alert('Add order items to the cart');
                 }
@@ -444,7 +448,13 @@
 
                 let table_number = $(".table_number").val();
                 let room_number = $(".room_number").val();
+                let guest_id = $(".guest_id").val();
+                let customer_name = $(".customer_name").val();
+                let phone_number = $(".phone_number").val();
+                let tin_number = $(".tin_number").val();
+                let email = $(".email").val();
                 let status = $(".status").val();
+
 
                 let selected_menu = JSON.stringify(TableData);
                 console.log("Table data", selected_menu);
@@ -460,21 +470,27 @@
                         table_data: selected_menu,
                         table_number: table_number,
                         room_number: room_number,
+                        guest_id: guest_id,
+                        customer_name: customer_name,
+                        phone_number: phone_number,
+                        tin_number: tin_number,
+                        email: email,
                         status: status,
                     },
 
                     success: function(data) {
                         console.log('Response', data);
                         let message = data.success || data.error;
+                        let type = data.success ? 'success' : 'error';
+
                         if (data.error) {
                             alert("Error message: " + message);
                         }
                         if (data.success) {
                             EmptyCartTable();
-                            let message = data.success;
-                            displayResponse('.response', message, 'success');
                         }
 
+                        displayResponse('.response', message, type);
 
                     },
                     error: function(data) {

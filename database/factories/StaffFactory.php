@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Staff;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\Helper;
 
 class StaffFactory extends Factory
 {
@@ -23,15 +24,20 @@ class StaffFactory extends Factory
   */
   public function definition()
   {
+
+    $department_id = $this->faker->randomElement([1, 2, 3, 4, 5, 6]);
+    $staff_id = Helper::generateStaffId($department_id);
+
+
     return [
       'first_name' => $this->faker->firstName,
       'last_name' => $this->faker->lastName,
       'username' => $this->faker->unique()->lastName,
       'gender' => 'Male',
       'email' => $this->faker->unique()->safeEmail,
-      'staff_id' => 'SID_'.''.$this->faker->numberBetween(100, 700),
+      'staff_id' => $staff_id,
       'designation_id' => $this->faker->randomElement([1, 2, 3]),
-      'department_id' => $this->faker->randomElement([1, 2]),
+      'department_id' => $department_id,
       'phone_number' => $this->faker->phoneNumber,
       'other_phone_number' => $this->faker->phoneNumber,
       'address' => $this->faker->state,

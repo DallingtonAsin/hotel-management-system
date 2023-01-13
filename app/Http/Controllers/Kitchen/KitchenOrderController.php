@@ -11,6 +11,8 @@ use App\Models\Room;
 use App\Models\KitchenOrder;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
+use App\Models\KitchenMenuItem;
+
 
 class KitchenOrderController extends Controller
 {
@@ -160,35 +162,63 @@ class KitchenOrderController extends Controller
     public function storeKitchenOrder(Request $req)
     {
 
+        $validator = Validator::make($req->all(), [
+            'table_data' => 'required',
+            'table_number' => 'sometimes|nullable',
+            'room_number' => 'sometimes|nullable',
+            'guest_id' => 'sometimes|nullable',
+            'customer_name' => 'sometimes|nullable',
+            'phone_number' => 'sometimes|nullable',
+            'tin_number' => 'sometimes|nullable',
+            'email' => 'sometimes|nullable',
+            'status' => 'required',
+        ]);
+
         try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
 
-            $method = "KitchenOrderController@storeKitchenOrder";
-            $data = $req->input('table_data');
+                $method = "KitchenOrderController@storeKitchenOrder";
+                $data = $req->input('table_data');
 
-            $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, 'KOT_');
-            $table_number = $req->input('table_number');
-           
-            $status = $req->input('status');
-            $order_date = date('Y-m-d');
-            $created_by = Helper::getLoggedInUserId();
-            
+                $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, 'KOT_');
+                $table_number = $req->input('table_number');
 
-            if($req->filled('room_number')){
-                $room_number = $req->input('room_number');
-                $room = Room::where('number', $room_number);
-                if (!$room->exists()) {
-                    return response()->json(['error' => 'Unable to find sepcified room number']);
-                }else{
-                    $room_id = $room->value('id');
+                $status = $req->input('status');
+                $order_date = date('Y-m-d');
+                $created_by = Helper::getLoggedInUserId();
+
+
+                if ($req->filled('room_number')) {
+                    $room_number = $req->input('room_number');
+                    $room = Room::where('number', $room_number);
+                    if (!$room->exists()) {
+                        return response()->json(['error' => 'Unable to find sepcified room number']);
+                    } else {
+                        $room_id = $room->value('id');
+                    }
+                } else {
+                    $room_id = null;
                 }
-            }else{
-                $room_id = null;
-            }
-         
+
+                $guest_id = $req->input('guest');
+                $customer_name = $req->input('customer_name');
+                $phone_number = $req->input('phone_number');
+                $tin_number = $req->input('tin_number');
+                $email = $req->input('email');
+
+
                 $kitchenOrderData = [
                     'order_number' => $order_number,
                     'table_number' => $table_number,
                     'room_id' => $room_id,
+                    'guest_id' => $guest_id,
+                    'customer_name' => $customer_name,
+                    'phone_number' => $phone_number,
+                    'tin_number' => $tin_number,
+                    'email' => $email,
                     'status' => $status,
                     'order_date' => $order_date,
                     'created_by' => $created_by,
@@ -270,7 +300,7 @@ class KitchenOrderController extends Controller
 
                         }
 
-                    }else{
+                    } else {
                         $message = "Invalid kitchen order data";
                         $responseData = [
                             'error' => $message
@@ -281,6 +311,7 @@ class KitchenOrderController extends Controller
                 } else {
                     return response()->json(['error' => 'Unable to record order in kitchen orders']);
                 }
+            }
             
         }catch(\Exception $ex){
             return response()->json(['error' =>  $ex->getMessage()]);
