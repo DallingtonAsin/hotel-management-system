@@ -10,6 +10,7 @@ use App\Models\SalesTaxTracker;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\ReceiptGenerator;
+use App\Helpers\Helper;
 
 class CartController extends Controller
 {
