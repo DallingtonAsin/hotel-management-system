@@ -51,7 +51,7 @@
           <div class="az-header-profile nunito-font">
             <div class="az-img-user ">
               @isset(Auth::user()->image)
-              <img src="{{ asset('uploads/images/'.$department_id.'/'.Auth::user()->image.'') }}" alt="">
+              <img src="{{ Storage::disk('public')->url(Auth::user()->image) }}"  alt="Profile Image">
               @endisset
 
               @empty(Auth::user()->image)

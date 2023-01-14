@@ -105,9 +105,10 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label for="guest_names-">Guest Names</label>
-                                <input type="text" class="form-control guest_names" name="guest_names" id="guest_names"
-                                    placeholder="Enter guest names">
+                                <label for="guest-">Guest Names</label>
+                                <select name="guest" class="form-control guest" id="guest" disabled>
+                                    <option value=""></option>
+                                </select>
                             </div>
 
                             <div class="col-md-3">
@@ -124,20 +125,20 @@
 
                             <div class="col-md-3">
                                 <label for="customer_name">Customer Names</label>
-                                <input type="email" class="form-control customer_name" name="customer_name" id="customer_name"
-                                    placeholder="Enter customer names">
+                                <input type="text" class="form-control customer_name" name="customer_name"
+                                    id="customer_name" placeholder="Enter customer names">
                             </div>
 
                             <div class="col-md-3">
                                 <label for="room_number">Telephone Number</label>
-                                <input type="text" class="form-control phone_number" name="phone_number" id="phone_number"
-                                    placeholder="Enter telephone number">
+                                <input type="text" class="form-control phone_number" name="phone_number"
+                                    id="phone_number" placeholder="Enter telephone number">
                             </div>
 
                             <div class="col-md-3">
                                 <label for="table_number">Tin Number</label>
-                                <input type="text" class="form-control tin_number" id="tin_number"
-                                    name="tin_number" placeholder="Enter tin number">
+                                <input type="text" class="form-control tin_number" id="tin_number" name="tin_number"
+                                    placeholder="Enter tin number">
                             </div>
 
 
@@ -151,11 +152,10 @@
 
 
                         <div class="form-group">
-                                <button type="submit"
-                                    class="btn btn-xs border border-dark text-dark addMenuItemToCartBtn"
-                                    name="addKotBtn">Add to Cart</button>
-                                <button type="reset" class="btn btn-xs btn-danger mx-2 clearBtn">
-                                    <i class="fa fa-times-circle pr-1"></i>Clear</button>
+                            <button type="submit" class="btn btn-xs border border-dark text-dark addMenuItemToCartBtn"
+                                name="addKotBtn">Add to Cart</button>
+                            <button type="reset" class="btn btn-xs btn-danger mx-2 clearBtn">
+                                <i class="fa fa-times-circle pr-1"></i>Clear</button>
                         </div>
 
                         <div class="form-group">
@@ -311,21 +311,66 @@
             // }
         }
 
-        onTypingRoomNumber('.room_number');
+        onTypingRoomNumber('.room_number', afterSelectingRoom);
+
+        function afterSelectingRoom(data) {
+            console.log(data);
+            populateGuestName(data);
+        }
+
+        function populateGuestName(room_number) {
+
+            let url = '{{ route('room.occupant.ajax.fetch', ':room_number') }}';
+            url = url.replace(':room_number', room_number);
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function(resp) {
+                   
+                    if (resp && resp.success) {
+                        let guest = resp.data;
+                        let guest_names = `${guest.first_name} ${guest.last_name}`;
+                        $('.guest').empty();
+                        $('.guest').append('<option value=' + guest.id + '>' + guest_names + '</option>');
+                        $('.customer_name').val(guest_names);
+                        if (guest.phone_number) {
+                            $('.phone_number').val(guest.phone_number);
+                        }
+                        if (guest.email) {
+                            $('.email').val(guest.email);
+                        }
+                        if (guest.tax_number) {
+                            $('.tin_number').val(guest.tax_number);
+                        }
+                    } else {
+
+                        $('.guest').empty();
+                        $('.phone_number').val('');
+                        $('.email').val('');
+                        $('.tin_number').val('');
+                        $('.customer_name').val('');
+
+                        let message = resp.error;
+                        alert(message);
+                    }
+
+                },
+                error: function(data) {
+                    console.log('Error on fetching details for the guest occupying room', data);
+                    console.log('Error:', data.error);
+                    displayResponse('.response', data.error, 'error');
+                }
+            });
+        }
+
 
         $(document).ready(function() {
 
             let table = $('#kitchen-orders-table');
-            let title = "List of registered departments in the system";
+            let title = "List of recorded kitchen orders in the system";
             let columns = [1, 2, 3];
-            let dataColumns = [
-                // {
-                //     data: 'DT_RowIndex',
-                //     name: 'DT_RowIndex',
-                //     orderable: false,
-                //     searchable: false
-                // },
-                {
+            let dataColumns = [{
                     data: 'order_number',
                     name: 'order_number'
                 },
@@ -420,31 +465,37 @@
                 let table = document.getElementById('menu-item-cart');
                 let rowCount = (table.rows.length - 1);
                 if (rowCount > 0) {
-                    submitKitchenOrder();
+                    if (confirm("Are you sure you want to submit this order?")) {
+                        submitKitchenOrder();
+                    } else {
+                        // do nothing
+                    }
                 } else {
                     alert('Add order items to the cart');
                 }
             });
 
             function submitKitchenOrder() {
-
                 let TableData = new Array();
                 let credit_arr = [];
-
                 $('#menu-item-cart tbody tr').each(function(row, tr) {
-
                     TableData[row] = {
                         "item": $(tr).find('td:eq(0)').text(),
                         "quantity": $(tr).find('td:eq(1)').text(),
                         "price": $(tr).find('td:eq(2)').text(),
                         "total": $(tr).find('td:eq(2)').text(),
                     }
-
                 });
 
                 let table_number = $(".table_number").val();
                 let room_number = $(".room_number").val();
+                let guest_id = $(".guest").val();
+                let customer_name = $(".customer_name").val();
+                let phone_number = $(".phone_number").val();
+                let tin_number = $(".tin_number").val();
+                let email = $(".email").val();
                 let status = $(".status").val();
+
 
                 let selected_menu = JSON.stringify(TableData);
                 console.log("Table data", selected_menu);
@@ -460,21 +511,27 @@
                         table_data: selected_menu,
                         table_number: table_number,
                         room_number: room_number,
+                        guest_id: guest_id,
+                        customer_name: customer_name,
+                        phone_number: phone_number,
+                        tin_number: tin_number,
+                        email: email,
                         status: status,
                     },
 
                     success: function(data) {
                         console.log('Response', data);
                         let message = data.success || data.error;
+                        let type = data.success ? 'success' : 'error';
+
                         if (data.error) {
                             alert("Error message: " + message);
                         }
                         if (data.success) {
                             EmptyCartTable();
-                            let message = data.success;
-                            displayResponse('.response', message, 'success');
                         }
 
+                        displayResponse('.response', message, type);
 
                     },
                     error: function(data) {

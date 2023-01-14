@@ -134,8 +134,9 @@ class ReservationController extends Controller
                     $price_rate = $roomType->double_occupancy_rate;
                 }
 
-                $nights = Carbon::parse($arrival_date)->diffInDays(Carbon::parse($departure_date));
-                $amount = intval($nights) * floatval($price_rate);
+                $nights = floatval(Carbon::parse($arrival_date)->diffInDays(Carbon::parse($departure_date)));
+                $nights = $nights < 1 ? 1 : $nights;
+                $amount = $nights * floatval($price_rate);
                 $tax_amount = 0.18 * $amount;
 
                 $guestData = [

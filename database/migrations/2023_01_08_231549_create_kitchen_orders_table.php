@@ -20,12 +20,18 @@ class CreateKitchenOrdersTable extends Migration
             $table->string('order_number')->unique();
             $table->string('table_number')->nullable();
             $table->unsignedBigInteger('room_id')->nullable();
+            $table->unsignedBigInteger('guest_id')->nullable();
+            $table->string('customer_name')->nullable();
+            $table->string('tin_number')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('email')->nullable();
             $table->enum('status', ['In Progress', 'Completed', 'Cancelled']);
-            $table->date('order_date');
+            $table->timestamp('order_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('room_id')->references('id')->on('rooms');
+            $table->foreign('guest_id')->references('id')->on('guests');
             $table->foreign('created_by')->references('id')->on('staff');
             $table->index('order_number');
         });

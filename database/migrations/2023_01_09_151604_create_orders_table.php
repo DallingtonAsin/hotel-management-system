@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateOrdersTable extends Migration
 {
@@ -21,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('room_id')->nullable();
             $table->unsignedBigInteger('guest_id')->nullable();
             $table->enum('status', ['In Progress', 'Completed', 'Cancelled']);
-            $table->date('order_date');
+            $table->timestamp('order_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('created_by')->unsigned();
             $table->timestamps();
 
@@ -40,9 +41,12 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
          Schema::table('orders', function (Blueprint $table) {
             $table->dropIndex(['order_number']);
         });
         Schema::dropIfExists('orders');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
     }
 }

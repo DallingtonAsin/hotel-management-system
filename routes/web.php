@@ -90,6 +90,8 @@ Route::get('rooms/ajax', [RoomController::class, 'fetchRoomsAjax'])->name('rooms
 Route::get('rooms/fetch/ajax', [RoomController::class, 'RoomsDataTable'])->name('rooms.index.ajax');
 Route::get('rooms-types/fetch/ajax', [RoomTypeController::class, 'RoomTypesDataTable'])->name('roomstypes.index.ajax');
 Route::post('rooms/ajax/suggestions', [RoomController::class, 'suggestRooms'])->name('rooms.ajax.suggest');
+Route::get('rooms/occupant/fetch/{room_number}', [RoomController::class, 'getRoomOccupantDetails'])->name('room.occupant.ajax.fetch');
+
 Route::get('guests-types/fetch/ajax', [GuestTypeController::class, 'getGuestTypesDataTable'])->name('guesttypes.index.ajax');
 Route::get('guests/fetch/ajax', [GuestController::class, 'getGuests'])->name('guests.index.ajax');
 Route::get('guests/ajax', [GuestController::class, 'fetchGuestsAjax'])->name('guests.ajax.fetch');
@@ -97,6 +99,7 @@ Route::get('reservations/fetch/ajax', [ReservationController::class, 'getReserva
 Route::get('reservations/frequent-contacts/fetch/ajax', [FrequentContactController::class, 'getFrequentContactsDataTable'])->name('frequent-contacts.index.ajax');
 Route::get('reservations/frequent-contacts/ajax', [FrequentContactController::class, 'fetchFrequentContactsAjax'])->name('frequent-contacts.ajax.fetch');
 Route::get('reservations/fetch/{freq_contact_id}', [FrequentContactController::class, 'fetchFreqContactDetailsById'])->name('frequent-contact-details.ajax.fetch');
+
 
 
 // Accounting Routes
@@ -232,7 +235,7 @@ Route::get('reports', [ReportsController::class, 'index'])->name('reports');
 
 
 // Settings Routes
-Route::get('settings/profile', [ProfileController::class, '@accountSettings'])->name('account-settings');
+Route::get('settings/profile', [ProfileController::class, 'accountSettings'])->name('account-settings');
 Route::get('settings/company', [SettingsController::class, 'showCreateCoForm'])->name('companies.create');
 Route::post('settings/company/{id}', [SettingsController::class, 'addUpdateCompany'])->name('companies.register');
 Route::get('settings/company-details', [SettingsController::class, 'GetCompanies'])->name('companies.home');

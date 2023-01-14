@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Invoices;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\InvoiceGuest;
 use App\Models\Guest;
@@ -28,17 +27,6 @@ class InvoiceController extends Controller
     {
         //
     }
-    private function createInvoicesDirIfnotExists($directory)
-    {
-        try {
-            $path = public_path($directory);
-            if (!File::exists($path)) {
-                File::makeDirectory($path, 0777, true, true);
-            }
-        } catch (\Exception $ex) {
-            throw $ex;
-        }
-    }
 
     public function downloadReservationInvoice($id)
     {
@@ -46,11 +34,11 @@ class InvoiceController extends Controller
         try {
 
             $directory = 'invoices/reservations';
-            $this->createInvoicesDirIfnotExists(($directory));
-   
+            Helper::createInvoicesDirIfnotExists(($directory));
+
             $count = Company::count();
             $hotel = [];
-            if($count > 0){
+            if ($count > 0) {
                 $hotel = Company::first();
             }
 
@@ -65,10 +53,10 @@ class InvoiceController extends Controller
             $occupancy_type = $reservation->occupancy_type;
             $guest_id = $reservation->guest_id;
             $guest = Guest::find($guest_id);
-         
+
             $room = Room::find($reservation->room_id);
             $room_type_id = $room->type_id;
-           
+
             $roomType = RoomType::find($room_type_id);
             $room_type = $roomType->name;
 
@@ -83,7 +71,7 @@ class InvoiceController extends Controller
 
             $total_amount = $invoice->total + $tax_fees;
 
-            $filename = 'invoice-'.$guest->first_name.'-'.$guest->last_name.'-' . $id . '.pdf';
+            $filename = 'invoice-' . $guest->first_name . '-' . $guest->last_name . '-' . $id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
 
             $pdf = PDF::loadView('pages.main.invoices.reservation', [
@@ -99,10 +87,10 @@ class InvoiceController extends Controller
             ]);
             $pdf->save($path);
 
-            $subpath = ''.$directory.'/' . $filename;
+            $subpath = '' . $directory . '/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
-          
-          
+
+
             return response()->json(['url' => $url]);
 
         } catch (\Exception $ex) {
@@ -117,37 +105,38 @@ class InvoiceController extends Controller
     {
 
         try {
-        
+
 
             $directory = 'invoices/kitchen_orders';
-            $this->createInvoicesDirIfnotExists(($directory));
+            Helper::createInvoicesDirIfnotExists(($directory));
 
             $kitchenOrder = KitchenOrder::find($id);
             $order_number = $kitchenOrder->order_number;
             $guest = null;
 
-            if(isset($kitchenOrder->room_id)){
-              $room_id = $kitchenOrder->room_id;
-              $room = Helper::findRoom($room_id);
-              $kitchenOrder->room_number = $room->number;
-              $reservation = Reservation::where('room_id', $room_id)->latest()->first();
-              $guest_id = $reservation->guest_id;
-              $guest = Guest::find($guest_id);
+            if (isset($kitchenOrder->room_id)) {
+                $room_id = $kitchenOrder->room_id;
+                $room = Helper::findRoom($room_id);
+                $kitchenOrder->room_number = $room->number;
+            }
+
+            if (isset($kitchenOrder->guest_id)) {
+                $guest = Guest::find($kitchenOrder->guest_id);
             }
 
             $order_items = KitchenOrderItem::where('order_number', $order_number)->get();
-            foreach($order_items as $item){
+            foreach ($order_items as $item) {
                 $item->name = KitchenMenuItem::where('id', $item->item_id)->value('name');
             }
             $invoice = KitchenOrderInvoice::where('order_number', $order_number)->first();
 
             $count = Company::count();
             $hotel = [];
-            if($count > 0){
+            if ($count > 0) {
                 $hotel = Company::first();
             }
 
-            $filename = 'invoice-'.$kitchenOrder->order_number.'-' . $kitchenOrder->id . '.pdf';
+            $filename = 'invoice-' . $kitchenOrder->order_number . '-' . $kitchenOrder->id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
 
             $pdf = PDF::loadView('pages.main.invoices.kitchen_order', [
@@ -159,10 +148,10 @@ class InvoiceController extends Controller
             ]);
             $pdf->save($path);
 
-            $subpath = ''.$directory.'/' . $filename;
+            $subpath = '' . $directory . '/' . $filename;
             $url = Storage::disk('invoices')->url($subpath);
-          
-          
+
+
             return response()->json(['url' => $url]);
 
         } catch (\Exception $ex) {

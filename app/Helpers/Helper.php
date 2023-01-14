@@ -16,7 +16,7 @@ use App\Models\Supplier;
 use App\Models\Room;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\LogsController;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
 use App\Staff;
@@ -515,13 +515,13 @@ class Helper
         'prefix' => $prefix
       ];
 
-      if($column != null){
+      if ($column != null) {
         $config['field'] = $column;
       }
 
       $order_number = IdGenerator::generate($config);
       return $order_number;
-      
+
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -603,75 +603,109 @@ class Helper
   public static function LogRequest(Request $request, $responseArr)
   {
 
-      try {
-          $r = new RequestResponse;
-          $r->request = json_encode($request->all());
-          $r->response = json_encode($responseArr);
-          $r->method = $request->method() . ":" . $responseArr["method"];
-          $r->url = $request->fullUrl();
-          $r->ip_address = $request->ip();
-          return $r->save();
+    try {
+      $r = new RequestResponse;
+      $r->request = json_encode($request->all());
+      $r->response = json_encode($responseArr);
+      $r->method = $request->method() . ":" . $responseArr["method"];
+      $r->url = $request->fullUrl();
+      $r->ip_address = $request->ip();
+      return $r->save();
 
-      }catch(\Exception $ex){
-          throw $ex;
-      }
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
 
   }
 
 
   public static function is_connectedToInternet()
-	{
-		$connected = @fsockopen('www.google.com', 80);
-		if($connected){
-			$is_conn = 1;
-			fclose($connected);
-		}
-		else{
-			$is_conn = 0;
-		}
-
-		return $is_conn;
-	}
-
-	public static function sendMail($mailContentPage, $receiverEmail, 
-		                        $dataX, $dataY){
-
-		$mailState = 0;
-		$dataY['receiver'] = $receiverEmail;
-		
-		if(Helper::is_connectedToInternet() == 1)
-		 {
-			
-			Mail::send($mailContentPage, $dataX, 
-				   function($message) use ($dataY)
-			{   
-				$message->from(config('app.companyEmail'), 'Dallington');
-				$message->to($dataY['receiver'])->subject($dataY['subject']);
-			}); 
-
-			(Mail::failures())
-			  ? $mailState = 1
-			  : $mailState = -1;
-
-              return $mailState;
-		}
-		
+  {
+    $connected = @fsockopen('www.google.com', 80);
+    if ($connected) {
+      $is_conn = 1;
+      fclose($connected);
+    } else {
+      $is_conn = 0;
     }
 
-    public static function logger(Request $request, $action, $date){
-
-      $newLog = new Logs();
-      $user = $request->user();
-      $newLog->name =$name =  $user->firsname. ' '.$user->last_name;
-      $newLog->role = $userPosition = Helper::getDesignation($request->user()->designation_id);
-      $newLog->logged_action = $action;
-      $newLog->ip_address = \Request::getClientIp();
-      $newLog->date = $date;
-  
-      $newLog->save();
-      Log::channel('poslogs')->notice("".$userPosition." ".$name." ".$action."");
-  
+    return $is_conn;
   }
 
+  public static function sendMail(
+    $mailContentPage,
+    $receiverEmail,
+    $dataX,
+    $dataY
+  )
+  {
+
+    $mailState = 0;
+    $dataY['receiver'] = $receiverEmail;
+
+    if (Helper::is_connectedToInternet() == 1) {
+
+      Mail::send(
+        $mailContentPage,
+        $dataX,
+        function ($message) use ($dataY) {
+          $message->from(config('app.companyEmail'), 'Dallington');
+          $message->to($dataY['receiver'])->subject($dataY['subject']);
+        }
+      );
+
+      (Mail::failures())
+        ? $mailState = 1
+        : $mailState = -1;
+
+      return $mailState;
+    }
+
+  }
+
+  public static function logger(Request $request, $action, $date)
+  {
+
+    $newLog = new Logs();
+    $user = $request->user();
+    $newLog->name = $name = $user->firsname . ' ' . $user->last_name;
+    $newLog->role = $userPosition = Helper::getDesignation($request->user()->designation_id);
+    $newLog->logged_action = $action;
+    $newLog->ip_address = \Request::getClientIp();
+    $newLog->date = $date;
+
+    $newLog->save();
+    Log::channel('poslogs')->notice("" . $userPosition . " " . $name . " " . $action . "");
+
+  }
+
+  public static function generateStaffId($department_id)
+  {
+    try {
+
+      $departmentObj = Department::find($department_id);
+      $department_code = $departmentObj->code;
+
+      $count = Staff::count();
+      $latest_id = $count > 0 ? Staff::latest()->first()->id : 0;
+      $staff_id = $department_code . str_pad($latest_id + 1, 4, '0', STR_PAD_LEFT);
+
+      return $staff_id;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+  public static function createInvoicesDirIfnotExists($directory)
+  {
+    try {
+      $path = public_path($directory);
+      if (!File::exists($path)) {
+        File::makeDirectory($path, 0777, true, true);
+      }
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
 
 }

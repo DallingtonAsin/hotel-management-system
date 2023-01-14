@@ -7,12 +7,12 @@
 
  <div class="card-header">
   <div class="card-title">
-    <strong class="col-lg-10 text-success">
-     <i class="fa fa-home"></i>/
+    <span class="col-lg-10 text-success">
+     <i class="fa fa-home"></i> |
       <span class="text-dark">
-       Profile >> 
+       Profile > Edit
      </span>
-   </strong><span>Edit your profile</span>
+   </span>
 </div>
  </div>
 
@@ -30,12 +30,6 @@
             name="Username" value="{{Auth::user()->username}}" autocomplete="off">
           </div>
 
-          <div class="form-group">
-           <span class="text-muted">Email</span>
-           <input type="text" class="form-control email" name="Email" value="{{Auth::user()->email}}"
-           autocomplete="off"  required>
-         </div>
-
          <div class="form-group">
           <span class="text-muted">Phone Number</span>
           <input type="text" class="form-control contact" name="Contact" value="{{Auth::user()->phone_number}}" required
@@ -45,8 +39,8 @@
 
         <div class="form-group">
           <span class="text-muted">Email</span>
-          <input type="text" class="form-control email" name="email" value="{{Auth::user()->email}}"
-             autocomplete="off">
+          <input type="text" class="form-control email" name="Email" value="{{Auth::user()->email}}"
+          autocomplete="off"  required>
         </div>
 
         <div class="form-group">
