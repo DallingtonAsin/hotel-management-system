@@ -16,10 +16,14 @@ class KitchenOrder extends Model
         'order_number',
         'table_number',
         'room_id',
+        'guest_id',
+        'customer_name',
+        'phone_number',
+        'tin_number',
+        'email',
         'status',
         'order_date',
         'created_by'
     ];
-
 
 }

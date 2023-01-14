@@ -37,7 +37,9 @@ return [
     |
     */
 
+    
     'env' => env('APP_ENV', 'production'),
+    'APP_URL' => env('APP_URL', 'http://hotl.test'),
     'DEVELOPER_NAME' => env('DEVELOPER_NAME', 'PivoSoft Venture Ltd'),
     'DEVELOPER_WEBSITE' => env('DEVELOPER_WEBSITE', 'https://pivosoftltd.com/'),
 

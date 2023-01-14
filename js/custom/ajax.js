@@ -93,7 +93,7 @@ function populateMenuItems() {
     });
 }
 
-function onTypingRoomNumber(element) {
+function onTypingRoomNumber(element, afterSelect) {
 
     let search_qry = $(element).val();
     $(element).typeahead({
@@ -106,7 +106,6 @@ function onTypingRoomNumber(element) {
                 },
                 dataType: 'json',
                 success: function(data) {
-                    console.log(`Got rooms`, data);
                     result($.map(data, function(item) {
                         return item;
                     }));
@@ -115,8 +114,10 @@ function onTypingRoomNumber(element) {
                     console.log(data);
                 },
             });
-        }
+        },
+        afterSelect: afterSelect
     });
+
 }
 
 

@@ -54,6 +54,8 @@ class KitchenOrdersDataTable extends DataTable
                 $room_number = $room->number;
             }
             return $room_number;
+        })->editColumn('order_date', function ($order) {
+               return date('Y-m-d H:i A', strtotime($order->order_date));
         })->addColumn('checkbox', function ($order) {
             $checkBox = '<input type="checkbox" id="' . $order->id . '"/>';
             return $checkBox;

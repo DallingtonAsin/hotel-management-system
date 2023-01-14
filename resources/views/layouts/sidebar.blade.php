@@ -3,13 +3,13 @@
         <div class="az-img-user user-img">
 
             @isset(Auth::user()->image)
-                <img src="{{ asset('uploads/images/' . $department_id . '/' . Auth::user()->image . '') }}" alt="">
+                <img src="{{ Storage::disk('public')->url(Auth::user()->image) }}"  alt="Profile Image">
             @endisset
 
             @empty(Auth::user()->image)
                 <img src="{{ asset('uploads/images/default/user.png') }}" alt="{{ Auth::user()->first_name }}">
             @endempty
-
+         
         </div>
         <div class="media-body pt-2 pl-1">
 

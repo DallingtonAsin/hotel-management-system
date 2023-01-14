@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DataTables\Accomodation\RoomsDatatable;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 use App\Models\Room;
+use App\Models\Guest;
 use App\Helpers\Helper;
+use App\Models\Reservation;
 
 class RoomController extends Controller
 {
@@ -196,9 +197,7 @@ class RoomController extends Controller
         if($request->input('query')){
             $query = $request->input('query');
             $data = array();
-            $items = DB::table("rooms")
-            ->where("number", "like", "%".$query."%")
-            ->get();
+            $items = Room::where("number", "like", "%".$query."%")->get();
 
             foreach($items as $item){
                 $data[] = $item->number;
@@ -207,4 +206,25 @@ class RoomController extends Controller
         }
 
     }
+
+    protected function getRoomOccupantDetails(Request $request, $room_number)
+    {
+
+        if($request->ajax()){
+           
+            $room_id = Room::where('number', $room_number)->value('id');
+            $guest_id = Reservation::where("room_id", $room_id)->latest()->value('guest_id');
+            if(!empty($guest_id)){
+                $guest = Guest::find($guest_id);
+                 return response()->json(['success'  => 'OK', 'data' => $guest]);
+            }else{
+                return response()->json(['error' => 'Please confirm that there is an occupant in this room, as it appears to be unoccupied.']);
+            }
+
+        }
+
+    }
+
+
+
 }

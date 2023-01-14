@@ -1,7 +1,6 @@
 @extends('layouts.template')
 
 @section('content')
-
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <span class="response"></span>
@@ -39,8 +38,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!--Add frequent contact -->
     <div class="modal fade nunito-font addFrequentContactMOdal" id="addFrequentContactMOdal" tabindex="-1"
@@ -96,17 +93,19 @@
                                 placeholder="Enter contact person" required autofocus>
                         </div>
 
-                        <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Price</span>
-                            <input type="text" class="form-control price bg-white" name="price"
-                                placeholder="Enter price" required autofocus>
-                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <span><i class="text-danger pr-1">*</i>Price</span>
+                                <input type="text" class="form-control price bg-white" name="price"
+                                    placeholder="Enter price" required autofocus>
+                            </div>
 
-                        <div class="form-group">
-                            <span><span class="text-danger pr-1">*</span>Currency</span>
-                            <select class="form-control currency bg-white" name="currency">
-                                <option value="">select currency</option>
-                            </select>
+                            <div class="col-md-6">
+                                <span><span class="text-danger pr-1">*</span>Currency</span>
+                                <select class="form-control currency bg-white" name="currency">
+                                    <option value="">select currency</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -161,15 +160,14 @@
         </div>
     </div> <!-- end of modal Delete Departments-->
 
-   
-    <script type="text/javascript">
 
+    <script type="text/javascript">
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        
+
         const ajaxUrl = @json(route('frequent-contacts.index.ajax'));
         const currencyCodeAjaxUrl = @json(route('currencies.ajax.fetch'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
@@ -318,7 +316,7 @@
                 event.preventDefault();
 
                 $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '', function(
-                data) {
+                    data) {
 
                     $('#modalHeading').html("Details of frequent contact " + data.name + "");
                     $('#addFrequentContactMOdal').modal('show');
@@ -459,7 +457,6 @@
                                 },
                                 url: '{{ Route('suppliers.truncate') }}',
                                 type: 'POST',
-                                // dataType: 'json',
                             }).done(function(data) {
 
                                 $.alert({

@@ -16,7 +16,7 @@ use App\Models\Supplier;
 use App\Models\Room;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\LogsController;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
 use App\Staff;
@@ -691,6 +691,18 @@ class Helper
       $staff_id = $department_code . str_pad($latest_id + 1, 4, '0', STR_PAD_LEFT);
 
       return $staff_id;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+  public static function createInvoicesDirIfnotExists($directory)
+  {
+    try {
+      $path = public_path($directory);
+      if (!File::exists($path)) {
+        File::makeDirectory($path, 0777, true, true);
+      }
     } catch (\Exception $ex) {
       throw $ex;
     }

@@ -87,18 +87,19 @@
 
                             <div class="modal-body">
 
-                                <div class="form-group">
-                                    <span>Item ID / Bar Code</span>
-                                    <input type="hidden" class="stockId" name="id">
-                                    <input type="text" class="form-control bg-white item_code" name="item_code"
-                                        placeholder="Enter item id or barcode">
-                                </div>
-
+                    
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Item</span>
                                     <input type="text" class="form-control bg-white item-name" name="item"
                                         placeholder="Enter item" required autofocus>
 
+                                </div>
+
+                                <div class="form-group">
+                                    <span>Item ID</span>
+                                    <input type="hidden" class="stockId" name="id">
+                                    <input type="text" class="form-control bg-white item_code" name="item_code"
+                                        placeholder="Enter item id or barcode">
                                 </div>
 
                                 <div class="form-group">

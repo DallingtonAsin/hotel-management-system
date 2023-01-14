@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kitchen;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DataTables\Kitchen\KitchenOrdersDataTable;
 use App\Helpers\Helper;
@@ -161,7 +162,7 @@ class KitchenOrderController extends Controller
 
     public function storeKitchenOrder(Request $req)
     {
-
+       
         $validator = Validator::make($req->all(), [
             'table_data' => 'required',
             'table_number' => 'sometimes|nullable',
@@ -187,7 +188,7 @@ class KitchenOrderController extends Controller
                 $table_number = $req->input('table_number');
 
                 $status = $req->input('status');
-                $order_date = date('Y-m-d');
+                $order_date = Carbon::now();
                 $created_by = Helper::getLoggedInUserId();
 
 
@@ -203,7 +204,7 @@ class KitchenOrderController extends Controller
                     $room_id = null;
                 }
 
-                $guest_id = $req->input('guest');
+                $guest_id = $req->input('guest_id');
                 $customer_name = $req->input('customer_name');
                 $phone_number = $req->input('phone_number');
                 $tin_number = $req->input('tin_number');
@@ -274,7 +275,7 @@ class KitchenOrderController extends Controller
 
                         //If insertion is OK, reduce stock levels and clear cart
                         if ($hasInsertedInKOITbl) {
-                            $message = "Kitchen order has been successfully recorded";
+                            $message = "Kitchen order has been recorded successfully with order number ".$order_number."";
                             $responseData = [
                                 'success' => $message
                             ];
