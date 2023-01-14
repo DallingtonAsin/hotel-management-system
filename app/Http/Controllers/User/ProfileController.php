@@ -106,9 +106,9 @@ class ProfileController extends Controller
         $user->email = $request->input('Email');
         $user->phone_number = $request->input('Contact');
         $user->address = $request->input('Address');
-        $OldPassword = $request->input('OldPassword');
-        $NewPassword = $request->input('NewPassword');
-        $ConfirmPassword = $request->input('PasswordConfirm');
+        $old_password = $request->input('old_password');
+        $new_password = $request->input('new_password');
+        $ConfirmPassword = $request->input('confirm_password');
 
         if ($request->hasfile('image')) {
 
@@ -152,10 +152,10 @@ class ProfileController extends Controller
             $message = "this username " . $new_username . " is already taken up, please enter a different one!";
         } else if ($bool === false) {
 
-            if ($request->filled('OldPassword') && $request->filled('NewPassword') && isset($ConfirmPassword)) {
+            if ($request->filled('old_password') && $request->filled('new_password') && isset($ConfirmPassword)) {
                 //   dd("Whatsap");
-                if (Hash::check($OldPassword, Auth::user()->password)) {
-                    if ($NewPassword == $ConfirmPassword) {
+                if (Hash::check($old_password, Auth::user()->password)) {
+                    if ($new_password == $ConfirmPassword) {
                         $user->password = Hash::make($ConfirmPassword);
                     } else {
                         $sessionVariable = 'error';
@@ -209,9 +209,9 @@ class ProfileController extends Controller
             $user->email = $request->input('Email');
             $user->phone_number = $request->input('Contact');
 
-            $OldPassword = $request->input('OldPassword');
-            $NewPassword = $request->input('NewPassword');
-            $ConfirmPassword = $request->input('PasswordConfirm');
+            $old_password = $request->input('old_password');
+            $new_password = $request->input('new_password');
+            $ConfirmPassword = $request->input('confirm_password');
 
             if ($request->hasfile('image')) {
                 $file = $request->file('image');
@@ -250,10 +250,10 @@ class ProfileController extends Controller
                 $message = "Username " . $new_username . " is already taken up, please enter a different one!";
             } else if ($bool === false) {
 
-                if ($request->filled('OldPassword') && $request->filled('NewPassword') && isset($ConfirmPassword)) {
+                if ($request->filled('old_password') && $request->filled('new_password') && isset($ConfirmPassword)) {
 
-                    if (Hash::check($OldPassword, Auth::user()->password)) {
-                        if ($NewPassword == $ConfirmPassword) {
+                    if (Hash::check($old_password, Auth::user()->password)) {
+                        if ($new_password == $ConfirmPassword) {
                             $user->password = Hash::make($ConfirmPassword);
                         } else {
                             $sessionVariable = 'error';

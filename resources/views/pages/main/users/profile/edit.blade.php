@@ -22,6 +22,9 @@
            @csrf
             @method('put')
 
+            <div class="card">
+            <div class="card-body">
+
           <div class="form-group">
             <span class="text-muted">Username</span>
             <input type="hidden"  class="form-control user_id"
@@ -48,58 +51,47 @@
           <input type="file" class="form-control-file" name="image" >
         </div>
 
+            </div>
+            </div>
+
+
+        <p class="my-2">
+          <button class="btn btn-default border border-default" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Need to change your password? click here
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <div class="form-group">
+               <span class="text-muted"> Old password</span>
+              <input type="password" id="oldpassword" name="old_password" class="form-control oldpassword"  value="{{ old('old_password') }}"
+              placeholder = "Enter your old password">
+            </div>
+  
+  
+            <div class="form-group">
+               <span class="text-muted">New password</span>
+              <input type="password" id="newpassword" name="new_password" class="form-control newpassword"  value="{{ old('new_password') }}"
+              placeholder="Enter your new password">
+          </div>
+  
+            <div class="form-group">
+               <span class="text-muted">Confirm password</span>
+              <input type="password" id="confirmpassword" name="confirm_password" class="form-control confirmpassword" value="{{ old('confirm_password') }}"
+              placeholder="Confirm your password">
+          </div>
+          </div>
+        </div>
+
         <div class="form-group">
             <button class="btn btn-link collapsed" type="button" 
             data-toggle="collapse" data-bs-target="#collapseTwo"
              aria-expanded="false" aria-controls="collapseTwo">
-              <span class="text-decoration-none">Need to change your password? click here</span>
+              <span class="text-decoration-none"></span>
             </button>
         </div>
         
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-
-          <div class="form-group">
-            <div class="input-group">
-             <span class="input-group-addon text-muted">
-              Old password
-            </span>
-            <input type="password" id="oldpassword" name="OldPassword" class="form-control oldpassword" value="{{old('OldPassword')}}"
-            placeholder = "Enter your old password">
-            <span class="input-group-addon" id="showpassword1" required>
-              <i class="fa fa-eye"></i>
-            </span>
-          </div>
-          </div>
-
-
-          <div class="form-group">
-            <div class="input-group">
-             <span class="input-group-addon text-muted">
-              <i class="glyphicon glyphicon-eye"></i>New password
-            </span>
-            <input type="password" id="newpassword" name="NewPassword" class="form-control newpassword" value="{{old('NewPassword')}}"
-            placeholder="Enter your new password">
-            <span class="input-group-addon" id="showpassword2" required>
-              <i class="fa fa-eye"></i>
-            </span>
-          </div>
-        </div>
-
-          <div class="form-group">
-            <div class="input-group">
-             <span class="input-group-addon text-muted">
-              <i class="glyphicon glyphicon-eye"></i>Confirm password
-            </span>
-            <input type="password" id="confirmpassword" name="PasswordConfirm" class="form-control confirmpassword" value="{{old('PasswordConfirm')}}"
-            placeholder="Confirm your password">
-            <span class="input-group-addon" id="showpassword3" required>
-              <i class="fa fa-eye"></i>
-            </span>
-          </div>
-        </div>
-
-        </div>
-
+        
         <div class="row form-group">
          <div class="col-lg-3">
          <button type="submit" class="btn btn-primary addProfileBtn"  name="addProfileBtn">Update Profile</button>
