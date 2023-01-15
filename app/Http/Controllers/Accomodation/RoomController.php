@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accomodation;
 
 use App\Http\Controllers\Controller;
+use App\Models\RoomType;
 use Illuminate\Http\Request;
 use App\DataTables\Accomodation\RoomsDatatable;
 use Illuminate\Support\Facades\Validator;
@@ -223,6 +224,39 @@ class RoomController extends Controller
 
         }
 
+    }
+
+    public function getRoomPriceAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                if($request->filled(['room_number', 'occupancy_type'])){
+
+                    $room_number = $request->input('room_number');
+                    $occupancy_type = $request->input('occupancy_type');
+
+                    $room_type_id = Room::where('number', $room_number)->value('type_id');
+                    $roomType = RoomType::find($room_type_id);
+
+                    if (stripos($occupancy_type, 'single') !== false) {
+                        $price = $roomType->single_occupancy_rate;
+                    } else {
+                        $price = $roomType->double_occupancy_rate;
+                    }
+
+                    return response()->json([
+                        'success' => 'OK',
+                        'data' => number_format($price),
+                    ]);
+
+                   
+                }else{
+                    return response()->json(['error' => 'System unable to get room number or occupancy type']);
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
     }
 
 

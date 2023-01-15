@@ -91,6 +91,7 @@ Route::get('rooms/fetch/ajax', [RoomController::class, 'RoomsDataTable'])->name(
 Route::get('rooms-types/fetch/ajax', [RoomTypeController::class, 'RoomTypesDataTable'])->name('roomstypes.index.ajax');
 Route::post('rooms/ajax/suggestions', [RoomController::class, 'suggestRooms'])->name('rooms.ajax.suggest');
 Route::get('rooms/occupant/fetch/{room_number}', [RoomController::class, 'getRoomOccupantDetails'])->name('room.occupant.ajax.fetch');
+Route::post('rooms/ajax/price', [RoomController::class, 'getRoomPriceAjax'])->name('room.price.ajax.fetch');
 
 Route::get('guests-types/fetch/ajax', [GuestTypeController::class, 'getGuestTypesDataTable'])->name('guesttypes.index.ajax');
 Route::get('guests/fetch/ajax', [GuestController::class, 'getGuests'])->name('guests.index.ajax');

@@ -76,7 +76,7 @@ class ReservationController extends Controller
                 'tax_number' => 'required',
                 'company_contact' => 'required',
                 'company_email' => 'required',
-                'phone_number' => 'required|min:10',
+                'phone_number' => 'sometimes|nullable|min:10',
                 'email' => 'required|email',
                 'passport_number' => 'sometimes|nullable',
                 'nin' => 'sometimes|nullable',

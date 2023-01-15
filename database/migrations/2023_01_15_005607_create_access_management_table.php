@@ -15,9 +15,9 @@ class CreateAccessManagementTable extends Migration
     {
         Schema::create('access_management', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('designation_id');
-            $table->unsignedInteger('permission_id');
-            $table->unsignedInteger('action_id');
+            $table->unsignedBigInteger('designation_id');
+            $table->unsignedBigInteger('permission_id');
+            $table->unsignedBigInteger('action_id');
             $table->boolean('can_access')->default(false);
 
             $table->foreign('designation_id')->references('id')->on('designations');

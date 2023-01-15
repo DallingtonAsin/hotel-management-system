@@ -4,72 +4,52 @@
 
         <div class="form-group">
             <input type="hidden" class="form-control bg-white"  
-             name="guest_type" value="Corporate" autocomplete="off">
+             name="guest_type" value="DayUse" autocomplete="off">
+        </div>
+
+
+        <div class="form-group">
+            <input type="text" class="form-control bg-white" disabled="true" placeholder="" name="name"
+                value="Corporate" autocomplete="on" hidden="true">
         </div>
 
         <div class="row form-group">
             <div class="col-md-6">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>First Name</span>
                 <input type="text" class="form-control first_name" name="first_name" value="{{ old('first_name') }}"
-                    >
+                 autocomplete="on">
             </div>
             <div class="col-md-6">
-                <span class="text-muted"><span class="text-danger pr-2">*</span>Last Name</span>
-                <input type="text" class="form-control last_name" name="last_name" value="{{ old('last_name') }}"
-                    >
-            </div>
-        </div>
-
-        <div class="row form-group">
-         
-            <div class="col-md-6">
-                <span><span class="text-danger pr-1">*</span>Company Name</span>
-                <select class="form-control company_name bg-white" name="company_name">
-                    <option value="">Select company name</option>
-                </select>
-            </div>
-
-            <div class="col-md-6">
-                <span class="text-muted"><span class="text-danger pr-2">*</span>TIN</span>
-                <input type="text" class="form-control tax_number" name="tax_number" value="{{ old('tax_number') }}" readonly>
+                <span class="text-muted">Last Name</span>
+                <input type="text" class="form-control last_name" name="last_name" value="{{ old('last_name') }}" autocomplete="on">
             </div>
         </div>
 
         <div class="row form-group">
             <div class="col-md-6">
-                <span class="text-muted"><span class="text-danger pr-2">*</span>Company Contact</span>
-                <input type="text" class="form-control company_contact" name="company_contact" value="{{ old('company_contact') }}" readonly>
-            </div>
-            <div class="col-md-6">
-                <span class="text-muted"><span class="text-danger pr-2">*</span>Company Email</span>
-                <input type="text" class="form-control company_email" name="company_email" value="{{ old('company_email') }}" readonly>
-            </div>
-        </div>
-
-        <div class="row form-group">
-            <div class="col-md-3">
                 <span class="text-muted">Phone Number</span>
-                <input type="text" class="form-control phone_number" name="phone_number" value="{{ old('phone_number') }}">
+                <input type="text" class="form-control phone_number" name="phone_number" value="{{ old('phone_number') }}"
+                    autocomplete="on">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <span class="text-muted">Email</span>
-                <input type="text" class="form-control email" name="email" placeholder="Enter email" value="{{ old('email') }}"
-                    >
+                <input type="text" class="form-control email" name="email" placeholder="" value="{{ old('email') }}"
+                    autocomplete="on">
             </div>
+        </div>
 
-            <div class="col-md-3">
+        <div class="row form-group">
+            <div class="col-md-6">
                 <span class="text-muted">Passport</span>
                 <input type="text" class="form-control passport_number" name="passport_number" value="{{ old('passport_number') }}"
-                    >
+                    autocomplete="on">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <span class="text-muted">NIN</span>
-                <input type="text" class="form-control nin" name="nin" value="{{ old('nin') }}">
+                <input type="text" class="form-control nin" name="nin" value="{{ old('nin') }}" autocomplete="on">
             </div>
-
         </div>
 
-   
 
         <div class="row form-group">
 
@@ -87,25 +67,25 @@
                 </select>
             </div>
 
-
+          
             <div class="col-md-3">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Arrival Time</span>
                 <input type="datetime-local" class="form-control arrival_date" name="arrival_date"
-                    value="{{ old('arrival_date', now()->format('Y-m-d\TH:i')) }}" >
+                    value="{{ old('arrival_date', now()->format('Y-m-d\TH:i')) }}" autocomplete="on">
             </div>
 
             <div class="col-md-3">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Departure Time</span>
-                <input type="datetime-local" class="form-control departure_date" name="departure_date"
-                    value="{{ old('departure_date') }}" >
+                <input type="datetime-local" class="form-control departure_date" 
+                name="departure_date" value="{{ old('departure_date') }}" autocomplete="on">
             </div>
+
         </div>
 
         <div class="form-group">
             <span class="text-muted">Other</span>
-            <textarea rows="3" class="form-control other_details" name="other_details" value="{{ old('other_details') }}"></textarea>
+            <textarea rows="3" class="form-control other_details" name="other_details"></textarea>
         </div>
-
 
         <div class="form-group mt-4">
             <button type="submit" class="btn btn-sm btn-primary border-dark"><i
