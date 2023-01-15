@@ -7,31 +7,36 @@
             @include('pages.main.messages.response')
 
             <ul class="nav nav-tabs guest-types-tab" id="GuestTypesTab" role="tablist">
+
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#regular-tab-pane"
-                        type="button" role="tab" aria-controls="regular-tab-pane" aria-selected="true"><small>Regular |
-                            Walkin Guest</small></button>
+                    <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#day-use-tab-pane"
+                        type="button" role="tab" aria-controls="day-use-tab-pane" aria-selected="false"><small>Day Use Guest</small></button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#regular-tab-pane"
+                        type="button" role="tab" aria-controls="regular-tab-pane" aria-selected="true"><small>Regular | Walkin Guest</small></button>
                 </li>
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#corporate-tab-pane"
-                        type="button" role="tab" aria-controls="corporate-tab-pane"
-                        aria-selected="false"><small>Corporate Guest</small></button>
+                        type="button" role="tab" aria-controls="corporate-tab-pane" aria-selected="false"><small>Corporate Guest</small></button>
                 </li>
 
             </ul>
             <div class="tab-content mt-3 px-2" id="GuestTypesTabContent">
-                <div class="tab-pane fade show active" id="regular-tab-pane" role="tabpanel" aria-labelledby="home-tab"
-                    tabindex="0">
+               
+                <div class="tab-pane fade" id="day-use-tab-pane" role="tabpanel" aria-labelledby="day-use-tab" tabindex="0">
+                    {{-- @include('pages.main.accomodation.reservations.forms.day_use') --}}
+                </div>
+
+                <div class="tab-pane fade show active" id="regular-tab-pane" role="tabpanel" aria-labelledby="regular-tab"  tabindex="0">
                     @include('pages.main.accomodation.reservations.forms.regular_guest')
                 </div>
-                <div class="tab-pane fade" id="walkin-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
-                    tabindex="0">
 
-                </div>
-                <div class="tab-pane fade" id="corporate-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
+                <div class="tab-pane fade" id="corporate-tab-pane" role="tabpanel" aria-labelledby="corporate-tab"
                     tabindex="0">
-                    @include('pages.main.accomodation.reservations.forms.corporate_guest')
+                    {{-- @include('pages.main.accomodation.reservations.forms.corporate_guest') --}}
                 </div>
             </div>
 
@@ -61,6 +66,7 @@
                 }
             });
         }
+
     </script>
 
     @if (session()->get('success'))
@@ -134,6 +140,8 @@
         });
 
         onTypingRoomNumber('.room_number');
+
+      
 
         let urlParams = new URLSearchParams(window.location.search);
         let tab = urlParams.get('tab');

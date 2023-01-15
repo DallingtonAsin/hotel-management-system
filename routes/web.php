@@ -91,6 +91,7 @@ Route::get('rooms/fetch/ajax', [RoomController::class, 'RoomsDataTable'])->name(
 Route::get('rooms-types/fetch/ajax', [RoomTypeController::class, 'RoomTypesDataTable'])->name('roomstypes.index.ajax');
 Route::post('rooms/ajax/suggestions', [RoomController::class, 'suggestRooms'])->name('rooms.ajax.suggest');
 Route::get('rooms/occupant/fetch/{room_number}', [RoomController::class, 'getRoomOccupantDetails'])->name('room.occupant.ajax.fetch');
+Route::post('rooms/ajax/price', [RoomController::class, 'getRoomPriceAjax'])->name('room.price.ajax.fetch');
 
 Route::get('guests-types/fetch/ajax', [GuestTypeController::class, 'getGuestTypesDataTable'])->name('guesttypes.index.ajax');
 Route::get('guests/fetch/ajax', [GuestController::class, 'getGuests'])->name('guests.index.ajax');
@@ -106,6 +107,8 @@ Route::get('reservations/fetch/{freq_contact_id}', [FrequentContactController::c
 Route::get('accounting/balance-sheet', [AccountingController::class, 'generateBalanceSheet'])->name('accounting.balance_sheet');
 Route::get('accounting/cash-flow-statement', [AccountingController::class, 'generateCashFlowStatement'])->name('accounting.cash_flow_statement');
 Route::get('accounting/general-ledger', [AccountingController::class, 'generateGeneralLedger'])->name('accounting.general_ledger');
+Route::get('accounting/profit-and-loss', [AccountingController::class, 'generateProfitAndLoss'])->name('accounting.profit_and_loss');
+
 Route::post('expenses/import-expenses', [ExpensesController::class, 'importExpenses'])->name('expenses.import');
 Route::get('expenses/export-expenses', [ExpensesController::class, 'exportExpenses'])->name('expenses.export');
 Route::post('expenses/remove/selected', [ExpensesController::class, 'RemoveSelected'])->name('selected-expenses.remove');

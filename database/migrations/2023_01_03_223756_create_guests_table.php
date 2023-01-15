@@ -17,9 +17,9 @@ class CreateGuestsTable extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
             $table->string('email')->nullable();
-            $table->string('phone_number');
+            $table->string('phone_number')->nullable();
             $table->string('company_name')->nullable();
             $table->string('company_contact')->nullable();
             $table->string('company_email')->nullable();
