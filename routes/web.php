@@ -106,6 +106,8 @@ Route::get('reservations/fetch/{freq_contact_id}', [FrequentContactController::c
 Route::get('accounting/balance-sheet', [AccountingController::class, 'generateBalanceSheet'])->name('accounting.balance_sheet');
 Route::get('accounting/cash-flow-statement', [AccountingController::class, 'generateCashFlowStatement'])->name('accounting.cash_flow_statement');
 Route::get('accounting/general-ledger', [AccountingController::class, 'generateGeneralLedger'])->name('accounting.general_ledger');
+Route::get('accounting/profit-and-loss', [AccountingController::class, 'generateProfitAndLoss'])->name('accounting.profit_and_loss');
+
 Route::post('expenses/import-expenses', [ExpensesController::class, 'importExpenses'])->name('expenses.import');
 Route::get('expenses/export-expenses', [ExpensesController::class, 'exportExpenses'])->name('expenses.export');
 Route::post('expenses/remove/selected', [ExpensesController::class, 'RemoveSelected'])->name('selected-expenses.remove');

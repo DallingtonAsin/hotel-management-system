@@ -179,7 +179,6 @@
         </div>
     </div>
 
-
     <!--Modal Deletereservations -->
     <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"

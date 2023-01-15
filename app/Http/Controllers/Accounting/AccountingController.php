@@ -49,4 +49,12 @@ class AccountingController extends Controller
             throw $ex;
         }
     }
+
+    public function generateProfitAndLoss(){
+        try{
+            return view('pages.main.accounting.profit_and_loss');
+        } catch(\Exception $ex){
+            throw $ex;
+        }
+    }
 }

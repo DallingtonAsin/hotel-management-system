@@ -201,6 +201,7 @@
                     <li class="nav-sub-item"><a href="{{ Route('accounting.balance_sheet') }}" class="nav-sub-link">Balance Sheet</a> </li>
                     <li class="nav-sub-item"><a href="{{ route('accounting.general_ledger') }}" class="nav-sub-link">General Ledger</a></li>
                     <li class="nav-sub-item"><a href="{{ Route('accounting.cash_flow_statement') }}" class="nav-sub-link">Cash Flow Statement</a> </li>
+                    <li class="nav-sub-item"><a href="{{ Route('accounting.profit_and_loss') }}" class="nav-sub-link">Profit and Loss Statement</a> </li>
                 </ul>
             </li>
 

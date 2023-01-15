@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Accomodation;
 
 use App\Http\Controllers\Controller;
+use App\Models\FrequentContact;
 use Illuminate\Http\Request;
 use App\DataTables\Accomodation\ReservationsDataTable;
 use App\Models\Reservation;
@@ -99,7 +100,7 @@ class ReservationController extends Controller
 
                 $first_name = ucfirst($request->input('first_name'));
                 $last_name = ucfirst($request->input('last_name'));
-                $company_name = ucfirst($request->input('company_name'));
+             
                 $tax_number = $request->input('tax_number');
                 $company_contact = $request->input('company_contact');
                 $company_email = $request->input('company_email');
@@ -113,7 +114,12 @@ class ReservationController extends Controller
                 $departure_date = date('Y-m-d, H:i:s', strtotime($request->input('departure_date')));
                 $created_by = Helper::getLoggedInUserId();
 
-
+                $company_name = null;
+                if($request->filled('company_name')){
+                    $company_id = $request->input('company_name');
+                    $company_name = FrequentContact::where('id', $company_id)->value('name');
+                }
+               
                 $guest_type_id = GuestType::where('name', 'like', "%" . $guest_type . "%")->value('id');
                 $room_number = $request->input('room_number');
 
