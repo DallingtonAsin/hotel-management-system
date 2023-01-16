@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\HR;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\DataTables\HR\StaffMembersDataTable;
-use App\Staff;
+use Illuminate\Http\Request;
+use App\Models\StaffPermission;
+use App\DataTables\HR\StaffPermissionsDataTable;
 
-class StaffMemberController extends Controller
+class StaffPermissionController extends Controller
 {
-    
+   
+
     public function index()
     {
-        $total_staff = Staff::where('is_deleted', false)->count();
-        return view('pages.main.hr.staff', ['total_staff' => $total_staff]);
+        $total_permissions = StaffPermission::count();
+        return view('pages.main.hr.permissions.index', ['total_permissions' => $total_permissions]);
     }
 
-    public function GetStaffMemebers(StaffMembersDataTable $dataTable)
+    public function getStaffPermissions(StaffPermissionsDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.hr.staff');
+        return $dataTable->render('pages.main.hr.permissions.index');
     }
 
     /**
