@@ -708,4 +708,21 @@ class Helper
     }
   }
 
+  
+
+  public static function hasPermissions($permission_name){
+    try{
+
+      $hasAccess = Auth::user()->hasPermission($permission_name);
+      if (!$hasAccess) {
+        return redirect('home');
+      }else{
+        dd($hasAccess);
+      }
+
+    }catch(\Exception $ex){
+      throw $ex;
+    }
+  }
+
 }

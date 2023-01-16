@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePermissionsTable extends Migration
+class CreateStaffPermissionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,17 @@ class CreatePermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('staff_permissions', function (Blueprint $table) {
+
             $table->id();
-            $table->string('name')->unique();
+            $table->unsignedBigInteger('permission_id');
+            $table->integer('staff_id')->unsigned();
             $table->timestamps();
+        
+            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
+            $table->foreign('staff_id')->references('id')->on('staff')->onDelete('cascade');
+        
         });
-     
     }
 
     /**
@@ -28,11 +33,6 @@ class CreatePermissionsTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('staff_permissions');
-        Schema::dropIfExists('permissions');
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-
     }
 }

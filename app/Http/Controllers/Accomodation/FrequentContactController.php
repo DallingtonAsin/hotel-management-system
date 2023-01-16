@@ -9,9 +9,19 @@ use Illuminate\Http\Request;
 use App\Helpers\Helper;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\UserBehaviour;
+
 
 class FrequentContactController extends Controller
 {
+
+    use UserBehaviour;
+    protected $permissions;
+
+    public function __construct()
+    {
+        $this->permissions = config('permissions');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +29,11 @@ class FrequentContactController extends Controller
      */
      public function index()
     {
-        $total_frequent_contacts = FrequentContact::count();
-        return view('pages.main.hr.frequent_contacts')->with(compact('total_frequent_contacts'));
+        $hasAccess = $this->hasPermissions($this->permissions['view_rooms']);
+     
+            $total_frequent_contacts = FrequentContact::count();
+            return view('pages.main.hr.frequent_contacts')->with(compact('total_frequent_contacts'));    
+      
     }
 
     public function getFrequentContactsDataTable(FrequentContactDataTable $dataTable)

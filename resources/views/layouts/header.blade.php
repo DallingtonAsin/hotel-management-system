@@ -19,26 +19,37 @@
       
       <div class="az-header-center pr-5 row mt-2">
 
+        @haspermission(config('permissions')['view_pos'])
         <div class="col-lg-3">
         <a href="{{ route('pos.index') }}">
           <img src="{{ asset('vendors/img/pos1.png')}}"/>
             <h6 class="text-white">POS</h6></a>
          </div>
+         @endhaspermission
 
+         @haspermission(config('permissions')['view_kitchen_orders'])
          <div class="col-lg-3">
          <a href="{{ route('kitchen-orders.index') }}"><img src="{{ asset('vendors/img/kot.png')}}"/>
             <h6 class="mt-1">KOTs</h6></a>
          </div>
+         @endhaspermission
 
+
+         @haspermission(config('permissions')['view_reservations'])
          <div class="col-lg-3">
          <a href="{{ route('reservations.index') }}"><img src="{{ asset('vendors/img/bed1.png')}}"/>
             <h6 class="mt-1">Reservations</h6></a>
          </div>
+         @endhaspermission
 
+
+         @haspermission(config('permissions')['view_staff'])
          <div class="col-lg-3">
          <a href="{{ route('staff.index') }}"><img src="{{ asset('vendors/img/users.png')}}"/>
             <h6 class="mt-1">Staff</h6></a>
          </div>
+         @endhaspermission
+
       </div>
 
       <div class="dropdown az-profile-menu">
@@ -60,7 +71,7 @@
             </div>
             <div class="text-center">
               <label class="text-cap">{{{ isset(Auth::user()->first_name) ? Auth::user()->first_name. ' '.Auth::user()->last_name : Auth::user()->email }}}</label>
-              <span>{{{ $department_id }}}</span>
+              <span>{{ isset(Auth::user()->department_id) ? Helper::getDepartment(Auth::user()->department_id) : '' }}</span>
             </div>
           </div>
 

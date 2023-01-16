@@ -36,6 +36,9 @@ class DatabaseSeeder extends Seeder
             CurrencyTableSeeder::class,
             FrequentContactTableSeeder::class,
 
+            PermissionsTableSeeder::class,
+            StaffPermissionsTableSeeder::class,
+
             StockTableSeeder::class,
             CustomersTableSeeder::class,
             DamagesTableSeeder::class,

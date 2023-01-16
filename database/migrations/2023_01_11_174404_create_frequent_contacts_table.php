@@ -16,9 +16,9 @@ class CreateFrequentContactsTable extends Migration
         Schema::create('frequent_contacts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
-            $table->string('phone_number');
-            $table->string('tin');
+            $table->string('email')->unique();
+            $table->string('phone_number')->unique();
+            $table->string('tin')->unique();
             $table->string('contact_person');
             $table->string('price');
             $table->string('currency_code');
