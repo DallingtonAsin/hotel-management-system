@@ -12,6 +12,7 @@ class GuestController extends Controller
     
     public function index()
     {
+
         $total_guests = Guest::count();
         return view('pages.main.accomodation.guests.index')->with(compact('total_guests'));
     }
