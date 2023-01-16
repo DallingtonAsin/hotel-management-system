@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\StaffPermission;
 use App\DataTables\HR\StaffPermissionsDataTable;
+use App\Models\Permission;
+use App\Staff;
 
 class StaffPermissionController extends Controller
 {
@@ -29,7 +31,14 @@ class StaffPermissionController extends Controller
      */
     public function create()
     {
-        //
+        try{
+            $permissions = Permission::all();
+            $staff_members =  Staff::select('id', 'first_name', 'last_name')->get();
+            return view('pages.main.hr.permissions.assign')->with(compact('permissions', 'staff_members'));
+        }catch(\Exception $ex){
+            throw $ex;
+        }
+
     }
 
     /**
