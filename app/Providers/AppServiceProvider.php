@@ -4,13 +4,16 @@ namespace App\Providers;
 use App\Staff;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View; 
+use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Queue; 
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use App\Http\View\Composers\ComposerNotifications;
 use App\Http\View\Composers\ComposerOverview;
 use App\Http\View\Composers\ComposerGlobals;
+use Illuminate\Support\Facades\Blade; 
 use App\Models\Company;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,12 +55,18 @@ class AppServiceProvider extends ServiceProvider
 
 
      //Option3: Dedicated class
-     View::composer(['pages.*'], ComposerNotifications::class);
-     View::composer(['pages.*'], ComposerOverview::class);
+    //  View::composer(['pages.*'], ComposerNotifications::class);
+    //  View::composer(['pages.*'], ComposerOverview::class);
     //  View::composer(['pages.*'], ComposerGlobals::class);
      
      
-
+    Blade::if('haspermission', function ($permission) {
+        if(Auth::check()){
+            return Auth::user()->hasPermission($permission);
+        }else{
+            return view('auth.login');
+        }
+    });
 
 
 
