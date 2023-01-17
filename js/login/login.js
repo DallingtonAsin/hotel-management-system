@@ -23,13 +23,13 @@
           {
             showPasswordTxt.text(dataArr[0]);
             showPasswordTxt.show();
-            console.log(passwd);
+       
             }
             if(passwd.length > 0 && passwordId.type != "password")
             {
               showPasswordTxt.text(dataArr[1]);
               showPasswordTxt.show();
-              console.log(passwd);
+            
               }
             else if(passwd.length <= 0)
             {

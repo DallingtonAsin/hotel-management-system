@@ -147,6 +147,7 @@ Route::get('staff-members/permissions/ajax', [StaffPermissionController::class, 
 Route::post('staff-members/permissions/store', [StaffPermissionController::class, 'store'])->name('permissions.assign');
 Route::get('staff-members/{staff_id}/permissions/edit', [StaffPermissionController::class, 'edit'])->name('staff.permissions.edit');
 Route::put('staff-members/{staff}/permissions/update', [StaffPermissionController::class, 'update'])->name('staff.permissions.update');
+Route::get('staff-member/permission/{permission_name}', [StaffPermissionController::class, 'hasPermission'])->name('staff.permissions.verify');
 
 
 

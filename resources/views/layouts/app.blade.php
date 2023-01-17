@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title><?= isset($companyData) ? $companyData['company_name'] : env('APP_NAME') ?></title>
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     <link href="{{ asset('css/css.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/fontawesome/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/nunito.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('vendors/toastr/css/toastr.min.css') }}">
+    <script src="{{ asset('vendors/toastr/js/toastr.min.js') }}"></script>
+    <!-- in the head of your blade file -->
+
     <style>
         .text-success {
             color: #009688;

@@ -54,7 +54,7 @@ function populateStaffMemebers() {
             let obj = JSON.parse(resp);
             for (let i = 0; i < obj.length; i++) {
                 let id = obj[i]['id'];
-                let name = obj[i]['first_name'] + ' '+ obj[i]['last_name'];
+                let name = obj[i]['first_name'] + ' ' + obj[i]['last_name'];
                 $('.staff_members_section').append('<option value=' + id + '>' + name + '</option>');
             }
         }
@@ -70,7 +70,7 @@ function populateGuests() {
             let obj = JSON.parse(resp);
             for (let i = 0; i < obj.length; i++) {
                 let id = obj[i]['id'];
-                let name = obj[i]['first_name'] + ' '+ obj[i]['last_name'];
+                let name = obj[i]['first_name'] + ' ' + obj[i]['last_name'];
                 $('.guest_section').append('<option value=' + id + '>' + name + '</option>');
             }
         }
@@ -97,7 +97,7 @@ function onTypingRoomNumber(element, afterSelect) {
 
     let search_qry = $(element).val();
     $(element).typeahead({
-        source: function(search_qry, result) {
+        source: function (search_qry, result) {
             $.ajax({
                 url: searchRoomUrl,
                 method: 'post',
@@ -105,12 +105,12 @@ function onTypingRoomNumber(element, afterSelect) {
                     query: search_qry,
                 },
                 dataType: 'json',
-                success: function(data) {
-                    result($.map(data, function(item) {
+                success: function (data) {
+                    result($.map(data, function (item) {
                         return item;
                     }));
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log(data);
                 },
             });
@@ -121,27 +121,27 @@ function onTypingRoomNumber(element, afterSelect) {
 }
 
 
-function onSearchItem(element){
+function onSearchItem(element) {
     let item_name = $().val();
     $(element).typeahead({
-      source:function(item_name,result){
-        $.ajax({
-          url: onSearchItemUrl,
-          method:'post',
-          data:{
-            query: item_name,
-          },
-          dataType:'json',
-          success: function(data){
-            result($.map(data, function(item){
-              return item;
-            }));
-          },
-          error:function(data){
-            console.log(data);
-          },
-        });
-      }
+        source: function (item_name, result) {
+            $.ajax({
+                url: onSearchItemUrl,
+                method: 'post',
+                data: {
+                    query: item_name,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    result($.map(data, function (item) {
+                        return item;
+                    }));
+                },
+                error: function (data) {
+                    console.log(data);
+                },
+            });
+        }
     });
 }
 
@@ -187,6 +187,22 @@ function populateFrequentContacts(select_element) {
                 let id = obj[i]['id'];
                 let name = obj[i]['name'];
                 $(select_element).append('<option value=' + id + '>' + name + '</option>');
+            }
+        }
+    });
+}
+
+function checkPermissionAndExecute(permission_name, next) {
+    let url = 'staff-member/permission/' + permission_name + ''
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (response) {
+            // console.log('Response from checking permissions', response);
+            if (response.hasPermission === true) {
+                next();
+            } else {
+                displayResponse('.response', response.error, 'error');
             }
         }
     });

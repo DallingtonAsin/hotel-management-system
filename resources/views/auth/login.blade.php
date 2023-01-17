@@ -77,17 +77,7 @@
         </span>
         @endif
 
-        @if(session()->get('loginErr'))
-        <span class="login-error nunito-font">
-         {{ session()->get('loginErr') }}
-       </span>
-       @endif
-
-       @if(session()->get('sessionExpiredMessage'))
-       <span class="login-error nunito-font">
-          {{ session()->get('sessionExpiredMessage') }}
-       </span>
-       @endif
+     
        <strong class="ml-3">
         <h6 class="text-center">
         {{ __('Need a hotel quickbook?') }}
@@ -98,17 +88,21 @@
 </form>
 </div>
     </div>
+</div>
+</div>
+</div>
+</div>
 
 <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
 <script src="{{ asset('js/login/login.js') }}"></script>
+<script>
+     @if(session()->get('loginErr'))
+        toastr.error("{{session()->get('loginErr')}}");
+     @endif
 
-</div>
-</div>
-</div>
-</div>
-
-
-
-
+       @if(session()->get('sessionExpiredMessage'))
+         toastr.error("{{session()->get('sessionExpiredMessage')}}");
+       @endif
+</script>
 
 @endsection

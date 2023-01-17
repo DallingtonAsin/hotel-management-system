@@ -54,22 +54,22 @@
                             </div>
                         </div>
 
-                    <div class="row form-group">
-                        <div class="col-md-6">
-                            <span><span class="text-danger pr-1">*</span>Gender</span>
-                            <select class="form-control gender bg-white" name="gender">
-                                <option value="">Select gender</option>
-                                <option value="Female">Female</option>
-                                <option value="Male">Male</option>
-                            </select>
-                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <span><span class="text-danger pr-1">*</span>Gender</span>
+                                <select class="form-control gender bg-white" name="gender">
+                                    <option value="">Select gender</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-6">
-                            <span> Email</span>
-                            <input type="email" class="form-control email bg-white" name="email"
-                                placeholder="Enter email">
+                            <div class="col-md-6">
+                                <span> Email</span>
+                                <input type="email" class="form-control email bg-white" name="email"
+                                    placeholder="Enter email">
+                            </div>
                         </div>
-                    </div>
 
                         <div class="row form-group">
                             <div class="col-md-3">
@@ -364,7 +364,7 @@
             $('body').on('click', '#edit-permissions', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
-                window.location.href = 'staff-members/'+staff_id+'/permissions/edit';
+                window.location.href = 'staff-members/' + staff_id + '/permissions/edit';
             });
 
             $('#addNewStaff').click(function(e) {
@@ -445,29 +445,33 @@
             $('body').on('click', '#edit-staff', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
-
+                console.log()
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
-
-                    $('#modalHeading').html(
-                        `Edit details of staff ${data.first_name} ${data.last_name} `);
-                    $('.addStaffBtn').text("Edit staff");
-                    $('#addStaffModal').modal('show');
-                    $('.userId').val(data.id);
-                    $('.first_name').val(data.first_name);
-                    $('.last_name').val(data.last_name);
-                    $('.address').val(data.address);
-                    $('.email').val(data.email);
-                    $('.employee_id').val(data.staff_id);
-                    $('.nin').val(data.nationalID_no);
-                    $('.phone_number').val(data.phone_number);
-                    $('.other_phone_number').val(data.other_phone_number);
-                    $('.designation_section').val(data.designation_id);
-                    $('.departments_section').val(data.department_id);
-                    $('.gender').val(data.gender);
-                    DisableTableFields(false);
-                    ShowBtns();
-                })
+                    checkPermissionAndExecute(permissions.edit_staff, function(staff){
+                        populateStaffDetails(data);
+                    });
+                });
             });
+
+            function populateStaffDetails(data) {
+                $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
+                $('.addStaffBtn').text("Edit staff");
+                $('#addStaffModal').modal('show');
+                $('.userId').val(data.id);
+                $('.first_name').val(data.first_name);
+                $('.last_name').val(data.last_name);
+                $('.address').val(data.address);
+                $('.email').val(data.email);
+                $('.employee_id').val(data.staff_id);
+                $('.nin').val(data.nationalID_no);
+                $('.phone_number').val(data.phone_number);
+                $('.other_phone_number').val(data.other_phone_number);
+                $('.designation_section').val(data.designation_id);
+                $('.departments_section').val(data.department_id);
+                $('.gender').val(data.gender);
+                DisableTableFields(false);
+                ShowBtns();
+            }
 
             //View Modal used to view each row [staff details]
             $('body').on('click', '#view-staff', function(event) {
