@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\CustomerDebtPayment;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerDebtPaymentService{
 
