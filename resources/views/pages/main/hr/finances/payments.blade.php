@@ -16,7 +16,7 @@
             <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewPayment">
                 <i class="fa fa-plus-circle pr-1"></i>Add payment</button>
         </div>
-       
+
         <div class="card-body">
 
             <div class="table-responsive">
@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Invoice No.</span>
                             <input type="text" class="form-control name bg-white invoice_number" name="invoice_number"
-                            placeholder="Enter invoice number" required autofocus>
+                                placeholder="Enter invoice number" required autofocus>
                         </div>
 
                         <div class="form-group">
@@ -93,7 +93,8 @@
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Amount</span>
-                            <input type="text" class="form-control bg-white amount" name="amount" placeholder="Enter amount" required autofocus>
+                            <input type="text" class="form-control bg-white amount" name="amount"
+                                placeholder="Enter amount" required autofocus>
                         </div>
 
                         <div class="form-group">
@@ -103,8 +104,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addPaymentBtn"
-                                name="addPaymentBtn">Save</button>
+                            <button type="submit" class="btn btn-primary addPaymentBtn" name="addPaymentBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                         </div>
 
@@ -202,7 +202,6 @@
     </div> <!-- end of modal Delete Designations-->
 
     <script type="text/javascript">
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -214,14 +213,13 @@
         const guestsAjaxUrl = @json(route('guests.ajax.fetch'));
         const cat = 'payment';
         populateGuests();
-        
+
         $(document).ready(function() {
-            
+
             let table = $('#payments-table');
             let title = "List of recorded payments in the system";
             let columns = [1, 2, 3, 4, 5, 6];
-            let dataColumns = [
-                {
+            let dataColumns = [{
                     data: 'checkbox',
                     name: 'checkbox'
                 },
@@ -261,13 +259,15 @@
 
             $('#addNewPayment').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addPaymentBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.paymentId').val('');
-                $('#PaymentsForm').trigger("reset");
-                $('#modalHeading').html("Add new payment");
-                $('#addPaymentModal').modal('show');
+                checkPermission(permissions.create_payments, function(payment) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addPaymentBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.paymentId').val('');
+                    $('#PaymentsForm').trigger("reset");
+                    $('#modalHeading').html("Add new payment");
+                    $('#addPaymentModal').modal('show');
+                });
             });
 
 
@@ -277,9 +277,13 @@
             $('body').on('click', '#edit-payment', function(event) {
                 let payment_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_payments, function(payment) {
+                    editPayment(payment_id);
+                });
+            });
 
+            function editPayment(payment_id) {
                 $.get("{{ route('payments.index') }}" + '/' + payment_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of payment " + data.name + "");
                     $('.addPaymentBtn').text("Edit payment");
                     $('#addPaymentModal').modal('show');
@@ -292,17 +296,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [payments details]
             $('body').on('click', '#view-payment', function(event) {
                 let payment_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_payments, function(payment) {
+                    viewPayment(payment_id);
+                });
+            });
 
+            function viewPayment(payment_id) {
                 $.get("{{ route('payments.index') }}" + '/' + payment_id + '', function(data) {
-
                     $('#modalHeading').html("Details of payment " + data.name + "");
                     $('#addPaymentModal').modal('show');
                     $('.paymentId').val(data.id);
@@ -314,8 +322,8 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
 
             $('.addPaymentBtn').click(function(e) {
@@ -341,11 +349,11 @@
                             let type = data.success ? 'success' : 'error';
                             displayResponse('.response', resp, type);
 
-                            if(data.success){
+                            if (data.success) {
                                 ResetTblInfo(data);
                                 let tbl = $('#payments-table').DataTable();
                                 tbl.ajax.reload();
-                            }else{
+                            } else {
                                 $('#addPaymentModal').modal('hide');
                             }
                         },
@@ -373,12 +381,13 @@
             $('body').on('click', '#delete-payment', function(e) {
                 let payment_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this payment?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(payment_id);
+                checkPermission(permissions.cancel_payments, function(payment) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html("Are you sure you want to delete this payment?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(payment_id);
+                    });
                 });
-
             });
 
             function ListenAndDoDeletion(id) {
@@ -405,7 +414,6 @@
             }
 
             function DisableTableFields(bool) {
-
                 $('.paymentId').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
                 $('.address').attr('disabled', bool);
@@ -456,7 +464,7 @@
                 if (payment_date.length < 1) {
                     errors.push(`Please select payment date`);
                 }
-             
+
                 return errors;
 
             }
@@ -517,6 +525,6 @@
             }
         });
     </script>
-       <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-       <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection
