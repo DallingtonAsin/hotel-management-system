@@ -364,14 +364,14 @@
             $('body').on('click', '#edit-permissions', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
-                checkPermission(permissions.assign_staff_permissions, function(staff){
+                checkPermission(permissions.assign_staff_permissions, function(staff) {
                     window.location.href = 'staff-members/' + staff_id + '/permissions/edit';
-                 });
+                });
             });
 
             $('#addNewStaff').click(function(e) {
                 e.preventDefault();
-                checkPermission(permissions.register_staff, function(staff){
+                checkPermission(permissions.register_staff, function(staff) {
                     DisableTableFields(false);
                     ShowBtns();
                     $('.addStaffBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
@@ -379,7 +379,7 @@
                     $('#userForm').trigger("reset");
                     $('#modalHeading').html("Add new staff");
                     $('#addStaffModal').modal('show');
-                 });
+                });
             });
 
             populateDepartments();
@@ -449,48 +449,47 @@
             $('body').on('click', '#edit-staff', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
-                console.log()
-                $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
-                    checkPermission(permissions.edit_staff, function(staff){
-                        editStaffDetails(data);
-                    });
+                checkPermission(permissions.edit_staff, function(staff) {
+                    editStaffDetails(staff_id);
                 });
             });
 
-            function editStaffDetails(data) {
-                $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
-                $('.addStaffBtn').text("Edit staff");
-                $('#addStaffModal').modal('show');
-                $('.userId').val(data.id);
-                $('.first_name').val(data.first_name);
-                $('.last_name').val(data.last_name);
-                $('.address').val(data.address);
-                $('.email').val(data.email);
-                $('.employee_id').val(data.staff_id);
-                $('.nin').val(data.nationalID_no);
-                $('.phone_number').val(data.phone_number);
-                $('.other_phone_number').val(data.other_phone_number);
-                $('.designation_section').val(data.designation_id);
-                $('.departments_section').val(data.department_id);
-                $('.gender').val(data.gender);
-                DisableTableFields(false);
-                ShowBtns();
+            function editStaffDetails(staff_id) {
+                $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
+                    $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
+                    $('.addStaffBtn').text("Edit staff");
+                    $('#addStaffModal').modal('show');
+                    $('.userId').val(data.id);
+                    $('.first_name').val(data.first_name);
+                    $('.last_name').val(data.last_name);
+                    $('.address').val(data.address);
+                    $('.email').val(data.email);
+                    $('.employee_id').val(data.staff_id);
+                    $('.nin').val(data.nationalID_no);
+                    $('.phone_number').val(data.phone_number);
+                    $('.other_phone_number').val(data.other_phone_number);
+                    $('.designation_section').val(data.designation_id);
+                    $('.departments_section').val(data.department_id);
+                    $('.gender').val(data.gender);
+                    DisableTableFields(false);
+                    ShowBtns();
+                });
+
             }
 
             //View Modal used to view each row [staff details]
             $('body').on('click', '#view-staff', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
-
-                $.get("{{ route('users.index') }}" + '/' + staff_id + '', function(data) {
-                    checkPermission(permissions.view_staff, function(staff){
-                        viewStaffDetails(data);
-                    });
-                })
+                checkPermission(permissions.view_staff, function(staff) {
+                    viewStaffDetails(staff_id);
+                });
             });
 
-            function viewStaffDetails(data){
-                $('#modalHeading').html(`Details of staff ${data.first_name} ${data.last_name} `);
+            function viewStaffDetails(staff_id) {
+                $.get("{{ route('users.index') }}" + '/' + staff_id + '', function(data) {
+
+                    $('#modalHeading').html(`Details of staff ${data.first_name} ${data.last_name} `);
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
                     $('.first_name').val(data.first_name);
@@ -506,6 +505,8 @@
                     $('.gender').val(data.gender);
                     DisableTableFields(true);
                     HideBtns();
+                });
+
             }
 
             $('.addStaffBtn').click(function(e) {

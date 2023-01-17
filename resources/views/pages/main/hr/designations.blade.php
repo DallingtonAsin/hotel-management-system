@@ -198,7 +198,6 @@
     </div> <!-- end of modal Delete Designations-->
 
     <script type="text/javascript">
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -210,14 +209,13 @@
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const cat = 'designation';
         populateDepartments();
-        
+
         $(document).ready(function() {
-            
+
             let table = $('#designations-table');
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3];
-            let dataColumns = [
-                {
+            let dataColumns = [{
                     data: 'checkbox',
                     name: 'checkbox'
                 },
@@ -245,22 +243,28 @@
 
             $('#addNewDesignation').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addDesignationBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.designationId').val('');
-                $('#DesignationsForm').trigger("reset");
-                $('#modalHeading').html("Add new designation");
-                $('#addDesignationModal').modal('show');
+                checkPermission(permissions.create_designations, function(designation) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addDesignationBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.designationId').val('');
+                    $('#DesignationsForm').trigger("reset");
+                    $('#modalHeading').html("Add new designation");
+                    $('#addDesignationModal').modal('show');
+                });
             });
 
             //modal used to edit designations details [each row of the tbl]
             $('body').on('click', '#edit-designation', function(event) {
                 let designation_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_designations, function(designation) {
+                    editDesignation(designation_id);
+                });
+            });
 
+            function editDesignation(designation_id) {
                 $.get("{{ route('designations.index') }}" + '/' + designation_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of designation " + data.name + "");
                     $('.addDesignationBtn').text("Edit designation");
                     $('#addDesignationModal').modal('show');
@@ -273,17 +277,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [designations details]
             $('body').on('click', '#view-designation', function(event) {
                 let designation_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_designations, function(designation) {
+                    viewDesignation(designation_id);
+                });
+            });
 
+            function viewDesignation(designation_id) {
                 $.get("{{ route('designations.index') }}" + '/' + designation_id + '', function(data) {
-
                     $('#modalHeading').html("Details of designation " + data.name + "");
                     $('#addDesignationModal').modal('show');
                     $('.designationId').val(data.id);
@@ -295,8 +303,8 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
 
             $('.addDesignationBtn').click(function(e) {
@@ -345,10 +353,13 @@
             $('body').on('click', '#delete-designation', function(e) {
                 let designation_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this designation?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(designation_id);
+                checkPermission(permissions.cancel_designations, function(designation) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html(
+                        "Are you sure you want to delete this designation?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(designation_id);
+                    });
                 });
 
             });
@@ -399,7 +410,7 @@
                 $('.closeBtn').show();
             }
 
-        
+
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
                 $('.total_designations').html(totl_number);
@@ -409,7 +420,7 @@
 
                 let department = $('.departments_section').val();
                 let designation = $('.designation').val();
-               
+
                 let errors = [];
                 if (department.length < 1) {
                     errors.push(`Please select department`);
@@ -417,7 +428,7 @@
                 if (designation.length < 1) {
                     errors.push(`Please enter designation`);
                 }
-             
+
                 return errors;
 
             }
@@ -478,6 +489,6 @@
             }
         });
     </script>
-       <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-       <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

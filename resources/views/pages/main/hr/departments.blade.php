@@ -244,13 +244,15 @@
 
             $('#addNewDepartment').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addDepartmentBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.departmentId').val('');
-                $('#DepartmentsForm').trigger("reset");
-                $('#modalHeading').html("Register new department");
-                $('#addDepartmentModal').modal('show');
+                checkPermission(permissions.create_departments, function(department) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addDepartmentBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.departmentId').val('');
+                    $('#DepartmentsForm').trigger("reset");
+                    $('#modalHeading').html("Register new department");
+                    $('#addDepartmentModal').modal('show');
+                });
             });
 
 
@@ -309,9 +311,13 @@
             $('body').on('click', '#edit-department', function(event) {
                 let department_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_departments, function() {
+                    editDepartment(department_id);
+                });
+            });
 
+            function editDepartment(department_id) {
                 $.get("{{ route('departments.index') }}" + '/' + department_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of department " + data.name + "");
                     $('.addDepartmentBtn').text("Edit department");
                     $('#addDepartmentModal').modal('show');
@@ -324,15 +330,20 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [departments details]
             $('body').on('click', '#view-department', function(event) {
                 let department_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_departments, function() {
+                    viewDepartment(department_id);
+                });
+            });
 
+            function viewDepartment(department_id) {
                 $.get("{{ route('departments.index') }}" + '/' + department_id + '', function(data) {
 
                     $('#modalHeading').html("Details of department " + data.name + "");
@@ -346,19 +357,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-department', function(e) {
                 let department_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this department?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(department_id);
+                checkPermission(permissions.cancel_departments, function() {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html(
+                    "Are you sure you want to delete this department?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(department_id);
+                    });
                 });
-
             });
 
 
