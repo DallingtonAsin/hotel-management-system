@@ -192,7 +192,7 @@ function populateFrequentContacts(select_element) {
     });
 }
 
-function checkPermissionAndExecute(permission_name, next) {
+function checkPermission(permission_name, next) {
     let url = 'staff-member/permission/' + permission_name + ''
     $.ajax({
         type: 'GET',

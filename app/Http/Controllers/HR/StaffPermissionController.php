@@ -15,11 +15,12 @@ class StaffPermissionController extends Controller
 {
 
     protected $permissionService;
-    public function __construct(PermissionService $permissionService){
-       $this->permissionService = $permissionService;
+    public function __construct(PermissionService $permissionService)
+    {
+        $this->permissionService = $permissionService;
     }
 
-   
+
 
     public function index()
     {
@@ -107,9 +108,9 @@ class StaffPermissionController extends Controller
      */
     public function edit($id)
     {
-         $staff = Staff::find($id);
-         $permissions = Permission::all();
-         return view('pages.main.hr.permissions.edit', compact('staff', 'permissions'));
+        $staff = Staff::find($id);
+        $permissions = Permission::all();
+        return view('pages.main.hr.permissions.edit', compact('staff', 'permissions'));
     }
 
     /**
@@ -121,10 +122,30 @@ class StaffPermissionController extends Controller
      */
     public function update(Request $request, Staff $staff)
     {
-        $permissions = $request->input('permissions');
-        $staff_name = $staff->first_name. ' '.$staff->last_name;
-        $staff->syncPermissions($permissions);
-        return redirect()->back()->with('success', 'Permissions for '.$staff_name.' have been updated successfully');
+
+        $validator = Validator::make($request->all(), [
+            'permissions' => 'required|array|exists:permissions,id',
+        ], [
+            'staff_id.required' => 'Please select staff member.',
+            'permissions.required' => 'Please select at least one permission.',
+            'permissions.array' => 'Permissions must be an array.',
+            'permissions.exists' => 'Invalid permission selected.',
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                return back()
+                    ->withErrors($validator)
+                    ->withInput();
+            } else {
+                $permissions = $request->input('permissions');
+                $staff_name = $staff->first_name . ' ' . $staff->last_name;
+                $staff->syncPermissions($permissions);
+                return redirect()->back()->with('success', 'Permissions for ' . $staff_name . ' have been updated successfully');
+            }
+        } catch (\Exception $ex) {
+            return back()->with('error', $ex->getMessage());
+        }
     }
 
     /**
@@ -138,22 +159,22 @@ class StaffPermissionController extends Controller
         //
     }
 
-    public function hasPermission(Request $request, $permissionName){
-        try{
-         
-         if($request->ajax()){
-            $result = $this->permissionService->hasPermission($permissionName);
-            if($result){
-                return response()->json(['success' => 'OK', 'hasPermission' => $result]);
-            }else{
-               $action = strtolower(str_replace('_', ' ', $permissionName));
-               return response()->json(['error' => 'You do not have permission to '.$action.'.', 'hasPermission' => $result]);
-            }
-         }else{
-            return response()->json(['error' => 'Unknown request type']);
-         }
+    public function hasPermission(Request $request, $permissionName)
+    {
+        try {
 
-        }catch(\Exception $ex){
+            if ($request->ajax()) {
+                $result = $this->permissionService->hasPermission($permissionName);
+                if ($result) {
+                    return response()->json(['success' => 'OK', 'hasPermission' => $result]);
+                } else {
+                    $action = strtolower(str_replace('_', ' ', $permissionName));
+                    return response()->json(['error' => 'You do not have permission to ' . $action . '.', 'hasPermission' => $result]);
+                }
+            } else {
+                return response()->json(['error' => 'Unknown request type']);
+            }
+        } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);
         }
     }

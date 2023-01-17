@@ -112,7 +112,7 @@ return [
 
     // staff
     'view_staff' => 'view_staff',
-    'create_staff' => 'create_staff',
+    'register_staff' => 'register_staff',
     'edit_staff' => 'edit_staff',
     'cancel_staff' => 'delete_staff',
 

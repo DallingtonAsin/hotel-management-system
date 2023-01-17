@@ -11,21 +11,20 @@ function Numberize(i) {
 
 function displayResponse(area = null, message, errorType = 'error') {
 
+  let config = { timeOut: 10000 };
+
   switch (true) {
     case errorType == 'success':
-      toastr.options.backgroundcolor = "green";
-      toastr.success(message);
+      toastr.success(message, "", config);
       break;
     case errorType == 'warning':
-      toastr.options.backgroundcolor = "yellow";
-      toastr.warning(message);
+      toastr.warning(message, "",  config);
       break;
     case errorType == 'error':
-      toastr.options.backgroundcolor = "red";
-      toastr.error(message);
+      toastr.error(message, "", config);
       break;
     default:
-      toastr.warning(message);
+      toastr.warning(message, "", config);
 
   }
   // $(area).notify(message, {

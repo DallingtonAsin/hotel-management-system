@@ -364,18 +364,22 @@
             $('body').on('click', '#edit-permissions', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
-                window.location.href = 'staff-members/' + staff_id + '/permissions/edit';
+                checkPermission(permissions.assign_staff_permissions, function(staff){
+                    window.location.href = 'staff-members/' + staff_id + '/permissions/edit';
+                 });
             });
 
             $('#addNewStaff').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addStaffBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.staffId').val('');
-                $('#userForm').trigger("reset");
-                $('#modalHeading').html("Add new staff");
-                $('#addStaffModal').modal('show');
+                checkPermission(permissions.register_staff, function(staff){
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addStaffBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.staffId').val('');
+                    $('#userForm').trigger("reset");
+                    $('#modalHeading').html("Add new staff");
+                    $('#addStaffModal').modal('show');
+                 });
             });
 
             populateDepartments();
@@ -447,13 +451,13 @@
                 event.preventDefault();
                 console.log()
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
-                    checkPermissionAndExecute(permissions.edit_staff, function(staff){
-                        populateStaffDetails(data);
+                    checkPermission(permissions.edit_staff, function(staff){
+                        editStaffDetails(data);
                     });
                 });
             });
 
-            function populateStaffDetails(data) {
+            function editStaffDetails(data) {
                 $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
                 $('.addStaffBtn').text("Edit staff");
                 $('#addStaffModal').modal('show');
@@ -479,9 +483,14 @@
                 event.preventDefault();
 
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '', function(data) {
+                    checkPermission(permissions.view_staff, function(staff){
+                        viewStaffDetails(data);
+                    });
+                })
+            });
 
-                    $('#modalHeading').html(
-                        `Details of staff ${data.first_name} ${data.last_name} `);
+            function viewStaffDetails(data){
+                $('#modalHeading').html(`Details of staff ${data.first_name} ${data.last_name} `);
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
                     $('.first_name').val(data.first_name);
@@ -497,8 +506,7 @@
                     $('.gender').val(data.gender);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+            }
 
             $('.addStaffBtn').click(function(e) {
 
