@@ -238,7 +238,6 @@
                     $('#modalHeading').html("Add new currency");
                     $('#addCurrencyModal').modal('show');
                 });
-
             });
 
 

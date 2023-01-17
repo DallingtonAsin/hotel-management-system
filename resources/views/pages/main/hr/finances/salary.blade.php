@@ -226,24 +226,30 @@
 
             $('#addNewPayment').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addSalaryBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.salaryId').val('');
-                $('#SalaryForm').trigger("reset");
-                $('#modalHeading').html("Add new salary");
-                $('#addSalaryModal').modal('show');
+                checkPermission(permissions.create_salaries, function(salary) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addSalaryBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.salaryId').val('');
+                    $('#SalaryForm').trigger("reset");
+                    $('#modalHeading').html("Add new salary");
+                    $('#addSalaryModal').modal('show');
+                });
             });
 
-             Numberize(".amount");
+            Numberize(".amount");
 
             //modal used to edit salaries details [each row of the tbl]
             $('body').on('click', '#edit-salary', function(event) {
                 let salary_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_salaries, function(salary) {
+                    editSalary(salary_id);
+                });
+            });
 
+            function editSalary(salary_id) {
                 $.get("{{ route('salary.index') }}" + '/' + salary_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of salary " + data.name + "");
                     $('.addSalaryBtn').text("Edit salary");
                     $('#addSalaryModal').modal('show');
@@ -256,17 +262,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [salaries details]
             $('body').on('click', '#view-salary', function(event) {
                 let salary_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_salaries, function(salary) {
+                    viewSalary(salary_id);
+                });
+            });
 
+            function viewSalary(salary_id) {
                 $.get("{{ route('salary.index') }}" + '/' + salary_id + '', function(data) {
-
                     $('#modalHeading').html("Details of salary " + data.name + "");
                     $('#addSalaryModal').modal('show');
                     $('.salaryId').val(data.id);
@@ -278,8 +288,8 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
 
             $('.addSalaryBtn').click(function(e) {
@@ -297,7 +307,7 @@
                         type: "POST",
                         dataType: 'json',
                         success: function(data) {
-                            
+
                             $('#SalaryForm').trigger("reset");
                             $('#addSalaryModal').modal("hide");
                             let resp = data.success;
@@ -329,12 +339,13 @@
             $('body').on('click', '#delete-salary', function(e) {
                 let salary_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this salary?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(salary_id);
+                checkPermission(permissions.cancel_salaries, function(salary) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html("Are you sure you want to delete this salary?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(salary_id);
+                    });
                 });
-
             });
 
             function ListenAndDoDeletion(id) {
