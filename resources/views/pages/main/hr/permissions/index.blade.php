@@ -2,20 +2,19 @@
 
 @section('content')
     <div class="card">
-        <div class="card-header d-flex align-items-center">
+        <div class="card-header d-flex align-items-center mb-3">
             <span class="response"></span>
             <h6 class="card-title mb-0 text-dark">
                 <i class="fa fa-home text-success"> /</i>
                 <strong>Permissions</strong>
-                <span class="badge badge-info total_departments">
+                <span class="badge badge-info total_permissions">
                     @isset($total_permissions)
                         {{ number_format($total_permissions) }}
                     @endisset
                 </span>
             </h6>
-
-            <a href="{{ route('staff-permissions.create') }}" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewDepartment">
-                <i class="fa fa-plus-circle pr-1"></i>Assign Permissions</a>
+            {{-- <a href="{{ route('staff-permissions.create') }}" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="addNewDepartment">
+                <i class="fa fa-plus-circle pr-1"></i>Assign Permissions</a> --}}
         </div>
 
         <div class="card-body">

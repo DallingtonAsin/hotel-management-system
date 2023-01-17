@@ -361,6 +361,12 @@
 
             makeDataTable(table, title, columns, dataColumns);
 
+            $('body').on('click', '#edit-permissions', function(event) {
+                let staff_id = $(this).data('id');
+                event.preventDefault();
+                window.location.href = 'staff-members/'+staff_id+'/permissions/edit';
+            });
+
             $('#addNewStaff').click(function(e) {
                 e.preventDefault();
                 DisableTableFields(false);

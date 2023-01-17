@@ -101,7 +101,9 @@ class StaffPermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+         $staff = Staff::find($id);
+         $permissions = Permission::all();
+         return view('pages.main.hr.permissions.edit', compact('staff', 'permissions'));
     }
 
     /**
@@ -111,9 +113,12 @@ class StaffPermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Staff $staff)
     {
-        //
+        $permissions = $request->input('permissions');
+        $staff_name = $staff->first_name. ' '.$staff->last_name;
+        $staff->syncPermissions($permissions);
+        return redirect()->back()->with('success', 'Permissions for '.$staff_name.' have been updated successfully');
     }
 
     /**
