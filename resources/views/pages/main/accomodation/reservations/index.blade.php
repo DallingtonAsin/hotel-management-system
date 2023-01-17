@@ -233,7 +233,8 @@
             var table = $('#reservations-table');
             var title = "List of registered departments in the system";
             var columns = [1, 2, 3, 4];
-            var dataColumns = [{
+            var dataColumns = [
+                {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,

@@ -116,6 +116,11 @@ return [
     'update_staff' => 'update_staff',
     'cancel_staff' => 'delete_staff',
 
+    // staff permissions
+    'view_staff_permissions' => 'view_staff_permissions',
+    'assign_staff_permissions' => 'assign_staff_permissions',
+
+
     // currencies
     'view_currencies' => 'view_currencies',
     'create_currencies' => 'create_currencies',

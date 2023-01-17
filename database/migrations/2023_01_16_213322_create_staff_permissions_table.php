@@ -18,6 +18,7 @@ class CreateStaffPermissionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('permission_id');
             $table->integer('staff_id')->unsigned();
+            $table->boolean('active')->default(0);
             $table->timestamps();
         
             $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');

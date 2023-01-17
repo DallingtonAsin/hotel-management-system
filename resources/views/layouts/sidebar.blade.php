@@ -226,6 +226,11 @@
                         </li>
                     @endhaspermission
 
+                    @haspermission(config('permissions')['view_staff_permissions'])
+                    <li class="nav-sub-item"><a href="{{ route('staff-permissions.index') }}" class="nav-sub-link">Staff Permissions</a>
+                    </li>
+                @endhaspermission
+
 
                     <li class="nav-item">
                         <a href="" class="nav-link with-sub">Finances</a>

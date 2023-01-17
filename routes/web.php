@@ -29,6 +29,9 @@ use App\Http\Controllers\Home\HomeController;
 // HR Controllers
 use App\Http\Controllers\HR\DepartmentController;
 use App\Http\Controllers\HR\DesignationController;
+use App\Http\Controllers\HR\StaffMemberController;
+use App\Http\Controllers\HR\StaffPermissionController;
+
 
 // Inventory Controllers
 use App\Http\Controllers\Inventory\DamagesController;
@@ -64,7 +67,6 @@ use App\Http\Controllers\Settings\SettingsController;
 // User Controllers
 use App\Http\Controllers\User\CustomersController;
 use App\Http\Controllers\User\ProfileController;
-use App\Http\Controllers\User\StaffMemberController;
 use App\Http\Controllers\User\SuppliersController;
 use App\Http\Controllers\User\UserController;
 
@@ -141,6 +143,8 @@ Route::get('designations/index/ajax', [DesignationController::class, 'getDesigna
 Route::get('designations/fetch/ajax', [DesignationController::class, 'getDesignationsDataTable'])->name('designations.index.ajax');
 Route::get('staff-members/ajax', [UserController::class, 'fetchStaffAjax'])->name('staff.ajax.fetch');
 Route::get('staff/fetch/ajax', [StaffMemberController::class, 'GetStaffMemebers'])->name('staff.index.ajax');
+Route::get('staff-members/permissions/ajax', [StaffPermissionController::class, 'getStaffPermissions'])->name('staff.permissions.ajax.fetch');
+Route::post('staff-members/permissions/store', [StaffPermissionController::class, 'store'])->name('permissions.assign');
 
 
 // Inventory Routes
@@ -308,6 +312,7 @@ Route::group(['middleware' => 'restricted'], function () {
 		'departments' => DepartmentController::class,
 		'designations' => DesignationController::class,
 		'staff' => StaffMemberController::class,
+		'staff-permissions' => StaffPermissionController::class,
 		'payments' => PaymentController::class,
 		'salary' => SalaryController::class,
 		'customers' => CustomersController::class,

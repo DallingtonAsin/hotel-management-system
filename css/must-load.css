@@ -159,3 +159,9 @@ tfoot {
   max-width: 950px;
   margin: 2rem auto;
 }
+
+.permission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1em;
+}

@@ -21,7 +21,8 @@ class StaffPermissionsTableSeeder extends Seeder
          $permission_id = Permission::where('name', $permission)->value('id');
          StaffPermission::create([
             'permission_id' => $permission_id,
-            'staff_id' => 1
+            'staff_id' => 1,
+             'active' => 1
          ]);
       }
 
