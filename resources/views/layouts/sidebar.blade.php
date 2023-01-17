@@ -295,7 +295,7 @@
                 <a href="" class="nav-link with-sub"><i class="fa fa-cog"></i>Others</a>
 
                 <ul class="nav-sub">
-                    @haspermission(config('permissions')['view_audit_trail'])
+                    @haspermission(config('permissions')['view_settings'])
                         <li class="nav-sub-item"><a href="{{ route('companies.create') }}"
                                 class="nav-sub-link">Settings</a></li>
                     @endhaspermission
