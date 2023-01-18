@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 class CreateKitchenOrderInvoicesTable extends Migration
 {
@@ -21,6 +23,7 @@ class CreateKitchenOrderInvoicesTable extends Migration
             $table->double('tax', 10, 2);
             $table->double('total', 10, 2);
             $table->string('status');
+            $table->string('payment_method')->nullable();
             $table->timestamps();
             $table->foreign('order_number')->references('order_number')->on('kitchen_orders')->onDelete('cascade');
 

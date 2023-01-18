@@ -41,7 +41,7 @@ use App\Http\Controllers\Inventory\StockController;
 
 // Invoice Controllers
 use App\Http\Controllers\Invoices\InvoiceController;
-use App\Http\Controllers\Invoices\InvoiceGuestController;
+use App\Http\Controllers\Invoices\ReservationInvoiceController;
 
 // Kitchen Controllers
 use App\Http\Controllers\Kitchen\KitchenOrderController;
@@ -310,7 +310,7 @@ Route::group(['middleware' => 'restricted'], function () {
 		'rooms' => RoomController::class,
 		'guest_types' => GuestTypeController::class,
 		'guests' => GuestController::class,
-		'invoice_guests' => InvoiceGuestController::class,
+		'reservation_invoices' => ReservationInvoiceController::class,
 		'reservations' => ReservationController::class,
 		'departments' => DepartmentController::class,
 		'designations' => DesignationController::class,

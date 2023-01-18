@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\InvoiceGuest;
+use App\Models\ReservationInvoice;
 use App\Models\Guest;
 use App\Models\GuestType;
 use App\Models\Company;
@@ -43,7 +43,7 @@ class InvoiceController extends Controller
                 $hotel = Company::first();
             }
 
-            $invoice = InvoiceGuest::where('reservation_id', $id)->first();
+            $invoice = ReservationInvoice::where('reservation_id', $id)->first();
             $reservation = Reservation::find($id);
             $guest_type_id = $reservation->guest_type_id;
             $guestTypeObj = GuestType::find($guest_type_id);

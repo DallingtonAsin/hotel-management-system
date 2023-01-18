@@ -16,7 +16,7 @@
                             @foreach($permissions as $permission)
                                 <div>
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" {{ $staff->hasPermission($permission->name) ? 'checked' : '' }}>
-                                    {{ $permission->name }}
+                                    {{ ucfirst(str_replace('_', ' ', $permission->name)) }}
                                 </div>
                             @endforeach
                         </div>

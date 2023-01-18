@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Reservation;
 
-class InvoiceGuest extends Model
+class ReservationInvoice extends Model
 {
     use HasFactory;
 
-    protected $table = 'invoice_guests';
+    protected $table = 'reservation_invoices';
     public $timestamps = true;
 
     protected $fillable = [

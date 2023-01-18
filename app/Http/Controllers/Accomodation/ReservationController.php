@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\DataTables\Accomodation\ReservationsDataTable;
 use App\Models\Reservation;
 use App\Models\GuestType;
-use App\Models\InvoiceGuest;
+use App\Models\ReservationInvoice;
 use App\Models\Guest;
 use App\Models\Room;
 use App\Models\RoomType;
@@ -193,7 +193,7 @@ class ReservationController extends Controller
 
                     $reservationDetails = $resp['data'];
                     $reservation_id = $reservationDetails->id;
-                    $guestInvoiceNumber  = Helper::generateUniqueNumber('invoice_guests', 'invoice_number', 10, 'CMH');
+                    $guestInvoiceNumber  = Helper::generateUniqueNumber('reservation_invoices', 'invoice_number', 10, 'CMH');
 
                     $invoiceData = [
                         'invoice_number' => $guestInvoiceNumber,
@@ -230,7 +230,7 @@ class ReservationController extends Controller
     private function createInvoiceForGuest($data)
     {
         try {
-            return InvoiceGuest::create($data);
+            return ReservationInvoice::create($data);
         } catch (\Exception $ex) {
             throw $ex;
         }

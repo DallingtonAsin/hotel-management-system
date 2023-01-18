@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class CreateInvoiceGuestsTable extends Migration
+class CreateReservationInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateInvoiceGuestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_guests', function (Blueprint $table) {
+        Schema::create('reservation_invoices', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number');
             $table->unsignedBigInteger('reservation_id');
@@ -24,6 +24,7 @@ class CreateInvoiceGuestsTable extends Migration
             $table->decimal('total_amount', 8, 2)->storedAs('amount + tax');
             $table->timestamp('ts_issued');
             $table->integer('issued_by')->unsigned();
+            $table->string('payment_method')->nullable();
             $table->integer('cancelled_by')->unsigned()->nullable();
             $table->timestamp('ts_paid')->nullable();
             $table->timestamp('ts_cancelled')->nullable();
@@ -45,7 +46,7 @@ class CreateInvoiceGuestsTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Schema::dropIfExists('invoice_guests');
+        Schema::dropIfExists('reservation_invoices');
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
