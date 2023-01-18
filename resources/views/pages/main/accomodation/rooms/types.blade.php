@@ -94,16 +94,16 @@
                         </div>
 
                         <div class="form-group">
-                          <span><i class="text-danger pr-1">*</i>Single Occupancy Rate</span>
-                          <input type="text" class="form-control single_occupancy_rate bg-white" name="single_occupancy_rate"
-                              placeholder="Enter single occupacy rate" required autofocus>
-                      </div>
+                            <span><i class="text-danger pr-1">*</i>Single Occupancy Rate</span>
+                            <input type="text" class="form-control single_occupancy_rate bg-white"
+                                name="single_occupancy_rate" placeholder="Enter single occupacy rate" required autofocus>
+                        </div>
 
-                      <div class="form-group">
-                        <span><i class="text-danger pr-1">*</i>Double Occupancy rate</span>
-                        <input type="text" class="form-control double_occupancy_rate bg-white" name="double_occupancy_rate"
-                            placeholder="Enter double occupacy rate" required autofocus>
-                    </div>
+                        <div class="form-group">
+                            <span><i class="text-danger pr-1">*</i>Double Occupancy rate</span>
+                            <input type="text" class="form-control double_occupancy_rate bg-white"
+                                name="double_occupancy_rate" placeholder="Enter double occupacy rate" required autofocus>
+                        </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary addRoomTypeBtn"
@@ -214,10 +214,9 @@
         const ajaxUrl = @json(route('roomstypes.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
         const cat = 'room_types';
-  </script>
+    </script>
 
     <script type="text/javascript">
-      
         $(document).ready(function() {
 
             let table = $('#room-types-table');
@@ -255,13 +254,15 @@
 
             $('#addNewRoomType').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addRoomTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.roomTypeId').val('');
-                $('#RoomTypesForm').trigger("reset");
-                $('#modalHeading').html("Add new room type");
-                $('#addRoomTypeModal').modal('show');
+                checkPermission(permissions.create_room_types, function(room_type) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addRoomTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.roomTypeId').val('');
+                    $('#RoomTypesForm').trigger("reset");
+                    $('#modalHeading').html("Add new room type");
+                    $('#addRoomTypeModal').modal('show');
+                });
             });
 
 
@@ -272,7 +273,12 @@
             $('body').on('click', '#edit-room-type', function(event) {
                 let room_type_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_room_types, function(room_type) {
+                    editRoomType(room_type_id);
+                });
+            });
 
+            function editRoomType(room_type_id) {
                 $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '/edit', function(data) {
 
                     $('#modalHeading').html("Edit details of room type " + data.name + "");
@@ -287,17 +293,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [room types details]
             $('body').on('click', '#view-room-type', function(event) {
                 let room_type_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_room_types, function(room_type) {
+                    viewRoomType(room_type_id);
+                });
+            });
 
+            function viewRoomType(room_type_id) {
                 $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '', function(data) {
-
                     $('#modalHeading').html("Details of room type " + data.name + "");
                     $('#addRoomTypeModal').modal('show');
                     $('.roomTypeId').val(data.id);
@@ -309,8 +319,8 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
 
             $('.addRoomTypeBtn').click(function(e) {
@@ -359,12 +369,13 @@
             $('body').on('click', '#delete-room-type', function(e) {
                 let room_type_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this room type?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(room_type_id);
+                checkPermission(permissions.delete_room_types, function(room_type) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html("Are you sure you want to delete this room type?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(room_type_id);
+                    });
                 });
-
             });
 
 

@@ -92,21 +92,21 @@
                         </div>
 
                         <div class="form-group">
-                          <span><span class="text-danger pr-1">*</span>Is Regular</span><br>
-                          <input type="radio" id="yes" name="is_regular" value="Yes">
-                          <label for="yes">Yes</label>
-                          <input type="radio" id="no" name="is_regular" value="No" checked="true">
-                          <label for="no">No</label>
+                            <span><span class="text-danger pr-1">*</span>Is Regular</span><br>
+                            <input type="radio" id="yes" name="is_regular" value="Yes">
+                            <label for="yes">Yes</label>
+                            <input type="radio" id="no" name="is_regular" value="No" checked="true">
+                            <label for="no">No</label>
                         </div>
-  
 
-                      <div class="form-group">
-                        <span><span class="text-danger pr-1">*</span>Is Corporate</span><br>
-                        <input type="radio" id="yes" name="is_corporate" value="Yes">
-                          <label for="yes">Yes</label>
-                          <input type="radio" id="no" name="is_corporate" value="No" checked="true">
-                          <label for="no">No</label>
-                    </div>
+
+                        <div class="form-group">
+                            <span><span class="text-danger pr-1">*</span>Is Corporate</span><br>
+                            <input type="radio" id="yes" name="is_corporate" value="Yes">
+                            <label for="yes">Yes</label>
+                            <input type="radio" id="no" name="is_corporate" value="No" checked="true">
+                            <label for="no">No</label>
+                        </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary addGuestTypeBtn"
@@ -244,7 +244,7 @@
                     data: 'is_corporate',
                     name: 'is_corporate'
                 },
-               {
+                {
                     data: 'created_by',
                     name: 'created_by'
                 },
@@ -260,13 +260,15 @@
 
             $('#addNewGuestType').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addGuestTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.guestTypeId').val('');
-                $('#GuestTypesForm').trigger("reset");
-                $('#modalHeading').html("Add new guest type");
-                $('#addGuestTypeModal').modal('show');
+                checkPermission(permissions.create_guest_types, function(guest) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addGuestTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.guestTypeId').val('');
+                    $('#GuestTypesForm').trigger("reset");
+                    $('#modalHeading').html("Add new guest type");
+                    $('#addGuestTypeModal').modal('show');
+                });
             });
 
 
@@ -277,9 +279,13 @@
             $('body').on('click', '#edit-guest-type', function(event) {
                 let guest_type_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_guest_types, function(guest_type) {
+                    editGuestType(guest_type_id);
+                });
+            });
 
+            function editGuestType(guest_type_id) {
                 $.get("{{ route('guest_types.index') }}" + '/' + guest_type_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of guest type " + data.name + "");
                     $('.addGuestTypeBtn').text("Edit guest type");
                     $('#addGuestTypeModal').modal('show');
@@ -287,17 +293,21 @@
                     $('.name').val(data.name);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [guest types details]
             $('body').on('click', '#view-guest-type', function(event) {
                 let guest_type_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_guest_types, function(guest_type) {
+                    viewGuestType(guest_type_id);
+                });
+            });
 
+            function viewGuestType(guest_type_id) {
                 $.get("{{ route('guest_types.index') }}" + '/' + guest_type_id + '', function(data) {
-
                     $('#modalHeading').html("Details of guest-type " + data.name + "");
                     $('#addGuestTypeModal').modal('show');
                     $('.guestTypeId').val(data.id);
@@ -309,8 +319,8 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
 
             $('.addGuestTypeBtn').click(function(e) {
@@ -331,7 +341,7 @@
                             $('#GuestTypesForm').trigger("reset");
                             $('#addGuestTypeModal').modal("hide");
                             let resp = data.success;
-                         
+
                             displayResponse('.response', resp, 'success');
                             ResetTblInfo(data);
                             let tbl = $('#room-types-table').DataTable();
@@ -360,12 +370,14 @@
             $('body').on('click', '#delete-guest-type', function(e) {
                 let guest_type_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this guest type?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(guest_type_id);
+                checkPermission(permissions.delete_guest_types, function(guest_type) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html(
+                    "Are you sure you want to delete this guest type?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(guest_type_id);
+                    });
                 });
-
             });
 
 

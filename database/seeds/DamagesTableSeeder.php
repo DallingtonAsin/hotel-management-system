@@ -13,7 +13,7 @@ class DamagesTableSeeder extends Seeder
     public function run()
     {
 
-        \App\Models\Damage::factory()->count(10)->create();
+        \App\Models\Damage::factory()->count(20)->create();
 
     }
 }

@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\InvoiceGuest;
+use App\Models\ReservationInvoice;
 
-class InvoiceGuestTableSeeder extends Seeder
+class ReservationInvoiceTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class InvoiceGuestTableSeeder extends Seeder
      */
     public function run()
     {
-        InvoiceGuest::factory()->count(10)->create();
+        ReservationInvoice::factory()->count(100)->create();
     }
 }

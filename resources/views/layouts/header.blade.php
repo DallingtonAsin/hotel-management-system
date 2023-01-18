@@ -53,7 +53,7 @@
       </div>
 
       <div class="dropdown az-profile-menu">
-        <a href="" class="text-decoration-none nunito-font username text-cap">
+        <a href="" class="text-decoration-none nunito-font username text-cap mt-3">
           <span class="mt-5 text-white">{{{ isset(Auth::user()->first_name) ? Auth::user()->first_name. ' '.Auth::user()->last_name : Auth::user()->email }}}
            </span>
           <i class="dropdown-toggle"></i></a>

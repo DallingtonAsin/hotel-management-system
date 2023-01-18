@@ -12,6 +12,7 @@ return [
 
     // view pos
     'view_pos' => 'view_pos',
+    'issue_discounts' => 'issue_discounts',
 
     // kitchen orders
     'view_kitchen_orders' => 'view_kitchen_orders',
@@ -19,7 +20,7 @@ return [
     'edit_kitchen_orders' => 'edit_kitchen_orders',
     'cancel_kitchen_orders' => 'cancel_kitchen_orders',
     'change_kitchen_order_status' => 'change_kitchen_order_status',
-    'download_kitchen_order_invoice' => 'download_kitchen_order_invoice',
+    'download_kitchen_order_invoice' => 'generate_kitchen_order_invoice',
 
     // kitchen menu items
     'view_kitchen_menu_items' => 'view_kitchen_menu_items',
@@ -77,44 +78,45 @@ return [
 
     // rooms
     'view_rooms' => 'view_rooms',
-    'create_rooms' => 'create_rooms',
+    'create_rooms' => 'add_rooms',
     'edit_rooms' => 'edit_rooms',
     'delete_rooms' => 'delete_rooms',
 
     // room types
     'view_room_types' => 'view_room_types',
-    'create_room_types' => 'create_room_types',
+    'create_room_types' => 'add_room_types',
     'edit_room_types' => 'edit_room_types',
     'delete_room_types' => 'delete_room_types',
 
 
     // guests
     'view_guests' => 'view_guests',
-    'create_guests' => 'create_guests',
+    'create_guests' => 'add_guests',
     'edit_guests' => 'edit_guests',
     'delete_guests' => 'delete_guests',
 
     // guest types
     'view_guest_types' => 'view_guest_types',
-    'create_guest_types' => 'create_guest_types',
+    'create_guest_types' => 'add_guest_types',
     'edit_guest_types' => 'edit_guest_types',
     'delete_guest_types' => 'delete_guest_types',
 
     // reservations
     'view_reservations' => 'view_reservations',
-    'create_reservations' => 'create_reservations',
+    'create_reservations' => 'add_reservations',
     'edit_reservations' => 'edit_reservations',
-    'cancel_reservations' => 'delete_reservations',
+    'cancel_reservations' => 'cancel_reservations',
+    'download_reservation_invoice' => 'generate_reservation_invoice',
 
     // departments
     'view_departments' => 'view_departments',
-    'create_departments' => 'create_departments',
+    'create_departments' => 'add_departments',
     'edit_departments' => 'edit_departments',
     'cancel_departments' => 'delete_departments',
 
     // designations
     'view_designations' => 'view_designations',
-    'create_designations' => 'create_designations',
+    'create_designations' => 'add_designations',
     'edit_designations' => 'edit_designations',
     'cancel_designations' => 'delete_designations',
 
@@ -131,19 +133,19 @@ return [
 
     // currencies
     'view_currencies' => 'view_currencies',
-    'create_currencies' => 'create_currencies',
+    'create_currencies' => 'add_currencies',
     'edit_currencies' => 'edit_currencies',
     'cancel_currencies' => 'delete_currencies',
 
     // salaries
     'view_salaries' => 'view_salaries',
-    'create_salaries' => 'create_salaries',
+    'create_salaries' => 'add_salaries',
     'edit_salaries' => 'edit_salaries',
     'cancel_salaries' => 'delete_salaries',
 
     // payments
     'view_payments' => 'view_payments',
-    'create_payments' => 'create_payments',
+    'create_payments' => 'add_payments',
     'edit_payments' => 'edit_payments',
     'cancel_payments' => 'delete_payments',
 

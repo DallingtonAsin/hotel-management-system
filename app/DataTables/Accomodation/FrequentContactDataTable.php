@@ -24,16 +24,16 @@ class FrequentContactDataTable extends DataTable
         ->addColumn('action', function ($freqContact) {
 
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-                    data-id="' . $freqContact->id . '" data-original-title="Edit" id="edit-freq-contact"
-                    class="edit-btn edit-freq-contact pr-4">
+                    data-id="' . $freqContact->id . '" data-original-title="Edit" id="edit-frequent-contact"
+                    class="edit-btn edit-frequent-contact pr-4">
                     <span class="fa fa-pen"></span></a>';
 
-            $btn .= '<a href="javascript:void(0);" id="delete-freq-contact" 
+            $btn .= '<a href="javascript:void(0);" id="delete-frequent-contact" 
                     data-toggle="tooltip" data-original-title="Delete"
                     data-id="' . $freqContact->id . '" class="trash-btn pr-4"">
                     <span class="fa fa-trash-alt" ></span></a>';
 
-            $btn .= '<a href="javascript:void(0);" id="view-freq-contact" 
+            $btn .= '<a href="javascript:void(0);" id="view-frequent-contact" 
                     data-toggle="tooltip" data-original-title="View"
                         data-id="' . $freqContact->id . '" class="text-info bolded">
                     <i class="fa fa-eye" ></i></a>';

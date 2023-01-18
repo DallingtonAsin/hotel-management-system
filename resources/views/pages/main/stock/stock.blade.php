@@ -3,7 +3,7 @@
 @section('content')
     <span class="response"></span>
     <div class="card">
-      
+
         <div class="card-header row d-flex justify-content-between align-items-center">
 
             <div class="col">
@@ -87,7 +87,7 @@
 
                             <div class="modal-body">
 
-                    
+
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Item</span>
                                     <input type="text" class="form-control bg-white item-name" name="item"
@@ -398,21 +398,27 @@
 
             $('#createNewStock').click(function(e) {
                 e.preventDefault();
-                NullifyFields();
-                ShowHideBtns('show');
-                $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('#StockForm').trigger("reset");
-                $('#modalHeading').html("Record new stock");
-                DisableFormFields(false);
-                $('#addStockModal').modal('show');
-
+                checkPermission(permissions.add_stock, function(stock) {
+                    NullifyFields();
+                    ShowHideBtns('show');
+                    $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('#StockForm').trigger("reset");
+                    $('#modalHeading').html("Record new stock");
+                    DisableFormFields(false);
+                    $('#addStockModal').modal('show');
+                });
             });
 
             //modal used to edit stock details [each row of the tbl]
             $('body').on('click', '#edit-stock', function(event) {
                 let stock_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_stock, function(stock) {
+                    editStock(stock_id);
+                });
+            });
 
+            function editStock(stock_id) {
                 ShowHideBtns('show');
                 $('.addStockBtn').text("Edit stock");
                 $('#addStockModal').modal('show');
@@ -448,11 +454,7 @@
                         displayResponse('.response', data.error, 'error');
                     }
                 });
-
-            });
-
-
-
+            }
 
             function UpdateStock(stock_id) {
 
@@ -527,6 +529,12 @@
             $('body').on('click', '#view-stock', function(event) {
                 let stock_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_stock, function(stock) {
+                    viewStock(stock_id);
+                });
+            });
+
+            function viewStock(stock_id) {
                 ShowHideBtns('hide');
                 $.get("{{ route('stock.index') }}" + '/' + stock_id + '', function(data) {
                     let bprice = data.buying_price;
@@ -546,9 +554,8 @@
                     $('.selling_price').val(sprice);
                     $('.wholesale_price').val(wprice);
                     DisableFormFields(true);
-
                 });
-            });
+            }
 
 
             function onClickSubmitBtn() {
@@ -578,18 +585,16 @@
                 });
             }
 
-
-
-
             //this pops up confirm delete modal
             $('body').on('click', '#delete-stock', function(e) {
                 let stock_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteStockModal").modal('show');
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(stock_id);
+                checkPermission(permissions.delete_stock, function(stock) {
+                    $("#deleteStockModal").modal('show');
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(stock_id);
+                    });
                 });
-
             });
 
 
@@ -663,7 +668,7 @@
                 let totl_stock, stockValue;
                 totl_stock = FormatNumber(response.totl_stock);
                 stockValue = FormatNumber(response.stock_value);
-              
+
                 $('.totl-stock').html(totl_stock);
                 $('.stock-value').html(stockValue);
             }
@@ -750,10 +755,6 @@
                 });
 
             }
-
-
-
-
         });
     </script>
 @endsection

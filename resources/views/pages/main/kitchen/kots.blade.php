@@ -763,28 +763,38 @@
                 })
             });
 
-            //Generate invoice
+            //Generate general invoice
             $('body').on('click', '#download-invoice', function(event) {
+                let invoice_id = $(this).data('id');
+                event.preventDefault();
+                downloadKOT(invoice_id, 'general');
+            });
 
-                var invoice_id = $(this).data('id');
+             //Generate hitchen invoice
+             $('body').on('click', '#download-kitchen-invoice', function(event) {
+                let invoice_id = $(this).data('id');
+                event.preventDefault();
+                downloadKOT(invoice_id, 'kitchen');
+            });
 
+            function downloadKOT(invoice_id, type){
+                let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
+                url = url.replace(':id', invoice_id);
                 checkPermission(permissions.download_kitchen_order_invoice, function(kitchen_order) {
-                    let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
-                    url = url.replace(':id', invoice_id);
-
-                    event.preventDefault();
                     $.ajax({
                         url: url,
-                        type: 'GET',
+                        type: 'POST',
+                        data: {
+                           type: type,
+                        },
                         success: function(response) {
-
                             let returned_url = response.url;
                             console.log('Returned url is', response.url);
                             window.open(returned_url, '_blank');
                         }
                     });
                 });
-            });
+            }
 
 
             $('.addKotBtn').click(function(e) {

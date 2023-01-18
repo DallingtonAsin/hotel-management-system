@@ -15,6 +15,6 @@ class GuestTableSeeder extends Seeder
      */
     public function run()
     {
-        Guest::factory()->count(10)->create();
+        Guest::factory()->count(100)->create();
     }
 }

@@ -41,7 +41,7 @@ use App\Http\Controllers\Inventory\StockController;
 
 // Invoice Controllers
 use App\Http\Controllers\Invoices\InvoiceController;
-use App\Http\Controllers\Invoices\InvoiceGuestController;
+use App\Http\Controllers\Invoices\ReservationInvoiceController;
 
 // Kitchen Controllers
 use App\Http\Controllers\Kitchen\KitchenOrderController;
@@ -177,8 +177,7 @@ Route::post('purchases/deleteAll', [PurchasesController::class, 'deleteAllPurcha
 
 // Invoice Routes
 Route::get('invoice/reservation/download/{id}', [InvoiceController::class, 'downloadReservationInvoice'])->name('invoice.generate');
-Route::get('invoice/kitchen-order/download/{id}', [InvoiceController::class, 'downloadKitchenOrderInvoice'])->name('kitchen-order.invoice.generate');
-
+Route::post('invoice/kitchen-order/download/{id}', [InvoiceController::class, 'downloadKitchenOrderInvoice'])->name('kitchen-order.invoice.generate');
 
 // Kitchen Routes
 Route::get('kitchen/menu-items/ajax', [MenuItemController::class, 'fetchMenuItemsAjax'])->name('kitchen-menu-items.ajax.fetch');
@@ -311,7 +310,7 @@ Route::group(['middleware' => 'restricted'], function () {
 		'rooms' => RoomController::class,
 		'guest_types' => GuestTypeController::class,
 		'guests' => GuestController::class,
-		'invoice_guests' => InvoiceGuestController::class,
+		'reservation_invoices' => ReservationInvoiceController::class,
 		'reservations' => ReservationController::class,
 		'departments' => DepartmentController::class,
 		'designations' => DesignationController::class,

@@ -8,7 +8,7 @@ use App\DataTables\Finances\PaymentsDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Payment;
 use App\Models\Guest;
-use App\Models\InvoiceGuest;
+use App\Models\ReservationInvoice;
 use App\Helpers\Helper;
 class PaymentController extends Controller
 {
@@ -66,7 +66,7 @@ class PaymentController extends Controller
                 $guest = Guest::find($guest_id);
                 $guest_name = $guest->first_name . ' ' . $guest->last_name;
 
-                $doesInvoiceExist = InvoiceGuest::where('invoice_number', $invoice_number)->exists();
+                $doesInvoiceExist = ReservationInvoice::where('invoice_number', $invoice_number)->exists();
                 if ($doesInvoiceExist) {
 
                     $created_by = Helper::getLoggedInUserId();

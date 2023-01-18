@@ -18,7 +18,15 @@
         <div class="col-md-6">
           <p>Order ID: {{ $kitchenOrder->order_number }}</p>
           <p>Order Date: {{ date('Y-m-d H:i A', strtotime($kitchenOrder->order_date)) }}</p>
+          @if(isset($kitchenOrder->room_number))
+          <p>Room Number: {{ $kitchenOrder->room_number }}</p>
+          @endif
+  
+          @if(isset($guest))
+          <p>Guest Name: {{ $guest->first_name }} {{ $guest->last_name }}</p>
+          @endif
         </div>
+      
       </div>
 
     <table class="table table-bordered">

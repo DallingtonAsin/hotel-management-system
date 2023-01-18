@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\InvoiceGuest;
+use App\Models\ReservationInvoice;
 
 class Reservation extends Model
 {
@@ -24,6 +24,6 @@ class Reservation extends Model
 
     public function invoice()
     {
-        return $this->hasOne(InvoiceGuest::class);
+        return $this->hasOne(ReservationInvoice::class);
     }
 }

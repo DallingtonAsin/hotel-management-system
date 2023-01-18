@@ -231,26 +231,32 @@
 
             $('#createNewPdtCategory').click(function(e) {
                 e.preventDefault();
-                NullifyFields();
-                ShowHideBtns('show');
-                $('.addPdtCategoryBtn').text("Record product category");
-                $('#PdtCategoryForm').trigger("reset");
-                $('#modalHeading').html("Record New Pdt Category");
-                DisableFormFields(false);
-                $('#addItemCategoryModal').modal('show');
-
+                checkPermission(permissions.add_product_categories, function(category) {
+                    NullifyFields();
+                    ShowHideBtns('show');
+                    $('.addPdtCategoryBtn').text("Record product category");
+                    $('#PdtCategoryForm').trigger("reset");
+                    $('#modalHeading').html("Record New Pdt Category");
+                    DisableFormFields(false);
+                    $('#addItemCategoryModal').modal('show');
+                });
             });
 
             //modal used to edit PdtCategory details [each row of the tbl]
             $('body').on('click', '#edit-pdt-category', function(event) {
-                let PdtCategory_id = $(this).data('id');
+                let category_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_product_categories, function(category) {
+                    editProductCategory(category_id);
+                });
+            });
 
+            function editProductCategory(category_id) {
                 ShowHideBtns('show');
                 $('.addPdtCategoryBtn').text("Edit product category");
                 $('#addItemCategoryModal').modal('show');
                 let Url = "{{ route('product-categories.show', ':id') }}";
-                Url = Url.replace(':id', PdtCategory_id);
+                Url = Url.replace(':id', category_id);
                 $.ajax({
 
                     url: Url,
@@ -269,16 +275,15 @@
                         displayResponse('.response', data.error, 'error');
                     }
                 });
+            }
 
-            });
-
-            function UpdatePdtCategory(PdtCategory_id) {
+            function UpdatePdtCategory(category_id) {
 
                 $('.errors-section').html('');
                 $('.addPdtCategoryBtn').html('Updating item...');
 
                 let Url = "{{ route('product-categories.update', ':id') }}";
-                Url = Url.replace(':id', PdtCategory_id);
+                Url = Url.replace(':id', category_id);
                 $.ajax({
                     data: $('#PdtCategoryForm').serialize(),
                     url: Url,
@@ -343,11 +348,17 @@
 
             //View Modal used to view each row [PdtCategory details]
             $('body').on('click', '#view-pdt-category', function(event) {
-                let PdtCategory_id = $(this).data('id');
+                let category_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_product_categories, function(category) {
+                    viewProductCategory(category_id);
+                });
+            });
+
+            function viewProductCategory(category_id) {
                 ShowHideBtns('hide');
-                $.get("{{ route('product-categories.index') }}" + '/' + PdtCategory_id + '', function(
-                data) {
+                $.get("{{ route('product-categories.index') }}" + '/' + category_id + '', function(
+                    data) {
                     let bprice = data.buying_price;
                     let sprice = data.selling_price;
                     $('#modalHeading').html("Details of product category " + data.item_category +
@@ -356,9 +367,8 @@
                     $('.PdtCategoryId').val(data.id);
                     $('.PdtCategory').val(data.item_category);
                     DisableFormFields(true);
-
-                })
-            });
+                });
+            }
 
 
             function onClickSubmitBtn() {
@@ -391,13 +401,14 @@
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-pdt-category', function(e) {
-                let PdtCategory_id = $(this).data("id");
+                let category_id = $(this).data("id");
                 e.preventDefault();
-                $("#deletePdtCategoryModal").modal('show');
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(PdtCategory_id);
+                checkPermission(permissions.delete_product_categories, function(category) {
+                    $("#deletePdtCategoryModal").modal('show');
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(category_id);
+                    });
                 });
-
             });
 
 
@@ -409,7 +420,7 @@
                     type: "DELETE",
                     url: deleteUrl,
                     success: function(data) {
-                    
+
                         $('.delete-ok-btn').html('Yes');
                         $('#deletePdtCategoryModal').modal("hide");
 
@@ -421,9 +432,9 @@
                             let tbl = $('#product-categories-table').DataTable();
                             tbl.ajax.reload();
                         }
-                        
+
                         displayResponse('.response', resp, type);
-                 
+
                     },
                     error: function(data) {
                         console.log('Error:', data);

@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             GuestTypeTableSeeder::class,
             GuestTableSeeder::class,
             ReservationTableSeeder::class,
-            InvoiceGuestTableSeeder::class,
+            ReservationInvoiceTableSeeder::class,
             SalaryTableSeeder::class,
             // PaymentTableSeeder::class,
 

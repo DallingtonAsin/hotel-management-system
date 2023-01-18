@@ -7,7 +7,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Guest;
 use App\Models\GuestType;
-use App\Models\InvoiceGuest;
+use App\Models\ReservationInvoice;
 use App\Models\Room;
 use Carbon\Carbon;
 use App\Helpers\Helper;
@@ -31,9 +31,15 @@ class ReservationsDataTable extends DataTable
             })->addIndexColumn()
             ->addColumn('action', function ($reservation) {
 
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+                $btn = "";
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                  data-id="' . $reservation->id . '" data-original-title="Generate Invoice" id="generate-invoice"
-                 class="btn btn-xs btn-primary text-white generate-invoice pr-1"><i class="fa fa-download pr-1"></i> Invoice</a>';
+                 class="btn btn-xs btn-primary text-white generate-invoice"><i class="fa fa-download pr-1"></i> Invoice</a>';
+
+                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                 data-id="' . $reservation->id . '" data-original-title="Cancel Reservation" id="cancel-reservation"
+                 class="btn btn-xs btn-danger text-white cancel-reservation ml-2"><i class="fa fa-trash-alt pr-1"></i> Cancel</a>';
+
 
                 return $btn;
 
@@ -43,9 +49,9 @@ class ReservationsDataTable extends DataTable
             $guestTypeObj = GuestType::find($reservation->guest_type_id);
             return $guestTypeObj->name;
         })->addColumn('invoice_number', function ($reservation) {
-            $invoiceGuest = InvoiceGuest::find($reservation->id);
-            if(isset($invoiceGuest->invoice_number)){
-                $invoice_number = $invoiceGuest->invoice_number;
+            $ReservationInvoice = ReservationInvoice::find($reservation->id);
+            if(isset($ReservationInvoice->invoice_number)){
+                $invoice_number = $ReservationInvoice->invoice_number;
             }else{
                 $invoice_number = '00000';
             }
@@ -60,16 +66,16 @@ class ReservationsDataTable extends DataTable
             $nights = Carbon::parse($reservation->arrival_date)->diffInDays(Carbon::parse($reservation->departure_date));
             return $nights;
         })->addColumn('discount_percent', function ($reservation) {
-            $discount_percent = InvoiceGuest::where('reservation_id', $reservation->id)->value('discount_percent');
+            $discount_percent = ReservationInvoice::where('reservation_id', $reservation->id)->value('discount_percent');
             return $discount_percent;
         })->addColumn('tax', function ($reservation) {
-            $tax_amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('tax');
+            $tax_amount = ReservationInvoice::where('reservation_id', $reservation->id)->value('tax');
             return number_format($tax_amount);
         })->addColumn('amount', function ($reservation) {
-            $amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('amount');
+            $amount = ReservationInvoice::where('reservation_id', $reservation->id)->value('amount');
             return number_format($amount);
         })->addColumn('total_amount', function ($reservation) {
-            $total_amount = InvoiceGuest::where('reservation_id', $reservation->id)->value('total_amount');
+            $total_amount = ReservationInvoice::where('reservation_id', $reservation->id)->value('total_amount');
             $total_amount = number_format($total_amount);
             return $total_amount;
         })->addColumn('checkbox', function ($reservation) {

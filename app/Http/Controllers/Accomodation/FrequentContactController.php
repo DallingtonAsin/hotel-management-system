@@ -32,13 +32,13 @@ class FrequentContactController extends Controller
         $hasAccess = $this->hasPermissions($this->permissions['view_rooms']);
      
             $total_frequent_contacts = FrequentContact::count();
-            return view('pages.main.hr.frequent_contacts')->with(compact('total_frequent_contacts'));    
+            return view('pages.main.accomodation.guests.frequent_contacts')->with(compact('total_frequent_contacts'));    
       
     }
 
     public function getFrequentContactsDataTable(FrequentContactDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.hr.frequent_contacts');
+        return $dataTable->render('pages.main.accomodation.guests.frequent_contacts');
     }
 
     /**
