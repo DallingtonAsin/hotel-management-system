@@ -26,17 +26,17 @@
             </ul>
             <div class="tab-content mt-3 px-2" id="GuestTypesTabContent">
                
-                <div class="tab-pane fade" id="day-use-tab-pane" role="tabpanel" aria-labelledby="day-use-tab" tabindex="0">
-                    {{-- @include('pages.main.accomodation.reservations.forms.day_use') --}}
+                <div class="tab-pane fade show active" id="day-use-tab-pane" role="tabpanel" aria-labelledby="day-use-tab" tabindex="0">
+                    @include('pages.main.accomodation.reservations.forms.day_use')
                 </div>
 
-                <div class="tab-pane fade show active" id="regular-tab-pane" role="tabpanel" aria-labelledby="regular-tab"  tabindex="0">
+                <div class="tab-pane fade" id="regular-tab-pane" role="tabpanel" aria-labelledby="regular-tab"  tabindex="0">
                     @include('pages.main.accomodation.reservations.forms.regular_guest')
                 </div>
 
                 <div class="tab-pane fade" id="corporate-tab-pane" role="tabpanel" aria-labelledby="corporate-tab"
                     tabindex="0">
-                    {{-- @include('pages.main.accomodation.reservations.forms.corporate_guest') --}}
+                    @include('pages.main.accomodation.reservations.forms.corporate_guest')
                 </div>
             </div>
 

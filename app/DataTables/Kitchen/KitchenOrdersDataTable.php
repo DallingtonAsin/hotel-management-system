@@ -26,6 +26,11 @@ class KitchenOrdersDataTable extends DataTable
                 $btn = "";
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                data-id="' . $order->id . '" data-status="pending" data-original-title="Edit Order" id="edit-order"
+                class="btn btn-xs btn-default border-secondary text-dark mr-2">
+                <span class="fa fa-clock-o pr-2"></span>Edit order</a>';
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                 data-id="' . $order->id . '" data-status="pending" data-original-title="Mark Pending" id="mark-pending"
                 class="btn btn-xs btn-default border-secondary text-dark mr-2">
                 <span class="fa fa-clock-o pr-1"></span>Mark Pending</a>';
