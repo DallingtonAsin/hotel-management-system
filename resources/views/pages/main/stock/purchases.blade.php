@@ -261,7 +261,6 @@
 
 
     <script type="text/javascript">
-
         const ajaxUrl = @json(route('get-purchases'));
         const deletedSeletectedUrl = @json(route('selected-purchases.remove'));
         const cat = 'purchases';
@@ -327,14 +326,15 @@
 
             $('#createNewpurchase').click(function(e) {
                 e.preventDefault();
-                NullifyFields();
-                ShowHideBtns('show');
-                $('.addPurchaseBtn').text("Record purchase");
-                $('#purchaseForm').trigger("reset");
-                $('#modalHeading').html("Record new purchase");
-                DisableFormFields(false);
-                $('#addPurchaseModal').modal('show');
-
+                checkPermission(permissions.add_purchases, function(purchase) {
+                    NullifyFields();
+                    ShowHideBtns('show');
+                    $('.addPurchaseBtn').text("Record purchase");
+                    $('#purchaseForm').trigger("reset");
+                    $('#modalHeading').html("Record new purchase");
+                    DisableFormFields(false);
+                    $('#addPurchaseModal').modal('show');
+                });
             });
 
 
@@ -346,22 +346,24 @@
             $('body').on('click', '#edit-purchase', function(event) {
                 let purchase_id = $(this).data('id');
                 event.preventDefault();
-                HideContentOnEditing('hide');
+                checkPermission(permissions.edit_purchases, function(purchase) {
+                    editPurchase(purchase_id);
+                });
+            });
 
+            function editPurchase(purchase_id) {
+                HideContentOnEditing('hide');
                 ShowHideBtns('show');
                 $('.addPurchaseBtn').text("Edit purchase");
                 $('#addPurchaseModal').modal('show');
                 let Url = "{{ route('purchases.show', ':id') }}";
                 Url = Url.replace(':id', purchase_id);
                 $.ajax({
-
                     url: Url,
                     type: "GET",
                     dataType: 'json',
                     success: function(data) {
-
-                        $('#modalHeading').html("Edit details of purchase item " + data.item +
-                            "");
+                        $('#modalHeading').html("Edit details of purchase item " + data.item + "");
                         $('.purchaseId').val(purchase_id);
                         $('.serial_no').val(data.serial_no);
                         $('.receipt_no').val(data.receipt_no);
@@ -383,8 +385,7 @@
                         displayResponse('.response', data.error, 'error');
                     }
                 });
-
-            });
+            }
 
             function UpdatePurchase(purchase_id) {
 
@@ -460,6 +461,12 @@
             $('body').on('click', '#view-purchase', function(event) {
                 let purchase_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_purchases, function(purchase) {
+                    viewPurchase(purchase_id);
+                });
+            });
+
+            function viewPurchase(purchase_id) {
                 HideContentOnEditing('show');
                 let showUrl = '{{ route('purchases.show', ':id') }}';
                 showUrl = showUrl.replace(":id", purchase_id);
@@ -492,14 +499,12 @@
                         console.log(data);
                     }
                 });
-
-            });
+            }
 
             function FormatDate(givenDate) {
                 let result = moment(givenDate).format('dd-MM-yyyy');
                 return result;
             }
-
 
             function onClickSubmitBtn() {
                 $('.addPurchaseBtn').click(function(e) {
@@ -528,17 +533,15 @@
                 });
             }
 
-
-
-
             //this pops up confirm delete modal
             $('body').on('click', '#delete-purchase', function(e) {
                 let purchase_id = $(this).data("id");
-                $("#deletepurchaseModal").modal('show');
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(purchase_id);
+                checkPermission(permissions.delete_purchases, function(purchase) {
+                    $("#deletepurchaseModal").modal('show');
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(purchase_id);
+                    });
                 });
-
             });
 
 
@@ -577,9 +580,7 @@
             }
 
 
-
             function DisableFormFields(bool) {
-
                 $('.purchaseId').attr('disabled', bool);
                 $('.item_code').attr('disabled', bool);
                 $('.item-name').attr('disabled', bool);
@@ -704,9 +705,7 @@
                 });
 
             }
-
-
-
         });
+
     </script>
 @endsection
