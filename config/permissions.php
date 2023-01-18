@@ -19,7 +19,7 @@ return [
     'edit_kitchen_orders' => 'edit_kitchen_orders',
     'cancel_kitchen_orders' => 'cancel_kitchen_orders',
     'change_kitchen_order_status' => 'change_kitchen_order_status',
-    'download_kitchen_order_invoice' => 'download_kitchen_order_invoice',
+    'download_kitchen_order_invoice' => 'generate_kitchen_order_invoice',
 
     // kitchen menu items
     'view_kitchen_menu_items' => 'view_kitchen_menu_items',
@@ -105,6 +105,7 @@ return [
     'create_reservations' => 'create_reservations',
     'edit_reservations' => 'edit_reservations',
     'cancel_reservations' => 'delete_reservations',
+    'download_reservation_invoice' => 'generate_reservation_invoice',
 
     // departments
     'view_departments' => 'view_departments',

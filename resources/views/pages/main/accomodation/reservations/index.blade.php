@@ -226,15 +226,12 @@
         const token = "{{ csrf_token() }}";
 
         $(document).ready(function() {
-
-
-
+            
             //code that displays results of the table index()
-            var table = $('#reservations-table');
-            var title = "List of registered departments in the system";
-            var columns = [1, 2, 3, 4];
-            var dataColumns = [
-                {
+            let table = $('#reservations-table');
+            let title = "List of registered departments in the system";
+            let columns = [1, 2, 3, 4];
+            let dataColumns = [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
@@ -295,49 +292,41 @@
 
             makeDataTable(table, title, columns, dataColumns);
 
-            $('#addNewDepartment').click(function(e) {
-                e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addReservationBtn').text("Register reservation");
-                $('.reservationId').val('');
-                $('#SuppliersForm').trigger("reset");
-                $('#modalHeading').html("Register new reservation");
-                $('#addSuppliersModal').modal('show');
-            });
-
-
             Numberize(".debt");
             Numberize(".credit");
 
-
             //Generate invoice
             $('body').on('click', '#generate-invoice', function(event) {
-
-                var invoice_id = $(this).data('id');
-                let url = "{{ route('invoice.generate', ':id') }}";
-                url = url.replace(':id', invoice_id);
-
+                let invoice_id = $(this).data('id');
                 event.preventDefault();
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(response) {
-
-                        let returned_url = response.url;
-                        console.log('Returned url is', response.url);
-                        window.open(returned_url, '_blank');
-                    }
+                checkPermission(permissions.download_reservation_invoice, function(reservation) {
+                      downloadInvoice(invoice_id);
                 });
             });
 
+            function downloadInvoice(invoice_id){
+                let url = "{{ route('invoice.generate', ':id') }}";
+                    url = url.replace(':id', invoice_id);
+
+                    event.preventDefault();
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(response) {
+
+                            let returned_url = response.url;
+                            console.log('Returned url is', response.url);
+                            window.open(returned_url, '_blank');
+                        }
+                    });
+            }
+
             //modal used to edit reservations details [each row of the tbl]
             $('body').on('click', '#edit-reservation', function(event) {
-                var reservation_id = $(this).data('id');
+                let reservation_id = $(this).data('id');
                 event.preventDefault();
 
                 $.get("{{ route('reservations.index') }}" + '/' + reservation_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of reservation " + data.name + "");
                     $('.addReservationBtn').text("Edit reservation");
                     $('#addSuppliersModal').modal('show');
@@ -356,11 +345,9 @@
 
             //View Modal used to view each row [reservations details]
             $('body').on('click', '#view-reservation', function(event) {
-                var reservation_id = $(this).data('id');
+                let reservation_id = $(this).data('id');
                 event.preventDefault();
-
                 $.get("{{ route('reservations.index') }}" + '/' + reservation_id + '', function(data) {
-
                     $('#modalHeading').html("Details of reservation " + data.name + "");
                     $('#addSuppliersModal').modal('show');
                     $('.reservationId').val(data.id);
@@ -374,85 +361,6 @@
                     HideBtns();
                 })
             });
-
-
-            $('.addSupplierBtn').click(function(e) {
-
-                e.preventDefault();
-
-                var Errors = validateForm();
-                if (Errors.length == 0) {
-                    $(this).html('Sending..');
-
-                    $.ajax({
-                        data: $('#SuppliersForm').serialize(),
-                        url: "{{ route('reservations.store') }}",
-                        type: "POST",
-                        dataType: 'json',
-                        success: function(data) {
-
-                            $('#SuppliersForm').trigger("reset");
-                            $('#addSuppliersModal').modal("hide");
-                            var resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            var tbl = $('#reservations-table').DataTable();
-                            tbl.ajax.reload();
-
-                        },
-                        error: function(data) {
-                            console.log('Error:', data.error);
-                            displayResponse('.response', data.error, 'error');
-                            $('.addReservationBtn').html('Save Changes');
-                        }
-                    });
-                } else {
-                    var i;
-                    var message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
-                }
-
-            });
-
-            //this pops up confirm delete modal
-            $('body').on('click', '#delete-reservation', function(e) {
-                var reservation_id = $(this).data("id");
-                e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this reservation?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(reservation_id);
-                });
-
-            });
-
-
-            function ListenAndDoDeletion(id) {
-                var deleteUrl = '{{ route('reservations.destroy', ':id') }}';
-                deleteUrl = deleteUrl.replace(':id', id);
-                $('.delete-ok-btn').html('Deleting...');
-                $.ajax({
-                    type: "DELETE",
-                    url: deleteUrl,
-                    success: function(data) {
-                        var resp = data.success;
-                        $('.delete-ok-btn').html('Yes');
-                        $('#deleteSuppliersModal').modal("hide");
-                        displayResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
-                        var tbl = $('#reservations-table').DataTable();
-                        tbl.ajax.reload();
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                        displayResponse('.response', data.error, 'error');
-                    }
-                });
-            }
 
 
             function DisableTableFields(bool) {
@@ -478,9 +386,9 @@
                 $('.closeBtn').show();
             }
 
-      
+
             function ResetTblInfo(response) {
-                var totl_number, sum_of_credits, sum_of_debts;
+                let totl_number, sum_of_credits, sum_of_debts;
                 totl_number = FormatNumber(response.totl_no);
                 sum_of_credits = FormatNumber(response.totl_credit);
                 sum_of_debts = FormatNumber(response.totl_debt);
@@ -491,20 +399,20 @@
             }
 
             function validateForm() {
-                var name = $('.name').val();
-                var address = $('.address').val();
-                var contact = $('.contact').val();
-                var errors = [];
+                let name = $('.name').val();
+                let address = $('.address').val();
+                let contact = $('.contact').val();
+                let errors = [];
                 if (name.length < 1) {
-                    var nameErr = "Please enter the name of the reservation";
+                    let nameErr = "Please enter the name of the reservation";
                     errors.push(nameErr);
                 }
                 if (address.length < 1) {
-                    var addressErr = "Please enter the address of the reservation";
+                    let addressErr = "Please enter the address of the reservation";
                     errors.push(addressErr);
                 }
                 if (contact.length < 1) {
-                    var contactErr = "Please enter reservation's contact";
+                    let contactErr = "Please enter reservation's contact";
                     errors.push(contactErr);
                 }
 
@@ -512,59 +420,6 @@
 
             }
 
-            $("#removeAllSuppliers").bind("click", function() {
-                RemoveAllSuppliers();
-            });
-
-            function RemoveAllSuppliers() {
-                $.confirm({
-                    boxWidth: '30%',
-                    icon: 'fa fa-warning',
-                    theme: 'light',
-                    closeIcon: true,
-                    draggable: true,
-                    closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all reservations',
-                    content: 'Are you sure you want to remove all reservations',
-                    buttons: {
-                        confirm: function() {
-                            var self = this;
-                            return $.ajax({
-                                data: {
-                                    "_token": "{{ csrf_token() }}",
-                                },
-                                url: '',
-                                type: 'POST',
-                            }).done(function(data) {
-
-                                $.alert({
-                                    title: 'Message',
-                                    content: data.success,
-                                });
-                                $(".totl_reservations").text(data.totl_no);
-                                $(".totl_credit").text(data.totl_credit);
-                                $(".totl_debt").text(data.totl_debt);
-                                var tbl = $('#reservations-table').DataTable();
-                                tbl.ajax.reload();
-
-
-                            }).fail(function(data) {
-                                $.alert({
-                                    title: 'Response',
-                                    content: "Suppliers not deleted:" + data.fail,
-                                });
-                                console.log(data);
-
-                            });
-
-                        },
-                        cancel: function() {
-
-                        }
-                    },
-                });
-
-            }
         });
     </script>
     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
