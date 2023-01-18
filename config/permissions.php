@@ -22,10 +22,16 @@ return [
     'download_kitchen_order_invoice' => 'download_kitchen_order_invoice',
 
     // kitchen menu items
-    'view_kitchen_items' => 'view_kitchen_items',
-    'add_kitchen_items' => 'add_kitchen_items',
-    'edit_kitchen_items' => 'edit_kitchen_items',
-    'cancel_kitchen_items' => 'cancel_kitchen_items',
+    'view_kitchen_menu_items' => 'view_kitchen_menu_items',
+    'add_kitchen_menu_items' => 'add_kitchen_menu_items',
+    'edit_kitchen_menu_items' => 'edit_kitchen_menu_items',
+    'cancel_kitchen_menu_items' => 'cancel_kitchen_menu_items',
+
+     // kitchen menu items categories
+     'view_kitchen_menu_item_categories' => 'view_kitchen_menu_item_categories',
+     'add_kitchen_menu_item_categories' => 'add_kitchen_menu_item_categories',
+     'edit_kitchen_menu_item_categories' => 'edit_kitchen_menu_item_categories',
+     'cancel_kitchen_menu_item_categories' => 'cancel_kitchen_menu_item_categories',
 
     // stock 
     'view_stock' => 'view_stock',
