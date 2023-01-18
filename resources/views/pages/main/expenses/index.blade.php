@@ -1,7 +1,6 @@
 @extends('layouts.template')
 
 @section('content')
-   
     <div class="card">
         <span class="response"></span>
         <div class="card-header row d-flex justify-content-between align-items-center">
@@ -259,13 +258,15 @@
 
             $('#createNewExpense').click(function(e) {
                 e.preventDefault();
-                DisableFormFields(false);
-                ShowBtns();
-                $('#addExpensesBtn').text("Record expense");
-                $('.expenseId').val('');
-                $('#ExpensesForm').trigger("reset");
-                $('#modalHeading').html("Record new expense");
-                $('#addExpensesModal').modal('show');
+                checkPermission(permissions.add_expenses, function(expense) {
+                    DisableFormFields(false);
+                    ShowBtns();
+                    $('#addExpensesBtn').text("Record expense");
+                    $('.expenseId').val('');
+                    $('#ExpensesForm').trigger("reset");
+                    $('#modalHeading').html("Record new expense");
+                    $('#addExpensesModal').modal('show');
+                });
             });
 
             function SanitizeString(str) {
@@ -279,9 +280,13 @@
             $('body').on('click', '#edit-expense', function(event) {
                 var expense_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_expenses, function(expense) {
+                    editExpense(expense_id);
+                });
+            });
 
+            function editExpense(expense_id) {
                 $.get("{{ route('expenses.index') }}" + '/' + expense_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of expense " + data.expense_type + "");
                     $('#addExpensesBtn').text("Edit expense");
                     $('#addExpensesModal').modal('show');
@@ -291,17 +296,21 @@
                     $('.date').val(data.date_of_expenditure);
                     DisableFormFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [expenses details]
             $('body').on('click', '#view-expense', function(event) {
                 var expense_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_expenses, function(expense) {
+                    viewExpense(expense_id);
+                });
+            });
 
+            function viewExpense(expense_id) {
                 $.get("{{ route('expenses.index') }}" + '/' + expense_id + '', function(data) {
-
                     $('#modalHeading').html("Details of expense " + data.expense_type + "");
                     $('#addExpensesModal').modal('show');
                     $('.expenseId').val(data.id);
@@ -310,11 +319,8 @@
                     $('.date').val(data.date_of_expenditure);
                     DisableFormFields(true);
                     HideBtns();
-                })
-            });
-
-
-
+                });
+            }
 
 
             $('#addExpensesBtn').click(function(e) {
@@ -371,12 +377,13 @@
             $('body').on('click', '#delete-expense', function(e) {
                 var expense_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteExpensesModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this expense?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(expense_id);
+                checkPermission(permissions.delete_expenses, function(expense) {
+                    $("#deleteExpensesModal").modal('show');
+                    $(".delete-alert-text").html("Are you sure you want to delete this expense?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(expense_id);
+                    });
                 });
-
             });
 
 
@@ -524,8 +531,6 @@
                 });
 
             }
-
-
         });
     </script>
 @endsection
