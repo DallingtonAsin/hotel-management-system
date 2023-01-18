@@ -18,6 +18,8 @@ return [
     'add_kitchen_orders' => 'add_kitchen_orders',
     'edit_kitchen_orders' => 'edit_kitchen_orders',
     'cancel_kitchen_orders' => 'cancel_kitchen_orders',
+    'change_kitchen_order_status' => 'change_kitchen_order_status',
+    'download_kitchen_order_invoice' => 'download_kitchen_order_invoice',
 
     // kitchen menu items
     'view_kitchen_items' => 'view_kitchen_items',
