@@ -310,13 +310,15 @@
 
             $('#createNewSupplier').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addSupplierBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.supplierId').val('');
-                $('#SuppliersForm').trigger("reset");
-                $('#modalHeading').html("Add new supplier");
-                $('#addSuppliersModal').modal('show');
+                checkPermission(permissions.add_suppliers, function(supplier) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addSupplierBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.supplierId').val('');
+                    $('#SuppliersForm').trigger("reset");
+                    $('#modalHeading').html("Add new supplier");
+                    $('#addSuppliersModal').modal('show');
+                });
             });
 
 
@@ -327,9 +329,13 @@
             $('body').on('click', '#edit-supplier', function(event) {
                 let supplier_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_suppliers, function(supplier) {
+                    editSupplier(supplier_id);
+                });
+            });
 
+            function editSupplier(supplier_id) {
                 $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of supplier " + data.name + "");
                     $('.addsupplierBtn').text("Edit supplier");
                     $('#addSuppliersModal').modal('show');
@@ -342,17 +348,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [suppliers details]
             $('body').on('click', '#view-supplier', function(event) {
                 let supplier_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_suppliers, function(supplier) {
+                    viewSupplier(supplier_id);
+                });
+            });
 
+            function viewSupplier(supplier_id) {
                 $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '', function(data) {
-
                     $('#modalHeading').html("Details of supplier " + data.name + "");
                     $('#addSuppliersModal').modal('show');
                     $('.supplierId').val(data.id);
@@ -364,8 +374,8 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
 
             $('.addSupplierBtn').click(function(e) {
@@ -423,12 +433,13 @@
             $('body').on('click', '#delete-supplier', function(e) {
                 let supplier_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(supplier_id);
+                checkPermission(permissions.delete_suppliers, function(supplier) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(supplier_id);
+                    });
                 });
-
             });
 
 
@@ -481,7 +492,7 @@
                 $('.closeBtn').show();
             }
 
-          
+
             function ResetTblInfo(response) {
 
                 let totl_number, sum_of_credits, sum_of_debts;
@@ -570,7 +581,7 @@
                 });
 
             }
-            
+
         });
     </script>
 @endsection
