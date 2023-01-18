@@ -434,7 +434,6 @@
 
 
             function DisableTableFields(bool) {
-
                 $('.roomId').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
                 $('.address').attr('disabled', bool);
