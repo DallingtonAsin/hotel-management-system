@@ -225,13 +225,15 @@
 
             $('#addNewDepartment').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addFreqContactBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.freqContactId').val('');
-                $('#FreqContactForm').trigger("reset");
-                $('#modalHeading').html("Add new frequent contact");
-                $('#addFrequentContactMOdal').modal('show');
+                checkPermission(permissions.add_frequent_contacts, function(freqContact) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addFreqContactBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.freqContactId').val('');
+                    $('#FreqContactForm').trigger("reset");
+                    $('#modalHeading').html("Add new frequent contact");
+                    $('#addFrequentContactMOdal').modal('show');
+                });
             });
 
 
@@ -290,10 +292,13 @@
             $('body').on('click', '#edit-frequent-contact', function(event) {
                 let freq_contact_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_frequent_contacts, function(freqContact) {
+                    editFrequentContact(freq_contact_id);
+                });
+            });
 
-                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '/edit', function(
-                    data) {
-
+            function editFrequentContact(freq_contact_id) {
+                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '/edit', function(data) {
                     $('#modalHeading').html("Edit details of frequent contact " + data.name + "");
                     $('.addFreqContactBtn').text("Edit frequent contact");
                     $('#addFrequentContactMOdal').modal('show');
@@ -306,18 +311,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [frequent contacts details]
             $('body').on('click', '#view-frequent-contact', function(event) {
                 let freq_contact_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_frequent_contacts, function(freqContact) {
+                    viewFrequentContact(freq_contact_id);
+                });
+            });
 
-                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '', function(
-                    data) {
-
+            function viewFrequentContact(freq_contact_id) {
+                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '', function(data) {
                     $('#modalHeading').html("Details of frequent contact " + data.name + "");
                     $('#addFrequentContactMOdal').modal('show');
                     $('.freqContactId').val(data.id);
@@ -329,19 +337,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-frequent-contact', function(e) {
                 let freq_contact_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this frequent contact?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(freq_contact_id);
+                checkPermission(permissions.delete_frequent_contacts, function(freqContact) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html(
+                        "Are you sure you want to delete this frequent contact?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(freq_contact_id);
+                    });
                 });
-
             });
 
 
