@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Invoices;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\InvoiceGuest;
 use App\Models\Guest;
 use App\Models\GuestType;
@@ -101,11 +102,16 @@ class InvoiceController extends Controller
     }
 
 
-    public function downloadKitchenOrderInvoice($id)
+    public function downloadKitchenOrderInvoice(Request $request, $id)
     {
+
+        $validator = Validator::make($request->all(), [
+            'type' => 'required'
+        ]);
 
         try {
 
+            $type = $request->input('type');
 
             $directory = 'invoices/kitchen_orders';
             Helper::createInvoicesDirIfnotExists(($directory));
@@ -139,7 +145,11 @@ class InvoiceController extends Controller
             $filename = 'invoice-' . $kitchenOrder->order_number . '-' . $kitchenOrder->id . '.pdf';
             $path = public_path('' . $directory . '/' . $filename);
 
-            $pdf = PDF::loadView('pages.main.invoices.kitchen_order', [
+            $type == 'general'
+            ? $view = 'pages.main.invoices.general_kitchen_order'
+            : $view = 'pages.main.invoices.kitchen_order';
+            
+            $pdf = PDF::loadView($view, [
                 'kitchenOrder' => $kitchenOrder,
                 'order_items' => $order_items,
                 'hotel' => $hotel,
@@ -155,7 +165,7 @@ class InvoiceController extends Controller
             return response()->json(['url' => $url]);
 
         } catch (\Exception $ex) {
-            return back()->with('error', $ex->getMessage());
+            return response()->json(['error' => $ex->getMessage()]);
         }
 
     }

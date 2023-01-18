@@ -12,7 +12,7 @@ class PurchasesTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Purchase::factory()->count(10)->create();
+        \App\Models\Purchase::factory()->count(150)->create();
 
 
     }

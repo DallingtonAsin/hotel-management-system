@@ -40,40 +40,45 @@ class KitchenOrdersDataTable extends DataTable
                         data-id="' . $order->id . '" data-status="cancelled" class="btn btn-xs btn-danger mr-2"">
                         <span class="fa fa-times-circle pr-1" ></span>Mark Cancelled</a>';
 
+
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                        data-id="' . $order->id . '" data-original-title="Kitchen Invoice" id="download-kitchen-invoice"
+                        class="btn btn-xs btn-default border border-warning text-dark edit-order ml-2">
+                        <span class="fa fa-download pr-1"></span>Kitchen Invoice</a>';
+
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                         data-id="' . $order->id . '" data-original-title="Download Invoice" id="download-invoice"
-                        class="btn btn-xs btn-secondary edit-order ml-2">
-                        <span class="fa fa-download pr-1"></span>Invoice</a>';
+                        class="btn btn-xs btn-default border border-success text-success edit-order ml-2">
+                        <span class="fa fa-download pr-1"></span>General Invoice</a>';
 
                 return $btn;
-
             })->addColumn('room_number', function ($order) {
-            $room_number = null;
-            if (isset($order->room_id)) {
-                $room = Helper::findRoom(($order->room_id));
-                $room_number = $room->number;
-            }
-            return $room_number;
-        })->editColumn('order_date', function ($order) {
-               return date('Y-m-d H:i A', strtotime($order->order_date));
-        })->addColumn('checkbox', function ($order) {
-            $checkBox = '<input type="checkbox" id="' . $order->id . '"/>';
-            return $checkBox;
-        })->editColumn('status', function ($order) {
+                $room_number = null;
+                if (isset($order->room_id)) {
+                    $room = Helper::findRoom(($order->room_id));
+                    $room_number = $room->number;
+                }
+                return $room_number;
+            })->editColumn('order_date', function ($order) {
+                return date('Y-m-d H:i A', strtotime($order->order_date));
+            })->addColumn('checkbox', function ($order) {
+                $checkBox = '<input type="checkbox" id="' . $order->id . '"/>';
+                return $checkBox;
+            })->editColumn('status', function ($order) {
 
-            if (stripos($order->status, 'progress') !== false) {
-                $statusText = "<span class='text-warning'>" . $order->status . "</span>";
-            } else if (stripos($order->status, 'completed') !== false) {
-                $statusText = "<span class='text-success'>" . $order->status . "</span>";
-            } else if (stripos($order->status, 'cancelled') !== false) {
-                $statusText = "<span class='text-danger'>" . $order->status . "</span>";
-            }
+                if (stripos($order->status, 'progress') !== false) {
+                    $statusText = "<span class='text-warning'>" . $order->status . "</span>";
+                } else if (stripos($order->status, 'completed') !== false) {
+                    $statusText = "<span class='text-success'>" . $order->status . "</span>";
+                } else if (stripos($order->status, 'cancelled') !== false) {
+                    $statusText = "<span class='text-danger'>" . $order->status . "</span>";
+                }
 
-            return $statusText;
-
-        })->editColumn('created_by', function ($order) {
-            return Helper::getUserNames($order->created_by);
-        })->rawColumns(['checkbox', 'status', 'action']);
+                return $statusText;
+            })->editColumn('created_by', function ($order) {
+                return Helper::getUserNames($order->created_by);
+            })->rawColumns(['checkbox', 'status', 'action']);
     }
 
     /**

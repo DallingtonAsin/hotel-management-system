@@ -177,8 +177,7 @@ Route::post('purchases/deleteAll', [PurchasesController::class, 'deleteAllPurcha
 
 // Invoice Routes
 Route::get('invoice/reservation/download/{id}', [InvoiceController::class, 'downloadReservationInvoice'])->name('invoice.generate');
-Route::get('invoice/kitchen-order/download/{id}', [InvoiceController::class, 'downloadKitchenOrderInvoice'])->name('kitchen-order.invoice.generate');
-
+Route::post('invoice/kitchen-order/download/{id}', [InvoiceController::class, 'downloadKitchenOrderInvoice'])->name('kitchen-order.invoice.generate');
 
 // Kitchen Routes
 Route::get('kitchen/menu-items/ajax', [MenuItemController::class, 'fetchMenuItemsAjax'])->name('kitchen-menu-items.ajax.fetch');

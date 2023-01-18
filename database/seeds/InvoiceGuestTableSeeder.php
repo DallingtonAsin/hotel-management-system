@@ -14,6 +14,6 @@ class InvoiceGuestTableSeeder extends Seeder
      */
     public function run()
     {
-        InvoiceGuest::factory()->count(10)->create();
+        InvoiceGuest::factory()->count(100)->create();
     }
 }

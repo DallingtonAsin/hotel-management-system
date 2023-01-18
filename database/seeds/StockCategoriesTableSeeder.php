@@ -12,7 +12,7 @@ class StockCategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\StockCat::factory()->count(10)->create();
+        \App\Models\StockCat::factory()->count(15)->create();
 
     }
 }

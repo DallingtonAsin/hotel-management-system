@@ -12,7 +12,7 @@ class SuppliersTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Supplier::factory()->count(10)->create();
+        \App\Models\Supplier::factory()->count(30)->create();
 
     }
 }

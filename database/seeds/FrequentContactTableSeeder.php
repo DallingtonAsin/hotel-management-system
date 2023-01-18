@@ -14,7 +14,7 @@ class FrequentContactTableSeeder extends Seeder
      */
     public function run()
     {
-         FrequentContact::factory()->count(5)->create();
+         FrequentContact::factory()->count(25)->create();
 
     }
 }

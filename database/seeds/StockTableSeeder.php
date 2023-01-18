@@ -12,7 +12,7 @@ class StockTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Stock::factory()->count(10)->create();
+        \App\Models\Stock::factory()->count(180)->create();
 
     }
 }
