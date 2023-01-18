@@ -26,8 +26,8 @@ class StaffPermissionsDataTable extends DataTable
         })->addIndexColumn()
        ->addColumn('is_active', function ($permission) {
                  return $permission->active 
-                 ? '<strong class="text-success">Yes</strong>' 
-                 : '<strong class="text-danger">No</strong>';
+                 ? '<span class="text-success">Yes</span>' 
+                 : '<span class="text-danger">No</span>';
         })->addColumn('permission_name', function ($permission) {
             $permission = Permission::find($permission->permission_id);
             return ucfirst(str_replace("_", " ", $permission->name));

@@ -75,4 +75,11 @@ class Staff extends Authenticatable
     })->wherePivot('active', true)->exists();
     
   }
+
+  public function syncPermissions(array $permissions)
+  {
+      $this->permissions()->sync($permissions);
+      return $this->permissions()->updateExistingPivot($permissions, ['active' => 1]);
+  }
+
 }

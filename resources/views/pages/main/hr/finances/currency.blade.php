@@ -75,8 +75,8 @@
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Rate</span>
-                            <input type="text" class="form-control rate bg-white" name="rate"
-                                placeholder="Enter rate" required autofocus>
+                            <input type="text" class="form-control rate bg-white" name="rate" placeholder="Enter rate"
+                                required autofocus>
                         </div>
 
                         <div class="form-group">
@@ -192,7 +192,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-        
+
             //code that displays results of the table index()
             let table = $('#currencies-table');
             let title = "List of recorded currencies in the system";
@@ -229,13 +229,15 @@
 
             $('#addNewCurrency').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addCurrencyBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.currencyId').val('');
-                $('#CurrencyForm').trigger("reset");
-                $('#modalHeading').html("Add new currency");
-                $('#addCurrencyModal').modal('show');
+                checkPermission(permissions.create_currencies, function(currency) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addCurrencyBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.currencyId').val('');
+                    $('#CurrencyForm').trigger("reset");
+                    $('#modalHeading').html("Add new currency");
+                    $('#addCurrencyModal').modal('show');
+                });
             });
 
 
@@ -263,14 +265,14 @@
                             let resp = data.success || data.error;
                             let type = data.success ? 'success' : 'error';
 
-                            if(data.success){
+                            if (data.success) {
                                 ResetTblInfo(data);
                                 let tbl = $('#currencies-table').DataTable();
                                 tbl.ajax.reload();
                             }
 
                             displayResponse('.response', resp, type);
-                      
+
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
@@ -294,9 +296,13 @@
             $('body').on('click', '#edit-currency', function(event) {
                 let currency_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_currencies, function(currency) {
+                    editCurrency(currency_id);
+                });
+            });
 
+            function editCurrency(currency_id) {
                 $.get("{{ route('currencies.index') }}" + '/' + currency_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of currency " + data.name + "");
                     $('.addCurrencyBtn').text("Edit currency");
                     $('#addCurrencyModal').modal('show');
@@ -309,17 +315,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [currencies details]
             $('body').on('click', '#view-currency', function(event) {
                 let currency_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_currencies, function(currency) {
+                    viewCurrency(currency_id);
+                });
+            });
 
+            function viewCurrency(currency_id) {
                 $.get("{{ route('currencies.index') }}" + '/' + currency_id + '', function(data) {
-
                     $('#modalHeading').html("Details of currency " + data.name + "");
                     $('#addCurrencyModal').modal('show');
                     $('.currencyId').val(data.id);
@@ -331,19 +341,20 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-currency', function(e) {
                 let currency_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this currency?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(currency_id);
+                checkPermission(permissions.cancel_currencies, function(currency) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html("Are you sure you want to delete this currency?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(currency_id);
+                    });
                 });
-
             });
 
 
@@ -393,7 +404,7 @@
                 $('.closeBtn').show();
             }
 
-         
+
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
                 $('.total_currencies').html(totl_number);
@@ -415,7 +426,7 @@
                 if (rate.length < 1) {
                     errors.push("Please enter the rate");
                 }
-        
+
                 return errors;
 
             }
@@ -474,6 +485,6 @@
             }
         });
     </script>
-     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

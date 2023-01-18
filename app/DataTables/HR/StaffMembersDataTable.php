@@ -26,18 +26,25 @@ class StaffMembersDataTable extends DataTable
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="' . $staff->id . '" data-original-title="Edit" id="edit-staff"
-              class="edit-btn edit-staff pr-4">
+              class="edit-btn edit-staff pr-3">
              <span class="fa fa-pen"></span></a>';
 
-                $btn .= '<a href="javascript:void(0);" id="delete-staff" 
-            data-toggle="tooltip" data-original-title="Delete"
-             data-id="' . $staff->id . '" class="trash-btn pr-4"">
-            <span class="fa fa-trash-alt" ></span></a>';
+        
 
                 $btn .= '<a href="javascript:void(0);" id="view-staff" 
            data-toggle="tooltip" data-original-title="View"
             data-id="' . $staff->id . '" class="text-info bolded">
            <i class="fa fa-eye" ></i></a>';
+
+        //    $btn .= '<a href="javascript:void(0);" id="delete-staff" 
+        //    data-toggle="tooltip" data-original-title="Delete"
+        //     data-id="' . $staff->id . '" class="trash-btn pr-4"">
+        //    <span class="fa fa-trash-alt" ></span></a>';
+
+           $btn .= '<a href="javascript:void(0);" id="edit-permissions" 
+           data-toggle="tooltip" data-original-title="Edit Permissions"
+            data-id="' . $staff->id . '" class="ml-3"">
+           <span class="fa fa-edit" ></span></a>';
 
                 return $btn;
 

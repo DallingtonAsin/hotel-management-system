@@ -165,3 +165,12 @@ tfoot {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1em;
 }
+
+.toast {
+  opacity: 1 !important;
+  filter: none !important;
+}
+.toast:hover {
+  opacity: 1 !important;
+  filter: none !important;
+}

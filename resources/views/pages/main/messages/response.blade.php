@@ -1,4 +1,4 @@
-@if (Session::has('success'))
+{{-- @if (Session::has('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong><span class="fa fa-check-circle"></span></strong>
     {{ Session::get('success') }}
@@ -12,7 +12,18 @@
     {{ Session::get('error') }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
+@endif --}}
+
+<script>
+@if (Session::has('success'))
+   toastr.success("{{ Session::get('success') }}")
 @endif
+
+@if (Session::has('error'))
+   toastr.error("{{ Session::get('error') }}")
+@endif
+
+</script>
 
 @if ($errors->any())
 <div class="alert alert-warning alert-dismissible fade show" role="alert">

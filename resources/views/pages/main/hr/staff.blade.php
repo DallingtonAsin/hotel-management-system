@@ -54,22 +54,22 @@
                             </div>
                         </div>
 
-                    <div class="row form-group">
-                        <div class="col-md-6">
-                            <span><span class="text-danger pr-1">*</span>Gender</span>
-                            <select class="form-control gender bg-white" name="gender">
-                                <option value="">Select gender</option>
-                                <option value="Female">Female</option>
-                                <option value="Male">Male</option>
-                            </select>
-                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <span><span class="text-danger pr-1">*</span>Gender</span>
+                                <select class="form-control gender bg-white" name="gender">
+                                    <option value="">Select gender</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-6">
-                            <span> Email</span>
-                            <input type="email" class="form-control email bg-white" name="email"
-                                placeholder="Enter email">
+                            <div class="col-md-6">
+                                <span> Email</span>
+                                <input type="email" class="form-control email bg-white" name="email"
+                                    placeholder="Enter email">
+                            </div>
                         </div>
-                    </div>
 
                         <div class="row form-group">
                             <div class="col-md-3">
@@ -361,15 +361,25 @@
 
             makeDataTable(table, title, columns, dataColumns);
 
+            $('body').on('click', '#edit-permissions', function(event) {
+                let staff_id = $(this).data('id');
+                event.preventDefault();
+                checkPermission(permissions.assign_staff_permissions, function(staff) {
+                    window.location.href = 'staff-members/' + staff_id + '/permissions/edit';
+                });
+            });
+
             $('#addNewStaff').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addStaffBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.staffId').val('');
-                $('#userForm').trigger("reset");
-                $('#modalHeading').html("Add new staff");
-                $('#addStaffModal').modal('show');
+                checkPermission(permissions.register_staff, function(staff) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addStaffBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.staffId').val('');
+                    $('#userForm').trigger("reset");
+                    $('#modalHeading').html("Add new staff");
+                    $('#addStaffModal').modal('show');
+                });
             });
 
             populateDepartments();
@@ -439,11 +449,14 @@
             $('body').on('click', '#edit-staff', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_staff, function(staff) {
+                    editStaffDetails(staff_id);
+                });
+            });
 
+            function editStaffDetails(staff_id) {
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
-
-                    $('#modalHeading').html(
-                        `Edit details of staff ${data.first_name} ${data.last_name} `);
+                    $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
                     $('.addStaffBtn').text("Edit staff");
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
@@ -460,18 +473,23 @@
                     $('.gender').val(data.gender);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+
+            }
 
             //View Modal used to view each row [staff details]
             $('body').on('click', '#view-staff', function(event) {
                 let staff_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_staff, function(staff) {
+                    viewStaffDetails(staff_id);
+                });
+            });
 
+            function viewStaffDetails(staff_id) {
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '', function(data) {
 
-                    $('#modalHeading').html(
-                        `Details of staff ${data.first_name} ${data.last_name} `);
+                    $('#modalHeading').html(`Details of staff ${data.first_name} ${data.last_name} `);
                     $('#addStaffModal').modal('show');
                     $('.userId').val(data.id);
                     $('.first_name').val(data.first_name);
@@ -487,8 +505,9 @@
                     $('.gender').val(data.gender);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+
+            }
 
             $('.addStaffBtn').click(function(e) {
 

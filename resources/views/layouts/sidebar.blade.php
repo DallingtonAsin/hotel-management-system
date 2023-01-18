@@ -75,17 +75,21 @@
                         </li>
                     @endhaspermission
 
-                    @haspermission(config('permissions')['view_kitchen_items'])
-                        <li class="nav-item">
-                            <a href="" class="nav-link with-sub">Kitchen Menu</a>
-                            <ul class="nav-sub">
+
+                    <li class="nav-item">
+                        <a href="" class="nav-link with-sub">Kitchen Menu</a>
+                        <ul class="nav-sub">
+                            @haspermission(config('permissions')['view_kitchen_menu_items'])
                                 <li class="nav-sub-item"><a href="{{ Route('menu-items.index') }}"
                                         class="nav-sub-link">Menu Items</a></li>
+                            @endhaspermission
+
+                            @haspermission(config('permissions')['view_kitchen_menu_item_categories'])
                                 <li class="nav-sub-item"><a href="{{ Route('menu-item-categories.index') }}"
                                         class="nav-sub-link">Menu Item Categories</a></li>
-                            </ul>
-                        </li>
-                    @endhaspermission
+                            @endhaspermission
+                        </ul>
+                    </li>
                 </ul>
             </li>
 
@@ -227,9 +231,10 @@
                     @endhaspermission
 
                     @haspermission(config('permissions')['view_staff_permissions'])
-                    <li class="nav-sub-item"><a href="{{ route('staff-permissions.index') }}" class="nav-sub-link">Staff Permissions</a>
-                    </li>
-                @endhaspermission
+                        <li class="nav-sub-item"><a href="{{ route('staff-permissions.index') }}"
+                                class="nav-sub-link">Staff Permissions</a>
+                        </li>
+                    @endhaspermission
 
 
                     <li class="nav-item">
@@ -295,7 +300,7 @@
                 <a href="" class="nav-link with-sub"><i class="fa fa-cog"></i>Others</a>
 
                 <ul class="nav-sub">
-                    @haspermission(config('permissions')['view_audit_trail'])
+                    @haspermission(config('permissions')['view_settings'])
                         <li class="nav-sub-item"><a href="{{ route('companies.create') }}"
                                 class="nav-sub-link">Settings</a></li>
                     @endhaspermission

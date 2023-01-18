@@ -160,13 +160,15 @@
 
             $('#addNewMenuItemCategory').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addMenuItemCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.menuItemCatId').val('');
-                $('#MenuItemCatForm').trigger("reset");
-                $('#modalHeading').html("Add new menu item category");
-                $('#addMenuItemCategoryModal').modal('show');
+                checkPermission(permissions.add_kitchen_menu_item_categories, function(kitchen_menu_item) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addMenuItemCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.menuItemCatId').val('');
+                    $('#MenuItemCatForm').trigger("reset");
+                    $('#modalHeading').html("Add new menu item category");
+                    $('#addMenuItemCategoryModal').modal('show');
+                });
             });
 
             $('.addMenuItemCatBtn').click(function(e) {
@@ -222,10 +224,13 @@
             $('body').on('click', '#edit-menu-item-cat', function(event) {
                 let menu_item_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.edit_kitchen_menu_item_categories, function(menu_item_cat) {
+                    editKMenuItemCats(menu_item_id);
+                });
+            });
 
-                $.get("{{ route('menu-item-categories.index') }}" + '/' + menu_item_id + '/edit', function(
-                    data) {
-
+            function editKMenuItemCats(menu_item_id) {
+                $.get("{{ route('menu-item-categories.index') }}" + '/' + menu_item_id + '/edit', function(data) {
                     $('#modalHeading').html("Edit details of menu item " + data.name + "");
                     $('.addMenuItemCatBtn').text("Edit menu item");
                     $('#addMenuItemCategoryModal').modal('show');
@@ -238,18 +243,21 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(false);
                     ShowBtns();
-                })
-            });
+                });
+            }
 
 
             //View Modal used to view each row [menu items details]
             $('body').on('click', '#view-menu-item-cat', function(event) {
                 let menu_item_id = $(this).data('id');
                 event.preventDefault();
+                checkPermission(permissions.view_kitchen_menu_item_categories, function(menu_item_cat) {
+                    viewKMenuItemCat(menu_item_id);
+                });
+            });
 
-                $.get("{{ route('menu-item-categories.index') }}" + '/' + menu_item_id + '', function(
-                data) {
-
+            function viewKMenuItemCat(menu_item_id) {
+                $.get("{{ route('menu-item-categories.index') }}" + '/' + menu_item_id + '', function(data) {
                     $('#modalHeading').html("Details of menu item " + data.name + "");
                     $('#addMenuItemCategoryModal').modal('show');
                     $('.menuItemCatId').val(data.id);
@@ -261,19 +269,20 @@
                     $('.credit').val(data.credit);
                     DisableTableFields(true);
                     HideBtns();
-                })
-            });
+                });
+            }
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-menu-item-cat', function(e) {
                 let menu_item_id = $(this).data("id");
                 e.preventDefault();
-                $("#deleteSuppliersModal").modal('show');
-                $(".delete-alert-text").html("Are you sure you want to delete this menu item?");
-                $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(menu_item_id);
+                checkPermission(permissions.cancel_kitchen_menu_item_categories, function(menu_item_cat) {
+                    $("#deleteSuppliersModal").modal('show');
+                    $(".delete-alert-text").html("Are you sure you want to delete this menu item?");
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(menu_item_id);
+                    });
                 });
-
             });
 
 

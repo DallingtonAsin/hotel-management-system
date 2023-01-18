@@ -145,6 +145,10 @@ Route::get('staff-members/ajax', [UserController::class, 'fetchStaffAjax'])->nam
 Route::get('staff/fetch/ajax', [StaffMemberController::class, 'GetStaffMemebers'])->name('staff.index.ajax');
 Route::get('staff-members/permissions/ajax', [StaffPermissionController::class, 'getStaffPermissions'])->name('staff.permissions.ajax.fetch');
 Route::post('staff-members/permissions/store', [StaffPermissionController::class, 'store'])->name('permissions.assign');
+Route::get('staff-members/{staff_id}/permissions/edit', [StaffPermissionController::class, 'edit'])->name('staff.permissions.edit');
+Route::put('staff-members/{staff}/permissions/update', [StaffPermissionController::class, 'update'])->name('staff.permissions.update');
+Route::get('staff-member/permission/{permission_name}', [StaffPermissionController::class, 'hasPermission'])->name('staff.permissions.verify');
+
 
 
 // Inventory Routes

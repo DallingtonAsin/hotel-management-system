@@ -327,7 +327,7 @@
                 type: "GET",
                 url: url,
                 success: function(resp) {
-                   
+
                     if (resp && resp.success) {
                         let guest = resp.data;
                         let guest_names = `${guest.first_name} ${guest.last_name}`;
@@ -407,13 +407,16 @@
 
             $('#addNewKitchenOrder').click(function(e) {
                 e.preventDefault();
-                DisableTableFields(false);
-                ShowBtns();
-                $('.addMenuItemToCartBtn').html("<i class='fa fa-plus-circle pr-1'></i>Add to Cart");
-                $('.kotId').val('');
-                $('#KotForm').trigger("reset");
-                $('#modalHeading').html("Add new kitchen order");
-                $('#addKitchenOrderModal').modal('show');
+                checkPermission(permissions.add_kitchen_orders, function(kitchen_order) {
+                    DisableTableFields(false);
+                    ShowBtns();
+                    $('.addMenuItemToCartBtn').html(
+                        "<i class='fa fa-plus-circle pr-1'></i>Add to Cart");
+                    $('.kotId').val('');
+                    $('#KotForm').trigger("reset");
+                    $('#modalHeading').html("Add new kitchen order");
+                    $('#addKitchenOrderModal').modal('show');
+                });
             });
 
 
@@ -546,7 +549,6 @@
             }
 
             function EmptyCartTable() {
-
                 let tbl = $('#kitchen-orders-table').DataTable();
                 tbl.ajax.reload();
                 $("#menu-item-cart > tbody").empty();
@@ -723,9 +725,7 @@
             $('body').on('click', '#edit-kot', function(event) {
                 let kot_id = $(this).data('id');
                 event.preventDefault();
-
                 $.get("{{ route('kitchen-orders.index') }}" + '/' + kot_id + '/edit', function(data) {
-
                     $('#modalHeading').html("Edit details of kot " + data.name + "");
                     $('.addKotBtn').text("Edit kot");
                     $('#addKitchenOrderModal').modal('show');
@@ -767,19 +767,22 @@
             $('body').on('click', '#download-invoice', function(event) {
 
                 var invoice_id = $(this).data('id');
-                let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
-                url = url.replace(':id', invoice_id);
 
-                event.preventDefault();
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(response) {
+                checkPermission(permissions.download_kitchen_order_invoice, function(kitchen_order) {
+                    let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
+                    url = url.replace(':id', invoice_id);
 
-                        let returned_url = response.url;
-                        console.log('Returned url is', response.url);
-                        window.open(returned_url, '_blank');
-                    }
+                    event.preventDefault();
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(response) {
+
+                            let returned_url = response.url;
+                            console.log('Returned url is', response.url);
+                            window.open(returned_url, '_blank');
+                        }
+                    });
                 });
             });
 
@@ -829,24 +832,30 @@
 
             $('body').on('click', '#mark-completed', function(e) {
                 let kot_id = $(this).data("id");
-                let status = 'completed';
-                e.preventDefault();
-                confirmOrderStatusChange(kot_id, status);
+                checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
+                    let status = 'completed';
+                    e.preventDefault();
+                    confirmOrderStatusChange(kot_id, status);
+                });
             });
 
             $('body').on('click', '#mark-cancelled', function(e) {
                 let kot_id = $(this).data("id");
-                let status = 'cancelled';
-                e.preventDefault();
-                confirmOrderStatusChange(kot_id, status);
+                checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
+                    let status = 'cancelled';
+                    e.preventDefault();
+                    confirmOrderStatusChange(kot_id, status);
+                });
+
             });
 
-
             $('body').on('click', '#mark-pending', function(e) {
-                let kot_id = $(this).data("id");
-                let status = 'In Progress';
-                e.preventDefault();
-                confirmOrderStatusChange(kot_id, status);
+                checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
+                    let kot_id = $(this).data("id");
+                    let status = 'In Progress';
+                    e.preventDefault();
+                    confirmOrderStatusChange(kot_id, status);
+                });
             });
 
             function confirmOrderStatusChange(kot_id, status) {
