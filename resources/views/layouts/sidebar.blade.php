@@ -45,8 +45,9 @@
                         class="fa fa-shopping-cart"></i>Restaurant & Bar</a>
                 <ul class="nav-sub">
                     @haspermission(config('permissions')['view_pos'])
-                        <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link">Point of Sale</a>
-                        </li>
+                        <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link">Point of Sale</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales</a></li>
+
                     @endhaspermission
 
                 </ul>

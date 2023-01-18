@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="card">
+  @include('pages.main.messages.response')
   <div class="card-header">
    <div class="panel-title nunito-font">
     <div class="row nunito-font">
@@ -43,7 +44,6 @@
   @endcan
 
   @can('isAdmin')
-
   @isset($total_sales)
   <div class="col-lg-3 amount">
     <label>Sales made: shs.</label>
@@ -52,17 +52,13 @@
   @endisset
 
 
-
-
   @isset($netValue)
-
   <div class="col-lg-3 amount">
    <label>Net Value:</label>
    <strong class="net_value">
     {{ number_format($netValue) }}
   </strong>
 </div>
-
 @endisset
 @endcan
 
@@ -80,36 +76,32 @@
 </div>
 
 <div class="card-body">
-  <div class="row">
-    <div class="col-lg-8 text-center nunito-font">
-     @if(session()->get('success'))
-     <div class='alert alert-success alert-dismissible' role='alert'>
-       <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-        <span aria-hidden='true'>&times;</span></button>
-        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-      </div>
-      @endif 
-
-      @if(session('fail'))
-      <div class='alert alert-danger alert-dismissible' role='alert'>
-       <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-        <span aria-hidden='true'>&times;</span></button>
-        <strong>Sorry!</strong> {{ session('fail') }}
-      </div>
-      @endif
-
-    </div>
-  </div>
-
   <form action="{{ Route('filtersales') }}" method="POST"> 
-   <div class="row nunito-font">
-    <div class=" form-group col-md-3">
+  
+   <div class="d-flex justify-content-left mx-2 align-items-center">
+
+    @cannot('Cashier')
+    <div class="form-group">
+      <label>Cashier</label>
+    <select class="form-control">
+      <option>Select cashier</option>
+      <option>Charity Kansiime</option>
+      <option>Dallington Asingwire</option>
+    </select>
+    </div>
+    @endcannot
+
+    <div class="form-group mx-3">
+      <label>Start Date</label>
      <input type="date" name="start_date" class="form-control start_date">
    </div>
-   <div class="form-group col-md-3">
+
+   <div class="form-group mx-3">
+    <label>End Date</label>
     <input type="date" name="end_date" class="form-control end_date ">
   </div>
-  <div class="col-md-4">
+
+  <div class="form-group mx-3 mt-4">
    <button type="button" class="btn btn-sm btn-success filterSalesBtn">Filter sales</button>
  </div>
 </div>
