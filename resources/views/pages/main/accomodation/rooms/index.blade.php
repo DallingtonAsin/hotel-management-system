@@ -50,6 +50,7 @@
                             <th>Room No.</th>
                             <th>Room Type</th>
                             <th>Floor No.</th>
+                            <th>Current Status</th>
                             <th>Description</th>
                             <th>Added By</th>
                             <th>Action</th>
@@ -113,9 +114,9 @@
                             <span><i class="text-danger pr-1">*</i>Status</span>
                             <select name="status" class="form-control status">
                                 <option value="">Select status</option>
-                                <option value="Occupied">Occupied</option>
-                                <option value="Occupied">Vacant</option>
-                                <option value="Vacant Dirty">Vacant Dirty</option>
+                                @foreach ($room_statuses as $status)
+                                <option value="{{$status->id}}">{{$status->name}}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -261,6 +262,11 @@
                     data: 'floor_number',
                     name: 'floor_number'
                 },
+                {
+                    data: 'room_status',
+                    name: 'room_status'
+                },
+               
                 {
                     data: 'description',
                     name: 'description'

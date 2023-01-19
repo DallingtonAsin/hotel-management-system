@@ -34,7 +34,7 @@ class CreateSalesTable extends Migration
 
         Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('item_id')->nullable();
+            $table->string('item_code')->nullable();
             $table->string('item');
             $table->double('quantity');
             $table->double('original_price');
@@ -50,10 +50,11 @@ class CreateSalesTable extends Migration
             $table->boolean('fully_paid')->default('1');
             $table->string('customer')->nullable();
             $table->double('tax')->default('0');
-            $table->date('date');
-            $table->time('time');
-            $table->string('cashier', 45);
-            $table->string('workedon_by')->nullable();
+            $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->integer('cashier_id')->unsigned();
+            $table->timestamps();
+
+            $table->foreign('cashier_id')->references('id')->on('staff');
         });
        
 

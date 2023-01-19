@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Seeders;
+
+use App\Models\RoomStatusHistory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,7 +23,9 @@ class DatabaseSeeder extends Seeder
             StaffTableSeeder::class,
           
             RoomTypeTableSeeder::class,
+            RoomStatusTableSeeder::class,
             RoomTableSeeder::class,
+            RoomStatusHistoryTableSeeder::class,
             GuestTypeTableSeeder::class,
             GuestTableSeeder::class,
             ReservationTableSeeder::class,
@@ -29,7 +33,7 @@ class DatabaseSeeder extends Seeder
             SalaryTableSeeder::class,
             // PaymentTableSeeder::class,
 
-            KitchenOrderTableSeeder::Class,
+            KitchenOrderTableSeeder::class,
             KitchenMenuItemCategoryTableSeeder::class,
             KitchenMenuItemTableSeeder::class,
 

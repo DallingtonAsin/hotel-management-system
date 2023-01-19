@@ -13,8 +13,13 @@ class Room extends Model
       'type_id',
       'number',
       'floor_number',
-      'status',
+      'status_id',
       'description',
       'created_by',
     ];
+
+    public function statusHistory()
+    {
+        return $this->hasMany(RoomStatusHistory::class);
+    }
 }

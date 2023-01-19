@@ -22,7 +22,8 @@ class CreateKitchenOrderInvoicesTable extends Migration
             $table->double('subtotal', 10, 2);
             $table->double('tax', 10, 2);
             $table->double('total', 10, 2);
-            $table->string('status');
+            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
+            $table->timestamp('issued_on')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('payment_method')->nullable();
             $table->timestamps();
             $table->foreign('order_number')->references('order_number')->on('kitchen_orders')->onDelete('cascade');

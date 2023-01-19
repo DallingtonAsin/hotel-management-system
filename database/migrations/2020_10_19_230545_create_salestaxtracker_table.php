@@ -15,7 +15,7 @@ class CreateSalestaxtrackerTable extends Migration
     {
         Schema::create('salestaxtracker', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->string('item_id', 255);
+          $table->string('item_code', 255);
           $table->string('item', 255);
           $table->string('quantity', 255);
           $table->string('amount', 255);
