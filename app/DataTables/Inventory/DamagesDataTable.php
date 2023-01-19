@@ -27,8 +27,8 @@ class DamagesDataTable extends DataTable
 
             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$damage->id.'" data-original-title="Edit" id="edit-damage"
-              class="edit-btn edit-damage pr-4">
-             <span class="fa fa-pen"></span></a>';
+              class="px-3 py-1 border border-success rounded  edit-damage mx-2">
+             <span class="fa fa-pen text-success"></span></a>';
 
 
             // $btn .= '<a href="javascript:void(0);" id="delete-damage"
@@ -40,7 +40,7 @@ class DamagesDataTable extends DataTable
 
              $btn .= '<a href="javascript:void(0);" id="view-damage"
             data-toggle="tooltip" data-original-title="View" data-id="'.$damage->id.'"
-             class="text-info bolded">
+             class="px-3 py-1 border border-secondary rounded text-secondary bolded">
             <i class="fa fa-eye" ></i></a>';
 
 

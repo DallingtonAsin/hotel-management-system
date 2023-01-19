@@ -22,18 +22,18 @@ class ExpensesDataTable extends DataTable
         ->addColumn('action', function ($expense) {
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$expense->id.'" data-original-title="Edit" id="edit-expense"
-              class="edit-btn edit-expense pr-4">
-             <span class="fa fa-pen"></span></a>';
+              class="px-3 py-1 border border-success rounded  edit-expense mx-2">
+             <span class="fa fa-pen text-success pr-1"></span></a>';
           
             $btn .= '<a href="javascript:void(0);" id="delete-expense" 
             data-toggle="tooltip" data-original-title="Delete" data-id="'.$expense->id.'"
-             class="trash-btn pr-4"">
-            <span class="fa fa-trash-alt" ></span></a>';
+             class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
+            <span class="fa fa-trash-alt pr-1" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="view-expense" 
            data-toggle="tooltip" data-original-title="View" data-id="'.$expense->id.'" 
-           class="text-info bolded">
-           <i class="fa fa-eye" ></i></a>';
+           class="px-3 py-1 border border-secondary rounded text-secondary bolded">
+           <i class="fa fa-eye pr-1" ></i></a>';
 
            return $btn;
 

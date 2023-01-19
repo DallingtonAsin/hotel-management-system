@@ -29,8 +29,8 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
             
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$payment->id.'" data-original-title="Edit" id="edit-payment"
-              class="edit-btn edit-payment">
-             <span class="fa fa-pen pr-4"></span></a>';
+              class=" edit-payment">
+             <span class="fa fa-pen text-success pr-4"></span></a>';
               if(Gate::allows('isAdmin')){
             $btn .= '<a href="javascript:void(0);" id="delete-payment" 
             data-toggle="tooltip" data-original-title="Delete"

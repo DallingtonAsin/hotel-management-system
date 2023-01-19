@@ -32,7 +32,7 @@ class OrderHistoryDataTable extends DataTable
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                         data-id="' . $order->id . '" data-original-title="Kitchen Invoice" id="download-kitchen-invoice"
-                        class="btn btn-xs btn-default border border-default text-dark edit-order ml-2">
+                        class="px-3 py-1 border border-default rounded text-secondary edit-order ml-2">
                         <span class="fa fa-eye pr-1"></span>view order</a>';
 
                 return $btn;

@@ -27,8 +27,8 @@ class CustomersDataTable extends DataTable
             
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$customer->id.'" data-original-title="Edit" id="edit-customer"
-              class="edit-btn edit-customer">
-             <span class="fa fa-pen pr-4"></span></a>';
+              class=" edit-customer">
+             <span class="fa fa-pen text-success pr-4"></span></a>';
               if(Gate::allows('isAdmin')){
             $btn .= '<a href="javascript:void(0);" id="delete-customer" 
             data-toggle="tooltip" data-original-title="Delete"

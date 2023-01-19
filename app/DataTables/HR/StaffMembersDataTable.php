@@ -26,25 +26,25 @@ class StaffMembersDataTable extends DataTable
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="' . $staff->id . '" data-original-title="Edit" id="edit-staff"
-              class="edit-btn edit-staff pr-3">
-             <span class="fa fa-pen"></span></a>';
+              class="px-3 py-1 border border-success rounded  edit-staff mx-2">
+             <span class="fa fa-pen text-success"></span></a>';
 
         
 
                 $btn .= '<a href="javascript:void(0);" id="view-staff" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="' . $staff->id . '" class="text-info bolded">
+            data-id="' . $staff->id . '" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
            <i class="fa fa-eye" ></i></a>';
 
         //    $btn .= '<a href="javascript:void(0);" id="delete-staff" 
         //    data-toggle="tooltip" data-original-title="Delete"
-        //     data-id="' . $staff->id . '" class="trash-btn pr-4"">
+        //     data-id="' . $staff->id . '" class="trash-btn mx-2"">
         //    <span class="fa fa-trash-alt" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="edit-permissions" 
            data-toggle="tooltip" data-original-title="Edit Permissions"
-            data-id="' . $staff->id . '" class="ml-3"">
-           <span class="fa fa-edit" ></span></a>';
+            data-id="' . $staff->id . '" class="px-3 py-1 border border-success rounded ml-3"">
+           assign permissions</a>';
 
                 return $btn;
 

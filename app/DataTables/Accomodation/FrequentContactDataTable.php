@@ -25,17 +25,17 @@ class FrequentContactDataTable extends DataTable
 
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                     data-id="' . $freqContact->id . '" data-original-title="Edit" id="edit-frequent-contact"
-                    class="edit-btn edit-frequent-contact pr-4">
-                    <span class="fa fa-pen"></span></a>';
+                    class="px-3 py-1 border border-success rounded  edit-frequent-contact mx-2">
+                    <span class="fa fa-pen text-success"></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="delete-frequent-contact" 
                     data-toggle="tooltip" data-original-title="Delete"
-                    data-id="' . $freqContact->id . '" class="trash-btn pr-4"">
+                    data-id="' . $freqContact->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
                     <span class="fa fa-trash-alt" ></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="view-frequent-contact" 
                     data-toggle="tooltip" data-original-title="View"
-                        data-id="' . $freqContact->id . '" class="text-info bolded">
+                        data-id="' . $freqContact->id . '" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
                     <i class="fa fa-eye" ></i></a>';
 
             return $btn;
