@@ -132,6 +132,11 @@ class CurrencyController extends Controller
         }
     }
 
+    private function sendJson($id){
+        $data = Currency::find($id);
+        return response()->json($data);
+    }
+    
     /**
      * Display the specified resource.
      *
@@ -140,7 +145,8 @@ class CurrencyController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->sendJson($id);
+
     }
 
     /**
@@ -151,7 +157,8 @@ class CurrencyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->sendJson($id);
+
     }
 
     /**

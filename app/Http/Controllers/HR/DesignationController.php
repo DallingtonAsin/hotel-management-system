@@ -86,6 +86,11 @@ class DesignationController extends Controller
         }
     }
 
+    private function sendJson($id){
+        $data = Designation::find($id);
+        return response()->json($data);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -94,7 +99,8 @@ class DesignationController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->sendJson($id);
+
     }
 
     /**
@@ -105,7 +111,8 @@ class DesignationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->sendJson($id);
+
     }
 
     /**

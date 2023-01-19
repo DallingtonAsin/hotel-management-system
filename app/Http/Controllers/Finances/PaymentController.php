@@ -106,6 +106,10 @@ class PaymentController extends Controller
         }
     }
 
+    private function sendJson($id){
+        $data = Payment::find($id);
+        return response()->json($data);
+    }
     /**
      * Display the specified resource.
      *
@@ -114,7 +118,7 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->sendJson($id);
     }
 
     /**
@@ -125,7 +129,8 @@ class PaymentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->sendJson($id);
+
     }
 
     /**
@@ -137,7 +142,7 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
