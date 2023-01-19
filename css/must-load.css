@@ -41,6 +41,10 @@
   color: #009688 !important
 }
 
+.border-success {
+  border-color: #009688 !important
+}
+
 .chart-card {
   width: 600px;
   height: 400px;

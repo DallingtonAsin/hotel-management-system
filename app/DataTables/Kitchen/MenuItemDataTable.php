@@ -26,17 +26,17 @@ class MenuItemDataTable extends DataTable
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                         data-id="' . $menu_item->id . '" data-original-title="Edit" id="edit-menu-item"
-                        class="edit-btn edit-menu-item pr-4">
-                        <span class="fa fa-pen"></span></a>';
+                        class="px-3 py-1 border border-success rounded  edit-menu-item mx-2">
+                        <span class="fa fa-pen text-success"></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="delete-menu-item" 
                         data-toggle="tooltip" data-original-title="Delete"
-                        data-id="' . $menu_item->id . '" class="trash-btn pr-4"">
+                        data-id="' . $menu_item->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2">
                         <span class="fa fa-trash-alt" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-menu-item" 
                         data-toggle="tooltip" data-original-title="View"
-                            data-id="' . $menu_item->id . '" class="text-info bolded">
+                            data-id="' . $menu_item->id . '" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
                         <i class="fa fa-eye" ></i></a>';
 
                 return $btn;

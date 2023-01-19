@@ -29,12 +29,12 @@ class StockDataTable extends DataTable
 
             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$stock->id.'" data-original-title="Edit" id="edit-stock"
-            class="edit-btn edit-stock pr-3">
-             <span class="fa fa-pen"></span></a>';
+            class="px-3 py-1 border border-success rounded  edit-stock mx-2">
+             <span class="fa fa-pen text-success"></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="delete-stock"
             data-toggle="tooltip" data-original-title="Delete" data-id="'.$stock->id.'" 
-            class="trash-btn pr-3"">
+            class="px-3 py-1 border border-danger rounded trash-btn mx-2">
             <span class="fa fa-trash-alt" ></span></a>';
 
 
@@ -42,7 +42,7 @@ class StockDataTable extends DataTable
 
              $btn .= '<a href="javascript:void(0);" id="view-stock"
             data-toggle="tooltip" data-original-title="View"
-             data-id="'.$stock->id.'" class="text-info bolded">
+             data-id="'.$stock->id.'" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
             <i class="fa fa-eye" ></i></a>';
 
 

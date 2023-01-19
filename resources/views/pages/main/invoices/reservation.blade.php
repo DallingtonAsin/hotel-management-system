@@ -25,9 +25,15 @@
         <th>Guest Information:</th>
         <td>
           <p>Name: {{$guest->first_name}} {{$guest->last_name}}</p>
-          <p>Email: {{$guest->email}}</p>
-          <p>Phone: {{$guest->phone_number}}</p>
 
+          @if(!empty($guest->email))
+          <p>Email: {{$guest->email}}</p>
+          @endif
+
+          @if(!empty($guest->email))
+          <p>Phone: {{$guest->phone_number}}</p>
+          @endif
+         
           @if($is_corporate == true)
           <p>Company Name: {{$guest->company_name}}</p>
           <p>Company Phone: {{$guest->company_contact}}</p>

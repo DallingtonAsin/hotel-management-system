@@ -4,7 +4,7 @@
 
         <div class="form-group">
             <input type="hidden" class="form-control bg-white"  
-             name="guest_type" value="DayUse" autocomplete="off">
+             name="guest_type" value="Day Use" autocomplete="off">
         </div>
 
 
@@ -26,25 +26,31 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <span class="text-muted">Phone Number</span>
                 <input type="text" class="form-control phone_number" name="phone_number" value="{{ old('phone_number') }}"
-                    autocomplete="on">
-            </div>
-            <div class="col-md-6">
-                <span class="text-muted">Email</span>
-                <input type="text" class="form-control email" name="email" placeholder="" value="{{ old('email') }}"
                     autocomplete="on">
             </div>
         </div>
 
         <div class="row form-group">
-            <div class="col-md-6">
+
+            <div class="col-md-3">
+                <span class="text-muted">Email</span>
+                <input type="text" class="form-control email" name="email" placeholder="" value="{{ old('email') }}"
+                    autocomplete="on">
+            </div>
+
+            <div class="col-md-3">
                 <span class="text-muted">Passport</span>
                 <input type="text" class="form-control passport_number" name="passport_number" value="{{ old('passport_number') }}"
                     autocomplete="on">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
+                <span class="text-muted">Passport Expiry Date</span>
+                <input type="date" class="form-control passport_expiry_date" name="passport_expiry_date" value="{{ old('passport_expiry_date') }}">
+            </div>
+            <div class="col-md-3">
                 <span class="text-muted">NIN</span>
                 <input type="text" class="form-control nin" name="nin" value="{{ old('nin') }}" autocomplete="on">
             </div>
@@ -79,7 +85,26 @@
                 <input type="datetime-local" class="form-control departure_date" 
                 name="departure_date" value="{{ old('departure_date') }}" autocomplete="on">
             </div>
+        </div>
 
+        <div class="row form-group">
+            <div class="col-md-4">
+                <span class="text-muted">Daily Price </span>
+                <input type="text" name="daily_price" id="daily_price" class="form-control daily_price text-danger"
+                    value="{{ old('daily_price') }}" readonly>
+            </div>
+
+            <div class="col-md-4">
+                <span class="text-muted">Discount / Per Day</span>
+                <input type="text" name="discount" id="discount" class="form-control discount"
+                    value="{{ old('discount') }}" placeholder="0">
+            </div>
+
+            <div class="col-md-4">
+                <span class="text-muted">Total</span>
+                <input type="text" name="total" id="total" class="form-control text-left text-success"
+                    value="{{ old('total') }}">
+            </div>
         </div>
 
         <div class="form-group">

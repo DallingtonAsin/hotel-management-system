@@ -19,7 +19,7 @@ class CompanyDataTable extends DataTable
             
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$company->id.'" data-original-title="Edit" id="edit-company"
-              class="edit-btn edit-company">
+              class=" edit-company">
              <span class="glyphicon glyphicon-pencil"></span></a>';
           
             $btn .= '<a href="javascript:void(0);" id="delete-company" 

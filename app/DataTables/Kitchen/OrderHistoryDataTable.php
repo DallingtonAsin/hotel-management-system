@@ -7,7 +7,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Helpers\Helper;
 
-class KitchenOrdersDataTable extends DataTable
+class OrderHistoryDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -21,51 +21,21 @@ class KitchenOrdersDataTable extends DataTable
             ->order(function ($query) {
                 $query->orderBy('created_at', 'desc');
             })->addIndexColumn()
-            ->addColumn('action', function ($order) {
-
-                $btn = "";
-
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                data-id="' . $order->id . '" data-status="pending" data-original-title="Edit Order" id="edit-order"
-                class="px-3 py-1 border border-default rounded text-secondary mr-2">
-                <span class="fa fa-clock-o pr-2"></span>Edit order</a>';
-
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                data-id="' . $order->id . '" data-status="pending" data-original-title="Mark Pending" id="mark-pending"
-                class="px-3 py-1 border border-secondary rounded text-secondary mr-2">
-                <span class="fa fa-clock-o pr-1"></span>Mark Pending</a>';
-
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                  data-id="' . $order->id . '" data-status="completed" data-original-title="Mark Completed" id="mark-completed"
-                  class="px-3 py-1 border border-success rounded edit-order mr-2">
-                  <span class="fa fa-check-circle pr-1"></span>Mark Completed</a>';
-
-                $btn .= '<a href="javascript:void(0);" id="mark-cancelled" 
-                        data-toggle="tooltip" data-original-title="Mark Cancelled"
-                        data-id="' . $order->id . '" data-status="cancelled"
-                         class="px-3 py-1 border border-danger rounded mr-2"">
-                        <span class="fa fa-times-circle pr-1" ></span>Mark Cancelled</a>';
-
-
-
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                        data-id="' . $order->id . '" data-original-title="Kitchen Invoice" id="download-kitchen-invoice"
-                        class="px-3 py-1 border border-warning rounded text-secondary edit-order ml-2">
-                        <span class="fa fa-download pr-1"></span>Kitchen Invoice</a>';
-
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                        data-id="' . $order->id . '" data-original-title="Download Invoice" id="download-invoice"
-                        class="px-3 py-1 border border-success rounded text-success edit-order ml-2">
-                        <span class="fa fa-download pr-1"></span>General Invoice</a>';
-
-                return $btn;
-            })->addColumn('room_number', function ($order) {
+            ->addColumn('room_number', function ($order) {
                 $room_number = null;
                 if (isset($order->room_id)) {
                     $room = Helper::findRoom(($order->room_id));
                     $room_number = $room->number;
                 }
                 return $room_number;
+            })->addColumn('action', function ($order) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+                        data-id="' . $order->id . '" data-original-title="Kitchen Invoice" id="download-kitchen-invoice"
+                        class="px-3 py-1 border border-default rounded text-secondary edit-order ml-2">
+                        <span class="fa fa-eye pr-1"></span>view order</a>';
+
+                return $btn;
             })->editColumn('order_date', function ($order) {
                 return date('Y-m-d H:i A', strtotime($order->order_date));
             })->addColumn('checkbox', function ($order) {

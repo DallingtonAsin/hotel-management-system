@@ -70,7 +70,7 @@
                                         class="nav-sub-link">Completed Orders</a></li>
                                 <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}"
                                         class="nav-sub-link">Cancelled Orders</a></li>
-                                <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}"
+                                <li class="nav-sub-item"><a href="{{ Route('kitchen-order-history.index') }}"
                                         class="nav-sub-link">Order History</a></li>
                             </ul>
                         </li>
@@ -154,7 +154,7 @@
 
                     @haspermission(config('permissions')['view_frequent_contacts'])
                         <li class="nav-sub-item"><a href="{{ Route('frequent-contacts.index') }}"
-                                class="nav-sub-link">Frequent Contacts</a> </li>
+                                class="nav-sub-link">Frequent contacts</a> </li>
                     @endhaspermission
 
                     <li class="nav-item">
