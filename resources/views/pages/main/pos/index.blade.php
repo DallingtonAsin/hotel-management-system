@@ -1,6 +1,5 @@
 @extends('layouts.template')
 
-
 @section('content')
     <div class="card" id="card">
         <div class="card-header bg-default" id="card-header">
@@ -51,7 +50,7 @@
                     </div>
 
                     <div class="form-group col-lg-2">
-                        <label>Workedon By</label>
+                        <label>Cashier</label>
                         <input type="text" class="form-control bg-white workedon_by" id="workedon_by" name="workedon_by"
                             value="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" placeholder="WorkedOn By"
                             disabled="true">
@@ -598,17 +597,19 @@
                         EmptyCartTable();
                         $("#customer").val('');
                         $("#extra_money").val('');
-                        let worker = "{{ Auth::user()->name }}";
+                        let worker = "{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}";
                         $("#workedon_by").val(worker);
-                        let message = data.response;
                         $('.print-btn-text').html("Print Receipt");
                         updateSubTotal();
+
+                        let message = data.success || data.error;
+                        let type = data.success ? 'success' : 'error';
+                        displayResponse('.response', message, type);
+
                     },
                     error: function(data) {
-                        // console.log(data);
-                        let message = data.response;
-                        // console.log(message);
-                        displayResponse('.response', message, 'error');
+                        console.log(data);
+                        displayResponse('.response', data.error, 'error');
                     }
                 });
             }

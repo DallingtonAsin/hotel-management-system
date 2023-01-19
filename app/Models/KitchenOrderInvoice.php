@@ -14,12 +14,19 @@ class KitchenOrderInvoice extends Model
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = ['order_number', 'subtotal', 'tax', 'total', 'status'];
+    protected $fillable = [
+        'order_number',
+        'subtotal',
+        'tax',
+        'total',
+        'status',
+        'issued_on',
+        'payment_method'
+    ];
 
     // Relationships
     public function kitchenOrder()
     {
         return $this->belongsTo('App\Models\KitchenOrder');
     }
-
 }

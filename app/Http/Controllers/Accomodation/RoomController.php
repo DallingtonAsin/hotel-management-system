@@ -8,17 +8,29 @@ use Illuminate\Http\Request;
 use App\DataTables\Accomodation\RoomsDatatable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
+use App\Models\RoomStatus;
 use App\Models\Guest;
 use App\Helpers\Helper;
 use App\Models\Reservation;
+use App\Services\RoomService;
 
 class RoomController extends Controller
 {
 
+    protected $roomService;
+
+    public function __construct(RoomService $roomService)
+    {
+        $this->roomService = $roomService;
+    }
+
     public function index()
     {
+      
         $total_rooms = Room::count();
-        return view('pages.main.accomodation.rooms.index', ['total_rooms' => $total_rooms]);
+        $room_statuses = RoomStatus::all();
+        return view('pages.main.accomodation.rooms.index')
+               ->with(compact('total_rooms', 'room_statuses'));
     }
 
     public function RoomsDataTable(RoomsDatatable $dataTable)
@@ -61,19 +73,21 @@ class RoomController extends Controller
                 $room_type_id = $request->input('room_type');
                 $room_number = $request->input('room_number');
                 $floor_number = Helper::Numberize($request->input('floor_number'));
-                $status = ucfirst($request->input('status'));
+                $status_id = $request->input('status');
                 $description = ucfirst($request->input('description'));
                 $created_by = Helper::getLoggedInUserId();
 
+                $room_data  = [
+                    'type_id' => $room_type_id,
+                    'number' => $room_number,
+                    'floor_number' => $floor_number,
+                    'status_id' => $status_id,
+                    'description' => $description,
+                    'created_by' => $created_by
+                ];
+
                 if (
-                    Room::create([
-                        'type_id' => $room_type_id,
-                        'number' => $room_number,
-                        'floor_number' => $floor_number,
-                        'status' => $status,
-                        'description' => $description,
-                        'created_by' => $created_by
-                    ])
+                    $this->roomService->create($room_data)
                 ) {
 
                     $message = "Room with number " . $room_number . " has been added successfully";
@@ -214,8 +228,11 @@ class RoomController extends Controller
         if($request->ajax()){
            
             $room_id = Room::where('number', $room_number)->value('id');
-            $guest_id = Reservation::where("room_id", $room_id)->latest()->value('guest_id');
-            if(!empty($guest_id)){
+          
+            $is_available = $this->roomService->isAvailable($room_id);
+        
+            if($is_available){
+                $guest_id = Reservation::where("room_id", $room_id)->latest()->value('guest_id');
                 $guest = Guest::find($guest_id);
                  return response()->json(['success'  => 'OK', 'data' => $guest]);
             }else{

@@ -16,7 +16,7 @@ class ReservationInvoiceFactory extends Factory
     {
 
         $date =  $this->faker->dateTimeBetween('next Monday', 'next Monday +7 days');
-        $ts_issued = $this->faker->dateTimeBetween($date, $date->format('Y-m-d H:i:s').' +2 days');
+        $issued_on = $this->faker->dateTimeBetween($date, $date->format('Y-m-d H:i:s').' +2 days');
         $guestInvoiceNumber  = Helper::generateUniqueNumber('reservation_invoices', 'invoice_number', 10, 'CMH');
 
         $amount = $this->faker->numberBetween(10000, 90000);
@@ -27,7 +27,7 @@ class ReservationInvoiceFactory extends Factory
             'reservation_id' => $this->faker->randomElement([1,2]),
             'amount' => $amount,
             'tax' => $tax,
-            'ts_issued' => $ts_issued,
+            'issued_on' => $issued_on,
             "issued_by"  => $this->faker->randomElement([1,2,3,4,5])
         ];
     }

@@ -32,10 +32,8 @@ class SaleFactory extends Factory
          'amount' => $this->faker->numberBetween($min = 25400, $max = 45000),
          'paid_amount' => $this->faker->numberBetween($min = 25400, $max = 45000),
          'customer' => $this->faker->lastName,
-         'date' => $this->faker->date($format='Y-m-d', $max='now'),
-         'time' => $this->faker->time($format = 'H:i:s', $max = 'now'),
-         'cashier' => $this->faker->firstName,
-         'workedon_by' => $this->faker->firstName,
+         'date' => $this->faker->date('Y-m-d H:i:s', 'now'),
+         'cashier_id' => $this->faker->randomElement([1,2,3])
     ];
   }
 }

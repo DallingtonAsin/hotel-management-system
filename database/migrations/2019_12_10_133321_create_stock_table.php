@@ -50,6 +50,9 @@ class CreateStockTable extends Migration
             $table->string('supplier')->nullable();
             $table->timestamp('date_of_entry')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('expiry_date')->nullable();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+      
         }); 
 
     }

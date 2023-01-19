@@ -42,6 +42,11 @@ class StaffMemberController extends Controller
         //
     }
 
+    private function sendJson($id){
+        $data = Staff::find($id);
+        return response()->json($data);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -50,7 +55,7 @@ class StaffMemberController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->sendJson($id);
     }
 
     /**
@@ -61,7 +66,7 @@ class StaffMemberController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->sendJson($id);
     }
 
     /**

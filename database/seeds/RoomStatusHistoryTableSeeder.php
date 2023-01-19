@@ -1,9 +1,11 @@
 <?php
 
 namespace Database\Seeders;
-use Illuminate\Database\Seeder;
 
-class StaffTableSeeder extends Seeder
+use Illuminate\Database\Seeder;
+use App\Models\RoomStatusHistory;
+
+class RoomStatusHistoryTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +14,8 @@ class StaffTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Staff::factory()->count(15)->create();
+        
+        RoomStatusHistory::factory()->count(10)->create();
 
     }
 }

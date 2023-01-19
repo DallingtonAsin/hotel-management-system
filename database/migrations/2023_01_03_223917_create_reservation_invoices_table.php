@@ -22,12 +22,13 @@ class CreateReservationInvoicesTable extends Migration
             $table->decimal('amount',8 , 2);
             $table->decimal('tax',8 , 2);
             $table->decimal('total_amount', 8, 2)->storedAs('amount + tax');
-            $table->timestamp('ts_issued');
+            $table->timestamp('issued_on')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('issued_by')->unsigned();
+            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
             $table->string('payment_method')->nullable();
             $table->integer('cancelled_by')->unsigned()->nullable();
-            $table->timestamp('ts_paid')->nullable();
-            $table->timestamp('ts_cancelled')->nullable();
+            $table->timestamp('paid_on')->nullable();
+            $table->timestamp('cancelled_on')->nullable();
             $table->timestamps();
 
             $table->index('invoice_number');

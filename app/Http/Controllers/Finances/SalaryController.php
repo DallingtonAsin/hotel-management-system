@@ -92,6 +92,11 @@ class SalaryController extends Controller
         }
     }
 
+    private function sendJson($id){
+        $data = Salary::find($id);
+        return response()->json($data);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -100,7 +105,8 @@ class SalaryController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->sendJson($id);
+
     }
 
     /**
@@ -111,7 +117,8 @@ class SalaryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->sendJson($id);
+
     }
 
     /**

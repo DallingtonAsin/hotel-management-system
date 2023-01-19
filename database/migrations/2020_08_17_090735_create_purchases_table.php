@@ -42,8 +42,10 @@ class CreatePurchasesTable extends Migration
             $table->string('supplier')->nullable();
             $table->string('supplier_contact')->nullable();
             $table->string('created_by');
-            $table->date('date_of_purchase')->nullable();
-            $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->date('date_of_purchase')->default(Carbon::now());
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+      
         });
 
 
