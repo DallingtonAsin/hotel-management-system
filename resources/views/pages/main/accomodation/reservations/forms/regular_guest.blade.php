@@ -97,7 +97,6 @@
         </div>
 
         <div class="row form-group">
-
             <div class="col-md-4">
                 <span class="text-muted"><span class="text-danger pr-2">*</span>Daily Price </span>
                 <input type="text" name="daily_price" id="daily_price" class="form-control daily_price text-danger"
@@ -105,7 +104,7 @@
             </div>
 
             <div class="col-md-4">
-                <span class="text-muted">Discount</span>
+                <span class="text-muted">Discount / Per Day</span>
                 <input type="text" name="discount" id="discount" class="form-control discount"
                     value="{{ old('discount') }}" placeholder="Default is 0">
             </div>
@@ -115,7 +114,6 @@
                 <input type="text" name="total" id="total" class="form-control text-left text-success"
                     value="{{ old('total') }}">
             </div>
-
         </div>
 
         <div class="form-group">
@@ -136,94 +134,3 @@
     </div>
 </div>
 {!! Form::close() !!}
-
-<script>
-
-    Numberize('#discount');
-
-    $('.occupancy_type').on('change', function() {
-        let occupancy_type = $(this).find(":selected").val();
-        if (occupancy_type) {
-            let room_number = $('#room_number').val();
-            if (room_number) {
-                populateRoomPrice(room_number, occupancy_type);
-            } else {
-                alert("Enter room number first before select occupancy to see the price");
-            }
-        } else {
-            alert("Empty value");
-        }
-    });
-
-    function populateRoomPrice(number, type) {
-        let url = "{{ route('room.price.ajax.fetch') }}"
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-                room_number: number,
-                occupancy_type: type
-            },
-            dataType: "json",
-            success: function(resp) {
-
-                let message = resp.success || resp.error;
-                if (resp.success) {
-                    let price = resp.data;
-                    $('.daily_price').val(price);
-                } else {
-                    alert(message);
-                }
-            },
-            error: function(data) {
-                console.log('Error on fetching price for the room', data);
-                console.log('Error:', data.error);
-                displayResponse('.response', data.error, 'error');
-            }
-        });
-    }
-
-    function ComputeTotal() {
-
-        let price = $('.daily_price').val();
-        let arrival_date = $('.arrival_date').val();
-        let departure_date = $('.departure_date').val();
-
-        if (arrival_date && departure_date) {
-            let days = getNumberOfDays(arrival_date, departure_date);
-            if (price) {
-                price = Convert2Num(price);
-                let discount = $('#discount').val();
-                discount = discount ? parseFloat(Convert2Num(discount)) : 0;
-                let total = (price * days) - discount;
-                $('#total').val(total.toLocaleString());
-
-            } else {
-                alert("No room price");
-            }
-        } else {
-            alert("No dates captured");
-        }
-    }
-
-    $(".arrival_date").on('change', function() {
-        ComputeTotal();
-    });
-
-    $(".departure_date").on('change', function() {
-        ComputeTotal();
-    });
-
-    $("#discount").on('input', function() {
-        ComputeTotal();
-    });
-
-
-    function getNumberOfDays(start_date, end_date) {
-        let date1 = new Date(start_date);
-        let date2 = new Date(end_date);
-        let diffInMilliseconds = Math.round(Math.abs(date2 - date1));
-        let diffInDays = parseInt(diffInMilliseconds / 86400000);
-        return diffInDays;
-    }
-</script>

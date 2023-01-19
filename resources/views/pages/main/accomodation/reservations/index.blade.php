@@ -38,6 +38,7 @@
                             <th scope="col">Days</th>
                             <th>Room</th>
                             <th>Invoice No.</th>
+                            <th>Invoice Status</th>
                             <th>Amt</th>
                             <th>Tax</th>
                             <th>Total Amt</th>
@@ -265,6 +266,10 @@
                 {
                     data: 'invoice_number',
                     name: 'invoice_number'
+                },
+                {
+                    data: 'invoice_status',
+                    name: 'invoice_status'
                 },
                 {
                     data: 'amount',

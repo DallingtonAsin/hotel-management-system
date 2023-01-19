@@ -56,6 +56,26 @@ class ReservationsDataTable extends DataTable
                 $invoice_number = '00000';
             }
             return $invoice_number;
+        })->addColumn('invoice_status', function ($reservation) {
+            $invoice = ReservationInvoice::find($reservation->id);
+            $status = !empty($invoice->status) ? ucfirst($invoice->status) : 'Pending';
+            return $status;
+        })->addColumn('amount', function ($reservation) {
+            $invoice = ReservationInvoice::find($reservation->id);
+            $amount = !empty($invoice->amount) ? number_format($invoice->amount) : 50;
+            return $amount;
+        })->addColumn('tax', function ($reservation) {
+            $invoice = ReservationInvoice::find($reservation->id);
+            $tax = !empty($invoice->tax) ? number_format($invoice->tax) : 50;
+            return $tax;
+        })->addColumn('discount_percent', function ($reservation) {
+            $invoice = ReservationInvoice::find($reservation->id);
+            $discount_percent = !empty($invoice->tadiscount_percentx) ? number_format($invoice->discount_percent) : 50;
+            return $discount_percent;
+        })->addColumn('total_amount', function ($reservation) {
+            $invoice = ReservationInvoice::find($reservation->id);
+            $total_amount = !empty($invoice->total_amount) ? number_format($invoice->total_amount) : 50;
+            return $total_amount;
         })->addColumn('guest', function ($reservation) {
             $guest = Guest::find($reservation->guest_id);
             return $guest->first_name . ' ' . $guest->last_name;
@@ -65,19 +85,6 @@ class ReservationsDataTable extends DataTable
         })->addColumn('nights', function ($reservation) {
             $nights = Carbon::parse($reservation->arrival_date)->diffInDays(Carbon::parse($reservation->departure_date));
             return $nights;
-        })->addColumn('discount_percent', function ($reservation) {
-            $discount_percent = ReservationInvoice::where('reservation_id', $reservation->id)->value('discount_percent');
-            return $discount_percent;
-        })->addColumn('tax', function ($reservation) {
-            $tax_amount = ReservationInvoice::where('reservation_id', $reservation->id)->value('tax');
-            return number_format($tax_amount);
-        })->addColumn('amount', function ($reservation) {
-            $amount = ReservationInvoice::where('reservation_id', $reservation->id)->value('amount');
-            return number_format($amount);
-        })->addColumn('total_amount', function ($reservation) {
-            $total_amount = ReservationInvoice::where('reservation_id', $reservation->id)->value('total_amount');
-            $total_amount = number_format($total_amount);
-            return $total_amount;
         })->addColumn('checkbox', function ($reservation) {
             $checkBox = '<input type="checkbox" id="' . $reservation->id . '"/>';
             return $checkBox;

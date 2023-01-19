@@ -70,7 +70,7 @@
                                         class="nav-sub-link">Completed Orders</a></li>
                                 <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}"
                                         class="nav-sub-link">Cancelled Orders</a></li>
-                                <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}"
+                                <li class="nav-sub-item"><a href="{{ Route('kitchen-order-history.index') }}"
                                         class="nav-sub-link">Order History</a></li>
                             </ul>
                         </li>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DataTables\Kitchen\KitchenOrdersDataTable;
+use App\DataTables\Kitchen\OrderHistoryDataTable;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
@@ -27,12 +28,22 @@ class KitchenOrderController extends Controller
     public function index()
     {
         $total_orders = KitchenOrder::count();
-        return view('pages.main.kitchen.kots')->with(compact('total_orders'));
+        return view('pages.main.kitchen.orders.new')->with(compact('total_orders'));
     }
 
     public function getKitchenOrdersDataTable(KitchenOrdersDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.kitchen.kots');
+        return $dataTable->render('pages.main.kitchen.orders.new');
+    }
+
+    public function orderHistoryIndex(){
+        $total_orders = KitchenOrder::count();
+        return view('pages.main.kitchen.orders.history')->with(compact('total_orders'));
+    }
+
+    public function getOrderHistoryDataTable(OrderHistoryDataTable $dataTable)
+    {
+        return $dataTable->render('pages.main.kitchen.orders.history');
     }
 
 

@@ -22,8 +22,8 @@ class Reservation extends Model
         'created_by'
     ];
 
-    public function invoice()
+    public function invoices()
     {
-        return $this->hasOne(ReservationInvoice::class);
+        return $this->hasMany(ReservationInvoice::class);
     }
 }

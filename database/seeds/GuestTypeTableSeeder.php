@@ -63,5 +63,13 @@ class GuestTypeTableSeeder extends Seeder
             "is_corporate" => true,
             "created_by"  => $this->faker->randomElement([1,2,3,4,5])
         ]);
+
+
+        GuestType::create([
+            "name" => "Day Use",
+            "is_regular" => false,
+            "is_corporate" => true,
+            "created_by"  => $this->faker->randomElement([1,2,3,4,5])
+        ]);
     }
 }

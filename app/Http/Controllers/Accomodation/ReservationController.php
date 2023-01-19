@@ -50,8 +50,8 @@ class ReservationController extends Controller
         if (stripos($guest_type, 'regular') !== false) {
             $validator = Validator::make($request->all(), [
                 'guest_type' => 'required',
-                'first_name' => 'required|max:55',
-                'last_name' => 'required|max:55',
+                'first_name' => 'required',
+                'last_name' => 'required',
                 'company_name' => 'sometimes|nullable',
                 'tax_number' => 'sometimes|nullable',
                 'company_contact' => 'sometimes|nullable',
@@ -59,6 +59,7 @@ class ReservationController extends Controller
                 'phone_number' => 'required|min:10',
                 'email' => 'sometimes|nullable|email',
                 'passport_number' => 'sometimes|nullable',
+                'passport_expiry_date' => 'sometimes|nullable',
                 'nin' => 'sometimes|nullable',
                 'occupancy_type' => 'required',
                 'room_number' => 'required',
@@ -67,11 +68,11 @@ class ReservationController extends Controller
                 'other_details' => 'sometimes|nullable'
             ]);
             $tab = '?tab=regular-tab';
-        } else {
+        } else if(stripos($guest_type, 'corporate') !== false){
             $validator = Validator::make($request->all(), [
                 'guest_type' => 'required',
-                'first_name' => 'required|max:55',
-                'last_name' => 'required|max:55',
+                'first_name' => 'required',
+                'last_name' => 'required',
                 'company_name' => 'required',
                 'tax_number' => 'required',
                 'company_contact' => 'required',
@@ -79,6 +80,7 @@ class ReservationController extends Controller
                 'phone_number' => 'sometimes|nullable|min:10',
                 'email' => 'required|email',
                 'passport_number' => 'sometimes|nullable',
+                'passport_expiry_date' => 'sometimes|nullable',
                 'nin' => 'sometimes|nullable',
                 'occupancy_type' => 'required',
                 'room_number' => 'required',
@@ -87,6 +89,12 @@ class ReservationController extends Controller
                 'other_details' => 'sometimes|nullable'
             ]);
             $tab = '?tab=corporate-tab';
+        }else{
+            $validator = Validator::make($request->all(), [
+                'guest_type' => 'required',
+                'first_name' => 'required',
+            ]);
+            $tab = '?tab=day-use-tab';
         }
 
         try {
@@ -97,6 +105,13 @@ class ReservationController extends Controller
                     ->withInput();
 
             } else {
+                
+                $start_date = $request->input('arrival_date');
+                $end_date = $request->input('departure_date');
+                if($start_date >  $end_date){
+                    return back()->withInput()->with(['error' => 'Departure date must be greater than arrival date']);
+                }
+
 
                 $first_name = ucfirst($request->input('first_name'));
                 $last_name = ucfirst($request->input('last_name'));
@@ -110,8 +125,8 @@ class ReservationController extends Controller
                 $nin = $request->input('nin');
                 $occupancy_type = $request->input('occupancy_type');
                 $other_details = $request->input('other_details');
-                $arrival_date = date('Y-m-d, H:i:s', strtotime($request->input('arrival_date')));
-                $departure_date = date('Y-m-d, H:i:s', strtotime($request->input('departure_date')));
+                $arrival_date = date('Y-m-d, H:i:s', strtotime($start_date));
+                $departure_date = date('Y-m-d, H:i:s', strtotime($end_date));
                 $created_by = Helper::getLoggedInUserId();
 
                 $company_name = null;
@@ -201,7 +216,7 @@ class ReservationController extends Controller
                         'discount_percent' => 0,
                         'amount' => $amount,
                         'tax' => $tax_amount,
-                        'ts_issued' => Carbon::now(),
+                        'issued_on' => Carbon::now(),
                         'issued_by' => $created_by
                     ];
 

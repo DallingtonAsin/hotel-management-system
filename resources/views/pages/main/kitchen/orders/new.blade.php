@@ -352,9 +352,8 @@
                         $('.customer_name').val('');
                         $('.room_number').val('');
 
-
                         let message = resp.error;
-                        alert(message);
+                        displayResponse(null, message, 'error');
                     }
 
                 },
