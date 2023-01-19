@@ -18,7 +18,18 @@
         <div class="col-md-6">
           <p>Order ID: {{ $kitchenOrder->order_number }}</p>
           <p>Order Date: {{ date('Y-m-d H:i A', strtotime($kitchenOrder->order_date)) }}</p>
+        
+          @if($type === 'general')
+          @if(isset($kitchenOrder->room_number))
+          <p>Room Number: {{ $kitchenOrder->room_number }}</p>
+          @endif
+          @if(isset($guest))
+          <p>Guest Name: {{ $guest->first_name }} {{ $guest->last_name }}</p>
+          @endif
+          @endif
+
         </div>
+      
       </div>
 
     <table class="table table-bordered">
@@ -39,6 +50,8 @@
             <td>{{ number_format($item->total) }}</td>
           </tr>
         @endforeach
+
+        @if($type === 'general')
         <tr>
           <td colspan="3" class="text-right">SubTotal:</td>
           <td>USh. <strong>{{ number_format($invoice->subtotal) }}</strong></td>
@@ -51,8 +64,11 @@
           <td colspan="3" class="text-right">Total:</td>
           <td>USh. <strong>{{ number_format($invoice->total) }}</strong></td>
         </tr>
+        @endif
       </tbody>
     </table>
+
+    @if($type === 'general')
     <div class="footer"></div>
     <footer>
       @if (isset($hotel->name))
@@ -78,7 +94,7 @@
   @else
    <p>{{ config('app.HOTEL_EMAIL') }}</p>
   @endif
-
     </footer>
+    @endif
   </body>
 </html>

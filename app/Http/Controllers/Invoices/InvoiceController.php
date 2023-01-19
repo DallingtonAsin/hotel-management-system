@@ -93,7 +93,6 @@ class InvoiceController extends Controller
 
 
             return response()->json(['url' => $url]);
-
         } catch (\Exception $ex) {
             return back()->with('error', $ex->getMessage());
         }
@@ -110,64 +109,64 @@ class InvoiceController extends Controller
         ]);
 
         try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
 
-            $type = $request->input('type');
+                $type = $request->input('type');
 
-            $directory = 'invoices/kitchen_orders';
-            Helper::createInvoicesDirIfnotExists(($directory));
+                $directory = 'invoices/kitchen_orders';
+                Helper::createInvoicesDirIfnotExists(($directory));
 
-            $kitchenOrder = KitchenOrder::find($id);
-            $order_number = $kitchenOrder->order_number;
-            $guest = null;
+                $kitchenOrder = KitchenOrder::find($id);
+                $order_number = $kitchenOrder->order_number;
+                $guest = null;
 
-            if (isset($kitchenOrder->room_id)) {
-                $room_id = $kitchenOrder->room_id;
-                $room = Helper::findRoom($room_id);
-                $kitchenOrder->room_number = $room->number;
+                if (isset($kitchenOrder->room_id)) {
+                    $room_id = $kitchenOrder->room_id;
+                    $room = Helper::findRoom($room_id);
+                    $kitchenOrder->room_number = $room->number;
+                }
+
+                if (isset($kitchenOrder->guest_id)) {
+                    $guest = Guest::find($kitchenOrder->guest_id);
+                }
+
+                $order_items = KitchenOrderItem::where('order_number', $order_number)->get();
+                foreach ($order_items as $item) {
+                    $item->name = KitchenMenuItem::where('id', $item->item_id)->value('name');
+                }
+                $invoice = KitchenOrderInvoice::where('order_number', $order_number)->first();
+
+                $count = Company::count();
+                $hotel = [];
+                if ($count > 0) {
+                    $hotel = Company::first();
+                }
+
+                $filename = 'invoice-' . $kitchenOrder->order_number . '-' . $kitchenOrder->id . '.pdf';
+                $path = public_path('' . $directory . '/' . $filename);
+
+                $pdf = PDF::loadView('pages.main.invoices.kitchen_order', [
+                    'kitchenOrder' => $kitchenOrder,
+                    'order_items' => $order_items,
+                    'hotel' => $hotel,
+                    'invoice' => $invoice,
+                    'guest' => $guest,
+                    'type' => $type
+                ]);
+                $pdf->save($path);
+
+                $subpath = '' . $directory . '/' . $filename;
+                $url = Storage::disk('invoices')->url($subpath);
+
+
+                return response()->json(['url' => $url]);
             }
-
-            if (isset($kitchenOrder->guest_id)) {
-                $guest = Guest::find($kitchenOrder->guest_id);
-            }
-
-            $order_items = KitchenOrderItem::where('order_number', $order_number)->get();
-            foreach ($order_items as $item) {
-                $item->name = KitchenMenuItem::where('id', $item->item_id)->value('name');
-            }
-            $invoice = KitchenOrderInvoice::where('order_number', $order_number)->first();
-
-            $count = Company::count();
-            $hotel = [];
-            if ($count > 0) {
-                $hotel = Company::first();
-            }
-
-            $filename = 'invoice-' . $kitchenOrder->order_number . '-' . $kitchenOrder->id . '.pdf';
-            $path = public_path('' . $directory . '/' . $filename);
-
-            $type == 'general'
-            ? $view = 'pages.main.invoices.general_kitchen_order'
-            : $view = 'pages.main.invoices.kitchen_order';
-            
-            $pdf = PDF::loadView($view, [
-                'kitchenOrder' => $kitchenOrder,
-                'order_items' => $order_items,
-                'hotel' => $hotel,
-                'invoice' => $invoice,
-                'guest' => $guest
-            ]);
-            $pdf->save($path);
-
-            $subpath = '' . $directory . '/' . $filename;
-            $url = Storage::disk('invoices')->url($subpath);
-
-
-            return response()->json(['url' => $url]);
-
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);
         }
-
     }
 
     /**

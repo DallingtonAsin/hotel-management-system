@@ -25,7 +25,7 @@ class CreateKitchenOrdersTable extends Migration
             $table->string('tin_number')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
-            $table->enum('status', ['In Progress', 'Completed', 'Cancelled']);
+            $table->enum('status', ['in progress', 'completed', 'cancelled']);
             $table->timestamp('order_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('created_by')->unsigned();
             $table->timestamps();

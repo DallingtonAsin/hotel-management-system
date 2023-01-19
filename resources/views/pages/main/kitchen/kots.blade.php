@@ -114,9 +114,9 @@
                             <div class="col-md-3">
                                 <label for="status"><span class="text-danger pr-1">*</span>Status</label>
                                 <select class="form-control status" name="status" id="status">
-                                    <option value="In Progress" selected>In Progress</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Cancelled">Cancelled</option>
+                                    @foreach (config('kitchen-order-statuses') as $status)
+                                        <option value="{{$status}}" {{ str_contains($status, 'progress') ? 'selected' : '' }}>{{ucwords($status)}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -350,6 +350,8 @@
                         $('.email').val('');
                         $('.tin_number').val('');
                         $('.customer_name').val('');
+                        $('.room_number').val('');
+
 
                         let message = resp.error;
                         alert(message);
@@ -770,14 +772,14 @@
                 downloadKOT(invoice_id, 'general');
             });
 
-             //Generate hitchen invoice
-             $('body').on('click', '#download-kitchen-invoice', function(event) {
+            //Generate hitchen invoice
+            $('body').on('click', '#download-kitchen-invoice', function(event) {
                 let invoice_id = $(this).data('id');
                 event.preventDefault();
                 downloadKOT(invoice_id, 'kitchen');
             });
 
-            function downloadKOT(invoice_id, type){
+            function downloadKOT(invoice_id, type) {
                 let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
                 url = url.replace(':id', invoice_id);
                 checkPermission(permissions.download_kitchen_order_invoice, function(kitchen_order) {
@@ -785,7 +787,7 @@
                         url: url,
                         type: 'POST',
                         data: {
-                           type: type,
+                            type: type,
                         },
                         success: function(response) {
                             let returned_url = response.url;

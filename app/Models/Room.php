@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\RoomStatus;
+use App\Models\RoomStatusHistory;
 
 class Room extends Model
 {
@@ -17,6 +19,11 @@ class Room extends Model
       'description',
       'created_by',
     ];
+
+    public function status()
+    {
+        return $this->belongsTo(RoomStatus::class, 'status_id');
+    }
 
     public function statusHistory()
     {

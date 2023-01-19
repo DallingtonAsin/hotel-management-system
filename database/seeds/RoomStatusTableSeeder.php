@@ -14,25 +14,14 @@ class RoomStatusTableSeeder extends Seeder
      */
     public function run()
     {
-        
-        RoomStatus::create([
-            'name' => 'Available',
-            'created_by' => 1
-        ]);
 
-        RoomStatus::create([
-            'name' => 'Occupied',
+        $room_statuses = config('room-statuses');
+        foreach($room_statuses as $status){
+           RoomStatus::create([
+            'name' => ucwords($status),
             'created_by' => 1
         ]);
+        }
 
-        RoomStatus::create([
-            'name' => 'Cleaned',
-            'created_by' => 1
-        ]);
-
-        RoomStatus::create([
-            'name' => 'Under Maintenance',
-            'created_by' => 1
-        ]);
     }
 }

@@ -54,116 +54,8 @@ class KitchenOrderController extends Controller
      */
     public function store(Request $request)
     {
+      
         $validator = Validator::make($request->all(), [
-            'table_number' => 'required|max:55',
-            'item' => 'required|max:55',
-            'quantity' => 'required|max:55',
-            'status' => 'required|max:55',
-        ]);
-
-        try {
-            if ($validator->fails()) {
-                $message = $validator->errors()->all();
-                return response()->json(['error' => $message]);
-            } else {
-
-                $table_number = $request->input('table_number');
-                $item = $request->input('item');
-                $quantity = $request->input('quantity');
-                $status = $request->input('status');
-
-                $order_number = $this->generateKotOrderNo();
-                $created_by = Helper::getLoggedInUserId();
-
-                $kot = [
-                    'order_number' => $order_number,
-                    'table_number' => $table_number,
-                    'item' => $item,
-                    'quantity' => $quantity,
-                    'status' => $status,
-                    'created_by' => $created_by,
-                ];
-
-                if (KitchenOrder::create($kot)) {
-                    $message = "Kitchen order has been created successfully with order number" . $order_number . " ";
-                    $stats = $this->GetKitchenOrderStats();
-                    $data = [
-                        'success' => $message,
-                        'data' => $stats['data'],
-                        'total' => $stats['total']
-                    ];
-                } else {
-                    $message = "Technical error in adding kitchen order";
-                    $data = [
-                        'error' => $message
-                    ];
-                }
-                return response()->json($data);
-            }
-        } catch (\Exception $ex) {
-            throw $ex;
-        }
-    }
-
-    private function generateKotOrderNo()
-    {
-        try {
-            $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, '#');
-            return $order_number;
-        } catch (\Exception $ex) {
-            throw $ex;
-        }
-    }
-
-    public function changeKitchenOrderStatus(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'status' => 'required',
-        ]);
-
-        try {
-            if ($validator->fails()) {
-                $message = $validator->errors()->all();
-                return response()->json(['error' => $message]);
-            } else {
-
-                $order_status = ucfirst($request->input('status'));
-
-                $kitchen_order = KitchenOrder::find($id);
-                $order_number = $kitchen_order->order_number;
-                $created_by = Helper::getLoggedInUserId();
-
-                $kot = [
-                    'status' => $order_status,
-                    'created_by' => $created_by,
-                ];
-
-                if ($kitchen_order->update($kot)) {
-                    $message = "Kitchen order " . $order_number . " has been marked " . lcfirst($order_status) . " successfully";
-                    $stats = $this->GetKitchenOrderStats();
-                    $data = [
-                        'success' => $message,
-                        'data' => $stats['data'],
-                        'total' => $stats['total']
-                    ];
-                } else {
-                    $message = "Technical error in updating kitchen order status";
-                    $data = [
-                        'error' => $message
-                    ];
-                }
-                return response()->json($data);
-            }
-        } catch (\Exception $ex) {
-            throw $ex;
-        }
-    }
-
-
-    public function storeKitchenOrder(Request $req)
-    {
-       
-        $validator = Validator::make($req->all(), [
             'table_data' => 'required',
             'table_number' => 'sometimes|nullable',
             'room_number' => 'sometimes|nullable',
@@ -182,18 +74,18 @@ class KitchenOrderController extends Controller
             } else {
 
                 $method = "KitchenOrderController@storeKitchenOrder";
-                $data = $req->input('table_data');
+                $data = $request->input('table_data');
 
                 $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, 'KOT_');
-                $table_number = $req->input('table_number');
+                $table_number = $request->input('table_number');
 
-                $status = $req->input('status');
+                $status = $request->input('status');
                 $order_date = Carbon::now();
                 $created_by = Helper::getLoggedInUserId();
 
 
-                if ($req->filled('room_number')) {
-                    $room_number = $req->input('room_number');
+                if ($request->filled('room_number')) {
+                    $room_number = $request->input('room_number');
                     $room = Room::where('number', $room_number);
                     if (!$room->exists()) {
                         return response()->json(['error' => 'Unable to find sepcified room number']);
@@ -204,11 +96,11 @@ class KitchenOrderController extends Controller
                     $room_id = null;
                 }
 
-                $guest_id = $req->input('guest_id');
-                $customer_name = $req->input('customer_name');
-                $phone_number = $req->input('phone_number');
-                $tin_number = $req->input('tin_number');
-                $email = $req->input('email');
+                $guest_id = $request->input('guest_id');
+                $customer_name = $request->input('customer_name');
+                $phone_number = $request->input('phone_number');
+                $tin_number = $request->input('tin_number');
+                $email = $request->input('email');
 
 
                 $kitchenOrderData = [
@@ -220,7 +112,7 @@ class KitchenOrderController extends Controller
                     'phone_number' => $phone_number,
                     'tin_number' => $tin_number,
                     'email' => $email,
-                    'status' => $status,
+                    'status' => strtolower($status),
                     'order_date' => $order_date,
                     'created_by' => $created_by,
                 ];
@@ -282,9 +174,9 @@ class KitchenOrderController extends Controller
                             $action = "recorded a sale of items " . json_encode($this->sold_menu_items) . " at
                         " . number_format($total_amount) . " with tax inclusive";
 
-                            Helper::logger($req, $action, now());
+                            Helper::logger($request, $action, now());
                             $dataArr = array("code" => '200', "message" => $action, "method" => $method);
-                            Helper::LogRequest($req, $dataArr);
+                            Helper::LogRequest($request, $dataArr);
 
                         } else {
 
@@ -297,7 +189,7 @@ class KitchenOrderController extends Controller
                                 "message" => $message,
                                 "method" => $method
                             );
-                            Helper::LogRequest($req, $dataArr);
+                            Helper::LogRequest($request, $dataArr);
 
                         }
 
@@ -316,6 +208,51 @@ class KitchenOrderController extends Controller
             
         }catch(\Exception $ex){
             return response()->json(['error' =>  $ex->getMessage()]);
+        }
+    }
+
+
+    public function changeKitchenOrderStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required',
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $order_status = ucfirst($request->input('status'));
+
+                $kitchen_order = KitchenOrder::find($id);
+                $order_number = $kitchen_order->order_number;
+                $created_by = Helper::getLoggedInUserId();
+
+                $kot = [
+                    'status' => $order_status,
+                    'created_by' => $created_by,
+                ];
+
+                if ($kitchen_order->update($kot)) {
+                    $message = "Kitchen order " . $order_number . " has been marked " . lcfirst($order_status) . " successfully";
+                    $stats = $this->GetKitchenOrderStats();
+                    $data = [
+                        'success' => $message,
+                        'data' => $stats['data'],
+                        'total' => $stats['total']
+                    ];
+                } else {
+                    $message = "Technical error in updating kitchen order status";
+                    $data = [
+                        'error' => $message
+                    ];
+                }
+                return response()->json($data);
+            }
+        } catch (\Exception $ex) {
+            throw $ex;
         }
     }
 
