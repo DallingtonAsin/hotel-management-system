@@ -154,7 +154,7 @@
 
                     @haspermission(config('permissions')['view_frequent_contacts'])
                         <li class="nav-sub-item"><a href="{{ Route('frequent-contacts.index') }}"
-                                class="nav-sub-link">Frequent Contacts</a> </li>
+                                class="nav-sub-link">Frequent contacts</a> </li>
                     @endhaspermission
 
                     <li class="nav-item">
