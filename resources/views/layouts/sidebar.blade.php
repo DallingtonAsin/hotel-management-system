@@ -66,7 +66,7 @@
                                 <li class="nav-sub-item"><a href="{{ route('orders.status', ['status' => config("kitchen-order-statuses")["pending"] ]) }}" class="nav-sub-link">Pending Orders</a></li>
                                 <li class="nav-sub-item"><a href="{{ route('orders.status', ['status' => config("kitchen-order-statuses")["completed"] ]) }}" class="nav-sub-link">Completed Orders</a></li>
                                 <li class="nav-sub-item"><a href="{{ route('orders.status', ['status' => config("kitchen-order-statuses")["cancelled"] ]) }}" class="nav-sub-link">Cancelled Orders</a></li>
-                                {{-- <li class="nav-sub-item"><a href="{{ Route('kitchen-order-history.index') }}" class="nav-sub-link">Order History</a></li> --}}
+                                <li class="nav-sub-item"><a href="{{ Route('kitchen-order-history.index') }}" class="nav-sub-link">All Orders</a></li>
                             </ul>
                         </li>
                     @endhaspermission

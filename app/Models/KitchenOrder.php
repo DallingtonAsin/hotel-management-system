@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\KitchenOrderItem;
 
 class KitchenOrder extends Model
 {
@@ -25,5 +26,9 @@ class KitchenOrder extends Model
         'order_date',
         'created_by'
     ];
+
+    public function items(){
+        return $this->hasMany(KitchenOrderItem::class, 'order_number');
+    }
 
 }

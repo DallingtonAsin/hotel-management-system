@@ -18,14 +18,31 @@
         <div class="col-md-6">
           <p>Order ID: {{ $kitchenOrder->order_number }}</p>
           <p>Order Date: {{ date('Y-m-d H:i A', strtotime($kitchenOrder->order_date)) }}</p>
+          <p>Order Status:
+            @if($kitchenOrder->status == config('kitchen-order-statuses')['pending'])
+            <span class="text-warning">{{ ucfirst($kitchenOrder->status) }}</span>
+            @endif
+
+            @if($kitchenOrder->status == config('kitchen-order-statuses')['completed'])
+            <span class="text-success">{{ ucfirst($kitchenOrder->status) }}</span>
+            @endif
+
+            @if($kitchenOrder->status == config('kitchen-order-statuses')['cancelled'])
+            <span class="text-danger">{{ ucfirst($kitchenOrder->status) }}</span>
+            @endif
+          
+          </p>
+
         
           @if($type === 'general')
           @if(isset($kitchenOrder->room_number))
           <p>Room Number: {{ $kitchenOrder->room_number }}</p>
           @endif
+
           @if(isset($guest))
           <p>Guest Name: {{ $guest->first_name }} {{ $guest->last_name }}</p>
           @endif
+
           @endif
 
         </div>

@@ -44,7 +44,7 @@
 a:hover{
   color: #009688 !important
 }
-.border-success {
+.border-success,.border-primary {
   border-color: #009688 !important
 }
 
@@ -154,6 +154,8 @@ tfoot {
 #tax,
 #total {
   text-align: right;
+  font-weight: bold;
+  font-size: 24;
 }
 
 .az-sidebar-body .typcn,

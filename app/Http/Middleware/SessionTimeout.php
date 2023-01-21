@@ -67,10 +67,7 @@ class SessionTimeout
 
           
           $message = "No activity within ".$this->timeout/60 ." ".$units."";
-          return redirect('/')->with('sessionExpiredMessage',$message
-          ,"warning", "try re-login");
-            //   ->withInput(compact('email'))->withCookie($cookie);
-            // "You had no activity in ".$this->timeout/60 ." ".$units.", please re-login."
+          return redirect()->route('login')->with('sessionExpiredMessage',$message);
         }
 
 

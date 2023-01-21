@@ -19,7 +19,7 @@ class CreateKitchenOrderInvoicesTable extends Migration
           
             $table->id();
             $table->string('order_number');
-            $table->double('subtotal', 10, 2);
+            $table->double('sub_total', 10, 2);
             $table->double('tax', 10, 2);
             $table->double('total', 10, 2);
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');

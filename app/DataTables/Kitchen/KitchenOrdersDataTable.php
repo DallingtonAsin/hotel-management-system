@@ -25,26 +25,31 @@ class KitchenOrdersDataTable extends DataTable
 
                 $btn = "";
 
+                $btn .= '<a href="javascript:void(0);" id="view-kitchen-order" 
+                data-toggle="tooltip" data-original-title="view order"
+                data-id="' . $order->id . '" data-status="{{$status}}"
+                 class="px-3 py-1 border border-secondary rounded mr-2 text-secondary">view order</a>';
+
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                 data-id="' . $order->id . '" data-status="pending" data-original-title="Edit Order" id="edit-order"
-                class="px-3 py-1 border border-default rounded text-secondary mr-2">
+                class="px-3 py-1 border border-secondary rounded text-secondary mr-2">
                 <span class="fa fa-clock-o pr-2"></span>Edit order</a>';
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                 data-id="' . $order->id . '" data-status="pending" data-original-title="Mark Pending" id="mark-pending"
                 class="px-3 py-1 border border-secondary rounded text-secondary mr-2">
-                <span class="fa fa-clock-o pr-1"></span>Mark Pending</a>';
+                <span class="fa fa-change pr-1"></span>change status</a>';
 
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                  data-id="' . $order->id . '" data-status="completed" data-original-title="Mark Completed" id="mark-completed"
-                  class="px-3 py-1 border border-success rounded edit-order mr-2">
-                  <span class="fa fa-check-circle pr-1"></span>Mark Completed</a>';
+                // $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                //   data-id="' . $order->id . '" data-status="completed" data-original-title="Mark Completed" id="mark-completed"
+                //   class="px-3 py-1 border border-success rounded edit-order mr-2">
+                //   <span class="fa fa-check-circle pr-1"></span>Mark Completed</a>';
 
-                $btn .= '<a href="javascript:void(0);" id="mark-cancelled" 
-                        data-toggle="tooltip" data-original-title="Mark Cancelled"
-                        data-id="' . $order->id . '" data-status="cancelled"
-                         class="px-3 py-1 border border-danger rounded mr-2"">
-                        <span class="fa fa-times-circle pr-1" ></span>Mark Cancelled</a>';
+                // $btn .= '<a href="javascript:void(0);" id="mark-cancelled" 
+                //         data-toggle="tooltip" data-original-title="Mark Cancelled"
+                //         data-id="' . $order->id . '" data-status="cancelled"
+                //          class="px-3 py-1 border border-danger rounded mr-2"">
+                //         <span class="fa fa-times-circle pr-1" ></span>Mark Cancelled</a>';
 
 
 
@@ -74,11 +79,11 @@ class KitchenOrdersDataTable extends DataTable
             })->editColumn('status', function ($order) {
 
                 if (stripos($order->status, 'pending') !== false) {
-                    $statusText = "<span class='text-warning'>" . $order->status . "</span>";
+                    $statusText = "<span class='text-warning'>" . ucwords($order->status) . "</span>";
                 } else if (stripos($order->status, 'completed') !== false) {
-                    $statusText = "<span class='text-success'>" . $order->status . "</span>";
+                    $statusText = "<span class='text-success'>" . ucwords($order->status) . "</span>";
                 } else if (stripos($order->status, 'cancelled') !== false) {
-                    $statusText = "<span class='text-danger'>" . $order->status . "</span>";
+                    $statusText = "<span class='text-danger'>" . ucwords($order->status) . "</span>";
                 }
 
                 return $statusText;

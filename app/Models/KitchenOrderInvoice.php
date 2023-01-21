@@ -16,7 +16,7 @@ class KitchenOrderInvoice extends Model
     // Fillable fields
     protected $fillable = [
         'order_number',
-        'subtotal',
+        'sub_total',
         'tax',
         'total',
         'status',

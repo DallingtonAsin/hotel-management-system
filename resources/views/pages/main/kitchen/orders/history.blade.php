@@ -35,6 +35,10 @@
                     </tbody>
                 </table>
             </div>
+
+            @include('pages.main.kitchen.orders.modals.view_order')
+
+
         </div>
     </div>
 
@@ -47,7 +51,7 @@
 
         const ajaxUrl = @json(route('kitchen-order-history.ajax'));
         const cat = 'kitchen-order-history';
-   
+
         $(document).ready(function() {
 
             let table = $('#kitchen-orders-table');
@@ -110,6 +114,48 @@
                 })
             });
 
+            // View Modal used to view each row 
+            $('body').on('click', '#view-kitchen-order', function(event) {
+                let order_id = $(this).data('id');
+                event.preventDefault();
+                let url = "{{ route('kitchen-orders.index') }}" + '/' + order_id + '';
+                checkPermission(permissions.view_kitchen_orders, function(order) {
+                    viewOrder(url);
+                });
+            });
+
+            //Generate general invoice
+            $('body').on('click', '#download-invoice', function(event) {
+                let invoice_id = $(this).data('id');
+                event.preventDefault();
+                downloadKOT(invoice_id, 'general');
+            });
+
+            //Generate kitchen invoice
+            $('body').on('click', '#download-kitchen-invoice', function(event) {
+                let invoice_id = $(this).data('id');
+                event.preventDefault();
+                downloadKOT(invoice_id, 'kitchen');
+            });
+
+            function downloadKOT(invoice_id, type) {
+                let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
+                url = url.replace(':id', invoice_id);
+                checkPermission(permissions.download_kitchen_order_invoice, function(kitchen_order) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            type: type,
+                        },
+                        success: function(response) {
+                            let returned_url = response.url;
+                            console.log('Returned url is', response.url);
+                            window.open(returned_url, '_blank');
+                        }
+                    });
+                });
+            }
 
         });
     </script>

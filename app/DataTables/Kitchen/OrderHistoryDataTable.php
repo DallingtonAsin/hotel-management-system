@@ -30,10 +30,22 @@ class OrderHistoryDataTable extends DataTable
                 return $room_number;
             })->addColumn('action', function ($order) {
 
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-                        data-id="' . $order->id . '" data-original-title="Kitchen Invoice" id="download-kitchen-invoice"
-                        class="px-3 py-1 border border-default rounded text-secondary edit-order ml-2">
+                $btn = '';
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                        data-id="' . $order->id . '" data-original-title="View kitchen order" id="view-kitchen-order"
+                        class="px-3 py-1 border border-default rounded text-secondary view-order ml-2">
                         <span class="fa fa-eye pr-1"></span>view order</a>';
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                        data-id="' . $order->id . '" data-original-title="Kitchen Invoice" id="download-kitchen-invoice"
+                        class="px-3 py-1 border border-warning rounded text-secondary edit-order ml-2">
+                        <span class="fa fa-download pr-1"></span>Kitchen Invoice</a>';
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                        data-id="' . $order->id . '" data-original-title="Download Invoice" id="download-invoice"
+                        class="px-3 py-1 border border-success rounded text-success edit-order ml-2">
+                        <span class="fa fa-download pr-1"></span>General Invoice</a>';
 
                 return $btn;
             })->editColumn('order_date', function ($order) {
@@ -43,12 +55,13 @@ class OrderHistoryDataTable extends DataTable
                 return $checkBox;
             })->editColumn('status', function ($order) {
 
-                if (stripos($order->status, 'pending') !== false) {
-                    $statusText = "<span class='text-warning'>" . $order->status . "</span>";
-                } else if (stripos($order->status, 'completed') !== false) {
-                    $statusText = "<span class='text-success'>" . $order->status . "</span>";
-                } else if (stripos($order->status, 'cancelled') !== false) {
-                    $statusText = "<span class='text-danger'>" . $order->status . "</span>";
+                $statuses = config('kitchen-order-statuses');
+                if (stripos($order->status, $statuses['pending']) !== false) {
+                    $statusText = "<span class='text-warning'>" . ucwords($order->status) . "</span>";
+                } else if (stripos($order->status, $statuses['completed']) !== false) {
+                    $statusText = "<span class='text-success'>" . ucwords($order->status) . "</span>";
+                } else if (stripos($order->status, $statuses['cancelled']) !== false) {
+                    $statusText = "<span class='text-danger'>" . ucwords($order->status) . "</span>";
                 }
 
                 return $statusText;

@@ -14,7 +14,7 @@ class KitchenOrderTableSeeder extends Seeder
      */
     public function run()
     {
-        KitchenOrder::factory()->count(100)->create();
+        KitchenOrder::factory()->count(35)->create();
 
     }
 }

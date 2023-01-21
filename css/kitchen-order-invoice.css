@@ -42,3 +42,15 @@
     text-align: center;
     padding: 1rem;
   }
+
+  .text-success{
+    color: #009688 !important;
+  }
+
+  .text-warning{
+    color: #F8B195 !important;
+  }
+
+  .text-danger{
+    color: red !important;
+  }

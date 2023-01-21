@@ -371,7 +371,7 @@ class CartController extends Controller
         $cart->item = $data['item_name'];
         $cart->quantity = $data['quantity'];
         $cart->price = $data['price'];
-        $cart->amount = $data['subtotal'];
+        $cart->amount = $data['sub_total'];
         $cart->save();
     }
 
@@ -399,14 +399,14 @@ class CartController extends Controller
             $item_name = $dataArr[$i]['item'];
             $quantity = $dataArr[$i]['quantity'];
             $price = $dataArr[$i]['price'];
-            $subtotal = $dataArr[$i]['subtotal'];
+            $sub_total = $dataArr[$i]['sub_total'];
 
             $data = array(
                 'item_code' => $item_code,
                 'item_name' => $item_name,
                 'quantity' => $quantity,
                 'price' => $price,
-                'subtotal' => $subtotal,
+                'sub_total' => $sub_total,
             );
             $this->StoreIntoCart($data);
         }
@@ -436,7 +436,7 @@ class CartController extends Controller
                     $this->sold_items[] = $item;
                     $quantity = floatval(str_replace(',', '', $key['quantity']));
                     $price = floatval(str_replace(',', '', $key['price']));
-                    $subtotal = floatval(str_replace(',', '', $key['subtotal']));
+                    $sub_total = floatval(str_replace(',', '', $key['sub_total']));
                     $discount = floatval(str_replace(',', '', $key['discount']));
                     $total = floatval(str_replace(',', '', $key['total']));
                     $paid_amount = floatval(str_replace(',', '', $key['paid']));
@@ -464,7 +464,7 @@ class CartController extends Controller
 
                     $arr = $this->getPrices($item);
                     $original_price = $arr['bprice'];
-                    $this->total_amount_of_sales += floatval($subtotal);
+                    $this->total_amount_of_sales += floatval($sub_total);
 
                     // Get new quantity of item after sale
                     $qty_beforeSale = $this->getQtyBeforeSale($item);
@@ -494,7 +494,7 @@ class CartController extends Controller
                     ]);
 
                     $datetime = Carbon::now();
-                    $taxArr = array($item_code, $item, $quantity, $subtotal, $taxAmount, $datetime);
+                    $taxArr = array($item_code, $item, $quantity, $sub_total, $taxAmount, $datetime);
                     $this->DoTaxMathTracking($taxArr);
 
                     //If insertion is OK, reduce stock levels and clear cart

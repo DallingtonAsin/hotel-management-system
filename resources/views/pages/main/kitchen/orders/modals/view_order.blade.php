@@ -15,6 +15,8 @@
 
                    <div class="modal-body border border-default m-3">
 
+                    <h5 class="text-danger">Order #: <span class="order_no"></span></h5>
+
                        <div class="row form-group">
                            <div class="col-md-3">
                                <label for="table_number">Table Number</label>
@@ -82,18 +84,14 @@
                                    <th>Quantity</th>
                                    <th>Price</th>
                                    <th>Amount</th>
-                                   <th>Action</th>
                                </tr>
                            </thead>
-                           <tbody class="menu-item-cart-body"></tbody>
+                           <tbody class="menu-item-cart-body">
+                           </tbody>
                        </table>
 
 
                        <div class="d-flex justify-content-between" id="menu-cart-footer">
-                           <div class="float-left">
-                               <button type="submit" class="btn btn-primary submit-order-btn"><i
-                                       class="fa fa-plus-circle pr-1"></i>Submit Order</button>
-                           </div>
                            <div id="totals" class="float-right">
                                <div class="d-flex">
                                    <h5 class="mr-2">Subtotal:</h5> $<span id="sub_total">0.00</span>

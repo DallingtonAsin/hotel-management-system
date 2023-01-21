@@ -9,6 +9,6 @@ return [
 
     // statuses
     'pending' => 'pending',
-    'completed' => 'completed',
+    'completed' => 'paid',
     'cancelled' => 'cancelled'
 ];

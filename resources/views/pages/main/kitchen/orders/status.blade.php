@@ -96,65 +96,15 @@
 
             makeDataTable(table, title, columns, dataColumns);
 
-            //View Modal used to view each row [kitchen-orders details]
-            $('body').on('click', '#view-kot', function(event) {
-                let kot_id = $(this).data('id');
-                event.preventDefault();
-
-                $.get("{{ route('kitchen-orders.index') }}" + '/' + kot_id + '', function(data) {
-
-                    $('#modalHeading').html("Details of kot " + data.name + "");
-                    $('#addKitchenOrderModal').modal('show');
-                    $('.kotId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
-                })
-            });
-
             // View Modal used to view each row 
             $('body').on('click', '#view-kitchen-order', function(event) {
-                let order_id = $(this).data('id') || 1;
-                console.log('order id', order_id);
+                let order_id = $(this).data('id');
                 event.preventDefault();
-                checkPermission(permissions.view_kitchen_orders, function(stock) {
-                    viewOrder(order_id);
+                let url = "{{ route('kitchen-orders.index') }}" + '/' + order_id + '';
+                checkPermission(permissions.view_kitchen_orders, function(order) {
+                    viewOrder(url);
                 });
             });
-
-            function viewOrder(order_id) {
-                // ShowHideBtns('hide');
-                order_id =1;
-                let url = "{{ route('kitchen-orders.show', ':id') }}";
-                url = url.replace(':id', order_id);
-                
-                $.get(url + '/' + order_id + '', function(data) {
-                    console.log('order details', data);
-                    let bprice = data.buying_price;
-                    let sprice = data.selling_price;
-                    let wprice = data.wholesale_price;
-                    $('#modalHeading').html("Details of stock " + data.item + "");
-                    $('#addStockModal').modal('show');
-                    $('.stockId').val(stock_id);
-                    $('.item_code').val(data.item_code);
-                    $('.item-name').val(data.item);
-                    $('.category').val(data.category);
-                    $('#supplier').val(data.supplier);
-                    $('.quantity').val(data.quantity);
-                    $('.thresholdQty').val(data.threshold_qty)
-                    $('.expiry_date').val(data.expiry_date);
-                    $('.original_price').val(bprice);
-                    $('.selling_price').val(sprice);
-                    $('.wholesale_price').val(wprice);
-                    DisableFormFields(true);
-                });
-            }
-
 
         });
     </script>
