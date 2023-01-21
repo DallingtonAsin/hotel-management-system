@@ -73,7 +73,7 @@ class KitchenOrdersDataTable extends DataTable
                 return $checkBox;
             })->editColumn('status', function ($order) {
 
-                if (stripos($order->status, 'progress') !== false) {
+                if (stripos($order->status, 'pending') !== false) {
                     $statusText = "<span class='text-warning'>" . $order->status . "</span>";
                 } else if (stripos($order->status, 'completed') !== false) {
                     $statusText = "<span class='text-success'>" . $order->status . "</span>";

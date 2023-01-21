@@ -122,10 +122,12 @@ class SalesController extends Controller
 
            return $btn;
 
-        })->rawColumns(['action', 'checkbox'])->with(["totl_filtered" => $totl_filtered,
+        })->rawColumns(['action', 'checkbox'])
+        ->with(["totl_filtered" => $totl_filtered,
                   "volume" => $volume_of_filteredsales,
                   "netValue" => $netValue,
-                     ])->make(true);
+                     ])
+                     ->make(true);
         
         
       }

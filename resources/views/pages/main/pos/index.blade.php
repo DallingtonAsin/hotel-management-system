@@ -15,12 +15,12 @@
                         </span>
                     </div>
 
-                    <div class="col-lg-4 amount">
+                    {{-- <div class="col-lg-4 amount">
                         <strong class="text-dark">Amount: </strong>
                         <strong class="text-danger amountToPay" id="amountToPay">0</strong>
                         <input type="hidden" value="@isset($item_total) {{ $item_total }} @endisset"
                             class="payment">
-                    </div>
+                    </div> --}}
 
                 </div>
 
@@ -33,30 +33,35 @@
 
                 <div class="row">
 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col">
                         <label>Tendered Amount</label>
                         <input type="text" class="form-control tendered" id='tendered' placeholder="Tendered amount">
                     </div>
 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col">
                         <label>Balance</label>
-                        <input type="text" class="form-control bg-white balance" readonly placeholder="Balance">
+                        <input type="text" class="form-control balance" readonly placeholder="Balance">
                     </div>
 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col">
                         <label>Extra Money Paid</label>
                         <input type="text" class="form-control bg-white extra_money" value="" id="extra_money"
                             placeholder="0">
                     </div>
 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col">
                         <label>Cashier</label>
                         <input type="text" class="form-control bg-white workedon_by" id="workedon_by" name="workedon_by"
                             value="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" placeholder="WorkedOn By"
                             disabled="true">
                     </div>
 
-                    <div class="form-group col-lg-3 mt-4">
+                    <div class="form-group col">
+                        <label>Customer</label>
+                        <input type="text" name="customer" id="customer" class="form-control" placeholder="customer">
+                    </div>
+
+                    <div class="form-group col mt-4">
                         <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
                             <i class="fa f-10 fa-minus-circle text-white pr-1"></i>Empty cart
                         </a>
@@ -91,11 +96,6 @@
                     </div>
 
                     <div class="form-group col">
-                        <label>Customer</label>
-                        <input type="text" name="customer" id="customer" class="form-control" placeholder="customer">
-                    </div>
-
-                    <div class="form-group col">
                         <label>Price category</label>
                         <select name="priceCategory" class="form-control" id="priceCategory">
                             <option value="retail">retail</option>
@@ -105,8 +105,8 @@
 
                     <div class="form-group col">
                         <label>Date of sale</label>
-                        <input type="date" name="date_of_sale" id="date_of_sale" class="form-control date_of_sale"
-                            value="{{ date('Y-m-d') }}">
+                        <input type="datetime-local" name="date_of_sale" id="date_of_sale" class="form-control date_of_sale"
+                            value="{{ old('date_of_sale', now()->format('Y-m-d\TH:i')) }}">
                     </div>
 
 
@@ -636,7 +636,7 @@
                 $(this).val(n.toLocaleString());
                 ComputeBalance();
             } else {
-                let paymentString = document.getElementById('amountToPay').innerHTML;
+                let paymentString = document.getElementById('total').innerHTML;
                 if (paymentString.length > 0 && paymentString != '0') {
                     let letCustomerPay = "-" + paymentString;
                     $('.balance').val(letCustomerPay);
@@ -653,7 +653,7 @@
         function ComputeBalance() {
 
             let tenderedMoneyStr = $(".tendered").val();
-            let paymentStr = document.getElementById('amountToPay').innerHTML;
+            let paymentStr = document.getElementById('total').innerHTML;
 
             if (tenderedMoneyStr.length > 0) {
 
@@ -686,7 +686,7 @@
 
             let rowCount = (table.rows.length - 1);
             document.getElementById('num').innerHTML = FormatNumber(rowCount.toFixed(0));
-            document.getElementById('amountToPay').innerHTML = FormatNumber(subTotal.toFixed(2));
+            document.getElementById('total').innerHTML = FormatNumber(subTotal.toFixed(2));
         }
     </script>
 

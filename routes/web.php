@@ -186,6 +186,9 @@ Route::get('kitchen/item/{menu_item_id}', [MenuItemController::class, 'getMenuIt
 Route::get('kitchen/order/fetch/ajax', [KitchenOrderController::class, 'getKitchenOrdersDataTable'])->name('kitchen_orders.index.ajax');
 Route::put('kitchen/order/update/{id}', [KitchenOrderController::class, 'changeKitchenOrderStatus'])->name('kitchen-order.status.update');
 Route::post('kitchen/order/post', [KitchenOrderController::class, 'store'])->name('kitchen-order.submit');
+Route::get('kitchen/order/{status}', [KitchenOrderController::class, 'orderStatusIndex'])->name('orders.status');
+Route::get('kitchen/order/{status}/ajax', [KitchenOrderController::class, 'getOrders'])->name('orders.status.ajax');
+
 
 Route::get('kitchen/order-history/index', [KitchenOrderController::class, 'orderHistoryIndex'])->name('kitchen-order-history.index');
 Route::get('kitchen/order-history/ajax', [KitchenOrderController::class, 'getOrderHistoryDataTable'])->name('kitchen-order-history.ajax');

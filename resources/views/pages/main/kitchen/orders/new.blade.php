@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <span class="response"></span>
-            <h6 class="card-title mb-0 text-dark">
+            <h6 class="card-title text-dark">
                 <i class="fa fa-home text-success"> /</i>
                 <strong>Kitchen Orders</strong>
                 <span class="badge badge-info total_kitchen-orders">
@@ -115,7 +115,7 @@
                                 <label for="status"><span class="text-danger pr-1">*</span>Status</label>
                                 <select class="form-control status" name="status" id="status">
                                     @foreach (config('kitchen-order-statuses') as $status)
-                                        <option value="{{$status}}" {{ str_contains($status, 'progress') ? 'selected' : '' }}>{{ucwords($status)}}</option>
+                                        <option value="{{$status}}" {{ str_contains($status, 'pending') ? 'selected' : '' }}>{{ucwords($status)}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -863,7 +863,7 @@
             $('body').on('click', '#mark-pending', function(e) {
                 checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
                     let kot_id = $(this).data("id");
-                    let status = 'In Progress';
+                    let status = 'pending';
                     e.preventDefault();
                     confirmOrderStatusChange(kot_id, status);
                 });

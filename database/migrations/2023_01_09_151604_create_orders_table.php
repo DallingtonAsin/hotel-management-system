@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\Helper;
 
 class CreateOrdersTable extends Migration
 {
@@ -21,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->string('table_number')->nullable();
             $table->unsignedBigInteger('room_id')->nullable();
             $table->unsignedBigInteger('guest_id')->nullable();
-            $table->enum('status', ['In Progress', 'Completed', 'Cancelled']);
+            $table->enum('status', Helper::getKitchenOrderStatuses());
             $table->timestamp('order_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('created_by')->unsigned();
             $table->timestamps();

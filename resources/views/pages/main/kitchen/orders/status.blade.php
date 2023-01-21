@@ -6,22 +6,21 @@
             <span class="response"></span>
             <h6 class="card-title text-dark">
                 <i class="fa fa-home text-success"> /</i>
-                <strong>Kitchen Order History</strong>
-                <span class="badge badge-info total_kitchen-orders">
+                <strong>{{ucwords($status)}} kitchen orders</strong>
+                <span class="badge badge-info total_kitchen_orders">
                     @isset($total_orders)
-                        {{ number_format($total_orders) }}
-                    @endisset
+                    {{ number_format($total_orders) }}
+                @endisset
                 </span>
             </h6>
         </div>
 
         <div class="card-body">
-
-            <div class="table table-sm table-responsive">
+            <div class="table-responsive">
                 <table class="table table-bordered table-hover kitchen-orders-table" id="kitchen-orders-table">
                     <thead>
                         <tr>
-                            {{-- <th>#</th> --}}
+                            <th>#</th>
                             <th>Order #</th>
                             <th>Table #</th>
                             <th>Room #</th>
@@ -39,21 +38,26 @@
     </div>
 
     <script type="text/javascript">
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
-        const ajaxUrl = @json(route('kitchen-order-history.ajax'));
-        const cat = 'kitchen-order-history';
-   
+        const cat = 'kitchen-orders';
+        let ajaxUrl = "{{ route('orders.status.ajax', ':status') }}";
+        ajaxUrl = ajaxUrl.replace(':status', "{{ request()->status }}");
+
         $(document).ready(function() {
 
-            let table = $('#kitchen-orders-table');
-            let title = "List of recorded kitchen orders in the system";
-            let columns = [1, 2, 3];
             let dataColumns = [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
                     data: 'order_number',
                     name: 'order_number'
                 },
@@ -86,8 +90,11 @@
                 },
             ];
 
-            makeDataTable(table, title, columns, dataColumns);
+            let table = $('#kitchen-orders-table');
+            let title = "List of recorded kitchen orders in the system";
+            let columns = [1, 2, 3];
 
+            makeDataTable(table, title, columns, dataColumns);
 
             //View Modal used to view each row [kitchen-orders details]
             $('body').on('click', '#view-kot', function(event) {

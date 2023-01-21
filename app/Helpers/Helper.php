@@ -37,7 +37,6 @@ class Helper
 
       $user = Staff::find($id);
       return $user->first_name . ' ' . $user->last_name;
-
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -62,9 +61,7 @@ class Helper
       $error->method = $method;
 
       $resp = $error->save();
-
     } catch (\Exception $ex) {
-
     }
   }
 
@@ -74,7 +71,6 @@ class Helper
 
       $item = Stock::where('id', $stockId)->value('item');
       return $item;
-
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -165,7 +161,6 @@ class Helper
   protected static function EnqueueSms($data)
   {
     dispatch(new ProcessSendSms($data))->onQueue('sms');
-
   }
 
 
@@ -207,11 +202,9 @@ class Helper
         dd("What is not right?");
       }
       return true;
-
     } catch (Exception $ex) {
       throw $ex;
     }
-
   }
 
   public static function insertOrUpdateStock($row)
@@ -257,7 +250,6 @@ class Helper
 
         Stock::where('item_code', $item_code)
           ->update($stock);
-
       } else {
 
         $stock = new Stock();
@@ -273,14 +265,11 @@ class Helper
         $stock->selling_price = $sellingPrice;
         $stock->wholesale_price = $wholeSalePrice;
         $stock->save();
-
-
       }
       return true;
     } catch (Exception $ex) {
       throw $ex;
     }
-
   }
 
   private static function array_key_isset($k, $a)
@@ -331,7 +320,6 @@ class Helper
 
       $stock = Helper::getStock();
       return in_array($item, $stock);
-
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -401,8 +389,8 @@ class Helper
       $supplierDebts = (Supplier::whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
         ->sum('credit')) - (Supplier::whereYear('created_at', $year)
-          ->whereMonth('created_at', $month)
-          ->sum('debt'));
+        ->whereMonth('created_at', $month)
+        ->sum('debt'));
 
       $customerDebts = Sale::where('fully_paid', 0)
         ->where('balance', '>', 0)
@@ -412,7 +400,6 @@ class Helper
       $netProfitPerMonth = (($totalSales - $totalBuyingCost) - ($totalExpenses + $totalDamages) + ($supplierDebts + $customerDebts));
 
       return $netProfitPerMonth;
-
     } catch (Exception $ex) {
       throw $ex;
     }
@@ -449,7 +436,6 @@ class Helper
     if (!empty($data)) {
       return $data;
     }
-
   }
 
 
@@ -476,7 +462,6 @@ class Helper
     if (!empty($data)) {
       return $data;
     }
-
   }
 
   public static function convertNumber($number)
@@ -521,7 +506,6 @@ class Helper
 
       $order_number = IdGenerator::generate($config);
       return $order_number;
-
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -532,7 +516,6 @@ class Helper
     try {
       $room = Room::find($room_id);
       return $room;
-
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -542,7 +525,6 @@ class Helper
     try {
       $menuItem = KitchenMenuItem::find($menu_item_id);
       return $menuItem;
-
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -573,7 +555,6 @@ class Helper
 
         Purchase::where('id', $id)
           ->update($purchaseArr);
-
       } else {
 
         $purchase = new Purchase();
@@ -590,13 +571,11 @@ class Helper
         $purchase->recorded_by = Auth::user()->name;
         $purchase->date_of_purchase = $row['date_of_purchase'];
         $purchase->save();
-
       }
       return true;
     } catch (\Exception $ex) {
       throw $ex;
     }
-
   }
 
 
@@ -611,11 +590,9 @@ class Helper
       $r->url = $request->fullUrl();
       $r->ip_address = $request->ip();
       return $r->save();
-
     } catch (\Exception $ex) {
       throw $ex;
     }
-
   }
 
 
@@ -637,8 +614,7 @@ class Helper
     $receiverEmail,
     $dataX,
     $dataY
-  )
-  {
+  ) {
 
     $mailState = 0;
     $dataY['receiver'] = $receiverEmail;
@@ -660,7 +636,6 @@ class Helper
 
       return $mailState;
     }
-
   }
 
   public static function logger(Request $request, $action, $date)
@@ -676,7 +651,6 @@ class Helper
 
     $newLog->save();
     Log::channel('poslogs')->notice("" . $userPosition . " " . $name . " " . $action . "");
-
   }
 
   public static function generateStaffId($department_id)
@@ -708,21 +682,34 @@ class Helper
     }
   }
 
-  
 
-  public static function hasPermissions($permission_name){
-    try{
+
+  public static function hasPermissions($permission_name)
+  {
+    try {
 
       $hasAccess = Auth::user()->hasPermission($permission_name);
       if (!$hasAccess) {
         return redirect('home');
-      }else{
+      } else {
         dd($hasAccess);
       }
-
-    }catch(\Exception $ex){
+    } catch (\Exception $ex) {
       throw $ex;
     }
   }
 
+
+  public static function getKitchenOrderStatuses(): array
+  {
+    try {
+      $order_statuses = array();
+      foreach (config('kitchen-order-statuses') as $status) {
+        array_push($order_statuses, $status);
+      }
+      return $order_statuses;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
 }

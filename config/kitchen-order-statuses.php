@@ -8,7 +8,7 @@
 return [
 
     // statuses
-    'pending' => 'in progress',
+    'pending' => 'pending',
     'completed' => 'completed',
     'cancelled' => 'cancelled'
 ];
