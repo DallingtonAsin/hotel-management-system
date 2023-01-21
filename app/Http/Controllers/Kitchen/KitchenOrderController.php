@@ -10,6 +10,7 @@ use App\DataTables\Kitchen\OrderHistoryDataTable;
 use App\Helpers\Helper;
 use App\Models\Guest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Room;
 use App\Models\KitchenOrder;
 use App\Models\KitchenOrderItem;
@@ -93,7 +94,7 @@ class KitchenOrderController extends Controller
                 $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, 'KOT_');
                 $table_number = $request->input('table_number');
 
-                $status = $request->input('status');
+                $status = strtolower($request->input('status'));
                 $order_date = Carbon::now();
                 $created_by = Helper::getLoggedInUserId();
 
@@ -116,7 +117,6 @@ class KitchenOrderController extends Controller
                 $tin_number = $request->input('tin_number');
                 $email = $request->input('email');
 
-
                 $kitchenOrderData = [
                     'order_number' => $order_number,
                     'table_number' => $table_number,
@@ -126,7 +126,7 @@ class KitchenOrderController extends Controller
                     'phone_number' => $phone_number,
                     'tin_number' => $tin_number,
                     'email' => $email,
-                    'status' => strtolower($status),
+                    'status' => $status,
                     'order_date' => $order_date,
                     'created_by' => $created_by,
                 ];
@@ -223,56 +223,114 @@ class KitchenOrderController extends Controller
 
     public function changeKitchenOrderStatus(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'status' => 'required',
-        ]);
 
-        try {
-            if ($validator->fails()) {
-                $message = $validator->errors()->all();
-                return response()->json(['error' => $message]);
-            } else {
+        if (!empty($id)) {
 
-                $order_status = ucfirst($request->input('status'));
+            $order_statuses = config('kitchen-order-statuses');
+            $validator = Validator::make($request->all(), [
+                'status' => 'required',
+            ]);
 
-                $kitchen_order = KitchenOrder::find($id);
-                $order_number = $kitchen_order->order_number;
-                $created_by = Helper::getLoggedInUserId();
-
-                $kot = [
-                    'status' => $order_status,
-                    'created_by' => $created_by,
-                ];
-
-                if ($kitchen_order->update($kot)) {
-                    $message = "Kitchen order " . $order_number . " has been marked " . lcfirst($order_status) . " successfully";
-                    $stats = $this->GetKitchenOrderStats();
-                    $data = [
-                        'success' => $message,
-                        'data' => $stats['data'],
-                        'total' => $stats['total']
-                    ];
-                } else {
-                    $message = "Technical error in updating kitchen order status";
-                    $data = [
-                        'error' => $message
-                    ];
-                }
-                return response()->json($data);
+            $order_status = $request->input('status');
+            if ($order_status == $order_statuses['completed']) {
+                $validator = Validator::make($request->all(), [
+                    'payment_method' => 'required',
+                    'payment_date' => 'required',
+                ]);
             }
-        } catch (\Exception $ex) {
-            throw $ex;
+
+            if ($order_status == $order_statuses['cancelled']) {
+                $validator = Validator::make($request->all(), [
+                    'reason' => 'required',
+                ]);
+            }
+
+            try {
+                if ($validator->fails()) {
+                    $message = $validator->errors()->all();
+                    return response()->json(['error' => $message]);
+                } else {
+
+                    $order_status = strtolower($order_status);
+                    $kitchen_order = KitchenOrder::find($id);
+                    $order_number = $kitchen_order->order_number;
+
+                    if ($kitchen_order->update(['status' => $order_status])) {
+
+                        $ko_invoice = array();
+                        $ko_invoice['status'] = $order_status;
+                        if ($order_status == $order_statuses['completed']) {
+                            $ko_invoice['payment_method'] = $request->input('payment_method');
+                            $ko_invoice['paid_at'] = $request->input('payment_date');
+                            $ko_invoice['completed_by'] = Auth::user()->id;
+                        } else if ($order_status == $order_statuses['cancelled']) {
+                            $ko_invoice['cancelled_for'] = $request->input('reason');
+                            $ko_invoice['cancelled_at'] = Carbon::now();
+                            $ko_invoice['cancelled_by'] = Auth::user()->id;
+                        }
+
+                        $ko_updated = KitchenOrderInvoice::where('order_number', $order_number)->update($ko_invoice);
+                        if ($ko_updated) {
+                            $message = "Kitchen order " . $order_number . " has been marked " . lcfirst($order_status) . " successfully";
+                            $stats = $this->GetKitchenOrderStats();
+                            $data = [
+                                'success' => $message,
+                                'data' => $stats['data'],
+                                'total' => $stats['total']
+                            ];
+                        } else {
+                            $message = "Technical error in updating invoice status";
+                            $data = [
+                                'error' => $message
+                            ];
+                        }
+                    } else {
+                        $message = "Technical error in updating kitchen order status";
+                        $data = [
+                            'error' => $message
+                        ];
+                    }
+                    return response()->json($data);
+                }
+            } catch (\Exception $ex) {
+                return response()->json(['error' => $ex->getMessage()]);
+            }
+        } else {
+            return response()->json(['error' => 'System is unable to capture order id']);
         }
     }
 
     private function getOrderDetails($id)
     {
         try {
+
             $kitchen_order = KitchenOrder::find($id);
             $order_items = KitchenOrderItem::where('order_number', $kitchen_order->order_number)->get();
+
+            foreach ($order_items as $item) {
+                $item->name = KitchenMenuItem::where('id', $item->item_id)->value('name');
+            }
+
             $kitchen_order->items = $order_items;
 
             $order_invoice = KitchenOrderInvoice::where('order_number', $kitchen_order->order_number)->get();
+            foreach ($order_invoice as $invoice) {
+                if ($invoice->completed_by) {
+                    $invoice->completed_by = Helper::getUserNames($invoice->completed_by);
+                }
+                if ($invoice->cancelled_by) {
+                    $invoice->cancelled_by = Helper::getUserNames($invoice->cancelled_by);
+                }
+                if ($invoice->paid_at) {
+                    $invoice->paid_at = date('d-M-Y H:i A', strtotime($invoice->paid_at));
+                }
+                if ($invoice->cancelled_at) {
+                    $invoice->cancelled_at = date('d-M-Y H:i A', strtotime($invoice->cancelled_at));
+                }
+                if ($invoice->payment_method) {
+                    $invoice->payment_method = ucwords($invoice->payment_method);
+                }
+            }
             $kitchen_order->invoice = $order_invoice;
 
             if ($kitchen_order->guest_id) {
@@ -382,7 +440,12 @@ class KitchenOrderController extends Controller
                         $btn .= '<a href="javascript:void(0);" id="view-kitchen-order" 
                     data-toggle="tooltip" data-original-title="view order"
                     data-id="' . $order->id . '" data-status="{{$status}}"
-                     class="px-3 py-1 border border-default rounded mr-2 text-primary">view order</a>';
+                     class="px-3 py-1 border border-primary rounded mr-2 text-primary">view order</a>';
+
+                        $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                     data-id="' . $order->id . '" data-original-title="Download Invoice" id="download-general-invoice"
+                     class="px-3 py-1 border border-secondary rounded text-secondary ml-2">
+                     invoice</a>';
 
                         return $btn;
                     })->addColumn('room_number', function ($order) {
@@ -405,10 +468,10 @@ class KitchenOrderController extends Controller
 
                 return view('pages.main.kitchen.orders.status');
             } else {
-                dd("No order status found");
+                return response()->json(['error' => 'No order status found']);
             }
         } catch (\Exception $ex) {
-            dd($ex->getMessage());
+            return response()->json(['error' => $ex->getMessage()]);
         }
     }
 }

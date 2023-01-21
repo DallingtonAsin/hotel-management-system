@@ -211,18 +211,19 @@ function checkPermission(permission_name, next) {
 
 
 function viewOrder(url) {
-    $.get(url, function(response) {
+    $.get(url, function (response) {
         if (response.success) {
             let data = response.data;
+            $('#viewKitchenOrderForm').trigger("reset");
             $('.order_no').text(data.order_number);
 
             let order_items = data.items;
             if (order_items.length > 0) {
-                let table = $('.menu-item-cart-body');
+                let table = $('.kitchen-order-details-body');
                 table.empty();
-                $.each(order_items, function(index, item) {
+                $.each(order_items, function (index, item) {
                     let item_name, quantity, price, total;
-                    item_name = item.item_id;
+                    item_name = item.name;
                     quantity = item.quantity;
                     price = FormatNumber(item.price);
                     total = FormatNumber(item.total);
@@ -239,10 +240,31 @@ function viewOrder(url) {
                 $('#sub_total').html(FormatNumber(invoice.sub_total));
                 $('#tax_amount').html(FormatNumber(invoice.tax));
                 $('#total_amount').html(FormatNumber(invoice.total));
+                if (invoice.cancelled_for) {
+                    $('.cancelled_for').html(invoice.cancelled_for);
+                }
+                if (invoice.cancelled_at) {
+                    $('.cancelled_at').html(invoice.cancelled_at);
+                }
+                if (invoice.cancelled_by) {
+                    $('.cancelled_by').html(invoice.cancelled_by);
+                }
+                if (invoice.paid_at) {
+                    $('.paid_at').html(invoice.paid_at);
+                }
+                if (invoice.completed_by) {
+                    $('.completed_by').html(invoice.completed_by);
+                }
+                if (invoice.completed_at) {
+                    $('.completed_at').html(invoice.completed_at);
+                }
+                if (invoice.payment_method) {
+                    $('.payment_method').html(invoice.payment_method);
+                }
             }
 
             $('#viewKitchenOrderModal').modal('show');
-            
+
             if (data.guest) {
                 let guest = data.guest;
                 let guest_names = guest.first_name + ' ' + guest.last_name;
@@ -260,7 +282,7 @@ function viewOrder(url) {
                 $('.email_id').val(data.email);
             }
 
-            if(data.room_number){
+            if (data.room_number) {
                 $('.room_no').val(data.room_number);
             }
 
@@ -270,6 +292,24 @@ function viewOrder(url) {
         } else {
             displayResponse(null, response.error, 'error');
         }
+    });
+}
+
+function downloadKOT(invoice_id, type) {
+    let download_kot_url = `invoice/kitchen-order/download/${invoice_id}`;
+    checkPermission(permissions.download_kitchen_order_invoice, function() {
+        $.ajax({
+            url: download_kot_url,
+            type: 'POST',
+            data: {
+                type: type,
+            },
+            success: function(response) {
+                let returned_url = response.url;
+                // console.log('Returned url is', response.url);
+                window.open(returned_url, '_blank');
+            }
+        });
     });
 }
 

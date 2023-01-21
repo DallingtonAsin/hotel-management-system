@@ -106,6 +106,34 @@
                 });
             });
 
+            //Generate general invoice
+            $('body').on('click', '#download-general-invoice', function(event) {
+                let invoice_id = $(this).data('id');
+                event.preventDefault();
+                downloadKOInvoice(invoice_id, 'general');
+            });
+
+            function downloadKOInvoice(invoice_id, type) {
+
+                let download_url = "{{ route('kitchen-order.invoice.generate', ':id')}}";
+                download_url = download_url.replace(':id', invoice_id);
+                let data =  { type: type };
+
+                checkPermission(permissions.download_kitchen_order_invoice, function() {
+                   
+                    $.ajax({
+                        url: download_url,
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            let returned_url = response.url;
+                            console.log('Returned url is', response.url);
+                            window.open(returned_url, '_blank');
+                        }
+                    });
+                });
+            }
+
         });
     </script>
     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>

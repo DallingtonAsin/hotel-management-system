@@ -254,8 +254,8 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold text-center">Update Kitchen Order
-                        Status</h6>
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold text-center">
+                        Change Kitchen Order Status</h6>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -264,20 +264,43 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <div class="text-center">
-                            <label class="text-danger order-status-text-alert">
-                                Are you sure you want to change order status for this kot
-                                <small class="text-dark text-muted bolded">
-                                </small>
-                                ?
+                        <label><span class="text-danger pr-1">*</span> Order status</label>
+                        <select name="status" class="form-control order_status" id="order_status">
+                            <option value="">Select order status</option>
+                            @foreach (config('kitchen-order-statuses') as $status)
+                                <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                            </label>
-                        </div>
+                    <div class="form-group paid-option-fields">
+                        <label><span class="text-danger pr-1">*</span> Payment method</label>
+                        <select name="payment_method" class="form-control payment_method">
+                            <option value="">Select payment method</option>
+                            @foreach (config('payment-methods') as $method)
+                                <option value="{{ $method }}">{{ ucfirst($method) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group paid-option-fields">
+                        <label><span class="text-danger pr-1">*</span> Payment Date</label>
+                        <input type="datetime-local" name="payment_date"
+                            value="{{ old('payment_date', now()->format('Y-m-d\TH:i')) }}"
+                            class="form-control payment_date" />
+                    </div>
+
+
+                    <div class="form-group cancelled-option-fields">
+                        <label><span class="text-danger pr-1">*</span> Reason for Cancelling</label>
+                        <input type="text" name="reason" class="form-control reason"
+                            placeholder="Enter reason for cancelling" />
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary change-status-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary change-status-btn" name="ConfirmBtn"><i
+                                class="fa fa-plus-circle pr-1"></i>Submit</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -299,6 +322,25 @@
         const departmentsAjaxUrl = @json(route('departments.ajax.fetch'));
         const menuItemsAjaxUrl = @json(route('kitchen-menu-items.ajax.fetch'));
         const searchRoomUrl = @json(route('rooms.ajax.suggest'));
+        var order_statuses = <?php echo json_encode(config('kitchen-order-statuses')); ?>;
+
+        $('.paid-option-fields').hide();
+        $('.cancelled-option-fields').hide();
+
+        $('#order_status').on('change', function() {
+            let status = $(this).val();
+            if (status == order_statuses.completed) {
+                $('.paid-option-fields').show();
+            } else {
+                $('.paid-option-fields').hide();
+            }
+
+            if (status == order_statuses.cancelled) {
+                $('.cancelled-option-fields').show();
+            } else {
+                $('.cancelled-option-fields').hide();
+            }
+        });
 
         const cat = 'kitchen-orders';
         populateMenuItems();
@@ -319,7 +361,6 @@
         onTypingRoomNumber('.room_number', afterSelectingRoom);
 
         function afterSelectingRoom(data) {
-            console.log(data);
             populateGuestName(data);
         }
 
@@ -414,8 +455,6 @@
             $('#addNewKitchenOrder').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.add_kitchen_orders, function(kitchen_order) {
-                    DisableTableFields(false);
-                    ShowBtns();
                     $('.addMenuItemToCartBtn').html(
                         "<i class='fa fa-plus-circle pr-1'></i>Add to Cart");
                     $('.kotId').val('');
@@ -752,8 +791,6 @@
                     $('.email').val(data.email);
                     $('.debt').val(data.debt);
                     $('.credit').val(data.credit);
-                    DisableTableFields(false);
-                    ShowBtns();
                 })
             });
 
@@ -774,8 +811,6 @@
                     $('.email').val(data.email);
                     $('.debt').val(data.debt);
                     $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
                 })
             });
 
@@ -793,30 +828,9 @@
                 downloadKOT(invoice_id, 'kitchen');
             });
 
-            function downloadKOT(invoice_id, type) {
-                let url = "{{ route('kitchen-order.invoice.generate', ':id') }}";
-                url = url.replace(':id', invoice_id);
-                checkPermission(permissions.download_kitchen_order_invoice, function(kitchen_order) {
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            type: type,
-                        },
-                        success: function(response) {
-                            let returned_url = response.url;
-                            console.log('Returned url is', response.url);
-                            window.open(returned_url, '_blank');
-                        }
-                    });
-                });
-            }
-
 
             $('.addKotBtn').click(function(e) {
-
                 e.preventDefault();
-
                 let Errors = validateForm();
                 if (Errors.length == 0) {
                     $(this).html('Sending..');
@@ -856,74 +870,111 @@
             });
 
 
-            $('body').on('click', '#mark-completed', function(e) {
+
+
+            $('body').on('click', '#change-order-status', function(e) {
                 let kot_id = $(this).data("id");
                 checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
-                    let status = 'completed';
                     e.preventDefault();
-                    confirmOrderStatusChange(kot_id, status);
-                });
-            });
-
-            $('body').on('click', '#mark-cancelled', function(e) {
-                let kot_id = $(this).data("id");
-                checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
-                    let status = 'cancelled';
-                    e.preventDefault();
-                    confirmOrderStatusChange(kot_id, status);
+                    confirmOrderStatusChange(kot_id);
                 });
 
             });
 
-            $('body').on('click', '#mark-pending', function(e) {
-                checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
-                    let kot_id = $(this).data("id");
-                    let status = 'pending';
-                    e.preventDefault();
-                    confirmOrderStatusChange(kot_id, status);
-                });
-            });
-
-            function confirmOrderStatusChange(kot_id, status) {
+            function confirmOrderStatusChange(kot_id) {
                 $("#changeOrderStatusModal").modal('show');
-                $(".order-status-text-alert").html(`Are you sure you want to mark this order ${status}?`);
                 $('.change-status-btn').on('click', function() {
-                    updateOrderStatus(kot_id, status);
+                    updateOrderStatus(kot_id);
                 });
             }
 
-            function updateOrderStatus(id, status) {
+            function updateOrderStatus(id) {
+                let selected_status = $('#order_status').val();
 
-                let url = "{{ route('kitchen-order.status.update', ':id') }}";
-                url = url.replace(':id', id);
-                $('.change-status-btn').html('Updating...');
-                $.ajax({
-                    type: "PUT",
-                    url: url,
-                    data: {
-                        status: status,
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        let resp = data.success || data.error;
-                        let type = data.success ? 'success' : 'error';
+                if (selected_status) {
 
-                        $('.change-status-btn').html('Yes');
-                        $('#changeOrderStatusModal').modal("hide");
-                        displayResponse('.response', resp, type);
+                    let isValid = validateChangeOrderStatus(selected_status);
+                    if (isValid) {
 
-                        if (data.success) {
-                            ResetTblInfo(data);
-                            let tbl = $('#kitchen-orders-table').DataTable();
-                            tbl.ajax.reload();
+                        if (confirm("Are you sure you want to mark this order " + selected_status + "?")) {
+                            let data = {
+                                status: selected_status
+                            }
+
+                            if (selected_status == order_statuses.completed) {
+                                data.payment_method = $('.payment_method').val();
+                                data.payment_date = $('.payment_date').val();
+                            }
+
+                            if (selected_status == order_statuses.cancelled) {
+                                data.reason = $('.reason').val();
+                            }
+
+                            let url = "{{ route('kitchen-order.status.update', ':id') }}";
+                            url = url.replace(':id', id);
+                            $('.change-status-btn').html('Updating...');
+                            $.ajax({
+                                type: "PUT",
+                                url: url,
+                                data: data,
+                                dataType: 'json',
+                                success: function(data) {
+                                    let resp = data.success || data.error;
+                                    let type = data.success ? 'success' : 'error';
+
+                                    $('.change-status-btn').html(
+                                        '<i class="fa fa-plus-circle pr-1"></i>Submit');
+                                    $('#changeOrderStatusModal').modal("hide");
+
+                                    if (data.success) {
+                                        $('order_status').val('');
+                                        $('payment_method').val('');
+                                        ResetTblInfo(data);
+                                        let tbl = $('#kitchen-orders-table').DataTable();
+                                        tbl.ajax.reload();
+                                    }
+
+                                    displayResponse('.response', resp, type);
+
+                                },
+                                error: function(data) {
+                                    console.log('Error:', data);
+                                    displayResponse('.response', data.error, 'error');
+                                }
+                            });
                         }
-
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                        displayResponse('.response', data.error, 'error');
                     }
-                });
+                } else {
+                    displayResponse(null, 'Please select order status', 'error');
+                }
+            }
+
+            function validateChangeOrderStatus(status) {
+
+                let isValidForm = false;
+                if (status == order_statuses.completed) {
+                    let payment_method = $('.payment_method').val();
+                    let payment_date = $('.payment_date').val();
+                    if (!payment_method) {
+                        displayResponse(null, 'Please select payment method', 'error');
+                    } else if (!payment_date) {
+                        displayResponse(null, 'Please select payment date', 'error');
+                    } else {
+                        isValidForm = true;
+                    }
+
+                } else if (status == order_statuses.cancelled) {
+                    let reason = $('.reason').val();
+                    if (!reason) {
+                        displayResponse(null, 'Please enter reason for cancelling order', 'error');
+                    } else {
+                        isValidForm = true;
+                    }
+                } else if (status == order_statuses.pending) {
+                    isValidForm = true;
+                }
+                return isValidForm;
+
             }
 
             //this pops up confirm delete modal
@@ -963,29 +1014,6 @@
                 });
             }
 
-            function DisableTableFields(bool) {
-
-                $('.kotId').attr('disabled', bool);
-                $('.name').attr('disabled', bool);
-                $('.address').attr('disabled', bool);
-                $('.contact').attr('disabled', bool);
-                $('.email').attr('disabled', bool);
-                $('.debt').attr('disabled', bool);
-                $('.credit').attr('disabled', bool);
-            }
-
-            function HideBtns() {
-                $('.addKotBtn').hide();
-                $('.clearBtn').hide();
-                $('.closeBtn').hide();
-            }
-
-            function ShowBtns() {
-                $('.addKotBtn').show();
-                $('.clearBtn').show();
-                $('.closeBtn').show();
-            }
-
             function ResetTblInfo(response) {
                 let totl_number = FormatNumber(response.total);
                 $('.total_kitchen-orders').html(totl_number);
@@ -1016,60 +1044,8 @@
 
             }
 
-            $("#removeAllSuppliers").bind("click", function() {
-                removeAllOrders();
-            });
+          
 
-            function removeAllOrders() {
-                $.confirm({
-                    boxWidth: '30%',
-                    icon: 'fa fa-warning',
-                    theme: 'light',
-                    closeIcon: true,
-                    draggable: true,
-                    closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all kitchen-orders',
-                    content: 'Are you sure you want to remove all kitchen-orders',
-                    buttons: {
-                        confirm: function() {
-                            let self = this;
-                            return $.ajax({
-                                data: {
-                                    "_token": "{{ csrf_token() }}",
-                                },
-                                url: '{{ Route('suppliers.truncate') }}',
-                                type: 'POST',
-                                // dataType: 'json',
-                            }).done(function(data) {
-
-                                $.alert({
-                                    title: 'Message',
-                                    content: data.success,
-                                });
-                                $(".total_kitchen-orders").text(data.totl_no);
-                                $(".totl_credit").text(data.totl_credit);
-                                $(".totl_debt").text(data.totl_debt);
-                                let tbl = $('#kitchen-orders-table').DataTable();
-                                tbl.ajax.reload();
-
-
-                            }).fail(function(data) {
-                                $.alert({
-                                    title: 'Response',
-                                    content: "Suppliers not deleted:" + data.fail,
-                                });
-                                console.log(data);
-
-                            });
-
-                        },
-                        cancel: function() {
-
-                        }
-                    },
-                });
-
-            }
         });
     </script>
     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>

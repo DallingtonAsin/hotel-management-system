@@ -7,7 +7,8 @@
 
                <form name="kitchen-orders" id="viewKitchenOrderForm">
                    <div class="modal-header text-center">
-                       <h6 class="modal-title w-100 font-weight-bold">kitchen Order Details</h6>
+                       <h6 class="modal-title w-100 font-weight-bold">{{ ucfirst(request()->status) }} kitchen Order
+                           Details</h6>
                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                            <span aria-hidden="true">&times;</span>
                        </button>
@@ -15,7 +16,43 @@
 
                    <div class="modal-body border border-default m-3">
 
-                    <h5 class="text-danger">Order #: <span class="order_no"></span></h5>
+                       <div class="d-flex justify-content-between">
+
+                           @if (request()->status == config('kitchen-order-statuses')['completed'])
+                               <h5 class="text-success">Order #: <span class="order_no"></span></h5>
+                           @elseif (request()->status == config('kitchen-order-statuses')['cancelled'])
+                               <h5 class="text-danger">Order #: <span class="order_no"></span></h5>
+                           @elseif (request()->status == config('kitchen-order-statuses')['pending'])
+                               <h5 class="text-warning">Order #: <span class="order_no"></span></h5>
+                           @else
+                               <h5 class="text-dark">Order #: <span class="order_no"></span></h5>
+                           @endif
+
+                           @if (request()->status == config('kitchen-order-statuses')['cancelled'])
+                               <h6 class="text-danger">Cancelled At: <span class="cancelled_at"></span></h6>
+                               <h6 class="text-danger ml-5">Cancelled By: <span class="cancelled_by"></span>
+                               </h6>
+                           @endif
+
+                           @if (request()->status == config('kitchen-order-statuses')['completed'])
+                               <h6 class="text-success">Paid At: <span class="paid_at"></span></h6>
+                               <h6 class="text-success">Paid By: <span class="payment_method"></span></h6>
+                               <h6 class="text-success ml-5">Completed By: <span class="completed_by"></span></h6>
+                           @endif
+                       </div>
+
+                       {{-- <div class="d-flex justify-content-between">
+                           @if (request()->status == config('kitchen-order-statuses')['completed'])
+                               <h6 class="text-success">Payment Method: <span class="paid_at"></span></h6>
+                               <h6 class="text-success ml-5">Completed By: <span class="completed_by"></span></h6>
+                           @endif
+
+                           @if (request()->status == config('kitchen-order-statuses')['completed'])
+                               <h6 class="text-success">Paid At: <span class="paid_at"></span></h6>
+                               <h6 class="text-success ml-5">Completed By: <span class="completed_by"></span></h6>
+                           @endif
+
+                       </div> --}}
 
                        <div class="row form-group">
                            <div class="col-md-3">
@@ -72,12 +109,21 @@
                            </div>
                        </div>
 
+                       @if (request()->status == config('kitchen-order-statuses')['cancelled'])
+                           <div class="form-group">
+                               <label class="text-dark">Reason for cancelling</label>
+                               <textarea class="form-control cancelled_for"></textarea>
+                           </div>
+                       @endif
+
+
                    </div>
                </form>
 
                <div class="card-body">
                    <div class="table-response">
-                       <table class="table table-bordered menu-item-cart" id="menu-item-cart">
+                       <table class="table table-bordered kitchen-order-details-table"
+                           id="kitchen-order-details-table">
                            <thead>
                                <tr>
                                    <th>Item</th>
@@ -86,7 +132,7 @@
                                    <th>Amount</th>
                                </tr>
                            </thead>
-                           <tbody class="menu-item-cart-body">
+                           <tbody class="kitchen-order-details-body">
                            </tbody>
                        </table>
 
@@ -109,4 +155,3 @@
            </div>
        </div>
    </div>
-
