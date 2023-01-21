@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Helpers\Helper;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\KitchenMenuItem;
 use App\Models\KitchenOrder;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
+use Carbon\Carbon;
 
 
 class KitchenOrderInvoiceTableSeeder extends Seeder
@@ -47,13 +47,16 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
             $payment_method = null;
             if ($status == config('kitchen-order-statuses')['completed']) {
                 $data['status'] = config('kitchen-order-statuses')['completed'];
-                $payment_method = $this->getRandomValue(['cash', 'credit card', 'mobile_money']);
+                $payment_method = $this->getRandomValue(config('payment-methods'));
+                $payment_date = Carbon::now();
             }else{
                 $data['status'] = $status;
                 $payment_method = null;
+                $payment_date = null;
             }
 
             $data['payment_method'] = $payment_method;
+            $data['payment_date'] = $payment_date;
 
             KitchenOrderInvoice::create($data);
         }
