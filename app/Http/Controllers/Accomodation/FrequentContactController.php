@@ -10,7 +10,7 @@ use App\Helpers\Helper;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\UserBehaviour;
-
+use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Current;
 
 class FrequentContactController extends Controller
 {
@@ -151,6 +151,7 @@ class FrequentContactController extends Controller
     {
         try {
             $data = FrequentContact::find($id);
+            $data->currency_code_id = Currency::where('code', $data->currency_code)->value('id');
             return response()->json(['success' => 'ok', 'data' => $data]);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);

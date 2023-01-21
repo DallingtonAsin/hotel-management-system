@@ -349,8 +349,7 @@
                 $('.tin').val(data.tin);
                 $('.contact_person').val(data.contact_person);
                 $('.price').val(FormatNumber(data.price));
-                $('.currency').empty();
-                $('.currency').html('<option value=' + data.currency_code + ' selected>' + data.currency_code + '</option>');
+                $('.currency').val(data.currency_code_id);
             }
 
             //this pops up confirm delete modal
