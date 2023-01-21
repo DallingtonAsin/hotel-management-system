@@ -6,11 +6,11 @@
             <span class="response"></span>
             <h6 class="card-title text-dark">
                 <i class="fa fa-home text-success"> /</i>
-                <strong>{{ucwords($status)}} kitchen orders</strong>
+                <strong>{{ ucwords($status) }} kitchen orders</strong>
                 <span class="badge badge-info total_kitchen_orders">
                     @isset($total_orders)
-                    {{ number_format($total_orders) }}
-                @endisset
+                        {{ number_format($total_orders) }}
+                    @endisset
                 </span>
             </h6>
         </div>
@@ -34,11 +34,11 @@
                     </tbody>
                 </table>
             </div>
+            @include('pages.main.kitchen.orders.modals.view_order')
         </div>
     </div>
 
     <script type="text/javascript">
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -116,6 +116,44 @@
                     HideBtns();
                 })
             });
+
+            // View Modal used to view each row 
+            $('body').on('click', '#view-kitchen-order', function(event) {
+                let order_id = $(this).data('id') || 1;
+                console.log('order id', order_id);
+                event.preventDefault();
+                checkPermission(permissions.view_kitchen_orders, function(stock) {
+                    viewOrder(order_id);
+                });
+            });
+
+            function viewOrder(order_id) {
+                // ShowHideBtns('hide');
+                order_id =1;
+                let url = "{{ route('kitchen-orders.show', ':id') }}";
+                url = url.replace(':id', order_id);
+                
+                $.get(url + '/' + order_id + '', function(data) {
+                    console.log('order details', data);
+                    let bprice = data.buying_price;
+                    let sprice = data.selling_price;
+                    let wprice = data.wholesale_price;
+                    $('#modalHeading').html("Details of stock " + data.item + "");
+                    $('#addStockModal').modal('show');
+                    $('.stockId').val(stock_id);
+                    $('.item_code').val(data.item_code);
+                    $('.item-name').val(data.item);
+                    $('.category').val(data.category);
+                    $('#supplier').val(data.supplier);
+                    $('.quantity').val(data.quantity);
+                    $('.thresholdQty').val(data.threshold_qty)
+                    $('.expiry_date').val(data.expiry_date);
+                    $('.original_price').val(bprice);
+                    $('.selling_price').val(sprice);
+                    $('.wholesale_price').val(wprice);
+                    DisableFormFields(true);
+                });
+            }
 
 
         });

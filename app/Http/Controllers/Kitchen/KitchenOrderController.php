@@ -28,7 +28,7 @@ class KitchenOrderController extends Controller
      */
     public function index()
     {
-        $total_orders = KitchenOrder::count();
+        $total_orders = KitchenOrder::where('status', config('kitchen-order-statuses')['pending'])->count();
         return view('pages.main.kitchen.orders.new')->with(compact('total_orders'));
     }
 
@@ -264,6 +264,15 @@ class KitchenOrderController extends Controller
         }
     }
 
+    private function getOrderDetails($id){
+        try {
+            $kitchen_order = KitchenOrder::find($id);
+            return response()->json(['success' => 'Ok', 'data' => $kitchen_order]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -272,7 +281,7 @@ class KitchenOrderController extends Controller
      */
     public function show($id)
     {
-        //
+       $this->getOrderDetails($id);
     }
 
     /**
@@ -283,7 +292,7 @@ class KitchenOrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->getOrderDetails($id);
     }
 
     /**
@@ -328,19 +337,21 @@ class KitchenOrderController extends Controller
     }
 
 
-   public function orderStatusIndex(Request $request, $status){
-      $total_orders = KitchenOrder::where('status', $status)->count();
-      return view('pages.main.kitchen.orders.status')->with(compact('total_orders', 'status'));
-   }
+    public function orderStatusIndex(Request $request, $status)
+    {
+        $total_orders = KitchenOrder::where('status', $status)->count();
+        return view('pages.main.kitchen.orders.status')->with(compact('total_orders', 'status'));
+    }
 
 
     public function getOrders(Request $request, $status)
     {
 
+        try{
         if ($status) {
 
             $orders = KitchenOrder::select(['id', 'order_number', 'table_number', 'room_id', 'guest_id', 'customer_name', 'tin_number', 'phone_number', 'email', 'status', 'order_date', 'created_by']);
-          
+
             // filter orders based on status
             $orders->where('status', $status);
 
@@ -350,7 +361,7 @@ class KitchenOrderController extends Controller
 
                     $btn = "";
 
-                    $btn .= '<a href="javascript:void(0);" id="view order" 
+                    $btn .= '<a href="javascript:void(0);" id="view-kitchen-order" 
                     data-toggle="tooltip" data-original-title="view order"
                     data-id="' . $order->id . '" data-status="{{$status}}"
                      class="px-3 py-1 border border-default rounded mr-2 text-primary">view order</a>';
@@ -374,11 +385,13 @@ class KitchenOrderController extends Controller
                 })->rawColumns(['action'])
                 ->make(true);
 
-               return view('pages.main.kitchen.orders.status');
-
+            return view('pages.main.kitchen.orders.status');
         } else {
             dd("No order status found");
         }
+    }catch(\Exception $ex){
+        dd($ex->getMessage());
+        }
+}
 
-    }
 }

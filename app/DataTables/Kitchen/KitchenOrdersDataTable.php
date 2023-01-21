@@ -95,7 +95,7 @@ class KitchenOrdersDataTable extends DataTable
      */
     public function query(KitchenOrder $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->select('*')->where('status', config('kitchen-order-statuses')['pending']);
     }
 
     /**
