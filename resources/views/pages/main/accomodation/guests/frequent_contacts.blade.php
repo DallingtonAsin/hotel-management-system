@@ -59,7 +59,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control freqContactId bg-white freqContactId" name="id"
+                            <input type="hidden" class="form-control contact_id bg-white contact_id" name="id"
                                 placeholder="Enter frequent contact id" required autofocus>
                         </div>
 
@@ -103,7 +103,7 @@
                             <div class="col-md-6">
                                 <span><span class="text-danger pr-1">*</span>Currency</span>
                                 <select class="form-control currency bg-white" name="currency">
-                                    <option value="">select currency</option>
+                                    <option value="">Select currency</option>
                                 </select>
                             </div>
                         </div>
@@ -229,7 +229,7 @@
                     DisableTableFields(false);
                     ShowBtns();
                     $('.addFreqContactBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('.freqContactId').val('');
+                    $('.contact_id').val('');
                     $('#FreqContactForm').trigger("reset");
                     $('#modalHeading').html("Add new frequent contact");
                     $('#addFrequentContactMOdal').modal('show');
@@ -298,19 +298,19 @@
             });
 
             function editFrequentContact(freq_contact_id) {
-                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of frequent contact " + data.name + "");
-                    $('.addFreqContactBtn').text("Edit frequent contact");
-                    $('#addFrequentContactMOdal').modal('show');
-                    $('.freqContactId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(false);
-                    ShowBtns();
+                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '/edit', function(
+                response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Edit details of frequent contact " + data.name + "");
+                        $('.addFreqContactBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                        $('#addFrequentContactMOdal').modal('show');
+                        populateFields(data);
+                        DisableTableFields(false);
+                        ShowBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -325,19 +325,32 @@
             });
 
             function viewFrequentContact(freq_contact_id) {
-                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '', function(data) {
-                    $('#modalHeading').html("Details of frequent contact " + data.name + "");
-                    $('#addFrequentContactMOdal').modal('show');
-                    $('.freqContactId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
+                $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '', function(response) {
+
+                    if (response.success) {
+                        let data = response.data;
+                        let name = `${data.name}`;
+                        $('#modalHeading').html("Details of frequent contact " + data.name + "");
+                        $('#addFrequentContactMOdal').modal('show');
+                        populateFields(data);
+                        DisableTableFields(true);
+                        HideBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
+            }
+
+            function populateFields(data) {
+                $('.contact_id').val(data.id);
+                $('.name').val(data.name);
+                $('.email').val(data.email);
+                $('.phone_number').val(data.phone_number);
+                $('.tin').val(data.tin);
+                $('.contact_person').val(data.contact_person);
+                $('.price').val(FormatNumber(data.price));
+                $('.currency').empty();
+                $('.currency').html('<option value=' + data.currency_code + ' selected>' + data.currency_code + '</option>');
             }
 
             //this pops up confirm delete modal
@@ -345,12 +358,20 @@
                 let freq_contact_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_frequent_contacts, function(freqContact) {
+
+                    $.get("{{ route('frequent-contacts.index') }}" + '/' + freq_contact_id + '/edit', function(response) {
+                    if (response.success) {
+                    let name = response.data.name;
                     $("#deleteSuppliersModal").modal('show');
-                    $(".delete-alert-text").html(
-                        "Are you sure you want to delete this frequent contact?");
+                    $(".delete-alert-text").html(`Are you sure you want to delete contact ${name}?`);
                     $('.delete-ok-btn').on('click', function() {
                         ListenAndDoDeletion(freq_contact_id);
                     });
+
+                }else{
+                    displayResponse(null, response.error, 'error');
+                }
+            });
                 });
             });
 
@@ -380,13 +401,15 @@
 
             function DisableTableFields(bool) {
 
-                $('.freqContactId').attr('disabled', bool);
+                $('.contact_id').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
-                $('.address').attr('disabled', bool);
-                $('.contact').attr('disabled', bool);
                 $('.email').attr('disabled', bool);
-                $('.debt').attr('disabled', bool);
-                $('.credit').attr('disabled', bool);
+                $('.phone_number').attr('disabled', bool);
+                $('.email').attr('disabled', bool);
+                $('.tin').attr('disabled', bool);
+                $('.contact_person').attr('disabled', bool);
+                $('.price').attr('disabled', bool);
+                $('.currency').attr('disabled', bool);
             }
 
             function HideBtns() {

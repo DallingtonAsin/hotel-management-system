@@ -27,13 +27,12 @@ class FrequentContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function index()
+    public function index()
     {
         $hasAccess = $this->hasPermissions($this->permissions['view_rooms']);
-     
-            $total_frequent_contacts = FrequentContact::count();
-            return view('pages.main.accomodation.guests.frequent_contacts')->with(compact('total_frequent_contacts'));    
-      
+
+        $total_frequent_contacts = FrequentContact::count();
+        return view('pages.main.accomodation.guests.frequent_contacts')->with(compact('total_frequent_contacts'));
     }
 
     public function getFrequentContactsDataTable(FrequentContactDataTable $dataTable)
@@ -86,8 +85,8 @@ class FrequentContactController extends Controller
                 $currency_code = Currency::where('id', $currency_id)->value('code');
 
                 $exists = FrequentContact::where('name', $name)
-                                          ->where('phone_number', $phone_number)
-                                           ->where('email', $email)->exists();
+                    ->where('phone_number', $phone_number)
+                    ->where('email', $email)->exists();
                 if ($exists) {
                     return response()->json(['error' => 'Frequent contact ' . $name . ' already exists']);
                 } else {
@@ -148,6 +147,15 @@ class FrequentContactController extends Controller
     }
 
 
+    private function getFreqContactDetails($id)
+    {
+        try {
+            $data = FrequentContact::find($id);
+            return response()->json(['success' => 'ok', 'data' => $data]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -156,7 +164,7 @@ class FrequentContactController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getFreqContactDetails($id);
     }
 
     /**
@@ -167,7 +175,7 @@ class FrequentContactController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getFreqContactDetails($id);
     }
 
     /**
@@ -213,11 +221,9 @@ class FrequentContactController extends Controller
                 $details = FrequentContact::where('id', $freq_contact_id)->get();
                 echo json_encode($details);
                 die();
-
             }
         } catch (\Exception $ex) {
             echo "Error " . $ex->getMessage();
         }
     }
-
 }
