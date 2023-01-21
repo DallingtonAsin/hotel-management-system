@@ -9,10 +9,39 @@ use App\Models\KitchenOrder;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
 use Carbon\Carbon;
+use Faker\Generator;
+use Illuminate\Container\Container;
 
 
 class KitchenOrderInvoiceTableSeeder extends Seeder
 {
+
+       /**
+     * The current Faker instance.
+     *
+     * @var \Faker\Generator
+     */
+    protected $faker;
+
+    /**
+     * Create a new seeder instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->faker = $this->withFaker();
+    }
+
+    /**
+     * Get a new Faker instance.
+     *
+     * @return \Faker\Generator
+     */
+    protected function withFaker()
+    {
+        return Container::getInstance()->make(Generator::class);
+    }
     /**
      * Run the database seeds.
      *
@@ -49,14 +78,32 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
                 $data['status'] = config('kitchen-order-statuses')['completed'];
                 $payment_method = $this->getRandomValue(config('payment-methods'));
                 $payment_date = Carbon::now();
-            }else{
+                $data['completed_by'] = 1;
+                
+            } else {
                 $data['status'] = $status;
                 $payment_method = null;
                 $payment_date = null;
+                $data['completed_by'] = null;
+
+            }
+
+            if ($status == config('kitchen-order-statuses')['cancelled']) {
+                $reason = $this->faker->paragraph(4, true);
+                $data['cancelled_by'] = 1;
+                $data['cancelled_at'] = Carbon::now();
+
+            } else {
+                $reason = null;
+                $data['cancelled_by'] = null;
+                $data['cancelled_at'] = null;
             }
 
             $data['payment_method'] = $payment_method;
-            $data['payment_date'] = $payment_date;
+            $data['paid_at'] = $payment_date;
+            $data['cancelled_for'] = $reason;
+
+
 
             KitchenOrderInvoice::create($data);
         }

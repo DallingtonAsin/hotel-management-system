@@ -30,15 +30,15 @@ class KitchenOrdersDataTable extends DataTable
                 data-id="' . $order->id . '" data-status="{{$status}}"
                  class="px-3 py-1 border border-secondary rounded mr-2 text-secondary">view order</a>';
 
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                data-id="' . $order->id . '" data-status="pending" data-original-title="Edit Order" id="edit-order"
-                class="px-3 py-1 border border-secondary rounded text-secondary mr-2">
-                <span class="fa fa-clock-o pr-2"></span>Edit order</a>';
+                // $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                // data-id="' . $order->id . '" data-status="pending" data-original-title="Edit Order" id="edit-order"
+                // class="px-3 py-1 border border-secondary rounded text-secondary mr-2">
+                // <span class="fa fa-clock-o pr-2"></span>Edit order</a>';
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                data-id="' . $order->id . '" data-status="pending" data-original-title="Mark Pending" id="mark-pending"
+                data-id="' . $order->id . '" data-status="pending" data-original-title="Change Order Status" id="change-order-status"
                 class="px-3 py-1 border border-secondary rounded text-secondary mr-2">
-                <span class="fa fa-change pr-1"></span>change status</a>';
+                <span class="fa fa-clock pr-1"></span>change status</a>';
 
                 // $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                 //   data-id="' . $order->id . '" data-status="completed" data-original-title="Mark Completed" id="mark-completed"
@@ -133,6 +133,7 @@ class KitchenOrdersDataTable extends DataTable
     protected function getColumns()
     {
         return [
+            'id',
             'order_number',
             'table_number',
             'room_id',

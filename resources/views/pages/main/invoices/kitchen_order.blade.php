@@ -46,7 +46,7 @@
             <p>
               @if ($kitchenOrder->status == config('kitchen-order-statuses')['completed'])
               Payment Date:
-                  <span>{{ date('Y-m-d H:i A', strtotime($invoice->payment_date)) }}</span>
+                  <span>{{ date('Y-m-d H:i A', strtotime($invoice->paid_at)) }}</span>
               @endif
           </p>
           @endif

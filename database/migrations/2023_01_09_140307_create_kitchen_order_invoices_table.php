@@ -24,10 +24,18 @@ class CreateKitchenOrderInvoicesTable extends Migration
             $table->double('total', 10, 2);
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
             $table->timestamp('issued_on')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('paid_at')->nullable();
             $table->string('payment_method')->nullable();
-            $table->string('payment_date')->nullable();
+            $table->integer('completed_by')->unsigned()->nullable();
+            $table->timestamp('cancelled_at')->nullable();
+            $table->string('cancelled_for')->nullable();
+            $table->integer('cancelled_by')->unsigned()->nullable();
+
+
             $table->timestamps();
             $table->foreign('order_number')->references('order_number')->on('kitchen_orders')->onDelete('cascade');
+            $table->foreign('completed_by')->references('id')->on('staff');
+            $table->foreign('cancelled_by')->references('id')->on('staff');
 
         });
     }
