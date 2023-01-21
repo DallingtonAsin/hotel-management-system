@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <span class="response"></span>
-            <h6 class="card-title mb-0 text-dark">
+            <h6 class="card-title text-dark">
                 <i class="fa fa-home text-success"> /</i>
                 <strong>Kitchen Orders</strong>
                 <span class="badge badge-info total_kitchen-orders">
@@ -115,7 +115,9 @@
                                 <label for="status"><span class="text-danger pr-1">*</span>Status</label>
                                 <select class="form-control status" name="status" id="status">
                                     @foreach (config('kitchen-order-statuses') as $status)
-                                        <option value="{{$status}}" {{ str_contains($status, 'progress') ? 'selected' : '' }}>{{ucwords($status)}}</option>
+                                        <option value="{{ $status }}"
+                                            {{ str_contains($status, 'pending') ? 'selected' : '' }}>{{ ucwords($status) }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -281,6 +283,9 @@
             </div>
         </div>
     </div> <!-- end of modal Status - Kitchen Order-->
+
+    @include('pages.main.kitchen.orders.modals.view_order')
+
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -477,6 +482,16 @@
                 } else {
                     alert('Add order items to the cart');
                 }
+            });
+
+            // View Modal used to view each row 
+            $('body').on('click', '#view-kitchen-order', function(event) {
+                let order_id = $(this).data('id');
+                event.preventDefault();
+                let url = "{{ route('kitchen-orders.index') }}" + '/' + order_id + '';
+                checkPermission(permissions.view_kitchen_orders, function(order) {
+                    viewOrder(url);
+                });
             });
 
             function submitKitchenOrder() {
@@ -771,7 +786,7 @@
                 downloadKOT(invoice_id, 'general');
             });
 
-            //Generate hitchen invoice
+            //Generate kitchen invoice
             $('body').on('click', '#download-kitchen-invoice', function(event) {
                 let invoice_id = $(this).data('id');
                 event.preventDefault();
@@ -863,7 +878,7 @@
             $('body').on('click', '#mark-pending', function(e) {
                 checkPermission(permissions.change_kitchen_order_status, function(kitchen_order) {
                     let kot_id = $(this).data("id");
-                    let status = 'In Progress';
+                    let status = 'pending';
                     e.preventDefault();
                     confirmOrderStatusChange(kot_id, status);
                 });

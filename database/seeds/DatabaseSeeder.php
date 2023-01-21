@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\KitchenOrderInvoice;
 use App\Models\RoomStatusHistory;
 use Illuminate\Database\Seeder;
 
@@ -33,10 +34,11 @@ class DatabaseSeeder extends Seeder
             SalaryTableSeeder::class,
             // PaymentTableSeeder::class,
 
-            KitchenOrderTableSeeder::class,
             KitchenMenuItemCategoryTableSeeder::class,
             KitchenMenuItemTableSeeder::class,
-
+            KitchenOrderTableSeeder::class,
+            KitchenOrderInvoiceTableSeeder::class,
+         
             CurrencyTableSeeder::class,
             FrequentContactTableSeeder::class,
 

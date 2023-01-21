@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 use App\DataTables\Kitchen\KitchenOrdersDataTable;
 use App\DataTables\Kitchen\OrderHistoryDataTable;
 use App\Helpers\Helper;
+use App\Models\Guest;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
 use App\Models\KitchenOrder;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
 use App\Models\KitchenMenuItem;
+use DataTable;
 
 
 class KitchenOrderController extends Controller
@@ -27,7 +29,7 @@ class KitchenOrderController extends Controller
      */
     public function index()
     {
-        $total_orders = KitchenOrder::count();
+        $total_orders = KitchenOrder::where('status', config('kitchen-order-statuses')['pending'])->count();
         return view('pages.main.kitchen.orders.new')->with(compact('total_orders'));
     }
 
@@ -36,7 +38,8 @@ class KitchenOrderController extends Controller
         return $dataTable->render('pages.main.kitchen.orders.new');
     }
 
-    public function orderHistoryIndex(){
+    public function orderHistoryIndex()
+    {
         $total_orders = KitchenOrder::count();
         return view('pages.main.kitchen.orders.history')->with(compact('total_orders'));
     }
@@ -65,7 +68,7 @@ class KitchenOrderController extends Controller
      */
     public function store(Request $request)
     {
-      
+
         $validator = Validator::make($request->all(), [
             'table_data' => 'required',
             'table_number' => 'sometimes|nullable',
@@ -149,26 +152,25 @@ class KitchenOrderController extends Controller
                                 $price = Helper::Numberize($key['price']);
                             }
 
-                            $subtotal = $quantity * $price;
-                            $this->total_amount_of_sales += floatval($subtotal);
+                            $sub_total = $quantity * $price;
+                            $this->total_amount_of_sales += floatval($sub_total);
 
                             KitchenOrderItem::create([
                                 'order_number' => $order_number,
                                 'item_id' => $menu_item_id,
                                 'quantity' => $quantity,
                                 'price' => $price,
-                                'total' => $subtotal,
+                                'total' => $sub_total,
                             ]);
-
                         }
 
-                        $subtotal = $this->total_amount_of_sales;
-                        $tax_amount = 0.18 * $subtotal;
-                        $total_amount = $tax_amount + $subtotal;
+                        $sub_total = $this->total_amount_of_sales;
+                        $tax_amount = 0.18 * $sub_total;
+                        $total_amount = $tax_amount + $sub_total;
 
                         $kitchenOrderInvoice = [
                             'order_number' => $order_number,
-                            'subtotal' => $subtotal,
+                            'sub_total' => $sub_total,
                             'tax' => $tax_amount,
                             'total' => $total_amount,
                             'status' => $status
@@ -178,7 +180,7 @@ class KitchenOrderController extends Controller
 
                         //If insertion is OK, reduce stock levels and clear cart
                         if ($hasInsertedInKOITbl) {
-                            $message = "Kitchen order has been recorded successfully with order number ".$order_number."";
+                            $message = "Kitchen order has been recorded successfully with order number " . $order_number . "";
                             $responseData = [
                                 'success' => $message
                             ];
@@ -188,7 +190,6 @@ class KitchenOrderController extends Controller
                             Helper::logger($request, $action, now());
                             $dataArr = array("code" => '200', "message" => $action, "method" => $method);
                             Helper::LogRequest($request, $dataArr);
-
                         } else {
 
                             $message = "Failed to create invoice for the kitchen order";
@@ -201,9 +202,7 @@ class KitchenOrderController extends Controller
                                 "method" => $method
                             );
                             Helper::LogRequest($request, $dataArr);
-
                         }
-
                     } else {
                         $message = "Invalid kitchen order data";
                         $responseData = [
@@ -216,8 +215,7 @@ class KitchenOrderController extends Controller
                     return response()->json(['error' => 'Unable to record order in kitchen orders']);
                 }
             }
-            
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             return response()->json(['error' =>  $ex->getMessage()]);
         }
     }
@@ -267,6 +265,32 @@ class KitchenOrderController extends Controller
         }
     }
 
+    private function getOrderDetails($id)
+    {
+        try {
+            $kitchen_order = KitchenOrder::find($id);
+            $order_items = KitchenOrderItem::where('order_number', $kitchen_order->order_number)->get();
+            $kitchen_order->items = $order_items;
+
+            $order_invoice = KitchenOrderInvoice::where('order_number', $kitchen_order->order_number)->get();
+            $kitchen_order->invoice = $order_invoice;
+
+            if ($kitchen_order->guest_id) {
+                $guest = Guest::find($kitchen_order->guest_id);
+                $kitchen_order->guest = $guest;
+            }
+
+            if ($kitchen_order->room_id) {
+                $room = Room::find($kitchen_order->room_id);
+                $kitchen_order->room_number = $room->number;
+            }
+
+            return response()->json(['success' => 'Ok', 'data' => $kitchen_order]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -275,7 +299,7 @@ class KitchenOrderController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getOrderDetails($id);
     }
 
     /**
@@ -286,7 +310,7 @@ class KitchenOrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getOrderDetails($id);
     }
 
     /**
@@ -327,6 +351,64 @@ class KitchenOrderController extends Controller
             return $data;
         } catch (\Exception $ex) {
             throw $ex;
+        }
+    }
+
+
+    public function orderStatusIndex(Request $request, $status)
+    {
+        $total_orders = KitchenOrder::where('status', $status)->count();
+        return view('pages.main.kitchen.orders.status')->with(compact('total_orders', 'status'));
+    }
+
+
+    public function getOrders(Request $request, $status)
+    {
+
+        try {
+            if ($status) {
+
+                $orders = KitchenOrder::select(['id', 'order_number', 'table_number', 'room_id', 'guest_id', 'customer_name', 'tin_number', 'phone_number', 'email', 'status', 'order_date', 'created_by']);
+
+                // filter orders based on status
+                $orders->where('status', $status);
+
+                return DataTable::of($orders)
+                    ->addIndexColumn()
+                    ->addColumn('action', function ($order) {
+
+                        $btn = "";
+
+                        $btn .= '<a href="javascript:void(0);" id="view-kitchen-order" 
+                    data-toggle="tooltip" data-original-title="view order"
+                    data-id="' . $order->id . '" data-status="{{$status}}"
+                     class="px-3 py-1 border border-default rounded mr-2 text-primary">view order</a>';
+
+                        return $btn;
+                    })->addColumn('room_number', function ($order) {
+                        $room_number = null;
+                        if (isset($order->room_id)) {
+                            $room = Helper::findRoom(($order->room_id));
+                            $room_number = $room->number;
+                        }
+                        return $room_number;
+                    })->editColumn('order_date', function ($order) {
+                        return date('Y-m-d H:i A', strtotime($order->order_date));
+                    })->editColumn('created_by', function ($order) {
+                        if (!empty($order->created_by)) {
+                            return Helper::getUserNames($order->created_by);
+                        } else {
+                            return "Unknown";
+                        }
+                    })->rawColumns(['action'])
+                    ->make(true);
+
+                return view('pages.main.kitchen.orders.status');
+            } else {
+                dd("No order status found");
+            }
+        } catch (\Exception $ex) {
+            dd($ex->getMessage());
         }
     }
 }

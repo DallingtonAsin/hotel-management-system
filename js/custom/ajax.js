@@ -193,10 +193,10 @@ function populateFrequentContacts(select_element) {
 }
 
 function checkPermission(permission_name, next) {
-    let url = 'staff-member/permission/' + permission_name + ''
+    let permissionsUrl = '/staff-member/permission/' + permission_name + ''
     $.ajax({
         type: 'GET',
-        url: url,
+        url: permissionsUrl,
         success: function (response) {
             // console.log('Response from checking permissions', response);
             if (response.hasPermission === true) {
@@ -204,6 +204,71 @@ function checkPermission(permission_name, next) {
             } else {
                 displayResponse('.response', response.error, 'error');
             }
+        }
+    });
+}
+
+
+
+function viewOrder(url) {
+    $.get(url, function(response) {
+        if (response.success) {
+            let data = response.data;
+            $('.order_no').text(data.order_number);
+
+            let order_items = data.items;
+            if (order_items.length > 0) {
+                let table = $('.menu-item-cart-body');
+                table.empty();
+                $.each(order_items, function(index, item) {
+                    let item_name, quantity, price, total;
+                    item_name = item.item_id;
+                    quantity = item.quantity;
+                    price = FormatNumber(item.price);
+                    total = FormatNumber(item.total);
+
+                    let row = "<tr>"
+                    row += "<td>" + item_name + "</td><td>" + quantity + "</td>" +
+                        "<td>" + price + "</td><td>" + total + "</td>";
+                    row += "</tr>";
+                    table.append(row);
+                });
+
+                let invoice = data.invoice;
+                invoice = invoice[0];
+                $('#sub_total').html(FormatNumber(invoice.sub_total));
+                $('#tax_amount').html(FormatNumber(invoice.tax));
+                $('#total_amount').html(FormatNumber(invoice.total));
+            }
+
+            $('#viewKitchenOrderModal').modal('show');
+            
+            if (data.guest) {
+                let guest = data.guest;
+                let guest_names = guest.first_name + ' ' + guest.last_name;
+                $('.guest_names').empty();
+                $('.guest_names').append('<option value=' + guest_names + '>' + guest_names +
+                    '</option>');
+                $('.customer').val(guest_names);
+                $('.phone_no').val(guest.phone_number);
+                $('.tin_no').val(guest.tax_number)
+                $('.email_id').val(guest.email);
+            } else {
+                $('.customer').val(data.customer_name);
+                $('.phone_no').val(data.phone_number);
+                $('.tin_no').val(data.tin_number)
+                $('.email_id').val(data.email);
+            }
+
+            if(data.room_number){
+                $('.room_no').val(data.room_number);
+            }
+
+            $('.order_status').empty();
+            $('.order_status').append('<option value=' + data.status + '>' + data.status +
+                '</option>');
+        } else {
+            displayResponse(null, response.error, 'error');
         }
     });
 }

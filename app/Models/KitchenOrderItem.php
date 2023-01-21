@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\KitchenOrder;
 
 class KitchenOrderItem extends Model
 {
@@ -14,5 +15,9 @@ class KitchenOrderItem extends Model
 
     // Fillable fields
     protected $fillable = ['order_number', 'item_id', 'quantity', 'price', 'total'];
+
+    public function order(){
+        $this->belongsTo(KitchenOrder::class, 'order_number');
+    }
 
 }

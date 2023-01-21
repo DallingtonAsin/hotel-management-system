@@ -78,6 +78,7 @@
 
     <script>
         var permissions = {!! json_encode(config('permissions')) !!};
+        
     </script>
 
 </head>

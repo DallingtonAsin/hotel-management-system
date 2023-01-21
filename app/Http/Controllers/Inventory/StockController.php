@@ -8,7 +8,6 @@ use App\Imports\ImportStock;
 use App\Exports\ExportStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\LogsController;
 use Maatwebsite\Excel\Facades\Excel;
 use App\DataTables\Inventory\StockDataTable;
 use Illuminate\Support\Str;
