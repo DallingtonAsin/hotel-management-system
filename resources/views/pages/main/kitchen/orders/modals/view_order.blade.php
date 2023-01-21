@@ -77,7 +77,7 @@
 
                <div class="card-body">
                    <div class="table-response">
-                       <table class="table table-bordered menu-item-cart" id="menu-item-cart">
+                       <table class="table table-bordered kitchen-order-details-table" id="kitchen-order-details-table">
                            <thead>
                                <tr>
                                    <th>Item</th>
@@ -86,7 +86,7 @@
                                    <th>Amount</th>
                                </tr>
                            </thead>
-                           <tbody class="menu-item-cart-body">
+                           <tbody class="kitchen-order-details-body">
                            </tbody>
                        </table>
 

@@ -218,11 +218,11 @@ function viewOrder(url) {
 
             let order_items = data.items;
             if (order_items.length > 0) {
-                let table = $('.menu-item-cart-body');
+                let table = $('.kitchen-order-details-body');
                 table.empty();
                 $.each(order_items, function(index, item) {
                     let item_name, quantity, price, total;
-                    item_name = item.item_id;
+                    item_name = item.name;
                     quantity = item.quantity;
                     price = FormatNumber(item.price);
                     total = FormatNumber(item.total);

@@ -89,7 +89,7 @@
             @if ($type === 'general')
                 <tr>
                     <td colspan="3" class="text-right">SubTotal:</td>
-                    <td>USh. <strong>{{ number_format($invoice->subtotal) }}</strong></td>
+                    <td>USh. <strong>{{ number_format($invoice->sub_total) }}</strong></td>
                 </tr>
                 <tr>
                     <td colspan="3" class="text-right">Tax (18%):</td>

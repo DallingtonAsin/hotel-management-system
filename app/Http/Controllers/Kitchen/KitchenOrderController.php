@@ -93,7 +93,7 @@ class KitchenOrderController extends Controller
                 $order_number = Helper::generateUniqueNumber('kitchen_orders', 'order_number', 10, 'KOT_');
                 $table_number = $request->input('table_number');
 
-                $status = $request->input('status');
+                $status = strtolower($request->input('status'));
                 $order_date = Carbon::now();
                 $created_by = Helper::getLoggedInUserId();
 
@@ -116,7 +116,6 @@ class KitchenOrderController extends Controller
                 $tin_number = $request->input('tin_number');
                 $email = $request->input('email');
 
-
                 $kitchenOrderData = [
                     'order_number' => $order_number,
                     'table_number' => $table_number,
@@ -126,7 +125,7 @@ class KitchenOrderController extends Controller
                     'phone_number' => $phone_number,
                     'tin_number' => $tin_number,
                     'email' => $email,
-                    'status' => strtolower($status),
+                    'status' => $status,
                     'order_date' => $order_date,
                     'created_by' => $created_by,
                 ];
@@ -270,6 +269,10 @@ class KitchenOrderController extends Controller
         try {
             $kitchen_order = KitchenOrder::find($id);
             $order_items = KitchenOrderItem::where('order_number', $kitchen_order->order_number)->get();
+          
+            foreach($order_items as $item){
+               $item->name = KitchenMenuItem::where('id', $item->item_id)->value('name');
+            }
             $kitchen_order->items = $order_items;
 
             $order_invoice = KitchenOrderInvoice::where('order_number', $kitchen_order->order_number)->get();
