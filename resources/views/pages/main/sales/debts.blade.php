@@ -504,7 +504,7 @@
     e.preventDefault();
     $("#deleteSaleModal").modal('show');
     $('.delete-ok-btn').on('click', function(){
-      ListenAndDoDeletion(sale_id);
+      deleteRecord(sale_id);
     });
 
   });
@@ -590,7 +590,7 @@
   }
 
 
-  function ListenAndDoDeletion(id){
+  function deleteRecord(id){
     var deleteUrl = '{{ route("sales.destroy", ":id") }}';
     deleteUrl = deleteUrl.replace(':id', id);
     $('.delete-ok-btn').html('Deleting...');

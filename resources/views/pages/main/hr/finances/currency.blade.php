@@ -352,13 +352,13 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this currency?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(currency_id);
+                        deleteRecord(currency_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('currencies.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

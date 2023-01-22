@@ -216,13 +216,13 @@ $('body').on('click', '#delete-log', function (e) {
         e.preventDefault();
         $("#deleteLogsModal").modal('show');
         $('.delete-ok-btn').on('click', function(){
-               ListenAndDoDeletion(log_id);
+               deleteRecord(log_id);
      });
 
 });
 
 
-function ListenAndDoDeletion(id){
+function deleteRecord(id){
 var deleteUrl = '{{ route("logs.destroy", ":id") }}';
 deleteUrl = deleteUrl.replace(':id', id);
  $('.delete-ok-btn').html('Deleting...');

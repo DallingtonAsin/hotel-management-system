@@ -382,7 +382,7 @@
                                     `Are you sure you want to delete room type ${data.name}?`
                                     );
                                 $('.delete-ok-btn').on('click', function() {
-                                    ListenAndDoDeletion(room_type_id);
+                                    deleteRecord(room_type_id);
                                 });
                             } else {
                                 displayResponse(null, response.error, 'error');
@@ -392,7 +392,7 @@
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('room_types.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

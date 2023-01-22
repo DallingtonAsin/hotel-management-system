@@ -369,13 +369,13 @@
                     $(".delete-alert-text").html(
                     "Are you sure you want to delete this department?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(department_id);
+                        deleteRecord(department_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('departments.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

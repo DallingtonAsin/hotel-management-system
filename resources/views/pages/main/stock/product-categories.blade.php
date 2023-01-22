@@ -406,13 +406,13 @@
                 checkPermission(permissions.delete_product_categories, function(category) {
                     $("#deletePdtCategoryModal").modal('show');
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(category_id);
+                        deleteRecord(category_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('product-categories.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

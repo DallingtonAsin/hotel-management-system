@@ -437,13 +437,13 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(supplier_id);
+                        deleteRecord(supplier_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('suppliers.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

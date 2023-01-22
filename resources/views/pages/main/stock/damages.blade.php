@@ -549,7 +549,7 @@
                 checkPermission(permissions.delete_damages, function(damage) {
                     $("#deleteDamageModal").modal('show');
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(damage_id);
+                        deleteRecord(damage_id);
                     });
                 });
             });
@@ -577,7 +577,7 @@
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('damaged-stock-items.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

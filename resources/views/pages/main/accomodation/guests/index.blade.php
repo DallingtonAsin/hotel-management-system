@@ -215,7 +215,7 @@
                             $(".delete-alert-text").html(
                                 `Are you sure you want to delete guest ${guest_names}?`);
                             $('.delete-ok-btn').on('click', function() {
-                                ListenAndDoDeletion(guest_id);
+                                deleteRecord(guest_id);
                             });
                         } else {
                             displayResponse(null, response.error, 'error');
@@ -228,7 +228,7 @@
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('guests.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

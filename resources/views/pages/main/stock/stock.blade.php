@@ -592,13 +592,13 @@
                 checkPermission(permissions.delete_stock, function(stock) {
                     $("#deleteStockModal").modal('show');
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(stock_id);
+                        deleteRecord(stock_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('stock.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

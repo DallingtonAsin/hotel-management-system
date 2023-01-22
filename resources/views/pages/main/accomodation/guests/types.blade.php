@@ -81,7 +81,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control guestTypeId  guestTypeId" name="id"
+                            <input type="hidden" class="form-control guest_type_id  guest_type_id" name="id"
                                 placeholder="Enter guest type id" required autofocus>
                         </div>
 
@@ -91,21 +91,23 @@
                                 placeholder="Enter guest type name" required autofocus>
                         </div>
 
-                        <div class="form-group">
-                            <span><span class="text-danger pr-1">*</span>Is Regular</span><br>
-                            <input type="radio" id="yes" name="is_regular" value="Yes">
-                            <label for="yes">Yes</label>
-                            <input type="radio" id="no" name="is_regular" value="No" checked="true">
-                            <label for="no">No</label>
-                        </div>
+                        <div class="form-group d-flex">
+                            <div>
+                                <span><span class="text-danger pr-1">*</span>Is Regular</span><br>
+                                <input type="radio" id="yes" name="is_regular" value="Yes">
+                                <label for="yes">Yes</label>
+                                <input type="radio" id="no" name="is_regular" value="No" checked="true">
+                                <label for="no">No</label>
+                            </div>
 
 
-                        <div class="form-group">
-                            <span><span class="text-danger pr-1">*</span>Is Corporate</span><br>
-                            <input type="radio" id="yes" name="is_corporate" value="Yes">
-                            <label for="yes">Yes</label>
-                            <input type="radio" id="no" name="is_corporate" value="No" checked="true">
-                            <label for="no">No</label>
+                            <div class="mx-5">
+                                <span><span class="text-danger pr-1">*</span>Is Corporate</span><br>
+                                <input type="radio" id="yes" name="is_corporate" value="Yes">
+                                <label for="yes">Yes</label>
+                                <input type="radio" id="no" name="is_corporate" value="No" checked="true">
+                                <label for="no">No</label>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -264,7 +266,7 @@
                     DisableTableFields(false);
                     ShowBtns();
                     $('.addGuestTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('.guestTypeId').val('');
+                    $('.guest_type_id').val('');
                     $('#GuestTypesForm').trigger("reset");
                     $('#modalHeading').html("Add new guest type");
                     $('#addGuestTypeModal').modal('show');
@@ -285,15 +287,26 @@
             });
 
             function editGuestType(guest_type_id) {
-                $.get("{{ route('guest_types.index') }}" + '/' + guest_type_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of guest type " + data.name + "");
-                    $('.addGuestTypeBtn').text("Edit guest type");
-                    $('#addGuestTypeModal').modal('show');
-                    $('.guestTypeId').val(data.id);
-                    $('.name').val(data.name);
-                    DisableTableFields(false);
-                    ShowBtns();
+                $.get("{{ route('guest_types.index') }}" + '/' + guest_type_id + '/edit', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Edit details of guest type " + data.name + "");
+                        $('.addGuestTypeBtn').html("Update");
+                        $('#addGuestTypeModal').modal('show');
+                        populateGuestTypeDetails(data)
+                        DisableTableFields(false);
+                        ShowBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
+            }
+
+            function populateGuestTypeDetails(data) {
+                $('.guest_type_id').val(data.id);
+                $('.name').val(data.name);
+                $("input[name='is_regular'][value='" + data.is_regular + "']").prop("checked", true);
+                $("input[name='is_corporate'][value='" + data.is_corporate + "']").prop("checked", true);
             }
 
 
@@ -307,18 +320,17 @@
             });
 
             function viewGuestType(guest_type_id) {
-                $.get("{{ route('guest_types.index') }}" + '/' + guest_type_id + '', function(data) {
-                    $('#modalHeading').html("Details of guest-type " + data.name + "");
-                    $('#addGuestTypeModal').modal('show');
-                    $('.guestTypeId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
+                $.get("{{ route('guest_types.index') }}" + '/' + guest_type_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Details of guest-type " + data.name + "");
+                        $('#addGuestTypeModal').modal('show');
+                        populateGuestTypeDetails(data);
+                        DisableTableFields(true);
+                        HideBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -371,17 +383,24 @@
                 let guest_type_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_guest_types, function(guest_type) {
-                    $("#deleteSuppliersModal").modal('show');
-                    $(".delete-alert-text").html(
-                    "Are you sure you want to delete this guest type?");
-                    $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(guest_type_id);
+                    $.get("{{ route('guest_types.index') }}" + '/' + guest_type_id + '', function(
+                        response) {
+                        if (response.success) {
+                            let data = response.data;
+                            $("#deleteSuppliersModal").modal('show');
+                            $(".delete-alert-text").html(`Are you sure you want to delete guest type ${data.name}?`);
+                            $('.delete-ok-btn').on('click', function() {
+                                deleteRecord(guest_type_id);
+                            });
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('guest_types.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
@@ -404,16 +423,9 @@
                 });
             }
 
-
             function DisableTableFields(bool) {
-
-                $('.guestTypeId').attr('disabled', bool);
+                $('.guest_type_id').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
-                $('.address').attr('disabled', bool);
-                $('.contact').attr('disabled', bool);
-                $('.email').attr('disabled', bool);
-                $('.debt').attr('disabled', bool);
-                $('.credit').attr('disabled', bool);
             }
 
             function HideBtns() {

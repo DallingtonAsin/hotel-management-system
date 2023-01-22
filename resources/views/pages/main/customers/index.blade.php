@@ -508,13 +508,13 @@ Numberize(".credit");
             $("#deleteCustomersModal").modal('show');
             $(".delete-alert-text").html("Are you sure you want to delete this customer?");
             $('.delete-ok-btn').on('click', function(){
-                   ListenAndDoDeletion(customer_id);
+                   deleteRecord(customer_id);
          });
 
  });
 
 
- function ListenAndDoDeletion(id){
+ function deleteRecord(id){
     var deleteUrl = '{{ route("customers.destroy", ":id") }}';
     deleteUrl = deleteUrl.replace(':id', id);
      $('.delete-ok-btn').html('Deleting...');

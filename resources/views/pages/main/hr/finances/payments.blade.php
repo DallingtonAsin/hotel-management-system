@@ -385,12 +385,12 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this payment?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(payment_id);
+                        deleteRecord(payment_id);
                     });
                 });
             });
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('payments.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

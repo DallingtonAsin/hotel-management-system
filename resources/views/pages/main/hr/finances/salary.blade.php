@@ -343,12 +343,12 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this salary?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(salary_id);
+                        deleteRecord(salary_id);
                     });
                 });
             });
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('salary.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

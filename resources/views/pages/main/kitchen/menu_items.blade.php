@@ -319,13 +319,13 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this menu item?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(menu_item_id);
+                        deleteRecord(menu_item_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('menu-items.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

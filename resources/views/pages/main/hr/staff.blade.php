@@ -563,12 +563,12 @@
                 $("#deleteStaffModal").modal('show');
                 $(".delete-alert-text").html("Are you sure you want to delete this staff?");
                 $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(staff_id);
+                    deleteRecord(staff_id);
                 });
 
             });
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('users.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

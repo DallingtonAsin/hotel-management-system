@@ -364,7 +364,7 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html(`Are you sure you want to delete contact ${name}?`);
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(freq_contact_id);
+                        deleteRecord(freq_contact_id);
                     });
 
                 }else{
@@ -375,7 +375,7 @@
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('frequent-contacts.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

@@ -539,13 +539,13 @@
                 checkPermission(permissions.delete_purchases, function(purchase) {
                     $("#deletepurchaseModal").modal('show');
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(purchase_id);
+                        deleteRecord(purchase_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('purchases.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

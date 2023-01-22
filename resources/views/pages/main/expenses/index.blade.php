@@ -381,13 +381,13 @@
                     $("#deleteExpensesModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this expense?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(expense_id);
+                        deleteRecord(expense_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 var deleteUrl = '{{ route('expenses.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
