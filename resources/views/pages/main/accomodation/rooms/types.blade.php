@@ -83,7 +83,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control roomTypeId bg-white roomTypeId" name="id"
+                            <input type="hidden" class="form-control room_type_id bg-white room_type_id" name="id"
                                 placeholder="Enter room type id" required autofocus>
                         </div>
 
@@ -176,7 +176,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete room types</h6>
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete room type</h6>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -258,7 +258,7 @@
                     DisableTableFields(false);
                     ShowBtns();
                     $('.addRoomTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('.roomTypeId').val('');
+                    $('.room_type_id').val('');
                     $('#RoomTypesForm').trigger("reset");
                     $('#modalHeading').html("Add new room type");
                     $('#addRoomTypeModal').modal('show');
@@ -279,20 +279,18 @@
             });
 
             function editRoomType(room_type_id) {
-                $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '/edit', function(data) {
-
-                    $('#modalHeading').html("Edit details of room type " + data.name + "");
-                    $('.addRoomTypeBtn').text("Edit room type");
-                    $('#addRoomTypeModal').modal('show');
-                    $('.roomTypeId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(false);
-                    ShowBtns();
+                $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '/edit', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Edit details of room type " + data.name + "");
+                        $('.addRoomTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Update");
+                        $('#addRoomTypeModal').modal('show');
+                        populateRoomTypeDetails(data);
+                        DisableTableFields(false);
+                        ShowBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -307,24 +305,29 @@
             });
 
             function viewRoomType(room_type_id) {
-                $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '', function(data) {
-                    $('#modalHeading').html("Details of room type " + data.name + "");
-                    $('#addRoomTypeModal').modal('show');
-                    $('.roomTypeId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
+                $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Details of room type " + data.name + "");
+                        $('#addRoomTypeModal').modal('show');
+                        populateRoomTypeDetails(data);
+                        DisableTableFields(true);
+                        HideBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
+            }
+
+            function populateRoomTypeDetails(data) {
+                $('.room_type_id').val(data.id);
+                $('.name').val(data.name);
+                $('.single_occupancy_rate').val(FormatNumber(data.single_occupancy_rate));
+                $('.double_occupancy_rate').val(FormatNumber(data.double_occupancy_rate));
             }
 
 
             $('.addRoomTypeBtn').click(function(e) {
-
                 e.preventDefault();
 
                 let Errors = validateForm();
@@ -370,11 +373,21 @@
                 let room_type_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_room_types, function(room_type) {
-                    $("#deleteSuppliersModal").modal('show');
-                    $(".delete-alert-text").html("Are you sure you want to delete this room type?");
-                    $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(room_type_id);
-                    });
+                    $.get("{{ route('room_types.index') }}" + '/' + room_type_id + '/edit',
+                        function(response) {
+                            if (response.success) {
+                                let data = response.data;
+                                $("#deleteSuppliersModal").modal('show');
+                                $(".delete-alert-text").html(
+                                    `Are you sure you want to delete room type ${data.name}?`
+                                    );
+                                $('.delete-ok-btn').on('click', function() {
+                                    ListenAndDoDeletion(room_type_id);
+                                });
+                            } else {
+                                displayResponse(null, response.error, 'error');
+                            }
+                        });
                 });
             });
 
@@ -404,9 +417,11 @@
 
 
             function DisableTableFields(bool) {
-
-                $('.roomTypeId').attr('disabled', bool);
+                $('.room_type_id').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
+                $('.name').attr('disabled', bool);
+                $('.single_occupancy_rate').attr('disabled', bool);
+                $('.double_occupancy_rate').attr('disabled', bool);
             }
 
             function HideBtns() {
@@ -445,59 +460,6 @@
 
             }
 
-            $("#removeAllSuppliers").bind("click", function() {
-                RemoveAllSuppliers();
-            });
-
-            function RemoveAllSuppliers() {
-                $.confirm({
-                    boxWidth: '30%',
-                    icon: 'fa fa-warning',
-                    theme: 'light',
-                    closeIcon: true,
-                    draggable: true,
-                    closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all room types',
-                    content: 'Are you sure you want to remove all room types',
-                    buttons: {
-                        confirm: function() {
-                            let self = this;
-                            return $.ajax({
-                                data: {
-                                    "_token": "{{ csrf_token() }}",
-                                },
-                                url: '{{ Route('suppliers.truncate') }}',
-                                type: 'POST'
-                            }).done(function(data) {
-
-                                $.alert({
-                                    title: 'Message',
-                                    content: data.success,
-                                });
-                                $(".total_room_types").text(data.totl_no);
-                                $(".totl_credit").text(data.totl_credit);
-                                $(".totl_debt").text(data.totl_debt);
-                                let tbl = $('#room-types-table').DataTable();
-                                tbl.ajax.reload();
-
-
-                            }).fail(function(data) {
-                                $.alert({
-                                    title: 'Response',
-                                    content: "Suppliers not deleted:" + data.fail,
-                                });
-                                console.log(data);
-
-                            });
-
-                        },
-                        cancel: function() {
-
-                        }
-                    },
-                });
-
-            }
         });
     </script>
     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
