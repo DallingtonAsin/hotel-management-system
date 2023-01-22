@@ -83,6 +83,16 @@ class RoomTypeController extends Controller
         }
     }
 
+
+    private function getRoomTypeDetails($id)
+    {
+        try {
+            $data = RoomType::find($id);
+            return response()->json(['success' => 'ok', 'data' => $data]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -91,7 +101,7 @@ class RoomTypeController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getRoomTypeDetails($id);
     }
 
     /**
@@ -102,7 +112,7 @@ class RoomTypeController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getRoomTypeDetails($id);
     }
 
     /**

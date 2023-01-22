@@ -10,8 +10,7 @@ class Sale extends Model
     use HasFactory;
     protected $table = 'sales';
     protected $fillable = [
-        'id',
-        'item',
+        'item_id',
         'quantity',
         'selling_price',
         'total_cost',
@@ -21,5 +20,5 @@ class Sale extends Model
         'date_of_sale',
         'cashier_id'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 }

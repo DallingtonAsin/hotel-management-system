@@ -90,7 +90,7 @@
 
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Item</span>
-                                    <input type="text" class="form-control bg-white item-name" name="item"
+                                    <input type="text" class="form-control  item-name" name="item"
                                         placeholder="Enter item" required autofocus>
 
                                 </div>
@@ -98,13 +98,13 @@
                                 <div class="form-group">
                                     <span>Item ID</span>
                                     <input type="hidden" class="stockId" name="id">
-                                    <input type="text" class="form-control bg-white item_code" name="item_code"
+                                    <input type="text" class="form-control  item_code" name="item_code"
                                         placeholder="Enter item id or barcode">
                                 </div>
 
                                 <div class="form-group">
                                     <span>Category</span>
-                                    <select class="form-control bg-white category" name="category" required autofocus
+                                    <select class="form-control  category" name="category" required autofocus
                                         id="category">
                                         <option value="" selected="true">choose category</option>
                                         @foreach ($categories as $category)
@@ -116,7 +116,7 @@
 
                                 <div class="form-group">
                                     <span>Supplier</span>
-                                    <select class="form-control bg-white" id="supplier" name="supplier" required autofocus>
+                                    <select class="form-control " id="supplier" name="supplier" required autofocus>
                                         <option value="" selected="true">choose supplier</option>
                                         @foreach ($suppliers as $supplier)
                                             <option value="{{ $supplier->name }}"> {{ $supplier->name }}</option>
@@ -126,20 +126,20 @@
 
                                 <div class="form-group">
                                     <span>Expiry Date</span>
-                                    <input type="date" class="form-control bg-white expiry_date" name="expiry_date"
+                                    <input type="date" class="form-control  expiry_date" name="expiry_date"
                                         placeholder="Enter who bought it">
                                 </div>
 
                                 <div class="row form-group">
                                     <div class=" col-md-6">
                                         <span><span class="text-danger pr-1">*</span>Quantity</span>
-                                        <input type="text" class="form-control bg-white quantity" id="qty"
+                                        <input type="text" class="form-control  quantity" id="qty"
                                             name="quantity" placeholder="Enter Quantity" required autofocus>
                                     </div>
 
                                     <div class="col-md-6">
                                         <span>Threshold Quantity</span>
-                                        <input type="text" class="form-control bg-white thresholdQty" id="thresholdQty"
+                                        <input type="text" class="form-control  thresholdQty" id="thresholdQty"
                                             name="thresholdQty" placeholder="Enter threshold quantity">
                                     </div>
                                 </div>
@@ -148,20 +148,20 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <span><span class="text-danger pr-1">*</span>Buying Price</span>
-                                            <input type="text" class="form-control bg-white original_price"
+                                            <input type="text" class="form-control  original_price"
                                                 name="original_price" placeholder="Enter original price" required
                                                 autofocus>
                                         </div>
 
                                         <div class="col-lg-4 form-group">
                                             <span><span class="text-danger pr-1">*</span>Retail Price</span>
-                                            <input type="text" class="form-control bg-white selling_price"
+                                            <input type="text" class="form-control  selling_price"
                                                 name="selling_price" placeholder="Enter selling price" required autofocus>
                                         </div>
 
                                         <div class="col-lg-4 form-group">
                                             <span>Wholesale Price</span>
-                                            <input type="text" class="form-control bg-white  wholesale_price"
+                                            <input type="text" class="form-control   wholesale_price"
                                                 name="wholesale_price" placeholder="Enter wholesale price" required
                                                 autofocus>
                                         </div>
@@ -592,13 +592,13 @@
                 checkPermission(permissions.delete_stock, function(stock) {
                     $("#deleteStockModal").modal('show');
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(stock_id);
+                        deleteRecord(stock_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('stock.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

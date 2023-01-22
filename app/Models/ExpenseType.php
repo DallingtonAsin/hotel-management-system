@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Currency extends Model
+class ExpenseType extends Model
 {
     use HasFactory;
 
-    protected $table = 'currencies';
+    protected $table = 'expense_types';
     public $timestamps = true;
-    protected $fillable = [
-        'country',
-        'code',
-        'rate',
-        'created_by'
-    ];
 
+    protected $fillable = [
+        'name',
+        'created_by',
+    ];
 }

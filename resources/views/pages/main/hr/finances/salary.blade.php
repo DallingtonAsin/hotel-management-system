@@ -55,20 +55,20 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control salaryId bg-white salaryId" name="id"
+                            <input type="hidden" class="form-control salaryId  salaryId" name="id"
                                 placeholder="Enter salary id" autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Staff member</span>
-                            <select class="form-control staff_members_section bg-white" name="employee">
+                            <select class="form-control staff_members_section " name="employee">
                                 <option value="">select staff member</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Amount</span>
-                            <input type="text" class="form-control bg-white amount" name="amount"
+                            <input type="text" class="form-control  amount" name="amount"
                                 placeholder="Enter salary amount" required autofocus>
                         </div>
 
@@ -343,12 +343,12 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this salary?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(salary_id);
+                        deleteRecord(salary_id);
                     });
                 });
             });
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('salary.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

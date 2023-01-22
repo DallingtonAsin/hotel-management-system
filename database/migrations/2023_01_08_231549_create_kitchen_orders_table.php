@@ -18,7 +18,7 @@ class CreateKitchenOrdersTable extends Migration
 
         Schema::create('kitchen_orders', function (Blueprint $table) {
 
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('order_number')->unique();
             $table->string('table_number')->nullable();
             $table->unsignedBigInteger('room_id')->nullable();

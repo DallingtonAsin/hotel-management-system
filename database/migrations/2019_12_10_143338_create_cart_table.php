@@ -31,7 +31,7 @@ class CreateCartTable extends Migration
 //          )");
 
         Schema::create('cart', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('item_code')->nullable();
             $table->string('item');
             $table->double('quantity');

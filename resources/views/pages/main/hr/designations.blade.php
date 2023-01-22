@@ -81,20 +81,20 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control designationId bg-white designationId" name="id"
+                            <input type="hidden" class="form-control designationId  designationId" name="id"
                                 placeholder="Enter designation id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Department</span>
-                            <select class="form-control departments_section bg-white" name="department">
+                            <select class="form-control departments_section " name="department">
                                 <option value="">select department</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Designation</span>
-                            <input type="text" class="form-control name bg-white designation" name="designation"
+                            <input type="text" class="form-control name  designation" name="designation"
                                 placeholder="Enter designation name" required autofocus>
                         </div>
 
@@ -358,13 +358,13 @@
                     $(".delete-alert-text").html(
                         "Are you sure you want to delete this designation?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(designation_id);
+                        deleteRecord(designation_id);
                     });
                 });
 
             });
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('designations.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

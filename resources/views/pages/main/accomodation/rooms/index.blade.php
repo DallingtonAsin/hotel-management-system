@@ -85,27 +85,27 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control roomId bg-white roomId" name="id"
+                            <input type="hidden" class="form-control room_id  room_id" name="id"
                                 placeholder="Enter room id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Room Type</span>
-                            <select class="form-control room_types_section bg-white" name="room_type">
-                                <option value="">select room type</option>
+                            <select class="form-control room_types_section " name="room_type">
+                                <option value="">Select room type</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Room number</span>
-                            <input type="text" class="form-control room_number bg-white" name="room_number"
+                            <input type="text" class="form-control room_number " name="room_number"
                                 placeholder="Enter room number" required autofocus>
                         </div>
 
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Floor number</span>
-                            <input type="number" class="form-control floor_number bg-white" name="floor_number"
+                            <input type="number" class="form-control floor_number " name="floor_number"
                                 placeholder="Enter floor number" required autofocus>
                         </div>
 
@@ -115,7 +115,7 @@
                             <select name="status" class="form-control status">
                                 <option value="">Select status</option>
                                 @foreach ($room_statuses as $status)
-                                <option value="{{$status->id}}">{{$status->name}}</option>
+                                    <option value="{{ $status->id }}">{{ $status->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -236,322 +236,280 @@
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
 
         const cat = 'rooms';
-        populateRoomTypes();
     </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
 
-            //code that displays results of the table index()
-            let table = $('#rooms-table');
-            let title = "List of registered rooms in the system";
-            let columns = [1, 2, 3, 4];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
-                {
-                    data: 'number',
-                    name: 'number'
-                },
-                {
-                    data: 'room_type',
-                    name: 'room_type'
-                },
-                {
-                    data: 'floor_number',
-                    name: 'floor_number'
-                },
-                {
-                    data: 'room_status',
-                    name: 'room_status'
-                },
-               
-                {
-                    data: 'description',
-                    name: 'description'
-                },
-                {
-                    data: 'created_by',
-                    name: 'created_by'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ];
+                    populateRoomTypes();
 
-            makeDataTable(table, title, columns, dataColumns);
+                    //code that displays results of the table index()
+                    let table = $('#rooms-table');
+                    let title = "List of registered rooms in the system";
+                    let columns = [1, 2, 3, 4];
+                    let dataColumns = [{
+                            data: 'checkbox',
+                            name: 'checkbox'
+                        },
+                        {
+                            data: 'number',
+                            name: 'number'
+                        },
+                        {
+                            data: 'room_type',
+                            name: 'room_type'
+                        },
+                        {
+                            data: 'floor_number',
+                            name: 'floor_number'
+                        },
+                        {
+                            data: 'room_status',
+                            name: 'room_status'
+                        },
 
-            $('#addNewRoom').click(function(e) {
-                e.preventDefault();
-                checkPermission(permissions.create_rooms, function(room) {
-                    DisableTableFields(false);
-                    ShowBtns();
-                    $('.addRoomBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('.roomId').val('');
-                    $('#RoomsForm').trigger("reset");
-                    $('#modalHeading').html("Add new room");
-                    $('#addRoomModal').modal('show');
-                });
-            });
+                        {
+                            data: 'description',
+                            name: 'description'
+                        },
+                        {
+                            data: 'created_by',
+                            name: 'created_by'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searchable: false
+                        },
+                    ];
 
+                    makeDataTable(table, title, columns, dataColumns);
 
-            Numberize(".debt");
-            Numberize(".credit");
-
-            //modal used to edit rooms details [each row of the tbl]
-            $('body').on('click', '#edit-room', function(event) {
-                let room_id = $(this).data('id');
-                event.preventDefault();
-                checkPermission(permissions.edit_rooms, function(room) {
-                    editRoomDetails(room_id);
-                });
-            });
-
-            function editRoomDetails(room_id) {
-                $.get("{{ route('rooms.index') }}" + '/' + room_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of room " + data.name + "");
-                    $('.addRoomBtn').text("Edit room");
-                    $('#addRoomModal').modal('show');
-                    $('.roomId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(false);
-                    ShowBtns();
-                });
-            }
-
-
-            //View Modal used to view each row [rooms details]
-            $('body').on('click', '#view-room', function(event) {
-                let room_id = $(this).data('id');
-                event.preventDefault();
-                checkPermission(permissions.view_rooms, function(room) {
-                    viewRoomDetails(room_id);
-                });
-            });
-
-
-            function viewRoomDetails(room_id) {
-                $.get("{{ route('rooms.index') }}" + '/' + room_id + '', function(data) {
-                    $('#modalHeading').html("Details of room " + data.name + "");
-                    $('#addRoomModal').modal('show');
-                    $('.roomId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
-                });
-            }
-
-            $('.addRoomBtn').click(function(e) {
-
-                e.preventDefault();
-                // alert("Hey");
-
-
-                let Errors = validateForm();
-                // console.log('Errors', errors);
-                if (Errors.length == 0) {
-                    $(this).html('Sending..');
-
-                    $.ajax({
-                        data: $('#RoomsForm').serialize(),
-                        url: "{{ route('rooms.store') }}",
-                        type: "POST",
-                        dataType: 'json',
-                        success: function(data) {
-
+                    $('#addNewRoom').click(function(e) {
+                        e.preventDefault();
+                        checkPermission(permissions.create_rooms, function(room) {
+                            DisableTableFields(false);
+                            ShowBtns();
+                            $('.addRoomBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                            $('.room_id').val('');
                             $('#RoomsForm').trigger("reset");
-                            $('#addRoomModal').modal("hide");
-                            let resp = data.success;
-                            displayResponse('.response', resp, 'success');
-                            ResetTblInfo(data);
-                            let tbl = $('#rooms-table').DataTable();
-                            tbl.ajax.reload();
-
-                        },
-                        error: function(data) {
-                            console.log('Error:', data.error);
-                            displayResponse('.response', data.error, 'error');
-                            $('.addRoomBtn').html('Save Changes');
-                        }
+                            $('#modalHeading').html("Add new room");
+                            $('#addRoomModal').modal('show');
+                        });
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
 
-                }
 
-            });
+                    Numberize(".debt");
+                    Numberize(".credit");
 
-            //this pops up confirm delete modal
-            $('body').on('click', '#delete-room', function(e) {
-                let room_id = $(this).data("id");
-                e.preventDefault();
-                checkPermission(permissions.delete_rooms, function(room) {
-                    $("#deleteSuppliersModal").modal('show');
-                    $(".delete-alert-text").html("Are you sure you want to delete this room?");
-                    $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(room_id);
+                    //modal used to edit rooms details [each row of the tbl]
+                    $('body').on('click', '#edit-room', function(event) {
+                        let room_id = $(this).data('id');
+                        event.preventDefault();
+                        checkPermission(permissions.edit_rooms, function(room) {
+                            editRoomDetails(room_id);
+                        });
                     });
-                });
 
-            });
-
-
-            function ListenAndDoDeletion(id) {
-                let deleteUrl = '{{ route('rooms.destroy', ':id') }}';
-                deleteUrl = deleteUrl.replace(':id', id);
-                $('.delete-ok-btn').html('Deleting...');
-                $.ajax({
-                    type: "DELETE",
-                    url: deleteUrl,
-                    success: function(data) {
-                        let resp = data.success;
-                        $('.delete-ok-btn').html('Yes');
-                        $('#deleteSuppliersModal').modal("hide");
-                        displayResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
-                        let tbl = $('#rooms-table').DataTable();
-                        tbl.ajax.reload();
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                        displayResponse('.response', data.error, 'error');
+                    function editRoomDetails(room_id) {
+                        $.get("{{ route('rooms.index') }}" + '/' + room_id + '/edit', function(response) {
+                            if (response.success) {
+                                let data = response.data;
+                                $('#modalHeading').html("Edit details of room " + data.number + "");
+                                $('.addRoomBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                                $('#addRoomModal').modal('show');
+                                populateRoomDetails(data);
+                                DisableTableFields(false);
+                                ShowBtns();
+                            } else {
+                                displayResponse(null, response.error, 'error');
+                            }
+                        });
                     }
-                });
-            }
+
+                    function populateRoomDetails(data) {
+                        $('.room_id').val(data.id);
+                        $('.room_types_section').val(data.type_id);
+                        $('.room_number').val(data.number);
+                        $('.floor_number').val(data.floor_number);
+                        $('.status').val(data.status_id);
+                        $('.description').val(data.description);
+                    }
 
 
-            function DisableTableFields(bool) {
-                $('.roomId').attr('disabled', bool);
-                $('.name').attr('disabled', bool);
-                $('.address').attr('disabled', bool);
-                $('.contact').attr('disabled', bool);
-                $('.email').attr('disabled', bool);
-                $('.debt').attr('disabled', bool);
-                $('.credit').attr('disabled', bool);
-            }
-
-            function HideBtns() {
-                $('.addRoomBtn').hide();
-                $('.clearBtn').hide();
-                $('.closeBtn').hide();
-            }
-
-            function ShowBtns() {
-                $('.addRoomBtn').show();
-                $('.clearBtn').show();
-                $('.closeBtn').show();
-            }
-
-            function ResetTblInfo(response) {
-                let total = FormatNumber(response.total);
-                $('.total_rooms').html(total);
-            }
-
-            function validateForm() {
-                let room_type = $('.room_types_section').val();
-                let room_number = $('.room_number').val();
-                let floor_number = $('.floor_number').val();
-                let status = $('.status').val();
-                let description = $('.description').val();
-
-                let errors = [];
-                if (room_type.length < 1) {
-                    errors.push("Please enter room type");
-                }
-                if (room_number.length < 1) {
-                    errors.push("Please enter room number");
-                }
-                if (floor_number.length < 1) {
-                    errors.push("Please enter floor number on which the room is located");
-                }
-
-                if (status.length < 1) {
-                    errors.push("Please select room status");
-                }
-                // if(description.length < 1){
-                //   errors.push("Please enter room details");
-                // }
-
-                return errors;
-
-            }
+                    //View Modal used to view each row [rooms details]
+                    $('body').on('click', '#view-room', function(event) {
+                        let room_id = $(this).data('id');
+                        event.preventDefault();
+                        checkPermission(permissions.view_rooms, function(room) {
+                            viewRoomDetails(room_id);
+                        });
+                    });
 
 
+                    function viewRoomDetails(room_id) {
+                        $.get("{{ route('rooms.index') }}" + '/' + room_id + '', function(response) {
+                            if (response.success) {
+                                let data = response.data;
+                                $('#modalHeading').html("Details of room " + data.number + "");
+                                $('#addRoomModal').modal('show');
+                                populateRoomDetails(data);
+                                DisableTableFields(true);
+                                HideBtns();
+                            } else {
+                                displayResponse(null, response.error, 'error');
+                            }
+                        });
+                    }
 
-            $("#removeAllSuppliers").bind("click", function() {
-                RemoveAllSuppliers();
-            });
+                    $('.addRoomBtn').click(function(e) {
 
-            function RemoveAllSuppliers() {
-                $.confirm({
-                    boxWidth: '30%',
-                    icon: 'fa fa-warning',
-                    theme: 'light',
-                    closeIcon: true,
-                    draggable: true,
-                    closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all rooms',
-                    content: 'Are you sure you want to remove all rooms',
-                    buttons: {
-                        confirm: function() {
-                            let self = this;
-                            return $.ajax({
-                                data: {
-                                    "_token": "{{ csrf_token() }}",
+                        e.preventDefault();
+                        // alert("Hey");
+
+
+                        let Errors = validateForm();
+                        // console.log('Errors', errors);
+                        if (Errors.length == 0) {
+                            $(this).html('Sending..');
+
+                            $.ajax({
+                                data: $('#RoomsForm').serialize(),
+                                url: "{{ route('rooms.store') }}",
+                                type: "POST",
+                                dataType: 'json',
+                                success: function(data) {
+
+                                    $('#RoomsForm').trigger("reset");
+                                    $('#addRoomModal').modal("hide");
+                                    let resp = data.success;
+                                    displayResponse('.response', resp, 'success');
+                                    ResetTblInfo(data);
+                                    let tbl = $('#rooms-table').DataTable();
+                                    tbl.ajax.reload();
+
                                 },
-                                url: '{{ Route('suppliers.truncate') }}',
-                                type: 'POST',
-                                // dataType: 'json',
-                            }).done(function(data) {
-
-                                $.alert({
-                                    title: 'Message',
-                                    content: data.success,
-                                });
-                                $(".total_rooms").text(data.totl_no);
-                                $(".totl_credit").text(data.totl_credit);
-                                $(".totl_debt").text(data.totl_debt);
-                                let tbl = $('#rooms-table').DataTable();
-                                tbl.ajax.reload();
-
-
-                            }).fail(function(data) {
-                                $.alert({
-                                    title: 'Response',
-                                    content: "Suppliers not deleted:" + data.fail,
-                                });
-                                console.log(data);
-
+                                error: function(data) {
+                                    console.log('Error:', data.error);
+                                    displayResponse('.response', data.error, 'error');
+                                    $('.addRoomBtn').html('Save Changes');
+                                }
                             });
-
-                        },
-                        cancel: function() {
+                        } else {
+                            let i;
+                            let message = "";
+                            for (i = 0; i < Errors.length; i++) {
+                                message += Errors[i] + "<br>";
+                            }
+                            $('.errors-section').html(message);
 
                         }
-                    },
-                });
 
-            }
-        });
+                    });
+
+                    //this pops up confirm delete modal
+                    $('body').on('click', '#delete-room', function(e) {
+                        let room_id = $(this).data("id");
+                        e.preventDefault();
+                        checkPermission(permissions.delete_rooms, function(room) {
+                            $.get("{{ route('rooms.index') }}" + '/' + room_id + '/edit', function(
+                                response) {
+                                if (response.success) {
+                                    let data = response.data;
+                                    $("#deleteSuppliersModal").modal('show');
+                                    $(".delete-alert-text").html(
+                                        `Are you sure you want to delete room number ${data.number}?`
+                                        );
+                                    $('.delete-ok-btn').on('click', function() {
+                                        deleteRoom(room_id);
+                                    });
+                                } else {
+                                    displayResponse(null, response.error, 'error');
+                                }
+                            });
+                        });
+
+                        });
+
+
+                        function deleteRoom(id) {
+                            let deleteUrl = '{{ route('rooms.destroy', ':id') }}';
+                            deleteUrl = deleteUrl.replace(':id', id);
+                            $('.delete-ok-btn').html('Deleting...');
+                            $.ajax({
+                                type: "DELETE",
+                                url: deleteUrl,
+                                success: function(data) {
+                                    let resp = data.success;
+                                    $('.delete-ok-btn').html('Yes');
+                                    $('#deleteSuppliersModal').modal("hide");
+                                    displayResponse('.response', resp, 'success');
+                                    ResetTblInfo(data);
+                                    let tbl = $('#rooms-table').DataTable();
+                                    tbl.ajax.reload();
+                                },
+                                error: function(data) {
+                                    console.log('Error:', data);
+                                    displayResponse('.response', data.error, 'error');
+                                }
+                            });
+                        }
+
+
+                        function DisableTableFields(bool) {
+                            $('.room_id').attr('disabled', bool);
+                            $('.room_types_section').attr('disabled', bool);
+                            $('.room_number').attr('disabled', bool);
+                            $('.floor_number').attr('disabled', bool);
+                            $('.status').attr('disabled', bool);
+                            $('.description').attr('disabled', bool);
+                        }
+
+                        function HideBtns() {
+                            $('.addRoomBtn').hide();
+                            $('.clearBtn').hide();
+                            $('.closeBtn').hide();
+                        }
+
+                        function ShowBtns() {
+                            $('.addRoomBtn').show();
+                            $('.clearBtn').show();
+                            $('.closeBtn').show();
+                        }
+
+                        function ResetTblInfo(response) {
+                            let total = FormatNumber(response.total);
+                            $('.total_rooms').html(total);
+                        }
+
+                        function validateForm() {
+                            let room_type = $('.room_types_section').val();
+                            let room_number = $('.room_number').val();
+                            let floor_number = $('.floor_number').val();
+                            let status = $('.status').val();
+                            let description = $('.description').val();
+
+                            let errors = [];
+                            if (room_type.length < 1) {
+                                errors.push("Please enter room type");
+                            }
+                            if (room_number.length < 1) {
+                                errors.push("Please enter room number");
+                            }
+                            if (floor_number.length < 1) {
+                                errors.push("Please enter floor number on which the room is located");
+                            }
+
+                            if (status.length < 1) {
+                                errors.push("Please select room status");
+                            }
+
+                            return errors;
+
+                        }
+
+                    });
     </script>
     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
     <script src="{{ asset('vendors/notify/notify.js') }}"></script>

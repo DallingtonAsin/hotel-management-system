@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-body bg-white">
+    <div class="card-body ">
         {!! Form::open(['route' => 'reservations.store', 'method' => 'POST']) !!}
 
         <div class="form-group">
@@ -18,7 +18,7 @@
 
 
         <div class="form-group">
-            <input type="text" class="form-control bg-white" disabled="true" placeholder="" name="name"
+            <input type="text" class="form-control " disabled="true" placeholder="" name="name"
                 value="Corporate" autocomplete="on" hidden="true">
         </div>
 

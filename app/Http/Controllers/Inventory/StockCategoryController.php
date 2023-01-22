@@ -7,12 +7,12 @@ use App\Models\StockCat;
 use App\Imports\ImportStockCats;
 use App\Exports\ExportStockCats;
 use Illuminate\Http\Request;
-use App\Http\Controllers\LogsController;
 use App\DataTables\Inventory\StockCatsDataTable;
 use Illuminate\Support\Str;
 use Constant;
 use Excel;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class StockCategoryController extends Controller
@@ -22,7 +22,6 @@ class StockCategoryController extends Controller
   public function __construct()
   {
     $this->controller = 'StockCategoryController';
-
   }
 
 
@@ -64,7 +63,7 @@ class StockCategoryController extends Controller
   {
 
     $validator = Validator::make($request->all(), [
-      'item-category' => 'required'
+      'name' => 'required'
     ]);
 
     try {
@@ -73,13 +72,12 @@ class StockCategoryController extends Controller
         return response()->json(['error' => $message]);
       } else {
 
-        $pdt_category = new StockCat;
-        $pdt_category->item_category = $itemCategory = request('item-category');
+        $name = $request->input('name');
+        $created_by = Auth::user()->id;
 
-        $isSaved = $pdt_category->save();
-        if ($isSaved) {
+        if (StockCat::create(['name' => $name, 'created_by' => $created_by])) {
 
-          $action = "recorded stock category " . $itemCategory . " into the system";
+          $action = "recorded stock category " . $name . "";
           Helper::logger($request, $action, now());
           $dataArr = array(
             "code" => '200',
@@ -95,8 +93,6 @@ class StockCategoryController extends Controller
             'success' => $message,
             'totl_no' => $totl,
           ]);
-
-
         } else {
 
           $messageErr = 'Item category not recorded!';
@@ -109,15 +105,11 @@ class StockCategoryController extends Controller
           Helper::LogRequest($request, $dataArr);
           $message = $this->FailedMessage($messageErr);
           return response()->json(['error' => $message]);
-
         }
-
       }
     } catch (\Exception $ex) {
       return response()->json(['error' => $ex->getMessage()]);
     }
-
-
   }
 
 
@@ -161,13 +153,12 @@ class StockCategoryController extends Controller
   public function update(Request $request, $id)
   {
     $request->validate([
-      'item-category' => 'required',
-
+      'name' => 'required',
     ]);
 
     $pdt_category = StockCat::find($id);
 
-    $pdt_category->item_category = $itemCategory = request('item-category');
+    $pdt_category->item_category = $itemCategory = request('name');
 
     $pdt_category_update_status = $pdt_category->save();
 
@@ -183,7 +174,6 @@ class StockCategoryController extends Controller
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
       $responseInfo = $this->SuccessMessage($action);
-
     } else {
       $messageErr = 'Item categoryUpdate failed!';
       $dataArr = array(
@@ -195,7 +185,6 @@ class StockCategoryController extends Controller
 
       $sessionVariable = 'fail';
       $responseInfo = $this->FailedMessage($messageErr);
-
     }
 
     $totl = $this->GetStockCatStats();
@@ -242,7 +231,6 @@ class StockCategoryController extends Controller
             'success' => $message,
             'totl_no' => $totl,
           ]);
-
       } else {
 
         $messageErr = 'Item category not deleted!!';
@@ -257,9 +245,7 @@ class StockCategoryController extends Controller
       }
     } catch (\Exception $ex) {
       return response()->json(['error' => $ex->getMessage()]);
-
     }
-
   }
 
 
@@ -278,8 +264,6 @@ class StockCategoryController extends Controller
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
       $responseInfo = $this->SuccessMessage($action);
-
-
     } else {
       $messageErr = 'stock item categories not deleted from the system!';
       $dataArr = array(
@@ -299,7 +283,6 @@ class StockCategoryController extends Controller
         $sessionVariable => $responseInfo,
         'totl_no' => $totl,
       ]);
-
   }
 
 
@@ -338,8 +321,6 @@ class StockCategoryController extends Controller
           $sessionVariable => $response,
           'totl_no' => $totl,
         ]);
-
-
     } catch (\Exception $ex) {
       $data = array(
         'username' => auth()->user()->username,
@@ -350,7 +331,7 @@ class StockCategoryController extends Controller
         'method' => 'RemoveSelected'
       );
       Helper::logError($data);
-      abort(409, $ex->getMessage());
+      return response()->json(['error' => $ex->getMessage()]);
     }
   }
 
@@ -407,7 +388,4 @@ class StockCategoryController extends Controller
   {
     return $failmsg;
   }
-
-
-
 }

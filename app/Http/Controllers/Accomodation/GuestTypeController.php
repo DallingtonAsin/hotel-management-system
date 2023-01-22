@@ -90,6 +90,19 @@ class GuestTypeController extends Controller
         }
     }
 
+
+    private function getGuestTypeDetails($id)
+    {
+        try {
+            $data = GuestType::find($id);
+            $data->is_regular = $data->is_regular == 1 ? 'Yes' : 'No';
+            $data->is_corporate = $data->is_corporate == 1 ? 'Yes' : 'No';
+            return response()->json(['success' => 'ok', 'data' => $data]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -98,7 +111,7 @@ class GuestTypeController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getGuestTypeDetails($id);
     }
 
     /**
@@ -109,7 +122,7 @@ class GuestTypeController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getGuestTypeDetails($id);
     }
 
     /**

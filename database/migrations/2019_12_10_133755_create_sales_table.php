@@ -33,9 +33,8 @@ class CreateSalesTable extends Migration
         //  )");
 
         Schema::create('sales', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('item_code')->nullable();
-            $table->string('item');
+            $table->id();
+            $table->unsignedBigInteger('item_id');
             $table->double('quantity');
             $table->double('original_price');
             $table->double('selling_price');
@@ -54,6 +53,7 @@ class CreateSalesTable extends Migration
             $table->integer('cashier_id')->unsigned();
             $table->timestamps();
 
+            $table->foreign('item_id')->references('id')->on('stock');
             $table->foreign('cashier_id')->references('id')->on('staff');
         });
        

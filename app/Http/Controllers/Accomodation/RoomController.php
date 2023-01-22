@@ -110,6 +110,16 @@ class RoomController extends Controller
         }
     }
 
+    private function getRoomDetails($id)
+    {
+        try {
+            $data = Room::find($id);
+            return response()->json(['success' => 'ok', 'data' => $data]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -118,7 +128,7 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getRoomDetails($id);
     }
 
     /**
@@ -129,7 +139,7 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getRoomDetails($id);
     }
 
     /**

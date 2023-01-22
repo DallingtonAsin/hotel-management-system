@@ -16,7 +16,7 @@ class CreateCustomerDebtPaymentsTable extends Migration
     public function up()
     {
         Schema::create('customer_debt_payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('sale_id');
             $table->double('amount_paid');
             $table->double('balance');

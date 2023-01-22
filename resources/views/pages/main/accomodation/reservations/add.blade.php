@@ -125,7 +125,6 @@
                             $('.tax_number').val(tin);
                             $('.contact_person').val(contact_person);
                             $('.price').val(price);
-
                         }
                     },
                     error: function(data) {
@@ -140,8 +139,6 @@
         });
 
         onTypingRoomNumber('.room_number');
-
-      
 
         let urlParams = new URLSearchParams(window.location.search);
         let tab = urlParams.get('tab');

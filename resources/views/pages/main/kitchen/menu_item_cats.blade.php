@@ -56,13 +56,13 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control menuItemCatId bg-white menuItemCatId" name="id"
+                            <input type="hidden" class="form-control menuItemCatId  menuItemCatId" name="id"
                                 placeholder="Enter menu item id" required>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Category Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
+                            <input type="text" class="form-control name " name="name"
                                 placeholder="Enter menu item name" required autofocus>
                         </div>
 
@@ -280,13 +280,13 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this menu item?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(menu_item_id);
+                        deleteRecord(menu_item_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('menu-item-categories.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

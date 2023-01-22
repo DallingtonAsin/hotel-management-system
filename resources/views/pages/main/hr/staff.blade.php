@@ -21,13 +21,13 @@
                             <div class="col-md-6">
                                 <input type="hidden" class="userId" name="id">
                                 <span><span class="text-danger pr-1">*</span>First Name</span>
-                                <input type="text" class="form-control first_name bg-white" name="first_name"
+                                <input type="text" class="form-control first_name " name="first_name"
                                     placeholder="Enter first name" required autofocus>
                             </div>
 
                             <div class="col-md-6">
                                 <span><span class="text-danger pr-1">*</span>Last Name</span>
-                                <input type="text" class="form-control last_name bg-white" name="last_name"
+                                <input type="text" class="form-control last_name " name="last_name"
                                     placeholder="Enter last name" required autofocus>
                             </div>
                         </div>
@@ -37,19 +37,19 @@
 
                             <div class="col-md-4">
                                 <span><span class="text-danger pr-1">*</span>Primary Tel No.</span>
-                                <input type="text" class="form-control phone_number bg-white" name="phone_number"
+                                <input type="text" class="form-control phone_number " name="phone_number"
                                     placeholder="Enter primary telephone number" required autofocus>
                             </div>
 
                             <div class="col-md-4">
                                 <span>Other Tel No.</span>
-                                <input type="text" class="form-control other_phone_number bg-white"
+                                <input type="text" class="form-control other_phone_number "
                                     name="other_phone_number" placeholder="Enter other telephone number">
                             </div>
 
                             <div class="col-md-4">
                                 <span><span class="text-danger pr-1">*</span>Address</span>
-                                <input type="text" class="form-control address bg-white" name="address"
+                                <input type="text" class="form-control address " name="address"
                                     placeholder="Enter address" required autofocus>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                         <div class="row form-group">
                             <div class="col-md-6">
                                 <span><span class="text-danger pr-1">*</span>Gender</span>
-                                <select class="form-control gender bg-white" name="gender">
+                                <select class="form-control gender " name="gender">
                                     <option value="">Select gender</option>
                                     <option value="Female">Female</option>
                                     <option value="Male">Male</option>
@@ -66,7 +66,7 @@
 
                             <div class="col-md-6">
                                 <span> Email</span>
-                                <input type="email" class="form-control email bg-white" name="email"
+                                <input type="email" class="form-control email " name="email"
                                     placeholder="Enter email">
                             </div>
                         </div>
@@ -74,25 +74,25 @@
                         <div class="row form-group">
                             <div class="col-md-3">
                                 <span>Tin Number</span>
-                                <input type="text" class="form-control tin_number bg-white" name="tin_number"
+                                <input type="text" class="form-control tin_number " name="tin_number"
                                     placeholder="Enter tin number" required autofocus>
                             </div>
 
                             <div class="col-md-3">
                                 <span>NSSF Number</span>
-                                <input type="text" class="form-control nssf_number bg-white" name="nssf_number"
+                                <input type="text" class="form-control nssf_number " name="nssf_number"
                                     placeholder="Enter nssf number" required autofocus>
                             </div>
 
                             <div class="col-md-3">
                                 <span>NIN</span>
-                                <input type="text" class="form-control nin bg-white" name="nin"
+                                <input type="text" class="form-control nin " name="nin"
                                     placeholder="Enter national id number" required autofocus>
                             </div>
 
                             <div class="col-md-3">
                                 <span>Next of Kin</span>
-                                <input type="text" class="form-control next_of_kin bg-white" name="next_of_kin"
+                                <input type="text" class="form-control next_of_kin " name="next_of_kin"
                                     placeholder="Enter next of kin" required autofocus>
                             </div>
 
@@ -108,7 +108,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Department</span>
-                                    <select class="form-control departments_section bg-white" name="department">
+                                    <select class="form-control departments_section " name="department">
                                         <option value="">Select department</option>
                                     </select>
                                 </div>
@@ -117,7 +117,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Designation</span>
-                                    <select class="form-control bg-white designation_section" name="designation">
+                                    <select class="form-control  designation_section" name="designation">
                                         <option value="">Select designation</option>
                                     </select>
                                 </div>
@@ -125,7 +125,7 @@
 
                             <div class="col-md-3">
                                 <span><span class="text-danger pr-1">*</span>Staff Type</span>
-                                <select class="form-control staff_type bg-white" name="staff_type">
+                                <select class="form-control staff_type " name="staff_type">
                                     <option value="">Select staff type</option>
                                     <option value="permanent">Permanent</option>
                                     <option value="temporary">Temporary</option>
@@ -134,7 +134,7 @@
 
                             <div class="col-md-3">
                                 <span><span class="text-danger pr-1">*</span>Status</span>
-                                <select class="form-control status bg-white" name="status">
+                                <select class="form-control status " name="status">
                                     <option value="">Select status</option>
                                     <option value="Available" selected="true">Available</option>
                                     <option value="On Duty">On Duty</option>
@@ -563,12 +563,12 @@
                 $("#deleteStaffModal").modal('show');
                 $(".delete-alert-text").html("Are you sure you want to delete this staff?");
                 $('.delete-ok-btn').on('click', function() {
-                    ListenAndDoDeletion(staff_id);
+                    deleteRecord(staff_id);
                 });
 
             });
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('users.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

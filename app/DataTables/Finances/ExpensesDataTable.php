@@ -4,6 +4,7 @@ namespace App\DataTables\Finances;
 
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Expense;
+use App\Models\ExpenseType;
 
 class ExpensesDataTable extends DataTable
 {
@@ -37,10 +38,13 @@ class ExpensesDataTable extends DataTable
 
            return $btn;
 
+        })->addColumn('expense_type', function ($expense) {
+             $expense_type = ExpenseType::where('id', $expense->type_id)->first()->name;
+             return $expense_type;
         })->addColumn('checkbox', function ($expense) {
-              $checkBox = '<input type="checkbox" id="'.$expense->id.'"/>';
-             return $checkBox;
-        })->editColumn('amount', function ($data) {
+            $checkBox = '<input type="checkbox" id="'.$expense->id.'"/>';
+           return $checkBox;
+      })->editColumn('amount', function ($data) {
             return number_format($data->amount);
         })->rawColumns(['action', 'checkbox']);
     }
@@ -76,7 +80,7 @@ class ExpensesDataTable extends DataTable
     {
         return [
             'id',
-            'expense_type',
+            'type_id',
             'amount',
             'date_of_expenditure'
         ];

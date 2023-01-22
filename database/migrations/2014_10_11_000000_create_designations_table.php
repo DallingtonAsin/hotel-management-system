@@ -15,7 +15,7 @@ class CreateDesignationsTable extends Migration
     public function up()
     {
         Schema::create('designations', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name');
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('created_by')->nullable();

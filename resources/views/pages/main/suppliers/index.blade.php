@@ -104,46 +104,46 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
+                            <input type="hidden" class="form-control supplierId  supplierId" name="id"
                                 placeholder="Enter supplier id" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
+                            <input type="text" class="form-control name " name="name"
                                 placeholder="Enter supplier name" autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Address</span>
-                            <input type="text" class="form-control address bg-white" name="address"
+                            <input type="text" class="form-control address " name="address"
                                 placeholder="Enter address">
                         </div>
 
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Phone Number</span>
-                            <input type="text" class="form-control contact bg-white" name="contact"
+                            <input type="text" class="form-control contact " name="contact"
                                 placeholder="Enter phone number">
                         </div>
 
 
                         <div class="form-group">
                             <span>Email</span>
-                            <input type="email" class="form-control email bg-white" name="email" placeholder="Email">
+                            <input type="email" class="form-control email " name="email" placeholder="Email">
                         </div>
 
 
                         <div class="form-group">
                             <span>Debt</span>
-                            <input type="text" class="form-control debt bg-white" name="debt"
+                            <input type="text" class="form-control debt " name="debt"
                                 placeholder="Enter debt">
                         </div>
 
 
                         <div class="form-group">
                             <span>Credit</span>
-                            <input type="text" class="form-control credit bg-white" name="credit"
+                            <input type="text" class="form-control credit " name="credit"
                                 placeholder="Enter credit">
                         </div>
 
@@ -437,13 +437,13 @@
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(supplier_id);
+                        deleteRecord(supplier_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('suppliers.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

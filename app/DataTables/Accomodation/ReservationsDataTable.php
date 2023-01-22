@@ -34,11 +34,11 @@ class ReservationsDataTable extends DataTable
                 $btn = "";
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                  data-id="' . $reservation->id . '" data-original-title="Generate Invoice" id="generate-invoice"
-                 class="btn btn-xs btn-primary text-white generate-invoice"><i class="fa fa-download pr-1"></i> Invoice</a>';
+                 class="px-3 py-1 border border-success rounded text-success generate-invoice">invoice</a>';
 
                  $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                  data-id="' . $reservation->id . '" data-original-title="Cancel Reservation" id="cancel-reservation"
-                 class="btn btn-xs btn-danger text-white cancel-reservation ml-2"><i class="fa fa-trash-alt pr-1"></i> Cancel</a>';
+                 class="px-3 py-1 border border-danger rounded text-danger cancel-reservation ml-2">cancel</a>';
 
 
                 return $btn;

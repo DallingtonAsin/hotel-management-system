@@ -13,9 +13,10 @@ class CreateStockcategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stockcategories', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('item_category');        
+        Schema::create('stock_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique(); 
+            $table->timestamps();       
         });
     }
 
@@ -26,6 +27,6 @@ class CreateStockcategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stockcategories');
+        Schema::dropIfExists('stock_categories');
     }
 }

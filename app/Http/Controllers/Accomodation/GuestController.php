@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Accomodation;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DataTables\Accomodation\GuestsDataTable;
+use App\Models\FrequentContact;
 use App\Models\Guest;
 
 class GuestController extends Controller
@@ -43,6 +44,19 @@ class GuestController extends Controller
         //
     }
 
+    private function getGuestDetails($id)
+    {
+        try {
+            $data = Guest::find($id);
+            if($data->company_name){
+                $data->company_id = FrequentContact::where('name', $data->company_name)->value('id');
+            }
+            return response()->json(['success' => 'ok', 'data' => $data]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -51,7 +65,7 @@ class GuestController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getGuestDetails($id);
     }
 
     /**
@@ -62,7 +76,7 @@ class GuestController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getGuestDetails($id);
     }
 
     /**

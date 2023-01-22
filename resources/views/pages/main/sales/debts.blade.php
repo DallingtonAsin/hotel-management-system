@@ -180,34 +180,34 @@
           <div class="form-group">
             <span>Item</span>
             <input type="hidden" class="form-control item_id" name="item_id">
-            <input type="text" class="form-control item-name bg-white text-dark" value="">
+            <input type="text" class="form-control item-name  text-dark" value="">
           </div>
 
           <div class="form-group">
             <span>Qty</span>
-            <input type="text" class="form-control qty bg-white text-dark"  value="">
+            <input type="text" class="form-control qty  text-dark"  value="">
           </div>
 
           <div class="form-group">
             <span>Selling Price</span>
-            <input type="text" class="form-control sprice bg-white text-dark"  value="">
+            <input type="text" class="form-control sprice  text-dark"  value="">
           </div>
 
           <div class="form-group">
             <span>Total cost</span>
-            <input type="text" class="form-control tcost bg-white text-dark"  value="">
+            <input type="text" class="form-control tcost  text-dark"  value="">
           </div>
           
           <div class="form-group row">
 
             <div class="col-lg-6">
               <span>Discount</span>
-              <input type="text" class="form-control discount bg-white text-dark"  value="">
+              <input type="text" class="form-control discount  text-dark"  value="">
             </div>
 
             <div class="col-lg-6">
               <span>Sold at</span>
-              <input type="text" class="form-control amount bg-white text-danger"  value="">
+              <input type="text" class="form-control amount  text-danger"  value="">
             </div>
 
           </div>
@@ -218,19 +218,19 @@
 
             <div class="col-lg-6">
               <span>Customer</span>
-              <input type="text" class="form-control customer bg-white text-dark"  value="">
+              <input type="text" class="form-control customer  text-dark"  value="">
             </div>
 
             <div class="col-lg-6">
               <span>Cashier</span>
-              <input type="text" class="form-control cashier bg-white text-dark"  value="">
+              <input type="text" class="form-control cashier  text-dark"  value="">
             </div>
 
           </div>
 
           <div class="form-group">
             <span>Date of transaction</span>
-            <input type="date" name="date_of_sale" class="form-control date bg-white text-dark"  value="">
+            <input type="date" name="date_of_sale" class="form-control date  text-dark"  value="">
           </div>
 
           <div class="form-group">
@@ -504,7 +504,7 @@
     e.preventDefault();
     $("#deleteSaleModal").modal('show');
     $('.delete-ok-btn').on('click', function(){
-      ListenAndDoDeletion(sale_id);
+      deleteRecord(sale_id);
     });
 
   });
@@ -590,7 +590,7 @@
   }
 
 
-  function ListenAndDoDeletion(id){
+  function deleteRecord(id){
     var deleteUrl = '{{ route("sales.destroy", ":id") }}';
     deleteUrl = deleteUrl.replace(':id', id);
     $('.delete-ok-btn').html('Deleting...');

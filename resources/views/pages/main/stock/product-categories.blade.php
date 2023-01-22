@@ -102,7 +102,7 @@
                                 <div class="form-group">
                                     <span>Item Category</span>
                                     <input type="hidden" name="id" class="PdtCategoryId">
-                                    <input type="text" class="form-control PdtCategory bg-white" name="item-category"
+                                    <input type="text" class="form-control PdtCategory " name="item-category"
                                         placeholder="Enter item category" Required autofocus>
                                 </div>
 
@@ -406,13 +406,13 @@
                 checkPermission(permissions.delete_product_categories, function(category) {
                     $("#deletePdtCategoryModal").modal('show');
                     $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(category_id);
+                        deleteRecord(category_id);
                     });
                 });
             });
 
 
-            function ListenAndDoDeletion(id) {
+            function deleteRecord(id) {
                 let deleteUrl = '{{ route('product-categories.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');

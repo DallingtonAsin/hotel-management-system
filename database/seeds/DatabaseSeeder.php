@@ -45,14 +45,14 @@ class DatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
             StaffPermissionsTableSeeder::class,
 
+            StockCategoriesTableSeeder::class,
+            SuppliersTableSeeder::class,
             StockTableSeeder::class,
             CustomersTableSeeder::class,
             DamagesTableSeeder::class,
-            EventsTableSeeder::class,
+            ExpenseTypeTableSeeder::class,
             ExpensesTableSeeder::class,
             SalesTableSeeder::class,
-            StockCategoriesTableSeeder::class,
-            SuppliersTableSeeder::class,
             PurchasesTableSeeder::class,
 
 

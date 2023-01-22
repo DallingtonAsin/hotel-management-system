@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Expense extends Model
 {
     use HasFactory;
+
     protected $table = 'expenses';
-    public $timestamps = false;
+    public $timestamps = true;
+
     protected $fillable = [
-        'expense_type',
+        'type_id',
         'amount',
-        'date_of_expenditure'
+        'date_of_expenditure',
+        'recorded_by',
     ];
 }

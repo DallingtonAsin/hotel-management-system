@@ -24,31 +24,30 @@ class GuestsDataTable extends DataTable
             ->addColumn('action', function ($guest) {
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-        data-id="' . $guest->id . '" data-original-title="Edit" id="edit-guest"
-          class="px-3 py-1 border border-success rounded  edit-guest mx-2">
-         <span class="fa fa-pen text-success"></span></a>';
+                        data-id="' . $guest->id . '" data-original-title="Edit" id="edit-guest"
+                        class="px-3 py-1 border border-success rounded  edit-guest mx-2">
+                        <span class="fa fa-pen text-success"></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="delete-guest" 
-        data-toggle="tooltip" data-original-title="Delete"
-         data-id="' . $guest->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
-        <span class="fa fa-trash-alt" ></span></a>';
+                        data-toggle="tooltip" data-original-title="Delete"
+                        data-id="' . $guest->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
+                        <span class="fa fa-trash-alt" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-guest" 
-       data-toggle="tooltip" data-original-title="View"
-        data-id="' . $guest->id . '" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
-       <i class="fa fa-eye" ></i></a>';
+                        data-toggle="tooltip" data-original-title="View"
+                        data-id="' . $guest->id . '" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
+                        <i class="fa fa-eye" ></i></a>';
 
                 return $btn;
-
             })->editColumn('created_by', function ($guest) {
                 return Helper::getUserNames($guest->created_by);
             })->addColumn('name', function ($guest) {
-            $name = $guest->first_name . ' ' . $guest->last_name;
-            return $name;
-        })->addColumn('checkbox', function ($guest) {
-            $checkBox = '<input type="checkbox" id="' . $guest->id . '"/>';
-            return $checkBox;
-        })->rawColumns(['checkbox', 'action']);
+                $name = $guest->first_name . ' ' . $guest->last_name;
+                return $name;
+            })->addColumn('checkbox', function ($guest) {
+                $checkBox = '<input type="checkbox" id="' . $guest->id . '"/>';
+                return $checkBox;
+            })->rawColumns(['checkbox', 'action']);
     }
 
     /**

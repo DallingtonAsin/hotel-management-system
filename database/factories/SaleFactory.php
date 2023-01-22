@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Sale;
-use Illuminate\Support\Str;
+use App\Models\Stock;
 
 class SaleFactory extends Factory
 {
@@ -22,9 +22,11 @@ class SaleFactory extends Factory
   */
   public function definition()
   {
+
+    $item_id = Stock::inRandomOrder()->first()->id;
+
     return [
-        'item' => $this->faker->text($maxNbChars = 9),
-        'item_code' => $this->faker->text($maxNbChars = 5),
+        'item_id' => $item_id,
         'quantity' => $this->faker->randomDigitNot(0),
         'original_price' => $this->faker->numberBetween($min = 1000, $max = 7000),
         'selling_price' => $this->faker->numberBetween($min = 4000, $max = 9000),
