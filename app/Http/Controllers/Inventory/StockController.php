@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\Stock;
+use App\Models\StockCat;
 use App\Imports\ImportStock;
 use App\Exports\ExportStock;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class StockController extends Controller
     $stock = Stock::all(); //DB::select('exec GetStockProc');
     $number_of_stockItems = Stock::count();
     $stock_value = DB::table('stock')->sum('total_cost_price');
-    $categories = DB::table('stockcategories')->get();
+    $categories = StockCat::get();
     $suppliers = DB::table('suppliers')->get();
     return view('pages.main.stock.stock')->with(compact('stock', 'stock_value', 'categories', 'suppliers', 'number_of_stockItems'));
   }

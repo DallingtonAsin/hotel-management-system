@@ -108,7 +108,7 @@
                                         id="category">
                                         <option value="" selected="true">choose category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->item_category }}"> {{ $category->item_category }}
+                                            <option value="{{ $category->name }}"> {{ $category->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -139,7 +139,7 @@
 
                                     <div class="col-md-6">
                                         <span>Threshold Quantity</span>
-                                        <input type="text" class="form-control  thresholdQty" id="thresholdQty"
+                                        <input type="text" class="form-control threshold_qty" id="threshold_qty"
                                             name="thresholdQty" placeholder="Enter threshold quantity">
                                     </div>
                                 </div>
