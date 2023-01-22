@@ -14,11 +14,11 @@ class CreateSalariesTable extends Migration
     public function up()
     {
         Schema::create('salaries', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('employee_id')->unsigned();
+            $table->id();
+            $table->unsignedBigInteger('employee_id')->unsigned();
             $table->decimal('amount', 8, 2); 
             $table->date('pay_date');
-            $table->integer('created_by')->unsigned();
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('staff');

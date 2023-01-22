@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Supplier extends Model
 {
   use HasFactory;
-   protected $table = 'suppliers';
-     protected $fillable = [
-        'name',
-		'address',
-		'contact',
-		'email',  
-		'debt',
-		'credit',
-    ];
+  protected $table = 'suppliers';
+  protected $fillable = [
+    'name',
+    'address',
+    'contact',
+    'email',
+    'debt',
+    'credit',
+    'created_by'
+  ];
   public $timestamps = true;
 }

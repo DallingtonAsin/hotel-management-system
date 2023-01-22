@@ -37,8 +37,8 @@ class CreateStockTable extends Migration
         Schema::create('stock', function (Blueprint $table) {
             $table->id();
             $table->string('item_code')->nullable();
-            $table->string('item')->unique();
-            $table->string('category')->nullable();
+            $table->string('item_name')->unique();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->double('quantity');
             $table->float('threshold_qty')->default('0');
             $table->double('buying_price');
@@ -47,10 +47,13 @@ class CreateStockTable extends Migration
             $table->double('profit_per_item')->storedAs('selling_price-buying_price')->nullable();
             $table->double('total_cost_price')->storedAs('quantity*buying_price')->nullable();
             $table->double('total_profit')->storedAs('quantity*(selling_price-buying_price)')->nullable();
-            $table->string('supplier')->nullable();
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->timestamp('date_of_entry')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('expiry_date')->nullable();
             $table->timestamps();
+
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
+            $table->foreign('category_id')->references('id')->on('stock_categories');
 
         }); 
 

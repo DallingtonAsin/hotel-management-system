@@ -17,7 +17,7 @@ class CreateStaffPermissionsTable extends Migration
 
             $table->id();
             $table->unsignedBigInteger('permission_id');
-            $table->integer('staff_id')->unsigned();
+            $table->unsignedBigInteger('staff_id')->unsigned();
             $table->boolean('active')->default(0);
             $table->timestamps();
         

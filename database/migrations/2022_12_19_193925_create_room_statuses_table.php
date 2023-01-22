@@ -16,7 +16,7 @@ class CreateRoomStatusesTable extends Migration
         Schema::create('room_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('created_by')->unsigned();
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('staff');

@@ -20,7 +20,7 @@ class CreateKitchenMenuItemsTable extends Migration
             $table->text('description')->nullable();
             $table->double('price', 10, 2);
             $table->unsignedBigInteger('category_id');
-            $table->integer('created_by')->unsigned();
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('kitchen_menu_item_categories');

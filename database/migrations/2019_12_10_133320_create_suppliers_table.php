@@ -16,13 +16,16 @@ class CreateSuppliersTable extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('address');
-            $table->string('contact');
+            $table->string('contact')->unique();
             $table->string('email')->nullable();
             $table->double('debt')->nullable();
             $table->double('credit')->nullable();
+            $table->unsignedBigInteger('created_by')->unsigned();
+
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('staff');
             // $table->date('created_at')->default(Carbon::now());
         });
     }

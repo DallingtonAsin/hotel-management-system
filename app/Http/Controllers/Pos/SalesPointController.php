@@ -13,16 +13,12 @@ use App\Services\ReceiptGenerator;
 use App\Helpers\Helper;
 use Carbon\Carbon;
 
-class CartController extends Controller
+class SalesPointController extends Controller
 {
 
 
     private $total_amount_of_sales = 0;
     private $sold_items = array();
-
-    public function __construct()
-    {
-    }
 
     public function GetCartData(Request $request)
     {
@@ -59,23 +55,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        // $carts = DB::select('select * from carts');
-        try {
-            $cart_items = Cart::all();
-            $total = DB::table('cart')->sum('total_cost');
-            $number_of_cartItems = DB::table('cart')->count();
-            $amount_due = DB::table('cart')->sum('amount');
-            $amount = DB::table('cart')->sum('amount');
-            return view('pages.main.pos.index')->with(compact(
-                'cart_items',
-                'total',
-                'amount',
-                'number_of_cartItems',
-                'amount_due'
-            ));
-        } catch (\Exception $ex) {
-            throw $ex;
-        }
+        
     }
 
     /**
@@ -97,101 +77,6 @@ class CartController extends Controller
     public function store(Request $req)
     {
 
-        $req->validate([
-            'item-name' => 'required',
-        ]);
-
-        $cart = new Cart();
-        $item = $req->input('item-name');
-        $qty =  trim($req->input('qty'));
-        $discount = trim($req->input('discount'));
-
-
-        (empty($qty)) ? $quantity = 1 : $quantity =  floatval($qty);
-
-        $dataCheck = $this->GetItemRef($item);
-        $refId = $dataCheck['refId'];
-
-        if ($refId != null) {
-
-
-            //get quantity available before adding to cart
-            $qty_available = $this->getQtyBeforeSale($item);
-
-            if ($qty_available >= $quantity) {
-
-                $priceArr = $this->getPrices($item);
-                $price = floatval($priceArr["sprice"]); //method call for selling price of an item
-
-                if (isset($discount)) {
-                    $discount = floatval($discount);
-                    $amount = $quantity * ($price - $discount);
-                } else {
-                    $discount = 0;
-                    $amount = $quantity * $price;
-                }
-
-
-                if ($refId == 'name') {
-                    $item_code = $dataCheck['ref'];
-                    $item_name = $item;
-                } else if ($refId == 'id') {
-                    $item_code = $item;
-                    $item_name =  $dataCheck['ref'];
-                }
-
-
-                $cart->item_code = $item_code;
-                $cart->item = $item_name;
-                $cart->quantity = $quantity;
-                $cart->price = $price;
-                $cart->discount = $discount;
-                $cart->amount = $amount;
-
-                $save_status = $cart->save();
-
-                if ($save_status) {
-                    $action = "added item " . $item . " to the cart";
-                    Helper::logger($req, $action, now());
-                    $dataArr = array(
-                        "code" => '200',
-                        "message" => $action,
-                        "method" => "CartController@store"
-                    );
-                    Helper::LogRequest($req, $dataArr);
-                    return back();
-                } else {
-
-                    $error_message = "cart item not added failed!";
-                    $dataArr = array(
-                        "code" => '101',
-                        "message" => $error_message,
-                        "method" => "CartController@store"
-                    );
-                    Helper::LogRequest($req, $dataArr);
-                    return back()->with('fail', $error_message);
-                }
-            } else if ($qty_available < $quantity && $qty_available != -1) {
-                $error_message = "Quantity for item " . $item . " is not enough,Available is " . $qty_available . "";
-                $dataArr = array(
-                    "code" => '101',
-                    "message" => $error_message,
-                    "method" => "CartController@store"
-                );
-                Helper::LogRequest($req, $dataArr);
-                return back()->with("fail", $error_message);
-            } else {
-                $error_message = "couldn't find this product " . $item . "";
-                $dataArr = array(
-                    "code" => '404',
-                    "message" => $error_message,
-                    "method" => "CartController@store"
-                );
-                Helper::LogRequest($req, $dataArr);
-                return back()
-                    ->with("fail", $error_message);
-            }
-        }
     } // end of method store
 
     /**
@@ -226,110 +111,6 @@ class CartController extends Controller
     public function update(Request $req, $id)
     {
 
-        $req->validate([
-            'qty' => 'required',
-        ]);
-
-
-        try {
-
-            $cart = Cart::find($id);
-            $item = $cart->item;
-            $qty = trim($req->input('qty'));
-
-            ($req->input('discount') && $req->filled('discount'))
-                ? $discount = trim($req->input('discount'))
-                : $discount = 0;
-
-
-            (empty($qty)) ? $quantity = 1 : $quantity =  floatval($qty);
-
-            $dataCheck = $this->GetItemRef($item);
-            $refId = $dataCheck['refId'];
-
-            if ($refId != null) {
-
-
-                //get quantity available before adding to cart
-                $qty_available = $this->getQtyBeforeSale($item);
-
-                if ($qty_available >= $quantity) {
-
-                    $priceArr = $this->getPrices($item);
-                    $price = floatval($priceArr["sprice"]); //method call for selling price of an item
-
-                    if (isset($discount)) {
-                        $discount = floatval($discount);
-                        $amount = $quantity * ($price - $discount);
-                    } else {
-                        $discount = 0;
-                        $amount = $quantity * $price;
-                    }
-
-
-                    if ($refId == 'name') {
-                        $item_code = $dataCheck['ref'];
-                        $item_name = $item;
-                    } else if ($refId == 'id') {
-                        $item_code = $item;
-                        $item_name =  $dataCheck['ref'];
-                    }
-
-
-                    $cart->item_code = $item_code;
-                    $cart->item = $item_name;
-                    $cart->quantity = $quantity;
-                    $cart->price = $price;
-                    $cart->discount = $discount;
-                    $cart->amount = $amount;
-
-                    $save_status = $cart->save();
-
-                    if ($save_status) {
-                        $action = "added item " . $item . " to the cart";
-                        Helper::logger($req, $action, now());
-                        $dataArr = array(
-                            "code" => '200',
-                            "message" => $action,
-                            "method" => "CartController@store"
-                        );
-                        Helper::LogRequest($req, $dataArr);
-                        return back();
-                    } else {
-
-                        $error_message = "cart item not added failed!";
-                        $dataArr = array(
-                            "code" => '101',
-                            "message" => $error_message,
-                            "method" => "CartController@store"
-                        );
-                        Helper::LogRequest($req, $dataArr);
-                        return back()->with('fail', $error_message);
-                    }
-                } else if ($qty_available < $quantity && $qty_available != -1) {
-                    $error_message = "Quantity for item " . $item . " is not enough,Available is " . $qty_available . "";
-                    $dataArr = array(
-                        "code" => '101',
-                        "message" => $error_message,
-                        "method" => "CartController@store"
-                    );
-                    Helper::LogRequest($req, $dataArr);
-                    return back()->with("fail", $error_message);
-                } else {
-                    $error_message = "couldn't find this product " . $item . "";
-                    $dataArr = array(
-                        "code" => '404',
-                        "message" => $error_message,
-                        "method" => "CartController@store"
-                    );
-                    Helper::LogRequest($req, $dataArr);
-                    return back()
-                        ->with("fail", $error_message);
-                }
-            }
-        } catch (\Exception $exception) {
-            parent::report($exception);
-        }
     }
 
 
@@ -363,18 +144,6 @@ class CartController extends Controller
     }
 
 
-    protected function StoreIntoCart($data)
-    {
-
-        $cart = new Cart;
-        $cart->item_code = $data['item_code'];
-        $cart->item = $data['item_name'];
-        $cart->quantity = $data['quantity'];
-        $cart->price = $data['price'];
-        $cart->amount = $data['sub_total'];
-        $cart->save();
-    }
-
     public function MakeSaleGateway(Request $request)
     {
         $add2CartResponse = $this->GetSaleAndTransact($request);
@@ -388,38 +157,12 @@ class CartController extends Controller
         ]);
     }
 
-    public function GetSaleAndTransact(Request $request)
-    {
-        $data = $request->input('tabledata');
-        $dataArr = json_decode($data, true);
-
-        for ($i = 0; $i < count($dataArr); $i++) {
-
-            $item_code = $dataArr[$i]['barcode'];
-            $item_name = $dataArr[$i]['item'];
-            $quantity = $dataArr[$i]['quantity'];
-            $price = $dataArr[$i]['price'];
-            $sub_total = $dataArr[$i]['sub_total'];
-
-            $data = array(
-                'item_code' => $item_code,
-                'item_name' => $item_name,
-                'quantity' => $quantity,
-                'price' => $price,
-                'sub_total' => $sub_total,
-            );
-            $this->StoreIntoCart($data);
-        }
-
-        return true;
-    }
-
     public function recordSale(Request $req)
     {
 
         try {
 
-            $method = "CartController@recordSale";
+            $method = "SalesPointController @recordSale";
             $data = $req->input('tabledata');
             $customer = $req->input('customer');
             $extra_money = $req->input('extra_money');
@@ -572,30 +315,6 @@ class CartController extends Controller
     public function destroy(Request $request, $id)
     {
 
-        $cart = Cart::find($id);
-        $cart = $cart->item;
-        $delete_status = $cart->delete();
-        if ($delete_status) {
-
-            $action = "removed " . $cart . " from the list of items in cart";
-            Helper::logger($request, $action, now());
-            $dataArr = array(
-                "code" => '200',
-                "message" => $action,
-                "method" => "CartController@destroy"
-            );
-            Helper::LogRequest($request, $dataArr);
-            return back()->with("success", $this->ActionMessage($action));
-        } else {
-            $failErr = "item in cart not deleted!";
-            $dataArr = array(
-                "code" => '101',
-                "message" => $failErr,
-                "method" => "CartController@destroy"
-            );
-            Helper::LogRequest($request, $dataArr);
-            return back()->with('fail', $failErr);
-        }
     }
 
     protected function getPrices($item)

@@ -48,13 +48,12 @@ class DatabaseSeeder extends Seeder
             StockCategoriesTableSeeder::class,
             SuppliersTableSeeder::class,
             StockTableSeeder::class,
+            PurchasesTableSeeder::class,
             CustomersTableSeeder::class,
             DamagesTableSeeder::class,
             ExpenseTypeTableSeeder::class,
             ExpensesTableSeeder::class,
             SalesTableSeeder::class,
-            PurchasesTableSeeder::class,
-
 
         ]);
         

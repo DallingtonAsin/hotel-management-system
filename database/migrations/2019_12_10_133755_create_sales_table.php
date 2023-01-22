@@ -50,7 +50,7 @@ class CreateSalesTable extends Migration
             $table->string('customer')->nullable();
             $table->double('tax')->default('0');
             $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->integer('cashier_id')->unsigned();
+            $table->unsignedBigInteger('cashier_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('item_id')->references('id')->on('stock');

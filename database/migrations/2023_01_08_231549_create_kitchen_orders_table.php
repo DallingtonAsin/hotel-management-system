@@ -29,7 +29,7 @@ class CreateKitchenOrdersTable extends Migration
             $table->string('email')->nullable();
             $table->enum('status', Helper::getKitchenOrderStatuses());
             $table->timestamp('order_date')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->integer('created_by')->unsigned();
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('room_id')->references('id')->on('rooms');

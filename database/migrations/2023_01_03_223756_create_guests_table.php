@@ -27,7 +27,7 @@ class CreateGuestsTable extends Migration
             $table->string('passport_number')->nullable();
             $table->string('nin')->nullable();
             $table->text('other_details')->nullable();
-            $table->integer('created_by')->unsigned();
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('created_by')->references('id')->on('staff');
         });

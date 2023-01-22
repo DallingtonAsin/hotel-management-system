@@ -12,13 +12,13 @@ class Stock extends Model
 
 	protected $fillable = [
 		'item_code',
-		'item',
-		'category',
+		'item_name',
+		'category_id',
 		'quantity',  
 		'buying_price',
 		'selling_price',
 		'wholesale_price',
-		'supplier',
+		'supplier_id',
 		'expiry_date',
 	];
 
