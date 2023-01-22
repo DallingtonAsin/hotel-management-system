@@ -25,10 +25,10 @@ class CreateBestsellingitemsTable extends Migration
           // MYSQL SERVER QUERY
 
           DB::statement("CREATE OR REPLACE VIEW bestsellingitems AS 
-          select item,sum(`quantity`) AS quantity, sum(`amount`)
+          select item_id ,sum(`quantity`) AS quantity, sum(`amount`)
            AS totalsales, (round(sum(`amount`)/sum(`quantity`),2))
             AS saleqtyratio from sales
-        group by item order by sum(`amount`) desc limit 20");
+        group by item_id order by sum(`amount`) desc limit 20");
     }
 
 

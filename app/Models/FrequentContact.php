@@ -10,7 +10,7 @@ class FrequentContact extends Model
     use HasFactory;
 
     protected $table = 'frequent_contacts';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
         'name',
         'email',

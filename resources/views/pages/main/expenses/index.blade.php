@@ -88,8 +88,12 @@
 
                         <div class="form-group">
                             <span><span class="text-danger pr-1">*</span>Expense</span>
-                            <input type="text" class="form-control expense " name="expense"
-                                placeholder="Enter expense" Required autofocus>
+                            <select class="form-control expense" name="expense">
+                                <option value="">Select expense type</option>
+                                @foreach ($expense_types as $type)
+                                <option value="{{ $type->id }}">{{ $type->name }}</option> 
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -287,13 +291,10 @@
 
             function editExpense(expense_id) {
                 $.get("{{ route('expenses.index') }}" + '/' + expense_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of expense " + data.expense_type + "");
+                    $('#modalHeading').html("Edit details of expense " + data.type_name + "");
                     $('#addExpensesBtn').text("Edit expense");
                     $('#addExpensesModal').modal('show');
-                    $('.expenseId').val(data.id);
-                    $('.expense').val(data.expense_type);
-                    $('.amount').val(data.amount);
-                    $('.date').val(data.date_of_expenditure);
+                    populateExpenseDetails(data);
                     DisableFormFields(false);
                     ShowBtns();
                 });
@@ -311,15 +312,19 @@
 
             function viewExpense(expense_id) {
                 $.get("{{ route('expenses.index') }}" + '/' + expense_id + '', function(data) {
-                    $('#modalHeading').html("Details of expense " + data.expense_type + "");
+                    $('#modalHeading').html("Details of expense " + data.type_name + "");
                     $('#addExpensesModal').modal('show');
-                    $('.expenseId').val(data.id);
-                    $('.expense').val(data.expense_type);
-                    $('.amount').val(data.amount);
-                    $('.date').val(data.date_of_expenditure);
+                    populateExpenseDetails(data);
                     DisableFormFields(true);
                     HideBtns();
                 });
+            }
+
+            function populateExpenseDetails(data){
+                   $('.expenseId').val(data.id);
+                    $('.expense').val(data.type_id);
+                    $('.amount').val(FormatNumber(data.amount));
+                    $('.date').val(data.date_of_expenditure);
             }
 
 
@@ -378,11 +383,13 @@
                 var expense_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_expenses, function(expense) {
+                $.get("{{ route('expenses.index') }}" + '/' + expense_id + '/edit', function(data) {
                     $("#deleteExpensesModal").modal('show');
-                    $(".delete-alert-text").html("Are you sure you want to delete this expense?");
+                    $(".delete-alert-text").html(`Are you sure you want to delete expense ${data.type_name}?`);
                     $('.delete-ok-btn').on('click', function() {
                         deleteRecord(expense_id);
                     });
+                });
                 });
             });
 

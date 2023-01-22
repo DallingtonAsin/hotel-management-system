@@ -14,10 +14,16 @@ class CreateExpensesTable extends Migration
     public function up()
     {
         Schema::create('expenses', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('expense_type');
+            $table->id();
+            $table->unsignedBigInteger('type_id');
             $table->double('amount');
             $table->Date('date_of_expenditure');
+            $table->integer('recorded_by')->unsigned();
+            $table->timestamps();
+
+            $table->foreign('type_id')->references('id')->on('expense_types')->onDelete('cascade');
+            $table->foreign('recorded_by')->references('id')->on('staff')->onDelete('cascade');
+
         });
     }
 

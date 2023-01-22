@@ -35,9 +35,9 @@ class CreateStockTable extends Migration
         // )");
 
         Schema::create('stock', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('item_code')->nullable();
-            $table->string('item')->nullable();
+            $table->string('item')->unique();
             $table->string('category')->nullable();
             $table->double('quantity');
             $table->float('threshold_qty')->default('0');
@@ -50,9 +50,8 @@ class CreateStockTable extends Migration
             $table->string('supplier')->nullable();
             $table->timestamp('date_of_entry')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('expiry_date')->nullable();
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-      
+            $table->timestamps();
+
         }); 
 
     }
