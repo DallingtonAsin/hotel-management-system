@@ -207,7 +207,7 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('sale/make-receipt', [SalesPointController ::class, 'getReceipt']);
 	Route::post('pos/session/update', [SalesPointController ::class, 'updateItemInSession'])->name('session.update');
 	Route::post('pos/record', [SalesPointController ::class, 'MakeSaleGateway'])->name('sale.transact');
-	Route::post('pos/barcode/getItem', [SalesPointController ::class, 'GetCartData'])->name('item.get');
+	Route::post('pos/barcode/getItem', [SalesPointController ::class, 'getProductItemDetails'])->name('item.get');
 	Route::post('pos/search', [SalesPointController ::class, 'searchItem'])->name('item.search');
 	Route::post('pos/searchprice', [SalesPointController ::class, 'getItemPrice'])->name('cart.searchprice');
 	Route::post('pos/clear', [SalesPointController ::class, 'ClearCart'])->middleware('password.confirm');

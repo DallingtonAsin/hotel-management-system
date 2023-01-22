@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Pos;
 
 use Illuminate\Http\Request;
-use App\Models\Cart;
 use App\Models\Stock;
 use App\Models\Tax;
 use App\Models\SalesTaxTracker;
@@ -20,7 +19,7 @@ class SalesPointController extends Controller
     private $total_amount_of_sales = 0;
     private $sold_items = array();
 
-    public function GetCartData(Request $request)
+    public function getProductItemDetails(Request $request)
     {
 
         if ($request->input('itemId')) {
@@ -31,7 +30,7 @@ class SalesPointController extends Controller
             if ($isBarcode == 1) {
                 $itemData = Stock::where('item_code', $itemId)->get();
             } else {
-                $itemData = Stock::where('item', $itemId)->get();
+                $itemData = Stock::where('item_name', $itemId)->get();
             }
             return json_encode(array('data' => $itemData));
         }
@@ -55,7 +54,7 @@ class SalesPointController extends Controller
      */
     public function index()
     {
-        
+        return view('pages.main.pos.index');
     }
 
     /**
@@ -113,37 +112,6 @@ class SalesPointController extends Controller
 
     }
 
-
-    private function DoTaxMathTracking($data)
-    {
-
-        $itemId = $data[0];
-        $item = $data[1];
-        $qty = $data[2];
-        $amount = $data[3];
-        $tax = $data[4];
-        $soldOn = $data[5];
-
-        $tracker = new SalesTaxTracker;
-        $tracker->item_code = $this->customCrypt($itemId);
-        $tracker->item = $this->customCrypt($item);
-        $tracker->quantity = $this->customCrypt($qty);
-        $tracker->amount = $this->customCrypt($amount);
-        $tracker->tax = $this->customCrypt($tax);
-        $tracker->date_of_sale = $this->customCrypt($soldOn);
-
-        $tracker->save();
-    }
-
-
-    private function customCrypt($str)
-    {
-        $customKey = config('app.cipherKey');
-        $newEncrypter = new \Illuminate\Encryption\Encrypter($customKey, config('app.cipher'));
-        return $newEncrypter->encrypt($str);
-    }
-
-
     public function MakeSaleGateway(Request $request)
     {
         $add2CartResponse = $this->GetSaleAndTransact($request);
@@ -169,6 +137,7 @@ class SalesPointController extends Controller
             $extra_money = (!empty($extra_money)) ? floatval($extra_money) : 0;
           
             $dataArr = json_decode($data, true);
+            // dd($dataArr);
 
             if (is_array($dataArr) && count($dataArr) > 0) {
 
@@ -211,15 +180,15 @@ class SalesPointController extends Controller
 
                     // Get new quantity of item after sale
                     $qty_beforeSale = $this->getQtyBeforeSale($item);
-                    $newqty = ($qty_beforeSale - $quantity);
+                    $new_quantity = ($qty_beforeSale - $quantity);
                     $date = isset($date_of_sale) ? $date_of_sale : Carbon::now();
 
                     $taxAmount = $this->GetTax($total);
                     $cashier_id = Helper::getLoggedInUserId();
+                    $item_id = Stock::where('item_name', $item)->first()->id;
 
                     $hasInsertedInSalesTbl = DB::table('sales')->insert([
-                        'item_code' => $item_code,
-                        'item' => $item,
+                        'item_id' => $item_id,
                         'quantity' => $quantity,
                         'original_price' => $original_price,
                         'selling_price' => $price,
@@ -236,14 +205,10 @@ class SalesPointController extends Controller
                         'cashier_id' => $cashier_id,
                     ]);
 
-                    $datetime = Carbon::now();
-                    $taxArr = array($item_code, $item, $quantity, $sub_total, $taxAmount, $datetime);
-                    $this->DoTaxMathTracking($taxArr);
-
                     //If insertion is OK, reduce stock levels and clear cart
                     if ($hasInsertedInSalesTbl) {
 
-                        $hasUpdatedStock = DB::table('stock')->where('item', $item)->update(['quantity' => $newqty]);
+                        $hasUpdatedStock = DB::table('stock')->where('item_name', $item)->update(['quantity' => $new_quantity]);
                         if ($hasUpdatedStock) {
 
                             $action = "recorded a sale of items " . json_encode($this->sold_items) . " at
@@ -288,6 +253,7 @@ class SalesPointController extends Controller
 
             }
         } catch (\Exception $ex) {
+            dd($ex);
             return response()->json(['error' => $ex->getMessage()]);
         }
     }
@@ -321,7 +287,7 @@ class SalesPointController extends Controller
     {
 
         $data = DB::select('select buying_price, selling_price
-                            from stock where item = ? or item_code = ?', [$item, $item]);
+                            from stock where item_name = ? or item_code = ?', [$item, $item]);
         foreach ($data as $value) {
             $bprice = $value->buying_price;
             $sprice = $value->selling_price;
@@ -332,25 +298,22 @@ class SalesPointController extends Controller
         );
     }
 
-    protected function getQtyBeforeSale($item)
+    private function getQtyBeforeSale($item)
     {
         $arr = $this->getListOfStockItemsData();
         $stockArr = $arr['items'];
         $stockIdArr = $arr['itemsIds'];
 
         if (in_array($item, $stockArr) || in_array($item, $stockIdArr)) {
-            $data = DB::table("stock")
-                ->where("item_code", "like", "%" . $item . "%")
-                ->orWhere("item", "like", "%" . $item . "%")
+                $data = Stock::where("item_code", "like", "%" . $item . "%")
+                ->orWhere("item_name", "like", "%" . $item . "%")
                 ->get();
-            //$data = DB::select('select quantity from stock where item = ?',[$item]);
+
             foreach ($data as $value) {
                 $qty = $value->quantity;
             }
         } else {
             $qty = -1;
-            // return back()
-            //        ->with("fail", "couldn't find this product");
         }
         return $qty;
     }
@@ -376,13 +339,12 @@ class SalesPointController extends Controller
         if ($request->input('query')) {
             $query = $request->input('query');
             $data = array();
-            $items = DB::table("stock")
-                ->where("item_code", "like", "%" . $query . "%")
-                ->orWhere("item", "like", "%" . $query . "%")
+            $items = Stock::where("item_code", "like", "%" . $query . "%")
+                ->orWhere("item_name", "like", "%" . $query . "%")
                 ->get();
 
             foreach ($items as $item) {
-                $data[] = $item->item;
+                $data[] = $item->item_name;
                 $data[] = $item->item_code;
             }
             echo json_encode($data);
@@ -397,7 +359,7 @@ class SalesPointController extends Controller
             $data = array();
             $items = DB::table("stock")
                 ->where("item_code", "like", "%" . $query . "%")
-                ->orWhere("item", "like", "%" . $query . "%")
+                ->orWhere("item_name", "like", "%" . $query . "%")
                 ->get();
             foreach ($items as $item) {
                 $data[] = $item->selling_price;
@@ -418,7 +380,7 @@ class SalesPointController extends Controller
         $items = DB::table('stock')->get();
         $itemsArr = $itemsIdArr = array();
         foreach ($items as $item) {
-            array_push($itemsArr, $item->item);
+            array_push($itemsArr, $item->item_name);
             array_push($itemsIdArr, $item->item_code);
         }
 
@@ -437,7 +399,7 @@ class SalesPointController extends Controller
 
         if (in_array($item, $stockList)) {
             $ref = DB::table("stock")
-                ->where('item', $item)->value('item_code');
+                ->where('item_name', $item)->value('item_code');
             $refId = 'name';
         } else if (in_array($item, $stockIdsList)) {
             $ref = DB::table("stock")
