@@ -90,8 +90,8 @@
 
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Item</span>
-                                    <input type="text" class="form-control  item-name" name="item"
-                                        placeholder="Enter item" required autofocus>
+                                    <input type="text" class="form-control  item_name" name="item"
+                                        placeholder="Enter item">
 
                                 </div>
 
@@ -104,11 +104,10 @@
 
                                 <div class="form-group">
                                     <span>Category</span>
-                                    <select class="form-control  category" name="category" required autofocus
-                                        id="category">
-                                        <option value="" selected="true">choose category</option>
+                                    <select class="form-control category" name="category" id="category">
+                                        <option value="">Select category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->name }}"> {{ $category->name }}
+                                            <option value="{{ $category->id }}"> {{ $category->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -116,10 +115,10 @@
 
                                 <div class="form-group">
                                     <span>Supplier</span>
-                                    <select class="form-control " id="supplier" name="supplier" required autofocus>
-                                        <option value="" selected="true">choose supplier</option>
+                                    <select class="form-control " id="supplier" name="supplier">
+                                        <option value="" selected="true">Select supplier</option>
                                         @foreach ($suppliers as $supplier)
-                                            <option value="{{ $supplier->name }}"> {{ $supplier->name }}</option>
+                                            <option value="{{ $supplier->id }}"> {{ $supplier->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -133,14 +132,14 @@
                                 <div class="row form-group">
                                     <div class=" col-md-6">
                                         <span><span class="text-danger pr-1">*</span>Quantity</span>
-                                        <input type="text" class="form-control  quantity" id="qty"
-                                            name="quantity" placeholder="Enter Quantity" required autofocus>
+                                        <input type="text" class="form-control  quantity" id="qty" name="quantity"
+                                            placeholder="Enter Quantity">
                                     </div>
 
                                     <div class="col-md-6">
                                         <span>Threshold Quantity</span>
                                         <input type="text" class="form-control threshold_qty" id="threshold_qty"
-                                            name="thresholdQty" placeholder="Enter threshold quantity">
+                                            name="threshold_qty" placeholder="Enter threshold quantity">
                                     </div>
                                 </div>
 
@@ -148,15 +147,14 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <span><span class="text-danger pr-1">*</span>Buying Price</span>
-                                            <input type="text" class="form-control  original_price"
-                                                name="original_price" placeholder="Enter original price" required
-                                                autofocus>
+                                            <input type="text" class="form-control  original_price" name="original_price"
+                                                placeholder="Enter original price" required autofocus>
                                         </div>
 
                                         <div class="col-lg-4 form-group">
                                             <span><span class="text-danger pr-1">*</span>Retail Price</span>
                                             <input type="text" class="form-control  selling_price"
-                                                name="selling_price" placeholder="Enter selling price" required autofocus>
+                                                name="selling_price" placeholder="Enter selling price">
                                         </div>
 
                                         <div class="col-lg-4 form-group">
@@ -213,7 +211,7 @@
                                 <div class="form-group">
                                     <input type="file"
                                         class="form-control-file @error('select_file') is-invalid @enderror"
-                                        name="select_file" required autofocus>
+                                        name="select_file">
                                 </div>
 
                                 @error('select_file')
@@ -251,11 +249,8 @@
 
                             <div class="form-group">
                                 <div class="text-center">
-                                    <label class="text-danger">Are you sure you want to delete item
-                                        <small class="text-dark text-muted bolded">
-                                        </small>
-                                        ?
-                                    </label>
+                                    <label class="text-danger delete-confirm-text">Are you sure you want to delete
+                                        item?</label>
                                 </div>
                             </div>
 
@@ -295,8 +290,8 @@
                 // {data: 'id', name:'id'},
                 //  {data: 'item_code', name:'item_code'},
                 {
-                    data: 'item',
-                    name: 'item'
+                    data: 'item_name',
+                    name: 'item_name'
                 },
                 {
                     data: 'item_code',
@@ -384,7 +379,7 @@
                 }
             });
             Numberize(".quantity");
-            Numberize(".thresholdQty");
+            Numberize(".threshold_qty");
             Numberize(".original_price");
             Numberize(".selling_price");
             Numberize(".wholesale_price");
@@ -429,29 +424,21 @@
                     url: Url,
                     type: "GET",
                     dataType: 'json',
-                    success: function(data) {
-
-                        $('#modalHeading').html("Edit details of stock item " + data.item + "");
-                        $('.stockId').val(data.id);
-                        $('.item_code').val(data.item_code);
-                        $('.item-name').val(data.item);
-                        if (data.category) {
-                            $('#category').val(data.category);
+                    success: function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            $('#modalHeading').html("Edit details of stock item " + data.item_name +
+                                "");
+                            populateProductDetails(data);
+                            DisableFormFields(false);
                         } else {
-                            $('#category').val("choose category");
+                            displayResponse(null, response.error, 'error');
                         }
-                        $('#supplier').val(data.supplier);
-                        $('.quantity').val(data.quantity);
-                        $('.threshold_qty').val(data.threshold_qty);
-                        $('.expiry_date').val(data.expiry_date);
-                        $('.original_price').val(data.buying_price);
-                        $('.selling_price').val(data.selling_price);
-                        $('.wholesale_price').val(data.wholesale_price);
-                        DisableFormFields(false);
+
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
-                        displayResponse('.response', data.error, 'error');
+                        displayResponse(null, data.error, 'error');
                     }
                 });
             }
@@ -460,24 +447,28 @@
 
                 $('.errors-section').html('');
                 $('.addStockBtn').html('Updating item...');
-
                 let Url = "{{ route('stock.update', ':id') }}";
                 Url = Url.replace(':id', stock_id);
+
                 $.ajax({
                     data: $('#StockForm').serialize(),
                     url: Url,
                     type: "PUT",
                     dataType: 'json',
-                    success: function(data) {
+                    success: function(response) {
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
 
-                        $('#StockForm').trigger("reset");
-                        $('#addStockModal').modal("hide");
-                        let resp = data.success;
-                        displayResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
-                        let tbl = $('#stock-table').DataTable();
-                        tbl.ajax.reload();
+                        if (response.success) {
+                            let data = response.data;
+                            $('#StockForm').trigger("reset");
+                            $('#addStockModal').modal("hide");
+                            ResetTblInfo(data);
+                            let tbl = $('#stock-table').DataTable();
+                            tbl.ajax.reload();
+                        }
 
+                        displayResponse(null, message, type);
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
@@ -489,31 +480,28 @@
             }
 
             function recordStock() {
-
                 $('.errors-section').html('');
                 $('.addStockBtn').html('Sending data..');
-
                 $.ajax({
                     data: $('#StockForm').serialize(),
                     url: "{{ route('stock.store') }}",
                     type: "POST",
                     dataType: 'json',
-                    success: function(data) {
+                    success: function(response) {
 
-                        $('#StockForm').trigger("reset");
-                        $('#addStockModal').modal("hide");
+                        let resp = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
 
-                        let resp = data.success || data.error;
-                        let type = data.success ? 'success' : 'error';
-
-                        if (data.success) {
+                        if (response.success) {
+                            let data = response.data;
+                            $('#StockForm').trigger("reset");
+                            $('#addStockModal').modal("hide");
                             ResetTblInfo(data);
                             let tbl = $('#stock-table').DataTable();
                             tbl.ajax.reload();
                         }
 
                         displayResponse('.response', resp, type);
-
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
@@ -536,25 +524,33 @@
 
             function viewStock(stock_id) {
                 ShowHideBtns('hide');
-                $.get("{{ route('stock.index') }}" + '/' + stock_id + '', function(data) {
-                    let bprice = data.buying_price;
-                    let sprice = data.selling_price;
-                    let wprice = data.wholesale_price;
-                    $('#modalHeading').html("Details of stock " + data.item + "");
-                    $('#addStockModal').modal('show');
-                    $('.stockId').val(stock_id);
-                    $('.item_code').val(data.item_code);
-                    $('.item-name').val(data.item);
-                    $('.category').val(data.category);
-                    $('#supplier').val(data.supplier);
-                    $('.quantity').val(data.quantity);
-                    $('.thresholdQty').val(data.threshold_qty)
-                    $('.expiry_date').val(data.expiry_date);
-                    $('.original_price').val(bprice);
-                    $('.selling_price').val(sprice);
-                    $('.wholesale_price').val(wprice);
-                    DisableFormFields(true);
+                $.get("{{ route('stock.index') }}" + '/' + stock_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Details of stock " + data.item_name + "");
+                        $('#addStockModal').modal('show');
+                        populateProductDetails(data);
+                        DisableFormFields(true);
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
+            }
+
+            function populateProductDetails(data) {
+                $('.stockId').val(data.id);
+                $('.item_code').val(data.item_code);
+                $('.item_name').val(data.item_name);
+                $('.category').val(data.category_id);
+                $('#supplier').val(data.supplier_id);
+                $('.quantity').val(data.quantity);
+                $('.threshold_qty').val(data.threshold_qty)
+                $('.expiry_date').val(data.expiry_date);
+                $('.original_price').val(FormatNumber(data.buying_price));
+                $('.selling_price').val(FormatNumber(data.selling_price));
+                if(data.wholesale_price){
+                    $('.wholesale_price').val(FormatNumber(data.wholesale_price));
+                }
             }
 
 
@@ -590,9 +586,19 @@
                 let stock_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_stock, function(stock) {
-                    $("#deleteStockModal").modal('show');
-                    $('.delete-ok-btn').on('click', function() {
-                        deleteRecord(stock_id);
+                    $.get("{{ route('stock.index') }}" + '/' + stock_id + '', function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            $('.delete-confirm-text').html(
+                                `Are you sure you want to delete item ${data.item_name}?`
+                                );
+                            $("#deleteStockModal").modal('show');
+                            $('.delete-ok-btn').on('click', function() {
+                                deleteRecord(stock_id);
+                            });
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
                     });
                 });
             });
@@ -605,14 +611,20 @@
                 $.ajax({
                     type: "DELETE",
                     url: deleteUrl,
-                    success: function(data) {
-                        let resp = data.success;
-                        $('.delete-ok-btn').html('Yes');
-                        $('#deleteStockModal').modal("hide");
-                        displayResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
-                        let tbl = $('#stock-table').DataTable();
-                        tbl.ajax.reload();
+                    success: function(response) {
+
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
+
+                        if (response.success) {
+                            let data = response.data;
+                            $('.delete-ok-btn').html('Yes');
+                            $('#deleteStockModal').modal("hide");
+                            ResetTblInfo(data);
+                            let tbl = $('#stock-table').DataTable();
+                            tbl.ajax.reload();
+                        }
+                        displayResponse(null, message, type);
                     },
                     error: function(data) {
                         console.log('Error:', data);
@@ -624,7 +636,7 @@
             function NullifyFields() {
                 $('.stockId').val('');
                 $('.item_code').val('');
-                $('.item-name').val('');
+                $('.item_name').val('');
                 $('.category').val('');
                 $('#supplier').val('');
                 $('.quantity').val('');
@@ -640,7 +652,7 @@
 
                 $('.stockId').attr('disabled', bool);
                 $('.item_code').attr('disabled', bool);
-                $('.item-name').attr('disabled', bool);
+                $('.item_name').attr('disabled', bool);
                 $('.category').attr('disabled', bool);
                 $('#supplier').attr('disabled', bool);
                 $('.quantity').attr('disabled', bool);
@@ -666,15 +678,14 @@
 
             function ResetTblInfo(response) {
                 let totl_stock, stockValue;
-                totl_stock = FormatNumber(response.totl_stock);
-                stockValue = FormatNumber(response.stock_value);
-
+                totl_stock = FormatNumber(response.totl);
+                stockValue = FormatNumber(response.value);
                 $('.totl-stock').html(totl_stock);
                 $('.stock-value').html(stockValue);
             }
 
             function validateForm() {
-                let item = $('.item-name').val();
+                let item = $('.item_name').val();
                 let qty = $('#qty').val();
                 let bprice = $('.original_price').val();
                 let sprice = $('.selling_price').val();

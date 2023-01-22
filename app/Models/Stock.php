@@ -20,6 +20,8 @@ class Stock extends Model
 		'wholesale_price',
 		'supplier_id',
 		'expiry_date',
+		'created_by',
+		'is_deleted'
 	];
 
 	public $timestamps = true; 

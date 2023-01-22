@@ -22,6 +22,7 @@ class CreateSuppliersTable extends Migration
             $table->string('email')->nullable();
             $table->double('debt')->nullable();
             $table->double('credit')->nullable();
+            $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('created_by')->unsigned();
 
             $table->timestamps();

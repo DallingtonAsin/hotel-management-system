@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('guest_id')->nullable();
             $table->enum('status', Helper::getKitchenOrderStatuses());
             $table->timestamp('order_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->boolean('is_deleted')->default(false);
              $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 

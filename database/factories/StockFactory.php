@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Stock;
+use App\Staff;
 use App\Models\StockCat;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
@@ -27,6 +28,8 @@ class StockFactory extends Factory
 
     $random_supplier = Supplier::inRandomOrder()->first();
     $random_stock_type = StockCat::inRandomOrder()->first();
+    $created_by = Staff::inRandomOrder()->first()->id;
+
 
     return [
       'item_code' => Str::random(3),
@@ -39,6 +42,7 @@ class StockFactory extends Factory
       'supplier_id' => $random_supplier->id,
       'date_of_entry' => $this->faker->dateTimeThisYear($max = 'now', $timezone = null),
       'expiry_date' => $this->faker->dateTimeThisYear($max = 'now', $timezone = null),
+      'created_by' => $created_by
     ];
   }
 }

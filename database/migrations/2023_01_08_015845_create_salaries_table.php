@@ -18,6 +18,7 @@ class CreateSalariesTable extends Migration
             $table->unsignedBigInteger('employee_id')->unsigned();
             $table->decimal('amount', 8, 2); 
             $table->date('pay_date');
+            $table->boolean('is_deleted')->default(false);
              $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 

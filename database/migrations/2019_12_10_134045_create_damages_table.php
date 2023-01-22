@@ -34,6 +34,7 @@ class CreateDamagesTable extends Migration
             $table->unsignedBigInteger('item_id');
             $table->double('quantity');
             $table->timestamp('recorded_on')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('recorded_by')->unsigned();
             $table->timestamps();
 

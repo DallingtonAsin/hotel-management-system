@@ -18,6 +18,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('type_id');
             $table->double('amount');
             $table->Date('date_of_expenditure');
+            $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('recorded_by')->unsigned();
             $table->timestamps();
 

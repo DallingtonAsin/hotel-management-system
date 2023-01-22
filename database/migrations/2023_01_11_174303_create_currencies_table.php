@@ -18,6 +18,7 @@ class CreateCurrenciesTable extends Migration
             $table->string('country')->unique();
             $table->string('code')->unique();
             $table->double('rate');
+            $table->boolean('is_deleted')->default(false);
              $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
