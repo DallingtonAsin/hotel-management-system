@@ -58,25 +58,25 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control menuItemId bg-white menuItemId" name="id"
+                            <input type="hidden" class="form-control menuItemId  menuItemId" name="id"
                                 placeholder="Enter menu item id" required>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
+                            <input type="text" class="form-control name " name="name"
                                 placeholder="Enter menu item name" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Price</span>
-                            <input type="text" class="form-control price bg-white" name="price"
+                            <input type="text" class="form-control price " name="price"
                                 placeholder="Enter price of the menu item" required>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger pr-1">*</span>Category</span>
-                            <select class="form-control menu_item_category_section bg-white" name="category">
+                            <select class="form-control menu_item_category_section " name="category">
                                 <option value="">select menu item category</option>
                             </select>
                         </div>

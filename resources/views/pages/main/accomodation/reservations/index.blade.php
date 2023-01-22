@@ -73,47 +73,47 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-                            <input type="hidden" class="form-control reservationId bg-white reservationId" name="id"
+                            <input type="hidden" class="form-control reservationId  reservationId" name="id"
                                 placeholder="Enter reservation id" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span>Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
+                            <input type="text" class="form-control name " name="name"
                                 placeholder="Enter reservation name" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span>Address</span>
-                            <input type="text" class="form-control address bg-white" name="address"
+                            <input type="text" class="form-control address " name="address"
                                 placeholder="Enter address" Required autofocus>
                         </div>
 
 
                         <div class="form-group">
                             <span>Contact</span>
-                            <input type="text" class="form-control contact bg-white" name="contact"
+                            <input type="text" class="form-control contact " name="contact"
                                 placeholder="Enter contact" Required autofocus>
                         </div>
 
 
                         <div class="form-group">
                             <span>Email</span>
-                            <input type="email" class="form-control email bg-white" name="email"
+                            <input type="email" class="form-control email " name="email"
                                 placeholder="Email (optional)">
                         </div>
 
 
                         <div class="form-group">
                             <span>Debt</span>
-                            <input type="text" class="form-control debt bg-white" name="debt"
+                            <input type="text" class="form-control debt " name="debt"
                                 placeholder="Enter debt">
                         </div>
 
 
                         <div class="form-group">
                             <span>Credit</span>
-                            <input type="text" class="form-control credit bg-white" name="credit"
+                            <input type="text" class="form-control credit " name="credit"
                                 placeholder="Enter credit">
                         </div>
 

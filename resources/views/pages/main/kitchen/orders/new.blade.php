@@ -63,7 +63,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control kotId bg-white kotId" name="id"
+                            <input type="hidden" class="form-control kotId  kotId" name="id"
                                 placeholder="Enter kot id" required autofocus>
                         </div>
 

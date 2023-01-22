@@ -1,9 +1,9 @@
 <div class="card">
-    <div class="card-body bg-white">
+    <div class="card-body ">
         {!! Form::open(['route' => 'reservations.store', 'method' => 'POST']) !!}
 
         <div class="form-group">
-            <input type="hidden" class="form-control bg-white"  
+            <input type="hidden" class="form-control "  
              name="guest_type" value="Corporate" autocomplete="off">
         </div>
 
@@ -24,7 +24,7 @@
          
             <div class="col-md-6">
                 <span><span class="text-danger pr-1">*</span>Company Name</span>
-                <select class="form-control company_name bg-white" name="company_name">
+                <select class="form-control company_name " name="company_name">
                     <option value="">Select company name</option>
                 </select>
             </div>

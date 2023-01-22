@@ -122,29 +122,29 @@
                 <div class="modal-body">
                   <div class="form-group">
                     <span class="text-left">User</span>
-                    <input type="text" class="form-control user bg-white text-dark" value="" readonly>
+                    <input type="text" class="form-control user  text-dark" value="" readonly>
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Role</span>
-                    <input type="text" class="form-control role bg-white text-dark"  value="" readonly>
+                    <input type="text" class="form-control role  text-dark"  value="" readonly>
 
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Action</span>
-                    <textarea class="form-control bg-white action text-dark" readonly></textarea>
+                    <textarea class="form-control  action text-dark" readonly></textarea>
 
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Ip Address</span>
-                    <input type="text" class="form-control ipAddress bg-white text-dark"  value="" readonly>
+                    <input type="text" class="form-control ipAddress  text-dark"  value="" readonly>
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Done on</span>
-                    <input type="text" class="form-control date bg-white text-dark"  value="" readonly>
+                    <input type="text" class="form-control date  text-dark"  value="" readonly>
                   </div>
 
                 </div>

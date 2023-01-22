@@ -82,26 +82,26 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control expenseId bg-white expenseId" name="id"
+                            <input type="hidden" class="form-control expenseId  expenseId" name="id"
                                 placeholder="Enter expense id" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger pr-1">*</span>Expense</span>
-                            <input type="text" class="form-control expense bg-white" name="expense"
+                            <input type="text" class="form-control expense " name="expense"
                                 placeholder="Enter expense" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger pr-1">*</span>Amount</span>
-                            <input type="text" class="form-control amount bg-white" name="expenditure_amount"
+                            <input type="text" class="form-control amount " name="expenditure_amount"
                                 placeholder="Amount in shs." Required autofocus>
 
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger pr-1">*</span>Date</span>
-                            <input type="date" class="form-control date bg-white" value="{{ date('Y-m-d') }}"
+                            <input type="date" class="form-control date " value="{{ date('Y-m-d') }}"
                                 name="date_of_expense" placeholder="Enter cost of expense" Required autofocus>
                         </div>
 

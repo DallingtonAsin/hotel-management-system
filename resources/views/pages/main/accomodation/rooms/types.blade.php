@@ -83,25 +83,25 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control room_type_id bg-white room_type_id" name="id"
+                            <input type="hidden" class="form-control room_type_id  room_type_id" name="id"
                                 placeholder="Enter room type id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
+                            <input type="text" class="form-control name " name="name"
                                 placeholder="Enter room type name" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Single Occupancy Rate</span>
-                            <input type="text" class="form-control single_occupancy_rate bg-white"
+                            <input type="text" class="form-control single_occupancy_rate "
                                 name="single_occupancy_rate" placeholder="Enter single occupacy rate" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Double Occupancy rate</span>
-                            <input type="text" class="form-control double_occupancy_rate bg-white"
+                            <input type="text" class="form-control double_occupancy_rate "
                                 name="double_occupancy_rate" placeholder="Enter double occupacy rate" required autofocus>
                         </div>
 

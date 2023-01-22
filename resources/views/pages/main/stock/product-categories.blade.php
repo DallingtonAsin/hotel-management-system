@@ -102,7 +102,7 @@
                                 <div class="form-group">
                                     <span>Item Category</span>
                                     <input type="hidden" name="id" class="PdtCategoryId">
-                                    <input type="text" class="form-control PdtCategory bg-white" name="item-category"
+                                    <input type="text" class="form-control PdtCategory " name="item-category"
                                         placeholder="Enter item category" Required autofocus>
                                 </div>
 

@@ -81,19 +81,19 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control departmentId bg-white departmentId" name="id"
+                            <input type="hidden" class="form-control departmentId  departmentId" name="id"
                                 placeholder="Enter department id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Department Code</span>
-                            <input type="text" class="form-control code bg-white" name="code"
+                            <input type="text" class="form-control code " name="code"
                                 placeholder="Enter department code" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Department Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
+                            <input type="text" class="form-control name " name="name"
                                 placeholder="Enter department name" required autofocus>
                         </div>
 

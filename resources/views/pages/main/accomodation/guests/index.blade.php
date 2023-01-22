@@ -37,8 +37,10 @@
         </div>
     </div>
 
+    @include('pages.main.accomodation.guests.modals.guest_details')
+
     <!--Modal Delete guests -->
-    <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    <div class="modal fade" id="deleteGuestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
         aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog" aria-labelledby="ModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
@@ -80,8 +82,10 @@
         });
         const ajaxUrl = @json(route('guests.index.ajax'));
         const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
+        const freqContactAjaxUrl = @json(route('frequent-contacts.ajax.fetch'));
         const cat = 'guests';
         const token = "{{ csrf_token() }}";
+
     </script>
 
     <script type="text/javascript">
@@ -140,19 +144,19 @@
             });
 
             function editGuestDetails(guest_id) {
-                $.get("{{ route('guests.index') }}" + '/' + guest_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of guest " + data.name + "");
-                    $('.editGuestBtn').text("Edit guest");
-                    $('#editGuestDetailsModal').modal('show');
-                    $('.guestId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(false);
-                    ShowBtns();
+                $.get("{{ route('guests.index') }}" + '/' + guest_id + '/edit', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let guest_names = `${data.first_name} ${data.last_name}`;
+                        $('#modalHeading').html("Edit details of guest " + guest_names + "");
+                        $('.editGuestBtn').text("Edit guest");
+                        $('#guestDetailsModal').modal('show');
+                        populateGuestDetails(data);
+                        DisableTableFields(false);
+                        ShowBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -161,27 +165,41 @@
             $('body').on('click', '#view-guest', function(event) {
                 let guest_id = $(this).data('id');
                 event.preventDefault();
-                // alert('view guest');
-
                 checkPermission(permissions.view_guests, function(guest) {
                     viewGuestDetails(guest_id);
                 });
             });
 
             function viewGuestDetails(guest_id) {
-                $.get("{{ route('guests.index') }}" + '/' + guest_id + '', function(data) {
-                    $('#modalHeading').html("Details of guest " + data.name + "");
-                    $('#editGuestDetailsModal').modal('show');
-                    $('.guestId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
+                $.get("{{ route('guests.index') }}" + '/' + guest_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let guest_names = `${data.first_name} ${data.last_name}`;
+                        $('#modalHeading').html("Details of guest " + guest_names + "");
+                        $('#guestDetailsModal').modal('show');
+                        populateGuestDetails(data);
+                        DisableTableFields(true);
+                        HideBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
+
                 });
+            }
+
+            function populateGuestDetails(data) {
+                $('.guest_id').val(data.id);
+                $('.first_name').val(data.first_name);
+                $('.last_name').val(data.last_name);
+                $('.email').val(data.email);
+                $('.phone_number').val(data.phone_number);
+                $('.company_name').val(data.company_id);
+                $('.contact_person').val(data.company_contact);
+                $('.company_email').val(data.company_email);
+                $('.tin').val(data.tax_number);
+                $('.passport_number').val(data.passport_number);
+                $('.nin').val(data.nin);
+                $('.other_details').val(data.other_details);
             }
 
             //this pops up confirm delete modal
@@ -189,10 +207,20 @@
                 let guest_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_guests, function(guest) {
-                    $("#deleteSuppliersModal").modal('show');
-                    $(".delete-alert-text").html("Are you sure you want to delete this guest?");
-                    $('.delete-ok-btn').on('click', function() {
-                        ListenAndDoDeletion(guest_id);
+                    $.get("{{ route('guests.index') }}" + '/' + guest_id + '', function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            let guest_names = `${data.first_name} ${data.last_name}`;
+                            $("#deleteGuestModal").modal('show');
+                            $(".delete-alert-text").html(
+                                `Are you sure you want to delete guest ${guest_names}?`);
+                            $('.delete-ok-btn').on('click', function() {
+                                ListenAndDoDeletion(guest_id);
+                            });
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
+
                     });
                 });
 
@@ -210,7 +238,7 @@
                     success: function(data) {
                         let resp = data.success;
                         $('.delete-ok-btn').html('Yes');
-                        $('#deleteSuppliersModal').modal("hide");
+                        $('#deleteGuestModal').modal("hide");
                         displayResponse('.response', resp, 'success');
                         ResetTblInfo(data);
                         let tbl = $('#guests-table').DataTable();
@@ -225,13 +253,18 @@
 
             function DisableTableFields(bool) {
 
-                $('.guestId').attr('disabled', bool);
-                $('.name').attr('disabled', bool);
-                $('.address').attr('disabled', bool);
-                $('.contact').attr('disabled', bool);
+                $('.guest_id').attr('disabled', bool);
+                $('.first_name').attr('disabled', bool);
+                $('.last_name').attr('disabled', bool);
                 $('.email').attr('disabled', bool);
-                $('.debt').attr('disabled', bool);
-                $('.credit').attr('disabled', bool);
+                $('.phone_number').attr('disabled', bool);
+                $('.company_name').attr('disabled', bool);
+                $('.contact_person').attr('disabled', true);
+                $('.company_email').attr('disabled', true);
+                $('.tin').attr('disabled', bool);
+                $('.nin').attr('disabled', bool);
+                $('.passport_number').attr('disabled', bool);
+                $('.other_details').attr('disabled', bool);
             }
 
             function HideBtns() {
@@ -275,11 +308,53 @@
                     let contactErr = "Please enter guest's contact";
                     errors.push(contactErr);
                 }
-
                 return errors;
-
             }
- 
+
+            populateFrequentContacts('.company_name');
+            onSelectFreqContactName();
+
+            function onSelectFreqContactName() {
+                $('.company_name').on('change', function() {
+                    let freq_contact_id = $(this).find(":selected").val();
+                    if (freq_contact_id) {
+                        populateFreqContactDetails(freq_contact_id);
+                    }
+                });
+            }
+
+            function populateFreqContactDetails(id) {
+
+                let url = '{{ route('frequent-contact-details.ajax.fetch', ':freq_contact_id') }}';
+                url = url.replace(':freq_contact_id', id);
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function(resp) {
+
+                        let obj = JSON.parse(resp);
+                        for (let i = 0; i < obj.length; i++) {
+
+                            let email = obj[i]['email'];
+                            let phone_number = obj[i]['phone_number'];
+                            let tin = obj[i]['tin'];
+                            let contact_person = obj[i]['contact_person'];
+                            let price = obj[i]['price'];
+
+                            $('.company_email').val(email);
+                            $('.company_contact').val(phone_number);
+                            $('.contact_person').val(contact_person);
+                        }
+                    },
+                    error: function(data) {
+                        console.log('Error on fetching frequent contact details', data);
+                        console.log('Error:', data.error);
+                        displayResponse('.response', data.error, 'error');
+                    }
+                });
+            }
+
         });
     </script>
     <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>

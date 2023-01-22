@@ -45,13 +45,13 @@
 
                     <div class="form-group col">
                         <label>Extra Money Paid</label>
-                        <input type="text" class="form-control bg-white extra_money" value="" id="extra_money"
+                        <input type="text" class="form-control  extra_money" value="" id="extra_money"
                             placeholder="0">
                     </div>
 
                     <div class="form-group col">
                         <label>Cashier</label>
-                        <input type="text" class="form-control bg-white workedon_by" id="workedon_by" name="workedon_by"
+                        <input type="text" class="form-control  workedon_by" id="workedon_by" name="workedon_by"
                             value="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" placeholder="WorkedOn By"
                             disabled="true">
                     </div>

@@ -90,70 +90,70 @@
                         <div class="form-group">
                             <span>Serial Number</span>
                             <input type="hidden" class="purchaseId" name="id">
-                            <input type="text" class="form-control bg-white serial_no" name="serial_no"
+                            <input type="text" class="form-control  serial_no" name="serial_no"
                                 placeholder="Enter serial number of the purchased item">
                         </div>
 
                         <div class="form-group">
                             <span>Receipt Number</span>
-                            <input type="text" class="form-control bg-white receipt_no" name="receipt_no"
+                            <input type="text" class="form-control  receipt_no" name="receipt_no"
                                 placeholder="Enter receipt number of the purchased item">
                         </div>
 
                         <div class="form-group">
                             <span>Item ID</span>
-                            <input type="text" class="form-control bg-white item_code" name="item_code"
+                            <input type="text" class="form-control  item_code" name="item_code"
                                 placeholder="Enter item ID">
                         </div>
 
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Item</span>
-                            <input type="text" class="form-control bg-white item-name" name="item"
+                            <input type="text" class="form-control  item-name" name="item"
                                 placeholder="Enter item" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Quantity</span>
-                            <input type="text" class="form-control bg-white quantity" id="qty" name="quantity"
+                            <input type="text" class="form-control  quantity" id="qty" name="quantity"
                                 placeholder="Enter Quantity" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Price per Item</span>
-                            <input type="text" class="form-control bg-white cost_price" name="cost_price"
+                            <input type="text" class="form-control  cost_price" name="cost_price"
                                 placeholder="Enter original cost price of each item" Required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Retail selling price</span>
-                            <input type="text" class="form-control bg-white retail_price" name="retail_price"
+                            <input type="text" class="form-control  retail_price" name="retail_price"
                                 placeholder="Enter retail price" Required autofocus>
                         </div>
 
 
                         <div class="form-group">
                             <span>Wholesale selling price</span>
-                            <input type="text" class="form-control bg-white wholesale_price" name="wholesale_price"
+                            <input type="text" class="form-control  wholesale_price" name="wholesale_price"
                                 placeholder="Enter wholesale price">
                         </div>
 
 
                         <div class="form-group">
                             <span>Supplier</span>
-                            <input class="form-control bg-white supplier " id="supplier" name="supplier"
+                            <input class="form-control  supplier " id="supplier" name="supplier"
                                 placeholder="Enter supplier's name">
                         </div>
 
                         <div class="form-group">
                             <span>Supplier's contact</span>
-                            <input type="text" class="form-control bg-white supplier_contact" name="supplier_contact"
+                            <input type="text" class="form-control  supplier_contact" name="supplier_contact"
                                 placeholder="Enter supplier's contact">
                         </div>
 
                         <div class="form-group">
                             <span>Date of purchase</span>
-                            <input type="date" class="form-control bg-white date_of_purchase" name="date_of_purchase"
+                            <input type="date" class="form-control  date_of_purchase" name="date_of_purchase"
                                 value="{{ date('Y-m-d') }}" placeholder="Enter date of purchase">
                         </div>
 

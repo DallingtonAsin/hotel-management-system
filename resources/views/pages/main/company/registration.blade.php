@@ -14,32 +14,32 @@
 
             <div class="form-group">
                 <span><i class="text-danger pr-1">*</i>Name</span>
-                <input type="text" class="form-control name bg-white" name="name"
+                <input type="text" class="form-control name " name="name"
                     value="<?= isset($company['name']) ? $company['name'] :  old('name')  ?>" placeholder="Enter company name" required>
             </div>
 
             <div class="row form-group">
                 <div class="col-md-3">
                     <span><i class="text-danger pr-1">*</i>City</span>
-                    <input type="text" class="form-control city bg-white" name="city"
+                    <input type="text" class="form-control city " name="city"
                         value="<?= isset($company['city']) ? $company['city'] : old('city') ?>" placeholder="Enter city">
                 </div>
 
                 <div class="col-md-3">
                     <span>Street</span>
-                    <input type="text" class="form-control street bg-white" name="street"
+                    <input type="text" class="form-control street " name="street"
                         value="<?= isset($company['street']) ? $company['street'] : old('street') ?>" placeholder="Enter street">
                 </div>
 
                 <div class="col-md-3">
                     <span>State/Province</span>
-                    <input type="text" class="form-control state bg-white" name="state"
+                    <input type="text" class="form-control state " name="state"
                         value="<?= isset($company['state']) ? $company['state'] : '' ?>" placeholder="Enter state">
                 </div>
 
                 <div class="col-md-3">
                     <span>Zip/Postal Code</span>
-                    <input type="text" class="form-control state bg-white" name="zip"
+                    <input type="text" class="form-control state " name="zip"
                         value="<?= isset($company['zip']) ? $company['zip'] : old('zip') ?>" placeholder="Enter zip">
                 </div>
             </div>
@@ -47,13 +47,13 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <span><i class="text-danger pr-1">*</i>Phone Number</span>
-                    <input type="text" class="form-control phone_number bg-white" name="phone_number"
+                    <input type="text" class="form-control phone_number " name="phone_number"
                         value="<?= isset($company['phone_number']) ? $company['phone_number'] : old('phone_number') ?>" placeholder="Enter phone number">
                 </div>
 
                 <div class="col-md-6">
                     <span>Email</span>
-                    <input type="email" class="form-control email bg-white" name="email"
+                    <input type="email" class="form-control email " name="email"
                         value="<?= isset($company['email']) ? $company['email'] : old('email') ?>" placeholder="Enter company email">
                 </div>
             </div>
@@ -62,7 +62,7 @@
             <div class="row form-group">
                 <div class="col-md-6">
                     <span>Website url</span>
-                    <input type="website_url" class="form-control website_url bg-white" name="website_url"
+                    <input type="website_url" class="form-control website_url " name="website_url"
                         value="<?= isset($company['website_url']) ? $company['website_url'] : old('website_url') ?>" placeholder="Enter website url">
                 </div>
 

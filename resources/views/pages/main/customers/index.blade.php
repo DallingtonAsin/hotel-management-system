@@ -155,19 +155,19 @@ role="dialog" aria-labelledby="myModalLabel">
 
         <div class="form-group">
            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-            <input type="hidden" class="form-control customerId bg-white customerId" name="id"
+            <input type="hidden" class="form-control customerId  customerId" name="id"
              placeholder="Enter customer id"  Required autofocus>
           </div>
 
         <div class="form-group">
           <span>Name</span>
-          <input type="text" class="form-control name bg-white" name="name" placeholder="Enter customer name" Required autofocus>
+          <input type="text" class="form-control name " name="name" placeholder="Enter customer name" Required autofocus>
         </div>
 
        
         <div class="form-group">
           <span>Contact</span>
-          <input type="text" class="form-control contact bg-white" name="contact" placeholder="Enter contact" Required autofocus>
+          <input type="text" class="form-control contact " name="contact" placeholder="Enter contact" Required autofocus>
         </div>
 
         <div class="form-group">
@@ -178,17 +178,17 @@ role="dialog" aria-labelledby="myModalLabel">
 
          <div class="form-group">
           <span>Debt</span>
-          <input type="text" class="form-control debt bg-white" name="debt" placeholder="Enter debt">
+          <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
         </div>
 
         <div class="form-group">
           <span>Credit</span>
-          <input type="text" class="form-control credit bg-white" name="credit" placeholder="Enter credit">
+          <input type="text" class="form-control credit " name="credit" placeholder="Enter credit">
         </div>
 
         <div class="form-group">
           <span>Taken on</span>
-          <input type="date" value="{{ date('Y-m-d') }}" class="form-control taken_on bg-white" id="taken_on" name="taken_on">
+          <input type="date" value="{{ date('Y-m-d') }}" class="form-control taken_on " id="taken_on" name="taken_on">
         </div>
 
         <div class="form-group">

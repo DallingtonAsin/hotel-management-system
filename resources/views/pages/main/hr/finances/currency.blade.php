@@ -57,25 +57,25 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control currencyId bg-white currencyId" name="id"
+                            <input type="hidden" class="form-control currencyId  currencyId" name="id"
                                 placeholder="Enter currency id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Country</span>
-                            <input type="text" class="form-control country_name bg-white" name="country_name"
+                            <input type="text" class="form-control country_name " name="country_name"
                                 placeholder="Enter country name" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Currency Code</span>
-                            <input type="text" class="form-control currency_code bg-white" name="currency_code"
+                            <input type="text" class="form-control currency_code " name="currency_code"
                                 placeholder="Enter currency code" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Rate</span>
-                            <input type="text" class="form-control rate bg-white" name="rate" placeholder="Enter rate"
+                            <input type="text" class="form-control rate " name="rate" placeholder="Enter rate"
                                 required autofocus>
                         </div>
 

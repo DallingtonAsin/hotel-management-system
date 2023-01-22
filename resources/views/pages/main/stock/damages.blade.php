@@ -95,38 +95,38 @@
                                 <div class="form-group">
                                     <span>Item</span>
                                     <input type="hidden" class="form-control damageId" name="id" id="id">
-                                    <input type="text" class="form-control bg-white item-name" name="damage-item"
+                                    <input type="text" class="form-control  item-name" name="damage-item"
                                         id="item" placeholder="Enter item" autocomplete="off" spellcheck="false">
                                 </div>
 
                                 <div class="form-group">
                                     <span>Quantity</span>
-                                    <input type="text" id="qty" class="form-control quantity bg-white"
+                                    <input type="text" id="qty" class="form-control quantity "
                                         name="quantity" placeholder="Quantity" Required autofocus>
                                 </div>
 
 
                                 <div class="form-group categoryDiv">
                                     <span>Category</span>
-                                    <input type="text" class="form-control bg-white text-dark item-category"
+                                    <input type="text" class="form-control  text-dark item-category"
                                         value="" placeholder="Enter item category">
                                 </div>
 
                                 <div class="form-group bpriceDiv">
                                     <span>Buying Price</span>
-                                    <input type="text" class="form-control bg-white text-dark bprice" value=""
+                                    <input type="text" class="form-control  text-dark bprice" value=""
                                         readonly>
                                 </div>
 
                                 <div class="form-group lamountDiv">
                                     <span>Lost amount</span>
-                                    <input type="text" class="form-control bg-white text-danger lamount" value=""
+                                    <input type="text" class="form-control  text-danger lamount" value=""
                                         readonly>
                                 </div>
 
                                 <div class="form-group record-date-div">
                                     <span>Recorded on</span>
-                                    <input type="text" class="form-control bg-white record-date" value="" readonly>
+                                    <input type="text" class="form-control  record-date" value="" readonly>
                                 </div>
 
                                 <div class="form-group">

@@ -64,20 +64,20 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control paymentId bg-white paymentId" name="id"
+                            <input type="hidden" class="form-control paymentId  paymentId" name="id"
                                 placeholder="Enter payment id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Guest</span>
-                            <select class="form-control guest_section bg-white" name="guest">
+                            <select class="form-control guest_section " name="guest">
                                 <option value="">select guest</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Invoice No.</span>
-                            <input type="text" class="form-control name bg-white invoice_number" name="invoice_number"
+                            <input type="text" class="form-control name  invoice_number" name="invoice_number"
                                 placeholder="Enter invoice number" required autofocus>
                         </div>
 
@@ -93,7 +93,7 @@
 
                         <div class="form-group">
                             <span><span class="text-danger">*</span> Amount</span>
-                            <input type="text" class="form-control bg-white amount" name="amount"
+                            <input type="text" class="form-control  amount" name="amount"
                                 placeholder="Enter amount" required autofocus>
                         </div>
 

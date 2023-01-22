@@ -59,50 +59,50 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control contact_id bg-white contact_id" name="id"
+                            <input type="hidden" class="form-control contact_id  contact_id" name="id"
                                 placeholder="Enter frequent contact id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Name</span>
-                            <input type="text" class="form-control name bg-white" name="name" placeholder="Enter name"
+                            <input type="text" class="form-control name " name="name" placeholder="Enter name"
                                 required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Email</span>
-                            <input type="email" class="form-control email bg-white" name="email"
+                            <input type="email" class="form-control email " name="email"
                                 placeholder="Enter email" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Phone Number</span>
-                            <input type="text" class="form-control phone_number bg-white" name="phone_number"
+                            <input type="text" class="form-control phone_number " name="phone_number"
                                 placeholder="Enter phone_number" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Tin</span>
-                            <input type="text" class="form-control tin bg-white" name="tin" placeholder="Enter tin"
+                            <input type="text" class="form-control tin " name="tin" placeholder="Enter tin"
                                 required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Contact Person</span>
-                            <input type="text" class="form-control contact_person bg-white" name="contact_person"
+                            <input type="text" class="form-control contact_person " name="contact_person"
                                 placeholder="Enter contact person" required autofocus>
                         </div>
 
                         <div class="row form-group">
                             <div class="col-md-6">
                                 <span><i class="text-danger pr-1">*</i>Price</span>
-                                <input type="text" class="form-control price bg-white" name="price"
+                                <input type="text" class="form-control price " name="price"
                                     placeholder="Enter price" required autofocus>
                             </div>
 
                             <div class="col-md-6">
                                 <span><span class="text-danger pr-1">*</span>Currency</span>
-                                <select class="form-control currency bg-white" name="currency">
+                                <select class="form-control currency " name="currency">
                                     <option value="">Select currency</option>
                                 </select>
                             </div>

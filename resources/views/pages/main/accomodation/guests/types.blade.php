@@ -81,13 +81,13 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control guestTypeId bg-white guestTypeId" name="id"
+                            <input type="hidden" class="form-control guestTypeId  guestTypeId" name="id"
                                 placeholder="Enter guest type id" required autofocus>
                         </div>
 
                         <div class="form-group">
                             <span><span class="text-dan-ger pr-1">*</span>Name</span>
-                            <input type="text" class="form-control name bg-white" name="name"
+                            <input type="text" class="form-control name " name="name"
                                 placeholder="Enter guest type name" required autofocus>
                         </div>
 
