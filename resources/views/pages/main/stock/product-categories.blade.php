@@ -34,7 +34,9 @@
                     <thead>
                         <tr class="text-center">
                             <th style="width:20%">#</th>
-                            <th style="width:50%">Item Category</th>
+                            <th style="width:50%">Category name</th>
+                            <th style="width:50%">Is Deleted</th>
+                            <th style="width:50%">Created By</th>
                             <th style="width:20%">Action</th>
                         </tr>
                     </thead>
@@ -61,7 +63,7 @@
 
                             <div class="form-group">
                                 <div class="text-center">
-                                    <label class="text-danger">Are you sure you want
+                                    <label class="text-danger confirm-delete-text">Are you sure you want
                                         to delete item category
                                         <small class="text-dark text-muted bolded">
                                         </small>
@@ -101,17 +103,15 @@
 
                                 <div class="form-group">
                                     <span>Item Category</span>
-                                    <input type="hidden" name="id" class="PdtCategoryId">
-                                    <input type="text" class="form-control PdtCategory " name="item-category"
+                                    <input type="hidden" name="id" class="category_id">
+                                    <input type="text" class="form-control name " name="name"
                                         placeholder="Enter item category" Required autofocus>
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary addPdtCategoryBtn"
+                                    <button type="submit" class="btn btn-primary addCategoryBtn"
                                         name="AddCategoryBtn">Save</button>
                                     <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                                    <button type="button" class="btn btn-dark closeBtn"
-                                        data-bs-dismiss="modal">Close</button>
                                 </div>
 
                                 <div class="form-group">
@@ -201,10 +201,17 @@
                 orderable: false,
                 searchable: false
             },
-            // {data: 'id', name:'id'},
             {
-                data: 'item_category',
-                name: 'item_category'
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'is_deleted',
+                name: 'is_deleted'
+            },
+            {
+                data: 'created_by',
+                name: 'created_by'
             },
             {
                 data: 'action',
@@ -234,7 +241,7 @@
                 checkPermission(permissions.add_product_categories, function(category) {
                     NullifyFields();
                     ShowHideBtns('show');
-                    $('.addPdtCategoryBtn').text("Record product category");
+                    $('.addCategoryBtn').text("Submit");
                     $('#PdtCategoryForm').trigger("reset");
                     $('#modalHeading').html("Record New Pdt Category");
                     DisableFormFields(false);
@@ -253,7 +260,7 @@
 
             function editProductCategory(category_id) {
                 ShowHideBtns('show');
-                $('.addPdtCategoryBtn').text("Edit product category");
+                $('.addCategoryBtn').text("Update");
                 $('#addItemCategoryModal').modal('show');
                 let Url = "{{ route('product-categories.show', ':id') }}";
                 Url = Url.replace(':id', category_id);
@@ -262,13 +269,18 @@
                     url: Url,
                     type: "GET",
                     dataType: 'json',
-                    success: function(data) {
+                    success: function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            $('#modalHeading').html("Edit details of product category " + data.name +
+                                "");
+                            $('.category_id').val(data.id);
+                            $('.name').val(data.name);
+                            DisableFormFields(false);
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
 
-                        $('#modalHeading').html("Edit details of product category item " + data
-                            .item_category + "");
-                        $('.PdtCategoryId').val(data.id);
-                        $('.PdtCategory').val(data.item_category);
-                        DisableFormFields(false);
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
@@ -280,7 +292,7 @@
             function UpdatePdtCategory(category_id) {
 
                 $('.errors-section').html('');
-                $('.addPdtCategoryBtn').html('Updating item...');
+                $('.addCategoryBtn').html('Updating item...');
 
                 let Url = "{{ route('product-categories.update', ':id') }}";
                 Url = Url.replace(':id', category_id);
@@ -303,7 +315,7 @@
                     error: function(data) {
                         console.log('Error:', data.error);
                         displayResponse('.response', data.error, 'error');
-                        $('.addPdtCategoryBtn').html('Save Changes');
+                        $('.addCategoryBtn').html('Save Changes');
                     }
                 });
 
@@ -312,7 +324,7 @@
             function recordPdtCategory() {
 
                 $('.errors-section').html('');
-                $('.addPdtCategoryBtn').html('Sending data..');
+                $('.addCategoryBtn').html('Sending data..');
 
                 $.ajax({
                     data: $('#PdtCategoryForm').serialize(),
@@ -321,25 +333,25 @@
                     dataType: 'json',
                     success: function(data) {
 
-                        $('#PdtCategoryForm').trigger("reset");
-                        $('#addItemCategoryModal').modal("hide");
-                        let resp = data.success || data.error;
+                        let message = data.success || data.error;
                         let type = data.success ? 'success' : 'error';
 
                         if (data.success) {
+                            $('#PdtCategoryForm').trigger("reset");
+                            $('#addItemCategoryModal').modal("hide");
                             ResetTblInfo(data);
                             let tbl = $('#product-categories-table').DataTable();
                             tbl.ajax.reload();
                         }
 
-                        displayResponse('.response', resp, type);
+                        displayResponse('.response', message, type);
 
 
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
                         displayResponse('.response', data.error, 'error');
-                        $('.addPdtCategoryBtn').html('Save Changes');
+                        $('.addCategoryBtn').html('Save Changes');
                     }
                 });
 
@@ -357,26 +369,30 @@
 
             function viewProductCategory(category_id) {
                 ShowHideBtns('hide');
-                $.get("{{ route('product-categories.index') }}" + '/' + category_id + '', function(
-                    data) {
-                    let bprice = data.buying_price;
-                    let sprice = data.selling_price;
-                    $('#modalHeading').html("Details of product category " + data.item_category +
-                        "");
-                    $('#addItemCategoryModal').modal('show');
-                    $('.PdtCategoryId').val(data.id);
-                    $('.PdtCategory').val(data.item_category);
-                    DisableFormFields(true);
+                $.get("{{ route('product-categories.index') }}" + '/' + category_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Details of product category " + data.name +
+                            "");
+                        $('#addItemCategoryModal').modal('show');
+                        $('.category_id').val(data.id);
+                        $('.name').val(data.name);
+                        DisableFormFields(true);
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
+
                 });
             }
 
 
             function onClickSubmitBtn() {
-                $('.addPdtCategoryBtn').click(function(e) {
-                    let id = $(".PdtCategoryId").val();
+                $('.addCategoryBtn').click(function(e) {
+                    let id = $(".category_id").val();
                     e.preventDefault();
-                    let Errors = validateForm();
-                    if (Errors.length == 0) {
+                    let errors = validateForm();
+
+                    if (errors.length == 0) {
                         if (id) {
                             UpdatePdtCategory(id);
 
@@ -387,8 +403,8 @@
                     } else {
                         let i;
                         let message = "";
-                        for (i = 0; i < Errors.length; i++) {
-                            message += Errors[i] + "<br>";
+                        for (i = 0; i < errors.length; i++) {
+                            message += errors[i] + "<br>";
                         }
                         //displayResponse('.errors-section', resp, 'error');
                         $('.errors-section').html(message);
@@ -398,16 +414,24 @@
                 });
             }
 
-
             //this pops up confirm delete modal
             $('body').on('click', '#delete-pdt-category', function(e) {
                 let category_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_product_categories, function(category) {
-                    $("#deletePdtCategoryModal").modal('show');
-                    $('.delete-ok-btn').on('click', function() {
-                        deleteRecord(category_id);
-                    });
+                    $.get("{{ route('product-categories.index') }}" + '/' + category_id + '',
+                        function(response) {
+                            if (response.success) {
+                                let data = response.data;
+                                $("#deletePdtCategoryModal").modal('show');
+                                $('.confirm-delete-text').html(`Are you sure you want to delete item category ${data.name}?`);
+                                $('.delete-ok-btn').on('click', function() {
+                                    deleteRecord(category_id);
+                                });
+                            } else {
+                                displayResponse(null, response.error, 'error');
+                            }
+                        });
                 });
             });
 
@@ -419,21 +443,21 @@
                 $.ajax({
                     type: "DELETE",
                     url: deleteUrl,
-                    success: function(data) {
+                    success: function(response) {
 
                         $('.delete-ok-btn').html('Yes');
                         $('#deletePdtCategoryModal').modal("hide");
 
-                        let resp = data.success || data.error;
-                        let type = data.success ? 'success' : 'error';
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
 
-                        if (data.success) {
-                            ResetTblInfo(data);
+                        if (response.success) {
+                            ResetTblInfo(response.data);
                             let tbl = $('#product-categories-table').DataTable();
                             tbl.ajax.reload();
                         }
 
-                        displayResponse('.response', resp, type);
+                        displayResponse('.response', message, type);
 
                     },
                     error: function(data) {
@@ -444,32 +468,24 @@
             }
 
             function NullifyFields() {
-                $('.PdtCategoryId').val('');
-                $('.item_id').val('');
-                $('.item-name').val('');
-                $('.category').val('');
-                $('#supplier').val('');
-                $('.quantity').val('');
-                $('.expiry_date').val('');
-                $('.original_price').val('');
-                $('.selling_price').val('');
+                $('.category_id').val('');
+                $('.name').val('');
             }
 
 
 
             function DisableFormFields(bool) {
-
-                $('.PdtCategory').attr('disabled', bool);
+                $('.name').attr('disabled', bool);
             }
 
             function ShowHideBtns(action) {
 
                 if (action == 'hide') {
-                    $('.addPdtCategoryBtn').hide();
+                    $('.addCategoryBtn').hide();
                     $('.clearBtn').hide();
                     $('.closeBtn').hide();
                 } else if (action == 'show') {
-                    $('.addPdtCategoryBtn').show();
+                    $('.addCategoryBtn').show();
                     $('.clearBtn').show();
                     $('.closeBtn').show();
                 }
@@ -483,7 +499,7 @@
             }
 
             function validateForm() {
-                let item = $('.PdtCategory').val();
+                let item = $('.name').val();
 
                 let errors = [];
                 if (item.length < 1) {

@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\StockCat;
 use Illuminate\Support\Str;
+use App\Staff;
 
 class StockCatFactory extends Factory
 {
@@ -23,7 +24,8 @@ class StockCatFactory extends Factory
   public function definition()
   {
     return [
-        'name' => Str::random(8)
+        'name' => Str::random(8),
+        'created_by' => Staff::inRandomOrder()->first()->id
     ];
   }
 }
