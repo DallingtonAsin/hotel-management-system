@@ -31,14 +31,16 @@ class CreateDamagesTable extends Migration
 
         Schema::create('damages', function (Blueprint $table) {
             $table->id();
-            $table->string('item_id')->nullable();
-            $table->string('item');
-            $table->string('category')->nullable();
+            $table->unsignedBigInteger('item_id');
             $table->double('quantity');
-            $table->double('buying_price');
-            $table->double('total_cost')->storedAs('quantity * buying_price')->nullable();
             $table->timestamp('recorded_on')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->boolean('is_deleted')->default(false);
+            $table->unsignedBigInteger('recorded_by')->unsigned();
             $table->timestamps();
+
+            $table->foreign('item_id')->references('id')->on('stock');
+            $table->foreign('recorded_by')->references('id')->on('staff');
+
         });
 
     }

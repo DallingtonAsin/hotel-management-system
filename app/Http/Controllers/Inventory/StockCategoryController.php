@@ -87,11 +87,11 @@ class StockCategoryController extends Controller
 
           Helper::LogRequest($request, $dataArr);
           $message = $this->SuccessMessage($action);
-          $totl = $this->GetStockCatStats();
+          $arr = $this->GetStockCatStats();
 
           return response()->json([
             'success' => $message,
-            'totl_no' => $totl,
+            'data' => $arr,
           ]);
         } else {
 
@@ -116,7 +116,19 @@ class StockCategoryController extends Controller
   protected function GetStockCatStats()
   {
     $totl_catItems = StockCat::count();
-    return $totl_catItems;
+    return [
+      'totl_no' => $totl_catItems,
+    ];
+  }
+
+  private function getStockCategoryDetails($id)
+  {
+    try {
+      $category = StockCat::find($id);
+      return response()->json(['success' => 'Ok', 'data' => $category]);
+    } catch (\Exception $ex) {
+      return response()->json(['error' => $ex->getMessage()]);
+    }
   }
 
   /**
@@ -127,8 +139,7 @@ class StockCategoryController extends Controller
    */
   public function show($id)
   {
-    $itemCat = StockCat::find($id);
-    return response()->json($itemCat);
+    return $this->getStockCategoryDetails($id);
   }
 
   /**
@@ -139,8 +150,7 @@ class StockCategoryController extends Controller
    */
   public function edit($id)
   {
-    $itemCat = StockCat::find($id);
-    return response()->json($itemCat);
+    return $this->getStockCategoryDetails($id);
   }
 
   /**
@@ -152,48 +162,60 @@ class StockCategoryController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $request->validate([
-      'name' => 'required',
+
+    $validator = Validator::make($request->all(), [
+      'name' => 'required'
     ]);
 
-    $pdt_category = StockCat::find($id);
+    try {
 
-    $pdt_category->item_category = $itemCategory = request('name');
+      if ($validator->fails()) {
+        $message = $validator->errors()->all();
+        return response()->json(['error' => $message]);
+      } else {
 
-    $pdt_category_update_status = $pdt_category->save();
+        if (!empty($id)) {
+          $category = StockCat::find($id);
+          $old_category_name = $category->name;
+          $category_name = $request->input('name');
 
-    if ($pdt_category_update_status) {
+          if ($category->update(['name' => $category_name])) {
 
-      $action = "updated details of stock category " . $itemCategory . "";
-      Helper::logger($request, $action, now());
-      $dataArr = array(
-        "code" => '200',
-        "message" => $action,
-        "method" => "StockCategoryController@update"
-      );
-      Helper::LogRequest($request, $dataArr);
-      $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
-    } else {
-      $messageErr = 'Item categoryUpdate failed!';
-      $dataArr = array(
-        "code" => '101',
-        "message" => $messageErr,
-        "method" => "StockCategoryController@update"
-      );
-      Helper::LogRequest($request, $dataArr);
+            $action = "updated details of stock category " . $old_category_name . "";
+            Helper::logger($request, $action, now());
+            $dataArr = array(
+              "code" => '200',
+              "message" => $action,
+              "method" => "StockCategoryController@update"
+            );
+            Helper::LogRequest($request, $dataArr);
+            $message = $this->SuccessMessage($action);
+            $arr = $this->GetStockCatStats();
 
-      $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
+            return response()
+              ->json([
+                'success' => $message,
+                'data' => $arr,
+              ]);
+          } else {
+            $error = 'Item categoryUpdate failed!';
+            $dataArr = array(
+              "code" => '101',
+              "message" => $error,
+              "method" => "StockCategoryController@update"
+            );
+            Helper::LogRequest($request, $dataArr);
+
+            $message = $this->FailedMessage($error);
+            return response()->json(['error' => $message]);
+          }
+        } else {
+          return response()->json(['error' => 'System is unable to capture category id']);
+        }
+      }
+    } catch (\Exception $ex) {
+      return response()->json(['error' => $ex->getMessage()]);
     }
-
-    $totl = $this->GetStockCatStats();
-
-    return response()
-      ->json([
-        $sessionVariable => $responseInfo,
-        'totl_no' => $totl,
-      ]);
   }
 
   /**
@@ -204,47 +226,49 @@ class StockCategoryController extends Controller
    */
   public function destroy(Request $request, $id)
   {
+    if (!empty($id)) {
 
-    try {
+      try {
+        $method = "StockCategoryController@destroy";
+        $category = StockCat::find($id);
+        $name = $category->name;
 
-      $method = "StockCategoryController@destroy";
-      $pdt_category = StockCat::find($id);
-      $itemCategory = $pdt_category->item_category;
-      $isDeleted = $pdt_category->delete();
+        if ($category->update(['is_deleted' => true])) {
 
-      if ($isDeleted) {
+          $action = "deleted stock category " . $name . "";
+          Helper::logger($request, $action, now());
+          $dataArr = array(
+            "code" => '200',
+            "message" => $action,
+            "method" => $method
+          );
 
-        $action = "removed stock category " . $itemCategory . "";
-        Helper::logger($request, $action, now());
-        $dataArr = array(
-          "code" => '200',
-          "message" => $action,
-          "method" => $method
-        );
+          Helper::LogRequest($request, $dataArr);
+          $message = $this->SuccessMessage($action);
+          $arr = $this->GetStockCatStats();
 
-        Helper::LogRequest($request, $dataArr);
-        $message = $this->SuccessMessage($action);
-        $totl = $this->GetStockCatStats();
+          return response()
+            ->json([
+              'success' => $message,
+              'data' => $arr,
+            ]);
+        } else {
 
-        return response()
-          ->json([
-            'success' => $message,
-            'totl_no' => $totl,
-          ]);
-      } else {
-
-        $messageErr = 'Item category not deleted!!';
-        $dataArr = array(
-          "code" => '101',
-          "message" => $messageErr,
-          "method" => $method
-        );
-        Helper::LogRequest($request, $dataArr);
-        $message = $this->FailedMessage($messageErr);
-        return response()->json(['error' => $message]);
+          $messageErr = 'Item category not deleted!!';
+          $dataArr = array(
+            "code" => '101',
+            "message" => $messageErr,
+            "method" => $method
+          );
+          Helper::LogRequest($request, $dataArr);
+          $message = $this->FailedMessage($messageErr);
+          return response()->json(['error' => $message]);
+        }
+      } catch (\Exception $ex) {
+        return response()->json(['error' => $ex->getMessage()]);
       }
-    } catch (\Exception $ex) {
-      return response()->json(['error' => $ex->getMessage()]);
+    } else {
+      return response()->json(['error' => 'System is unable to capture category id']);
     }
   }
 
@@ -276,12 +300,12 @@ class StockCategoryController extends Controller
       $responseInfo = $messageErr;
     }
 
-    $totl = $this->GetStockCatStats();
+    $arr = $this->GetStockCatStats();
 
     return response()
       ->json([
         $sessionVariable => $responseInfo,
-        'totl_no' => $totl,
+        'data' => $arr,
       ]);
   }
 
@@ -315,11 +339,11 @@ class StockCategoryController extends Controller
       Helper::logger($request, $action, now());
       Helper::LogRequest($request, $dataArr);
 
-      $totl = $this->GetStockCatStats();
+      $arr = $this->GetStockCatStats();
       return response()
         ->json([
           $sessionVariable => $response,
-          'totl_no' => $totl,
+          'data' => $arr,
         ]);
     } catch (\Exception $ex) {
       $data = array(

@@ -16,7 +16,12 @@ class CreateStockcategoriesTable extends Migration
         Schema::create('stock_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique(); 
-            $table->timestamps();       
+            $table->unsignedBigInteger('created_by')->unsigned();
+            $table->boolean('is_deleted')->default(false);
+            $table->timestamps(); 
+            
+            $table->foreign('created_by')->references('id')->on('staff');
+            
         });
     }
 

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Supplier;
-use Illuminate\Support\Str;
+use App\Staff;
 
 class SupplierFactory extends Factory
 {
@@ -22,6 +22,7 @@ class SupplierFactory extends Factory
   */
   public function definition()
   {
+    $recorded_by = Staff::inRandomOrder()->first()->id;
     return [
       'name' => $this->faker->firstName,
       'address' => $this->faker->state,
@@ -29,6 +30,7 @@ class SupplierFactory extends Factory
       'email' => $this->faker->unique()->safeEmail,
       'debt' => $this->faker->numberBetween($min = 1000, $max = 9000),
       'credit' => $this->faker->numberBetween($min = 9000, $max = 10000),
+      'created_by' => $recorded_by
     ];
   }
 }

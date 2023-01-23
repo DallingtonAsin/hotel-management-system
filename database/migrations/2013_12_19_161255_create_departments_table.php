@@ -19,6 +19,7 @@ class CreateDepartmentsTable extends Migration
             $table->id();
             $table->string('code', 4)->unique();
             $table->string('name', 50);
+            $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
         });

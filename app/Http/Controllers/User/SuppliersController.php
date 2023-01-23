@@ -4,9 +4,9 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Controllers\LogsController;
 use App\Models\Supplier;
 use App\Imports\ImportSuppliers;
 use App\Exports\ExportSuppliers;
@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Constant;
 use Excel;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Auth;
 
 class SuppliersController extends Controller
 {
@@ -32,33 +33,27 @@ class SuppliersController extends Controller
     {
         return $dataTable->render('pages.main.suppliers.index');
     }
+
     public function index()
     {
-        $table ="suppliers";
-        $primaryKey = "id";
+        try {
 
-        try{
+            $arr = $this->GetSumupDetails();
+            $number_of_suppliers = $arr['totl_no'];
+            $total_credit = $arr['totl_credit'];
+            $total_debts = $arr['totl_debt'];
 
-        $arr = $this->GetSumupDetails();
-        $number_of_suppliers = $arr['totl_no'];
-        $total_credit = $arr['totl_credit'];
-        $total_debts = $arr['totl_debt'];
+            return view('pages.main.suppliers.index')->with([
+                'number_of_suppliers' => $number_of_suppliers,
+                'total_credit' => $total_credit,
+                'total_debts' => $total_debts,
 
-        return view('pages.main.suppliers.index')->with([
-        'number_of_suppliers' => $number_of_suppliers,
-        'total_credit' => $total_credit,
-        'total_debts' => $total_debts,
-
-       ]);
-
-    }
-        catch(ModelNotFoundException $ex){
+            ]);
+        } catch (ModelNotFoundException $ex) {
             throw new ModelNotFoundException("Not found what you are looking for");
+        } catch (\Exception $ex) {
+            return abort("405", "We have caught exception " . $ex->getMessage() . " for you");
         }
-        catch(\Exception $ex){
-            return abort("405", "We have caught exception ".$ex->getMesage()." for you");
-        }
-
     }
 
     protected function GetSumupDetails()
@@ -67,9 +62,9 @@ class SuppliersController extends Controller
         $total_credit = DB::table('suppliers')->sum('credit');
         $total_debts = DB::table('suppliers')->sum('debt');
         $data = array(
-               'totl_no' => $number_of_suppliers,
-               'totl_credit' => $total_credit,
-               'totl_debt' => $total_debts
+            'totl_no' => $number_of_suppliers,
+            'totl_credit' => $total_credit,
+            'totl_debt' => $total_debts
         );
 
         return $data;
@@ -93,88 +88,113 @@ class SuppliersController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'address' => 'required',
-        //     'contact' => 'required'
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'address' => 'required',
+            'contact' => 'required',
+            'email' => 'sometimes|nullable|email',
+            'debt' => 'sometimes|nullable',
+            'credit' => 'sometimes|nullable',
+        ]);
 
-        $supplierId = $request->input('id');
-        $supplier_name = $request->input('name');
-        $address = $request->input('address');
-        $contact = $request->input('contact');
-        $email = $request->input('email');
-        $debt = Helper::Numberize($request->input('debt'));
-        $credit = Helper::Numberize($request->input('credit'));
+        try {
+            if ($validator->fails()) {
 
-        empty($email)? $email = null : $email = $email;
-        empty($debt)? $debt = null : $debt = $debt;
-        empty($credit)? $credit = null : $credit = $credit;
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
 
-        (empty($supplierId)) ? $keyAction = 'registered' : $keyAction = 'updated';
+                $supplier_id = $request->input('id');
+                $supplier_name = $request->input('name');
+                $address = $request->input('address');
+                $contact = $request->input('contact');
+                $email = $request->input('email');
+                $credit = $request->input('credit');
+                $debt = $request->input('debt');
 
-        if(isset($supplierId)){
+                if ($request->filled('credit')) {
+                    $credit = Helper::Numberize($request->input('credit'));
+                }
+                if ($request->filled('debt')) {
+                    $debt = Helper::Numberize($request->input('debt'));
+                }
 
-        $response = Supplier::where('id', $supplierId)
-        ->update(['name' => $supplier_name,
-         'address' => $address,
-         'contact' => $contact,
-         'email' => $email,
-         'debt' => $debt,
-         'credit' => $credit,
-         ]);
+                empty($supplier_id) ? $keyAction = 'registered' : $keyAction = 'updated';
 
-        }else{
+                if (!empty($supplier_id)) {
 
-         $supplier = new Supplier();
-         $supplier->name = $supplier_name;
-         $supplier->address = $address;
-         $supplier->contact = $contact;
-         $supplier->email = $email;
-         $supplier->debt = $debt;
-         $supplier->credit = $credit;
-         $response = $supplier->save();
+                    $response = Supplier::where('id', $supplier_id)
+                        ->update([
+                            'name' => $supplier_name,
+                            'address' => $address,
+                            'contact' => $contact,
+                            'email' => $email,
+                            'debt' => $debt,
+                            'credit' => $credit,
+                        ]);
+                } else {
 
+                    $supplier = [
+                        'name' => $supplier_name,
+                        'address' => $address,
+                        'contact' => $contact,
+                        'email' => $email,
+                        'debt' => $debt,
+                        'credit' => $credit,
+                        'created_by' => Auth::user()->id,
+                    ];
+                    $response = Supplier::create($supplier);
+                }
+
+                if ($response) {
+
+                    $action = "" . $keyAction . " supplier " . $supplier_name . "";
+                    Helper::logger($request, $action, now());
+                    $dataArr = array(
+                        "code" => '200',
+                        "message" => $action,
+                        "method" => "SuppliersController@store"
+                    );
+                    Helper::LogRequest($request, $dataArr);
+
+                    $message = $this->SuccessMessage($action);
+                    $arr = $this->GetSumupDetails();
+
+                    return response()->json([
+                        'success' => $message,
+                        'totl_no' => $arr['totl_no'],
+                        'totl_credit' => $arr['totl_credit'],
+                        'totl_debt' => $arr['totl_debt'],
+                    ]);
+                } else {
+
+                    $messageErr = "registering of supplier details not failed!";
+                    $dataArr = array(
+                        "code" => '101',
+                        "message" => $messageErr,
+                        "method" => "SuppliersController@store"
+                    );
+                    Helper::LogRequest($request, $dataArr);
+
+                    $message = $this->FailedMessage($messageErr);
+                    return response()->json(['error' => $message]);
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
         }
+    }
 
+    private function getSupplerDetails($id)
+    {
+        try {
 
-        
-        if($response){
-
-           $action = "".$keyAction." supplier ".$supplier_name."";
-           Helper::logger($request, $action, now());
-           $dataArr = array("code" => '200',
-            "message" => $action,
-            "method" => "SuppliersController@store");
-           Helper::LogRequest($request, $dataArr);
-           $sessionVariable = 'success';
-           $responseInfo = $this->SuccessMessage($action);
-
-       }
-       else{
-          $messageErr = "registering of supplier details not failed!";
-          $dataArr = array("code" => '101',
-          "message" => $messageErr,
-          "method" => "SuppliersController@store");
-          Helper::LogRequest($request, $dataArr);
-          $sessionVariable = 'fail';
-          $responseInfo = $this->FailedMessage($messageErr);
-
-      }
-
-        $arr = $this->GetSumupDetails();
-
-         return response()
-         ->json([$sessionVariable => $responseInfo,
-                 'totl_no' => $arr['totl_no'],
-                 'totl_credit' => $arr['totl_credit'],
-                 'totl_debt' => $arr['totl_debt'],
-         ]);
-
-    //   return back()
-    //   ->with($sessionVariable, $responseInfo);
-
-  }
+            $supplier = Supplier::find($id);
+            return response()->json(['success' => 'Ok', 'data' =>  $supplier]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -184,10 +204,7 @@ class SuppliersController extends Controller
      */
     public function show($id)
     {
-
-        $supplier = Supplier::find($id);
-        return response()->json($supplier);
-
+        return $this->getSupplerDetails($id);
     }
 
     /**
@@ -198,8 +215,7 @@ class SuppliersController extends Controller
      */
     public function edit($id)
     {
-        $supplier = Supplier::find($id);
-        return response()->json($supplier);
+        return $this->getSupplerDetails($id);
     }
 
     /**
@@ -226,33 +242,35 @@ class SuppliersController extends Controller
         $debt = Helper::Numberize($request->input('debt'));
         $credit = Helper::Numberize($request->input('credit'));
 
-        empty($email)? $supplier->email = "" : $supplier->email = $email;
-        empty($debt)? $supplier->debt = 0 : $supplier->debt = $debt;
-        empty($credit)? $supplier->credit = 0 : $supplier->credit = $credit;
+        empty($email) ? $supplier->email = "" : $supplier->email = $email;
+        empty($debt) ? $supplier->debt = 0 : $supplier->debt = $debt;
+        empty($credit) ? $supplier->credit = 0 : $supplier->credit = $credit;
 
         $save_status = $supplier->save();
 
-        if($save_status){
+        if ($save_status) {
 
-          $action = "updated details of supplier ".$supplier_name."";
-          Helper::logger($request, $action, now());
-          $dataArr = array("code" => '200',
-          "message" => $action,
-          "method" => "SuppliersController@update");
-          Helper::LogRequest($request, $dataArr);
+            $action = "updated details of supplier " . $supplier_name . "";
+            Helper::logger($request, $action, now());
+            $dataArr = array(
+                "code" => '200',
+                "message" => $action,
+                "method" => "SuppliersController@update"
+            );
+            Helper::LogRequest($request, $dataArr);
 
-          return back()->with("success", $this->SuccessMessage($action));
-      }
-      else
-      {
-          $messageErr = "supplier details not updated!";
-          $dataArr = array("code" => '101',
-          "message" => $messageErr,
-          "method" => "SuppliersController@update");
-          Helper::LogRequest($request, $dataArr);
-          return back()->with('fail', $messageErr);
-      }
-  }
+            return back()->with("success", $this->SuccessMessage($action));
+        } else {
+            $messageErr = "supplier details not updated!";
+            $dataArr = array(
+                "code" => '101',
+                "message" => $messageErr,
+                "method" => "SuppliersController@update"
+            );
+            Helper::LogRequest($request, $dataArr);
+            return back()->with('fail', $messageErr);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -263,122 +281,132 @@ class SuppliersController extends Controller
     public function destroy(Request $request, $id)
     {
 
+        if (!empty($id)) {
 
-        $method = "SuppliersController@destroy";
+            try {
 
-        $supplier_name = Supplier::where('id', $id)->value('name');
-        $response = Supplier::find($id)->delete();
+                $method = "SuppliersController@destroy";
 
-        if($response){
+                $supplier = Supplier::find(intval($id)); 
+                $response = $supplier->update(['is_deleted' => true]);
 
-          $action = "removed supplier ".$supplier_name." from the system";
-          Helper::logger($request, $action, now());
-          $dataArr = array("code" => '200',
-          "message" => $action,
-          "method" => $method);
-          Helper::LogRequest($request, $dataArr);
-          $sessionVariable = 'success';
-          $responseInfo = $this->SuccessMessage($action);
+                if ($response) {
+                    
+                    $action = "removed supplier " . $supplier->name . " from the system";
+                    Helper::logger($request, $action, now());
+                    $dataArr = array(
+                        "code" => '200',
+                        "message" => $action,
+                        "method" => $method
+                    );
+                    Helper::LogRequest($request, $dataArr);
+                    $message = $this->SuccessMessage($action);
+                    $arr = $this->GetSumupDetails();
 
-      }
-      else
-      {
+                    return response()
+                        ->json(['success' => $message,
+                                'data' => $arr,
+                               ]);
 
-          $messageErr = "supplier not removed";
-          $dataArr = array("code" => '101',
-          "message" => $messageErr,
-          "method" => $method);
-          Helper::LogRequest($request, $dataArr);
-          $sessionVariable = 'fail';
-          $responseInfo = $this->FailedMessage($messageErr);
+                } else {
 
-   }
+                    $messageErr = "supplier not removed";
+                    $dataArr = array(
+                        "code" => '101',
+                        "message" => $messageErr,
+                        "method" => $method
+                    );
+                    Helper::LogRequest($request, $dataArr);
 
-   $arr = $this->GetSumupDetails();
+                    $message = $this->FailedMessage($messageErr);
+                    return response()->json(['error' => $message]);
 
-   return response()
-   ->json([$sessionVariable => $responseInfo,
-           'totl_no' => $arr['totl_no'],
-           'totl_credit' => $arr['totl_credit'],
-           'totl_debt' => $arr['totl_debt'],
-   ]);
+                }
 
-}
-
-
-public function deleteAllSuppliers(Request $request)
-{
-    $result = Supplier::truncate();
-    if($result){
-
-        $action = "deleted all suppliers from the system";
-        Helper::logger($request, $action, now());
-        $dataArr = array("code" => '200',
-        "message" => $action,
-        "method" => "SuppliersController@deleteAllSuppliers");
-        Helper::LogRequest($request, $dataArr);
-        $sessionVariable = 'success';
-        $responseInfo = $this->SuccessMessage($action);
-      //  return back()->with("success", $this->SuccessMessage($action));
+               
+            } catch (\Exception $ex) {
+                return response()->json(['error' => $ex->getMessage()]);
+            }
+        }
     }
-    else
+
+
+    public function deleteAllSuppliers(Request $request)
     {
-       $messageErr = "suppliers not removed from the system!";
-       $dataArr = array("code" => '101',
-       "message" => $messageErr,
-       "method" => "SuppliersController@deleteAllSuppliers");
-       Helper::LogRequest($request, $dataArr);
-       $sessionVariable = 'fail';
-       $responseInfo = $messageErr;
-      // return back()->with('fail', $messageErr);
-   }
+        $result = Supplier::truncate();
+        if ($result) {
 
-   $arr = $this->GetSumupDetails();
+            $action = "deleted all suppliers from the system";
+            Helper::logger($request, $action, now());
+            $dataArr = array(
+                "code" => '200',
+                "message" => $action,
+                "method" => "SuppliersController@deleteAllSuppliers"
+            );
+            Helper::LogRequest($request, $dataArr);
+            $sessionVariable = 'success';
+            $responseInfo = $this->SuccessMessage($action);
+            //  return back()->with("success", $this->SuccessMessage($action));
+        } else {
+            $messageErr = "suppliers not removed from the system!";
+            $dataArr = array(
+                "code" => '101',
+                "message" => $messageErr,
+                "method" => "SuppliersController@deleteAllSuppliers"
+            );
+            Helper::LogRequest($request, $dataArr);
+            $sessionVariable = 'error';
+            $responseInfo = $messageErr;
+            // return back()->with('fail', $messageErr);
+        }
 
-    return response()
-    ->json([$sessionVariable => $responseInfo,
-            'totl_no' => $arr['totl_no'],
-            'totl_credit' => $arr['totl_credit'],
-            'totl_debt' => $arr['totl_debt'],
-    ]);
+        $arr = $this->GetSumupDetails();
 
-}
+        return response()
+            ->json([
+                $sessionVariable => $responseInfo,
+                'totl_no' => $arr['totl_no'],
+                'totl_credit' => $arr['totl_credit'],
+                'totl_debt' => $arr['totl_debt'],
+            ]);
+    }
 
-public function importSuppliers(Request $request)
-{
+    public function importSuppliers(Request $request)
+    {
 
-   $this->validate($request,
-      ['select_file' => 'required|mimes:xls,xlsx'],
-      ['select_file.mimes' => 'Please select only excel files to import suppliers']
-  );
+        $this->validate(
+            $request,
+            ['select_file' => 'required|mimes:xls,xlsx'],
+            ['select_file.mimes' => 'Please select only excel files to import suppliers']
+        );
 
-   $importSuccess = Excel::import(new ImportSuppliers, request()->file('select_file'));
+        $importSuccess = Excel::import(new ImportSuppliers, request()->file('select_file'));
 
-   if($importSuccess){
+        if ($importSuccess) {
 
-     $action = "imported an excel file of suppliers into the system";
-     Helper::logger($request, $action, now());
-     $dataArr = array("code" => '200',
-     "message" => $action,
-     "method" => "SuppliersController@importSuppliers");
-     Helper::LogRequest($request, $dataArr);
-     return back()->with('success', $this->SuccessMessage($action));
- }
- else
- {
-   $messageErr = "Excel suppliers data not imported!";
-   $dataArr = array("code" => '101',
-   "message" => $messageErr,
-   "method" => "SuppliersController@importSuppliers");
-   Helper::LogRequest($request, $dataArr);
-   return back()->with('fail', $messageErr);
-}
+            $action = "imported an excel file of suppliers into the system";
+            Helper::logger($request, $action, now());
+            $dataArr = array(
+                "code" => '200',
+                "message" => $action,
+                "method" => "SuppliersController@importSuppliers"
+            );
+            Helper::LogRequest($request, $dataArr);
+            return back()->with('success', $this->SuccessMessage($action));
+        } else {
+            $messageErr = "Excel suppliers data not imported!";
+            $dataArr = array(
+                "code" => '101',
+                "message" => $messageErr,
+                "method" => "SuppliersController@importSuppliers"
+            );
+            Helper::LogRequest($request, $dataArr);
+            return back()->with('fail', $messageErr);
+        }
+    }
 
 
-}
-
-
- public function RemoveSelected(Request $request)
+    public function RemoveSelected(Request $request)
     {
         try {
             $ids =  $request->input('selected_rows');
@@ -393,13 +421,14 @@ public function importSuppliers(Request $request)
             }
             $sessionVariable = 'success';
             $deletedSuppliersStr = implode(", ", $DeletedSuppliers);
-            $action = "removed suppliers ".$deletedSuppliersStr." from the system";
+            $action = "removed suppliers " . $deletedSuppliersStr . " from the system";
             if (count($ids) == 1) {
                 $action = Str::replaceFirst('suppliers', 'supplier', $action);
             }
             $response = $this->SuccessMessage($action);
 
-            $dataArr = array("code" => '200',
+            $dataArr = array(
+                "code" => '200',
                 "message" => $action,
                 "method" => "SuppliersController@RemoveSelected"
             );
@@ -407,60 +436,52 @@ public function importSuppliers(Request $request)
             Helper::LogRequest($request, $dataArr);
 
             $arr = $this->GetSumupDetails();
-            $number_of_suppliers = $arr['totl_no'];
 
             $arr = $this->GetSumupDetails();
 
             return response()
-            ->json([$sessionVariable => $response,
+                ->json([
+                    $sessionVariable => $response,
                     'totl_no' => $arr['totl_no'],
                     'totl_credit' => $arr['totl_credit'],
                     'totl_debt' => $arr['totl_debt'],
-            ]);
-
-           
+                ]);
         } catch (\Exception $ex) {
             $data = array(
-          'username' => auth()->user()->username,
-          'error_code' => $ex->getCode(),
-          'error_message' => $ex->getMessage(),
-          'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
-          'controller' => $this->controller,
-          'method' => 'RemoveSelected'
-        );
+                'username' => auth()->user()->username,
+                'error_code' => $ex->getCode(),
+                'error_message' => $ex->getMessage(),
+                'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
+                'controller' => $this->controller,
+                'method' => 'RemoveSelected'
+            );
             Helper::logError($data);
             abort(409, $ex->getMessage());
         }
     }
 
 
-   /**
-      * @return \Illuminate\Support\Collection
-      */
-   public function exportSuppliers()
-   {
-      return Excel::download(new ExportSuppliers, 'suppliers.xlsx');
-  }
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function exportSuppliers()
+    {
+        return Excel::download(new ExportSuppliers, 'suppliers.xlsx');
+    }
 
 
 
 
-  protected function SuccessMessage($msg)
-{
-  $message = "You have successfully ".$msg."";
-  return $message;
-}
+    protected function SuccessMessage($msg)
+    {
+        $message = "You have successfully " . $msg . "";
+        return $message;
+    }
 
 
-protected function FailedMessage($failmsg)
-{
-  $message = "".$failmsg."";
-  return $message;
-}
-
-
-
-
-
-
+    protected function FailedMessage($failmsg)
+    {
+        $message = "" . $failmsg . "";
+        return $message;
+    }
 }

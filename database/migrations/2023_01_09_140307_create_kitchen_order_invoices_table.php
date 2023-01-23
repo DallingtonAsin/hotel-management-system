@@ -26,10 +26,10 @@ class CreateKitchenOrderInvoicesTable extends Migration
             $table->timestamp('issued_on')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('paid_at')->nullable();
             $table->string('payment_method')->nullable();
-            $table->integer('completed_by')->unsigned()->nullable();
+            $table->unsignedBigInteger('completed_by')->unsigned()->nullable();
             $table->timestamp('cancelled_at')->nullable();
             $table->string('cancelled_for')->nullable();
-            $table->integer('cancelled_by')->unsigned()->nullable();
+            $table->unsignedBigInteger('cancelled_by')->unsigned()->nullable();
 
 
             $table->timestamps();

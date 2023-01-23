@@ -14,11 +14,11 @@ class CreateRoomStatusHistoryTable extends Migration
     public function up()
     {
         Schema::create('room_status_history', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('status_id');
             $table->timestamp('changed_at');
-            $table->integer('changed_by')->unsigned();
+            $table->unsignedBigInteger('changed_by')->unsigned();
             $table->timestamps();
           
             $table->foreign('room_id')->references('id')->on('rooms');

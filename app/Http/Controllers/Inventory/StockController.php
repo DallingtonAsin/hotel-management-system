@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\Stock;
+use App\Models\StockCat;
 use App\Imports\ImportStock;
 use App\Exports\ExportStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\DataTables\Inventory\StockDataTable;
 use Illuminate\Support\Str;
@@ -30,7 +32,7 @@ class StockController extends Controller
     $stock = Stock::all(); //DB::select('exec GetStockProc');
     $number_of_stockItems = Stock::count();
     $stock_value = DB::table('stock')->sum('total_cost_price');
-    $categories = DB::table('stockcategories')->get();
+    $categories = StockCat::get();
     $suppliers = DB::table('suppliers')->get();
     return view('pages.main.stock.stock')->with(compact('stock', 'stock_value', 'categories', 'suppliers', 'number_of_stockItems'));
   }
@@ -66,13 +68,18 @@ class StockController extends Controller
 
     $validator = Validator::make($request->all(), [
       'item' => 'required',
+      'item_code' => 'sometimes|nullable',
+      'category' => 'sometimes|nullable',
+      'supplier' => 'sometimes|nullable',
       'quantity' => 'required',
       'original_price' => 'required',
-      'selling_price' => 'required'
+      'selling_price' => 'required',
+      'threshold_qty' => 'sometimes|nullable',
     ]);
 
     try {
       if ($validator->fails()) {
+
         $message = $validator->errors()->all();
         return response()->json(['error' => $message]);
       } else {
@@ -81,47 +88,38 @@ class StockController extends Controller
         $method = "StockController@store";
 
         $item_code = $request->input('item_code');
-        $item = $request->input('item');
-        $category = $request->input('category');
-        $supplier = $request->input('supplier');
-        $quantity = Helper::Numberize($request->input('quantity'));
-        ($request->has('thresholdQty') && $request->filled("thresholdQty"))
-          ? $thresholdQty = Helper::Numberize($request->input("thresholdQty"))
-          : $thresholdQty = 0;
+        $item_name = $request->input('item');
+        $category_id  = $request->input('category');
+        $supplier_id = $request->input('supplier');
+        $quantity = $request->input('quantity');
+        $quantity = Helper::Numberize($quantity);
 
+        $request->filled("threshold_qty")
+          ? $threshold_quantity = Helper::Numberize($request->input("threshold_qty"))
+          : $threshold_quantity = 0;
 
         $expiry_date = $request->input('expiry_date');
         $buying_price = Helper::Numberize($request->input('original_price'));
         $selling_price = Helper::Numberize($request->input('selling_price'));
         $wholesale_price = Helper::Numberize($request->input('wholesale_price'));
 
+        $stock = [
+          'item_code' => $item_code,
+          'item_name' => $item_name,
+          'category_id' => $category_id,
+          'supplier_id' => $supplier_id,
+          'quantity' => $quantity,
+          'threshold_qty' => $threshold_quantity,
+          'buying_price' => $buying_price,
+          'selling_price' => $selling_price,
+          'wholesale_price' => $wholesale_price,
+          'expiry_date' => empty($expiry_date) ? "" : $expiry_date,
+          'created_by' => Auth::user()->id,
+        ];
 
-        $stock->item_code = $item_code;
-        $stock->item = $item;
-        $stock->category = $category;
-        $stock->supplier = $supplier;
-        $stock->quantity = $quantity;
-        $stock->threshold_qty = $thresholdQty;
-        $stock->buying_price = $buying_price;
-        $stock->selling_price = $selling_price;
-        $stock->wholesale_price = $wholesale_price;
-        $stock->expiry_date = empty($expiry_date) ? "" : $expiry_date;
-        $saveStockResponse = $stock->save();
+        if (Stock::create($stock)) {
 
-        // $purchase = new Purchase;
-        //   $purchase->item_code = $item_code;
-        //   $purchase->item = $item;
-        //   $purchase->quantity = $quantity;
-        //   $purchase->cost_price_per_item = $buying_price;
-        //   $purchase->supplier = $supplier;
-        //   $purchase->created_by =  $request->user()->name;
-        //   $purchase->date = now();
-        //  ($expiry_date == "mm/dd/yyyy")? $stock->expiry_date = "" : $stock->expiry_date =$expiry_date;
-        //   $savePurchaseResponse = $purchase->save();
-
-        if ($saveStockResponse) {
-
-          $action = "recorded stock item " . $item . " in the system";
+          $action = "recorded stock item " . $item_name . " in the system";
           Helper::logger($request, $action, now());
           $dataArr = array(
             "code" => '200',
@@ -137,10 +135,8 @@ class StockController extends Controller
           return response()
             ->json([
               'success' => $message,
-              'totl_stock' => $arr['totl'],
-              'stock_value' => $arr['value'],
+              'data' => $arr
             ]);
-
         } else {
 
           $messageErr = "System has failed to add stock item";
@@ -159,11 +155,6 @@ class StockController extends Controller
     } catch (\Exception $ex) {
       return response()->json(['error' => $ex->getMessage()]);
     }
-
-
-
-
-
   }
 
   protected function getStockStats()
@@ -177,6 +168,16 @@ class StockController extends Controller
     return $data;
   }
 
+  private function getProductDetails($id)
+  {
+    try {
+      $data = Stock::find($id);
+      return response()->json(['success' => 'Ok', 'data' => $data]);
+    } catch (\Exception $ex) {
+      return response()->json(['error' => $ex->getMessage()]);
+    }
+  }
+
   /**
    * Display the specified resource.
    *
@@ -185,9 +186,7 @@ class StockController extends Controller
    */
   public function show($id)
   {
-
-    $items = Stock::find($id);
-    return response()->json($items);
+    return $this->getProductDetails($id);
   }
 
   /**
@@ -198,8 +197,7 @@ class StockController extends Controller
    */
   public function edit($id)
   {
-    $items = Stock::find($id);
-    return response()->json($items);
+    return $this->getProductDetails($id);
   }
 
   /**
@@ -212,81 +210,87 @@ class StockController extends Controller
   public function update(Request $request, $id)
   {
 
-    $request->validate([
-
+    $validator = Validator::make($request->all(), [
       'item' => 'required',
+      'item_code' => 'sometimes|nullable',
+      'category' => 'sometimes|nullable',
+      'supplier' => 'sometimes|nullable',
       'quantity' => 'required',
       'original_price' => 'required',
       'selling_price' => 'required',
-
+      'threshold_qty' => 'sometimes|nullable',
     ]);
 
-    $stock = Stock::find($id);
-    $stock->item_code = $request->input('item_code');
-    $stock->item = $item = $request->input('item');
+    try {
+      if ($validator->fails()) {
 
-    $stock->category = $request->input('category');
+        $message = $validator->errors()->all();
+        return response()->json(['error' => $message]);
+      } else {
 
-    empty($request->input('category'))
-      ? $stock->category = $stock->category
-      : $stock->category = $request->input('category');
+        $stock = Stock::find($id);
+        $stock->item_name = $item = $request->input('item');
+        $stock->item_code = $request->input('item_code');
+        $stock_category = $request->input('category');
 
-    empty($request->input('supplier'))
-      ? $stock->supplier = $stock->supplier
-      : $stock->supplier = $request->input('supplier');
+        empty($request->input('category'))
+          ? $stock->category_id = $stock->category_id
+          : $stock->category_id = $stock_category;
 
-    $stock->quantity = Helper::Numberize($request->input('quantity'));
+        empty($request->input('supplier'))
+          ? $stock->supplier_id = $stock->supplier_id
+          : $stock->supplier_id = $request->input('supplier');
 
-    $expiry_date = $request->input('expiry_date');
-    $stock->buying_price = Helper::Numberize($request->input('original_price'));
-    $stock->selling_price = Helper::Numberize($request->input('selling_price'));
-    $stock->wholesale_price = Helper::Numberize($request->input('wholesale_price'));
+        $stock->quantity = Helper::Numberize($request->input('quantity'));
 
-    ($request->has('thresholdQty') && $request->filled("thresholdQty"))
-      ? $thresholdQty = Helper::Numberize($request->input("thresholdQty"))
-      : $thresholdQty = 0;
-    $stock->threshold_qty = $thresholdQty;
-    (empty($expiry_date)) ? $stock->expiry_date = "" : $stock->expiry_date = $expiry_date;
-    ($expiry_date == "mm/dd/yyyy") ? $stock->expiry_date = "" : $stock->expiry_date = $expiry_date;
+        $expiry_date = $request->input('expiry_date');
+        $stock->buying_price = Helper::Numberize($request->input('original_price'));
+        $stock->selling_price = Helper::Numberize($request->input('selling_price'));
+        $stock->wholesale_price = Helper::Numberize($request->input('wholesale_price'));
 
-    $saveResponse = $stock->save();
-    if ($saveResponse) {
+        $request->filled("threshold_qty")
+          ? $threshold_quantity = Helper::Numberize($request->input("threshold_qty"))
+          : $threshold_quantity = 0;
 
-      $action = "updated details of stock item " . $item . "";
-      Helper::logger($request, $action, now());
-      $dataArr = array(
-        "code" => '200',
-        "message" => $action,
-        "method" => "StockController@update"
-      );
-      Helper::LogRequest($request, $dataArr);
+        $stock->threshold_qty = $threshold_quantity;
 
-      $sessionVariable = 'success';
-      $responseInfo = $this->ActionMessage($action);
+        (empty($expiry_date)) ? $stock->expiry_date = "" : $stock->expiry_date = $expiry_date;
+        ($expiry_date == "mm/dd/yyyy") ? $stock->expiry_date = "" : $stock->expiry_date = $expiry_date;
 
-    } else {
-      $messageErr = "Stock Update failed!";
-      $dataArr = array(
-        "code" => '101',
-        "message" => $messageErr,
-        "method" => "StockController@update"
-      );
-      Helper::LogRequest($request, $dataArr);
+        if ($stock->save()) {
 
-      $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
+          $action = "updated details of stock item " . $item . "";
+          Helper::logger($request, $action, now());
+          $dataArr = array(
+            "code" => '200',
+            "message" => $action,
+            "method" => "StockController@update"
+          );
+          Helper::LogRequest($request, $dataArr);
 
+          $arr = $this->getStockStats();
+          $message = $this->ActionMessage($action);
+          return response()
+            ->json([
+              'success' => $message,
+              'data' => $arr
+            ]);
+        } else {
+          $messageErr = "Stock Update failed!";
+          $dataArr = array(
+            "code" => '101',
+            "message" => $messageErr,
+            "method" => "StockController@update"
+          );
+          Helper::LogRequest($request, $dataArr);
+
+          $message = $this->FailedMessage($messageErr);
+          return response()->json(['error' => $message]);
+        }
+      }
+    } catch (\Exception $ex) {
+      return response()->json(['error' => $ex->getMessage()]);
     }
-
-    $arr = $this->getStockStats();
-
-    return response()
-      ->json([
-        $sessionVariable => $responseInfo,
-        'totl_stock' => $arr['totl'],
-        'stock_value' => $arr['value'],
-      ]);
-
   }
 
   /**
@@ -297,44 +301,49 @@ class StockController extends Controller
    */
   public function destroy(Request $request, $id)
   {
-    $stock = Stock::find($id);
-    $stock_item = $stock->item;
-    $stock_delete_status = $stock->delete();
-    if ($stock_delete_status) {
 
-      $action = "removed item " . $stock_item . " from list of stock items";
-      Helper::logger($request, $action, now());
-      $dataArr = array(
-        "code" => '200',
-        "message" => $action,
-        "method" => "StockController@destroy"
-      );
-      Helper::LogRequest($request, $dataArr);
+    if (!empty($id)) {
+      try {
+        $stock = Stock::find($id);
+        $item_name = $stock->item_name;
 
-      $sessionVariable = 'success';
-      $responseInfo = $this->ActionMessage($action);
+        if ($stock->update(['is_deleted' => true])) {
+
+          $action = "removed item " . $item_name . " from list of stock items";
+          Helper::logger($request, $action, now());
+          $dataArr = array(
+            "code" => '200',
+            "message" => $action,
+            "method" => "StockController@destroy"
+          );
+          Helper::LogRequest($request, $dataArr);
+
+          $message = $this->ActionMessage($action);
+          $arr = $this->getStockStats();
+
+          return response()
+            ->json([
+              'success' => $message,
+              'data' => $arr
+            ]);
+        } else {
+
+          $error = "System unable to delete";
+          $dataArr = array(
+            "code" => '101',
+            "message" => $error,
+            "method" => "StockController@destroy"
+          );
+          Helper::LogRequest($request, $dataArr);
+          $message = $this->FailedMessage($error);
+          return response()->json(['error' => $message]);
+        }
+      } catch (\Exception $ex) {
+        return response()->json(['error' => $ex->getMessage()]);
+      }
     } else {
-      $messageErr = "item not removed!";
-      $dataArr = array(
-        "code" => '101',
-        "message" => $messageErr,
-        "method" => "StockController@destroy"
-      );
-      Helper::LogRequest($request, $dataArr);
-
-      $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
+      return response()->json(['error' => 'System is unable to capture item id']);
     }
-
-    $arr = $this->getStockStats();
-
-    return response()
-      ->json([
-        $sessionVariable => $responseInfo,
-        'totl_stock' => $arr['totl'],
-        'stock_value' => $arr['value'],
-      ]);
-
   }
 
   public function deleteAllStockItems(Request $request)
@@ -374,7 +383,6 @@ class StockController extends Controller
         'totl_stock' => $arr['totl'],
         'stock_value' => $arr['value'],
       ]);
-
   }
 
   public function RemoveSelected(Request $request)
@@ -414,8 +422,6 @@ class StockController extends Controller
           'totl_stock' => $arr['totl'],
           'stock_value' => $arr['value'],
         ]);
-
-
     } catch (\Exception $ex) {
       $data = array(
         'username' => auth()->user()->username,
@@ -461,8 +467,6 @@ class StockController extends Controller
       Helper::LogRequest($request, $dataArr);
       return back()->with('fail', $messageErr);
     }
-
-
   }
 
 
@@ -499,15 +503,9 @@ class StockController extends Controller
         $stock = Stock::all();
         echo json_encode($stock);
         die();
-
       }
     } catch (\Exception $ex) {
       echo "Error " . $ex->getMessage();
     }
   }
-
-
-
-
-
 }

@@ -20,7 +20,7 @@ class CreateRoomsTable extends Migration
             $table->string('floor_number');
             $table->string('description')->nullable();
             $table->unsignedBigInteger('status_id');
-            $table->integer('created_by')->unsigned();
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('type_id')->references('id')->on('room_types');
             $table->foreign('status_id')->references('id')->on('room_statuses');

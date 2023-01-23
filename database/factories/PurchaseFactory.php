@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Purchase;
+use App\Models\Stock;
+use App\Models\Supplier;
 use Illuminate\Support\Str;
 
 class PurchaseFactory extends Factory
@@ -22,13 +24,18 @@ class PurchaseFactory extends Factory
   */
   public function definition()
   {
+
+    $random_stock = Stock::inRandomOrder()->first();
+    $random_supplier = Supplier::inRandomOrder()->first();
+    $random_staff = Supplier::inRandomOrder()->first();
+
     return [
-        'item_code' => Str::random(3),
-        'item' => Str::random(7),
+        'item_code' => $random_stock->item_code,
+        'item_name' => $random_stock->item_name,
         'quantity' => $this->faker->randomDigitNot(0),
-        'cost_price_per_item' => $this->faker->numberBetween($min=4000, $max=6000),
-        'supplier' => $this->faker->lastName,
-        'created_by' => $this->faker->firstName,
+        'cost_price_per_item' => $random_stock->buying_price,
+        'supplier_id' => $random_supplier->id,
+        'created_by' => $random_staff->id,
     ];
   }
 }

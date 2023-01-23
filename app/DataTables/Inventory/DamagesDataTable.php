@@ -5,6 +5,7 @@ namespace App\DataTables\Inventory;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Damage;
+use App\Models\Stock;
 
 class DamagesDataTable extends DataTable
 {
@@ -18,52 +19,49 @@ class DamagesDataTable extends DataTable
     {
 
         return datatables($query)
-        ->order(function($query){
-               $query->orderBy('recordedOn', 'desc');
-        })->addIndexColumn()
-        ->addColumn('action', function ($damage) {
-            $btn = "";
-            if(Gate::allows('isAdmin')){
+            ->order(function ($query) {
+                $query->orderBy('id', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($damage) {
+                $btn = "";
 
-            $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
-            data-id="'.$damage->id.'" data-original-title="Edit" id="edit-damage"
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+            data-id="' . $damage->id . '" data-original-title="Edit" id="edit-damage"
               class="px-3 py-1 border border-success rounded  edit-damage mx-2">
              <span class="fa fa-pen text-success"></span></a>';
 
 
-            // $btn .= '<a href="javascript:void(0);" id="delete-damage"
-            // data-toggle="tooltip" data-original-title="Delete" data-id="'.$damage->id.'" 
-            // class="trash-btn pr-4">
-            // <span class="fa fa-trash-alt" ></span></a>';
+                // $btn .= '<a href="javascript:void(0);" id="delete-damage"
+                // data-toggle="tooltip" data-original-title="Delete" data-id="'.$damage->id.'" 
+                // class="trash-btn pr-4">
+                // <span class="fa fa-trash-alt" ></span></a>';
 
-            }
-
-             $btn .= '<a href="javascript:void(0);" id="view-damage"
-            data-toggle="tooltip" data-original-title="View" data-id="'.$damage->id.'"
+                $btn .= '<a href="javascript:void(0);" id="view-damage"
+            data-toggle="tooltip" data-original-title="View" data-id="' . $damage->id . '"
              class="px-3 py-1 border border-secondary rounded text-secondary bolded">
             <i class="fa fa-eye" ></i></a>';
 
-
-
-           return $btn;
-
-        })->addColumn('checkbox', function ($damage) {
-              $checkBox = '<input type="checkbox" id="'.$damage->id.'"/>';
-             return $checkBox;
-        })->editColumn('quantity', function ($data) {
-            return number_format($data->quantity);
-        })->editColumn('buying_price', function ($data) {
-            return number_format($data->buying_price);
-        })->editColumn('total_cost', function ($data) {
-            return number_format($data->total_cost);
-        })->editColumn('recordedOn', function ($data) {
-            return date('d/m/Y H:i', strtotime($data->recordedOn));
-        })->rawColumns(['action', 'checkbox']);
-
-
-
-
-
+                return $btn;
+            })->addColumn('checkbox', function ($damage) {
+                $checkBox = '<input type="checkbox" id="' . $damage->id . '"/>';
+                return $checkBox;
+            })->addColumn('item_code', function ($data) {
+                $item = Stock::where('id', $data->item_id)->first();
+                return $item->item_code;
+            })->addColumn('item_name', function ($data) {
+                $item = Stock::where('id', $data->item_id)->first();
+                return $item->item_name;
+            })->addColumn('buying_price', function ($data) {
+                $item = Stock::where('id', $data->item_id)->first();
+                return number_format($item->buying_price);
+            })->addColumn('total_cost', function ($data) {
+                $item = Stock::where('id', $data->item_id)->first();
+                return number_format($data->quantity * $item->buying_price);
+            })->editColumn('quantity', function ($data) {
+                return number_format($data->quantity);
+            })->editColumn('recorded_on', function ($data) {
+                return date('d/m/Y H:i', strtotime($data->recorded_on));
+            })->rawColumns(['action', 'checkbox']);
     }
 
 
@@ -80,12 +78,11 @@ class DamagesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->addAction(['width' => '80px'])
-        ->dom('Bfrtip')
-        ->orderBy(1)->parameters($this->getBuilderParameters());
-
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->addAction(['width' => '80px'])
+            ->dom('Bfrtip')
+            ->orderBy(1)->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -98,12 +95,9 @@ class DamagesDataTable extends DataTable
         return [
             'id',
             'item_id',
-            'item',
-            'category',
             'quantity',
-            'buying_price',
-            'total_cost',
-            'recordedOn',
+            'recorded_on',
+            'recorded_by',
         ];
     }
 

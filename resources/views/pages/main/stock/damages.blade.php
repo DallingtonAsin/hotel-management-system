@@ -57,7 +57,7 @@
                             <th>item code</th>
                             <th>Item</th>
                             <th>Qty</th>
-                            <th>Cost price</th>
+                            <th>Buying price</th>
                             <th>Total Cost</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -94,47 +94,24 @@
 
                                 <div class="form-group">
                                     <span>Item</span>
-                                    <input type="hidden" class="form-control damageId" name="id" id="id">
-                                    <input type="text" class="form-control  item-name" name="damage-item"
-                                        id="item" placeholder="Enter item" autocomplete="off" spellcheck="false">
+                                    <select class="form-control item_id" name="item_id">
+                                        <option value="">Select damaged stock item</option>
+                                        @foreach ($stock as $item)
+                                            <option value="{{ $item->id }}">{{ $item->item_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
                                     <span>Quantity</span>
-                                    <input type="text" id="qty" class="form-control quantity "
-                                        name="quantity" placeholder="Quantity" Required autofocus>
-                                </div>
-
-
-                                <div class="form-group categoryDiv">
-                                    <span>Category</span>
-                                    <input type="text" class="form-control  text-dark item-category"
-                                        value="" placeholder="Enter item category">
-                                </div>
-
-                                <div class="form-group bpriceDiv">
-                                    <span>Buying Price</span>
-                                    <input type="text" class="form-control  text-dark bprice" value=""
-                                        readonly>
-                                </div>
-
-                                <div class="form-group lamountDiv">
-                                    <span>Lost amount</span>
-                                    <input type="text" class="form-control  text-danger lamount" value=""
-                                        readonly>
-                                </div>
-
-                                <div class="form-group record-date-div">
-                                    <span>Recorded on</span>
-                                    <input type="text" class="form-control  record-date" value="" readonly>
+                                    <input type="text" id="quantity" class="form-control quantity " name="quantity"
+                                        placeholder="Quantity" Required autofocus>
                                 </div>
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary addDamageBtn"
                                         name="AdddamageBtn">Save</button>
                                     <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                                    <button type="button" class="btn btn-dark closeBtn"
-                                        data-bs-dismiss="modal">Close</button>
                                 </div>
 
                                 <div class="form-group">
@@ -266,8 +243,8 @@
                     name: 'item_id'
                 },
                 {
-                    data: 'item',
-                    name: 'item'
+                    data: 'item_name',
+                    name: 'item_name'
                 },
                 // {data: 'category', name:'category'},
                 {
@@ -283,8 +260,8 @@
                     name: 'total_cost'
                 },
                 {
-                    data: 'recordedOn',
-                    name: 'recordedOn'
+                    data: 'recorded_on',
+                    name: 'recorded_on'
                 },
                 {
                     data: 'action',
@@ -364,7 +341,7 @@
                     ClearFormFields();
                     ShowOnAddNewDamagedItem(false);
                     ShowHideBtns('show');
-                    $('.addDamageBtn').text("Record damage");
+                    $('.addDamageBtn').html("Submit");
                     $('#damagesForm').trigger("reset");
                     ShowHideContent('hide');
                     $('#modalHeading').html("Record new damage");
@@ -396,20 +373,22 @@
                     url: Url,
                     type: "GET",
                     dataType: 'json',
-                    success: function(data) {
-                        $('#modalHeading').html("Edit details of damaged stock item " + data.item + "");
-                        $('.addDamageBtn').text("Edit damage");
-                        $('#addDamagesModal').modal('show');
-                        $('.damageId').val(damage_id);
-                        $('.item-name').val(data.item);
-                        $('.item-category').val(data.category);
-                        $('.quantity').val(data.quantity);
-                        $('.bprice').val(data.buying_price);
-                        $('.lamount').val(data.total_cost);
-                        $('.record-date').val(data.recordedOn);
-                        DisableFormFields(false);
-                        ShowHideBtns('show');
-                        $('#addDamagesModal').modal('show');
+                    success: function(response) {
+
+                        if (response.success) {
+                            let data = response.data;
+                            $('#modalHeading').html("Edit details of damaged stock item " + data.item_name +
+                                "");
+                            $('.addDamageBtn').text("Update");
+                            $('#addDamagesModal').modal('show');
+                            $('.item_id').val(data.item_id);
+                            $('.quantity').val(data.quantity);
+                            DisableFormFields(false);
+                            ShowHideBtns('show');
+                            $('#addDamagesModal').modal('show');
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
@@ -429,20 +408,19 @@
             });
 
             function viewDamagedItem(damage_id) {
-                $.get("{{ route('damaged-stock-items.index') }}" + '/' + damage_id + '', function(data) {
-
-                    $('#modalHeading').html("Details of damaged item " + data.item + "");
-                    $('#addDamagesModal').modal('show');
-                    $('.damageId').val(damage_id);
-                    $('.item-name').val(data.item);
-                    $('.item-category').val(data.category);
-                    $('.quantity').val(data.quantity);
-                    $('.bprice').val(FormatNumber(data.buying_price));
-                    $('.lamount').val(FormatNumber(data.total_cost));
-                    $('.record-date').val(data.recordedOn);
-                    ShowHideContent('show');
-                    DisableFormFields(true);
-                    ShowHideBtns('hide');
+                $.get("{{ route('damaged-stock-items.index') }}" + '/' + damage_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Details of damaged item " + data.item_name + "");
+                        $('#addDamagesModal').modal('show');
+                        $('.item_id').val(data.item_id);
+                        $('.quantity').val(data.quantity);
+                        ShowHideContent('show');
+                        DisableFormFields(true);
+                        ShowHideBtns('hide');
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -516,11 +494,11 @@
             function OnclickingSubmitBtn() {
                 $('.addDamageBtn').click(function(e) {
                     let id = $('.damageId').val();
-                    console.log(id);
+
                     e.preventDefault();
-                    let Errors = validateForm();
-                    console.log(Errors);
-                    if (Errors.length == 0) {
+                    let errors = validateForm();
+
+                    if (errors.length == 0) {
                         $('.errors-section').html('');
                         if (id) {
                             UpdateDamagedItem(id);
@@ -531,8 +509,8 @@
                     } else {
                         let i;
                         let message = "";
-                        for (i = 0; i < Errors.length; i++) {
-                            message += Errors[i] + "<br>";
+                        for (i = 0; i < errors.length; i++) {
+                            message += errors[i] + "<br>";
                         }
                         $('.errors-section').html(message);
 
@@ -664,16 +642,16 @@
             }
 
             function validateForm() {
-                let item_name = $('.item-name').val();
-                let qty = $('#qty').val();
+                let item_name = $('.item_id').val();
+                let quantity = $('#quantity').val();
                 let errors = [];
                 if (item_name.length < 1) {
-                    let nameErr = "Please enter the damaged item";
+                    let nameErr = "Please select the damaged item";
                     errors.push(nameErr);
                 }
-                if (qty == "" || parseInt(qty) <= 0) {
-                    let qtyErr = "Please enter valid quantity of the damaged item " + qty + "";
-                    errors.push(qtyErr);
+                if (quantity == "" || parseInt(quantity) <= 0) {
+                    let quantityErr = "Please enter valid quantity of the damaged item " + quantity + "";
+                    errors.push(quantityErr);
                 }
 
                 return errors;

@@ -21,7 +21,7 @@ class CreateCustomerDebtPaymentsTable extends Migration
             $table->double('amount_paid');
             $table->double('balance');
             $table->date('date');
-            $table->integer('created_by')->unsigned();
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
         });
 

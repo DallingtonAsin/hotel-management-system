@@ -295,10 +295,10 @@
                         let total = FormatNumber(sub_total - total_discount);
                         let paid = total;
 
-                        bodyData += "<tr data-name='" + row.item + "' data-quantity='" + quantity +
+                        bodyData += "<tr data-name='" + row.item_name + "' data-quantity='" + quantity +
                             "' data-discount='" + discount + "' data-paid='" + paid +
                             "' data-sprice='" + selling_price + "' data-date='" + date_of_sale + "'>"
-                        bodyData += "<td>" + row.item + "</td><td>" + row.item_code + "</td><td>" +
+                        bodyData += "<td>" + row.item_name + "</td><td>" + row.item_code + "</td><td>" +
                             quantity + "</td>" +
                             "<td>" + sellingPrice + "</td><td>" + subTotal + "</td><td>" + discount +
                             "</td><td>" + total + "</td><td>" + paid +
@@ -555,7 +555,7 @@
                     "barcode": $(tr).find('td:eq(1)').text(), // Barcode
                     "quantity": $(tr).find('td:eq(2)').text(), // Quantity
                     "price": $(tr).find('td:eq(3)').text(), // Price
-                    "subtotal": $(tr).find('td:eq(4)').text(), // Subtotal
+                    "sub_total": $(tr).find('td:eq(4)').text(), // Subtotal
                     "discount": $(tr).find('td:eq(5)').text(), // Price
                     "total": $(tr).find('td:eq(6)').text(), // Subtotal
                     "paid": $(tr).find('td:eq(7)').text(), // Subtotal

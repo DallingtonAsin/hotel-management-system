@@ -55,7 +55,7 @@ use App\Http\Controllers\Messages\NotificationController;
 use App\Http\Controllers\Messages\SmsController;
 
 // Pos Controllers
-use App\Http\Controllers\Pos\CartController;
+use App\Http\Controllers\Pos\SalesPointController ;
 use App\Http\Controllers\Pos\SalesController;
 
 // Reports Controllers
@@ -199,19 +199,19 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('sales/debts', [SalesController::class, 'salesWithDebtsIndex'])->name('sales.debts');
 	Route::get('sales/debts/ajax', [SalesController::class, 'GetSalesWithDebts'])->name('get-sales-with-debts');
 	Route::get('sales/today/debts/ajax', [SalesController::class, 'GetTodaySalesWithDebts'])->name('get-daily-sales-with-debts');
-	Route::post('sale/transact', [CartController::class, 'recordSale'])->name('sale.record');
+	Route::post('sale/transact', [SalesPointController ::class, 'recordSale'])->name('sale.record');
 	Route::post('sales/remove/selected', [SalesController::class, 'RemoveSelected'])->name('selected-sales.remove');
 	Route::post('sales/filtered-sales', [SalesController::class, 'filterSales'])->name('filtersales');
 	Route::post('sales/debts/search', [SalesController::class, 'filterSalesWithDebts'])->name('sales.debts.filter');
 	Route::put('sales/records/update/', [SalesController::class, 'updateSaleRecord'])->name('sales.records.update');
-	Route::get('sale/make-receipt', [CartController::class, 'getReceipt']);
-	Route::post('pos/session/update', [CartController::class, 'updateItemInSession'])->name('session.update');
-	Route::post('pos/record', [CartController::class, 'MakeSaleGateway'])->name('sale.transact');
-	Route::post('pos/barcode/getItem', [CartController::class, 'GetCartData'])->name('item.get');
-	Route::post('pos/search', [CartController::class, 'searchItem'])->name('item.search');
-	Route::post('pos/searchprice', [CartController::class, 'getItemPrice'])->name('cart.searchprice');
-	Route::post('pos/clear', [CartController::class, 'ClearCart'])->middleware('password.confirm');
-	Route::post('pos/handler', [CartController::class, 'PopulateCart'])->name('cart.handle');
+	Route::get('sale/make-receipt', [SalesPointController ::class, 'getReceipt']);
+	Route::post('pos/session/update', [SalesPointController ::class, 'updateItemInSession'])->name('session.update');
+	Route::post('pos/record', [SalesPointController ::class, 'MakeSaleGateway'])->name('sale.transact');
+	Route::post('pos/barcode/getItem', [SalesPointController ::class, 'getProductItemDetails'])->name('item.get');
+	Route::post('pos/search', [SalesPointController ::class, 'searchItem'])->name('item.search');
+	Route::post('pos/searchprice', [SalesPointController ::class, 'getItemPrice'])->name('cart.searchprice');
+	Route::post('pos/clear', [SalesPointController ::class, 'ClearCart'])->middleware('password.confirm');
+	Route::post('pos/handler', [SalesPointController ::class, 'PopulateCart'])->name('cart.handle');
 
 	// Reports Routes
 	Route::get('reports/ajax/monthly-sales', [ReportsController::class, 'GetMonthlySalesDT'])->name('monthly-sales.ajax');
@@ -290,7 +290,7 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 		'logs' => LogsController::class,
 		'calendar' => CalendarController::class,
 		'users' => UserController::class,
-		'pos' => CartController::class,
+		'pos' => SalesPointController ::class,
 		'kitchen-orders' => KitchenOrderController::class,
 		'room_types' => RoomTypeController::class,
 		'rooms' => RoomController::class,

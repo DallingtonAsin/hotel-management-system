@@ -104,7 +104,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control supplierId  supplierId" name="id"
+                            <input type="hidden" class="form-control supplier_id  supplier_id" name="id"
                                 placeholder="Enter supplier id" Required autofocus>
                         </div>
 
@@ -116,8 +116,7 @@
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Address</span>
-                            <input type="text" class="form-control address " name="address"
-                                placeholder="Enter address">
+                            <input type="text" class="form-control address " name="address" placeholder="Enter address">
                         </div>
 
 
@@ -136,15 +135,13 @@
 
                         <div class="form-group">
                             <span>Debt</span>
-                            <input type="text" class="form-control debt " name="debt"
-                                placeholder="Enter debt">
+                            <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
                         </div>
 
 
                         <div class="form-group">
                             <span>Credit</span>
-                            <input type="text" class="form-control credit " name="credit"
-                                placeholder="Enter credit">
+                            <input type="text" class="form-control credit " name="credit" placeholder="Enter credit">
                         </div>
 
                         <div class="form-group">
@@ -226,15 +223,9 @@
 
                 <div class="modal-body">
 
-                    <div class="form-group">
-                        <div class="text-center">
-                            <label class="text-danger delete-alert-text">Are you sure you want to delete this supplier
-                                <small class="text-dark text-muted bolded">
-                                </small>
-                                ?
-
-                            </label>
-                        </div>
+                    <div class="form-group text-center">
+                        <label class="text-center text-danger delete-alert-text">Are you sure you want to delete this
+                            supplier? </label>
                     </div>
 
                     <div class="form-group">
@@ -260,8 +251,6 @@
 
         $(document).ready(function() {
 
-
-            //code that displays results of the table index()
             let table = $('#suppliers-table');
             let title = "List of registered suppliers in the system";
             let columns = [1, 2, 3, 4];
@@ -314,7 +303,7 @@
                     DisableTableFields(false);
                     ShowBtns();
                     $('.addSupplierBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('.supplierId').val('');
+                    $('.supplier_id').val('');
                     $('#SuppliersForm').trigger("reset");
                     $('#modalHeading').html("Add new supplier");
                     $('#addSuppliersModal').modal('show');
@@ -335,19 +324,18 @@
             });
 
             function editSupplier(supplier_id) {
-                $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of supplier " + data.name + "");
-                    $('.addsupplierBtn').text("Edit supplier");
-                    $('#addSuppliersModal').modal('show');
-                    $('.supplierId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(false);
-                    ShowBtns();
+                $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '/edit', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        populateSupplierDetails(data)
+                        $('#modalHeading').html("Edit details of supplier " + data.name + "");
+                        $('#addSuppliersModal').modal('show');
+                        $('.addSupplierBtn').html('Update');
+                        DisableTableFields(false);
+                        ShowBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -362,28 +350,37 @@
             });
 
             function viewSupplier(supplier_id) {
-                $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '', function(data) {
-                    $('#modalHeading').html("Details of supplier " + data.name + "");
-                    $('#addSuppliersModal').modal('show');
-                    $('.supplierId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
+                $.get("{{ route('suppliers.index') }}" + '/' + supplier_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        populateSupplierDetails(data)
+                        $('#modalHeading').html("Details of supplier " + data.name + "");
+                        $('#addSuppliersModal').modal('show');
+                        DisableTableFields(true);
+                        HideBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
+            }
+
+            function populateSupplierDetails(data) {
+                $('.supplier_id').val(data.id);
+                $('.name').val(data.name);
+                $('.address').val(data.address);
+                $('.contact').val(data.contact);
+                $('.email').val(data.email);
+                $('.debt').val(FormatNumber(data.debt));
+                $('.credit').val(FormatNumber(data.credit));
             }
 
 
             $('.addSupplierBtn').click(function(e) {
 
                 e.preventDefault();
+                let errors = validateForm();
 
-                let Errors = validateForm();
-                if (Errors.length == 0) {
+                if (errors.length == 0) {
                     $('.errors-section').html('');
                     $(this).html('Sending..');
 
@@ -408,8 +405,6 @@
                                 let tbl = $('#suppliers-table').DataTable();
                                 tbl.ajax.reload();
                             }
-
-
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
@@ -420,8 +415,8 @@
                 } else {
                     let i;
                     let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
+                    for (i = 0; i < errors.length; i++) {
+                        message += errors[i] + "<br>";
                     }
                     $('.errors-section').html(message);
 
@@ -431,35 +426,46 @@
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-supplier', function(e) {
-                let supplier_id = $(this).data("id");
+                let _id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_suppliers, function(supplier) {
-                    $("#deleteSuppliersModal").modal('show');
-                    $(".delete-alert-text").html("Are you sure you want to delete this supplier?");
-                    $('.delete-ok-btn').on('click', function() {
-                        deleteRecord(supplier_id);
+                    $.get("{{ route('suppliers.index') }}" + '/' + _id + '', function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            $("#deleteSuppliersModal").modal('show');
+                            $(".delete-alert-text").html(
+                                `Are you sure you want to delete supplier ${data.name}?`
+                            );
+                            $('.delete-ok-btn').on('click', function() {
+                                deleteRecord(_id);
+                            });
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
                     });
                 });
             });
 
 
             function deleteRecord(id) {
-                let deleteUrl = '{{ route('suppliers.destroy', ':id') }}';
-                deleteUrl = deleteUrl.replace(':id', id);
+                let url = '{{ route('suppliers.destroy', ':id') }}';
+                url = url.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
                     type: "DELETE",
-                    url: deleteUrl,
-                    success: function(data) {
-
-                        let resp = data.success;
-                        $('.delete-ok-btn').html('Yes');
-                        $('#deleteSuppliersModal').modal("hide");
-                        displayResponse('.response', resp, 'success');
-
-                        ResetTblInfo(data);
-                        let tbl = $('#suppliers-table').DataTable();
-                        tbl.ajax.reload();
+                    url: url,
+                    success: function(response) {
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
+                        if (response.success) {
+                            let data = response.data;
+                            $('.delete-ok-btn').html('Yes');
+                            $('#deleteSuppliersModal').modal("hide");
+                            ResetTblInfo(data);
+                            let tbl = $('#suppliers-table').DataTable();
+                            tbl.ajax.reload();
+                        }
+                        displayResponse('.response', message, type);
                     },
                     error: function(data) {
                         console.log('Error:', data);
@@ -471,7 +477,7 @@
 
             function DisableTableFields(bool) {
 
-                $('.supplierId').attr('disabled', bool);
+                $('.supplier_id').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
                 $('.address').attr('disabled', bool);
                 $('.contact').attr('disabled', bool);
@@ -481,13 +487,13 @@
             }
 
             function HideBtns() {
-                $('.addsupplierBtn').hide();
+                $('.addSupplierBtn').hide();
                 $('.clearBtn').hide();
                 $('.closeBtn').hide();
             }
 
             function ShowBtns() {
-                $('.addsupplierBtn').show();
+                $('.addSupplierBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
             }
@@ -550,7 +556,6 @@
                                 },
                                 url: '{{ Route('suppliers.truncate') }}',
                                 type: 'POST',
-                                // dataType: 'json',
                             }).done(function(data) {
 
                                 $.alert({

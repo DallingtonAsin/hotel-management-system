@@ -22,7 +22,8 @@ class CreateFrequentContactsTable extends Migration
             $table->string('contact_person');
             $table->string('price');
             $table->string('currency_code');
-            $table->integer('created_by')->unsigned();
+            $table->boolean('is_deleted')->default(false);
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('currency_code')->references('code')->on('currencies')->onDelete('cascade');

@@ -8,12 +8,13 @@ use App\Imports\ImportDamages;
 use App\Exports\ExportDamages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\LogsController;
+use Illuminate\Support\Facades\Auth;
 use App\DataTables\Inventory\DamagesDataTable;
 use Illuminate\Support\Str;
 use Constant;
 use Excel;
 use App\Helpers\Helper;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Validator;
 
 class DamagesController extends Controller
@@ -40,13 +41,32 @@ class DamagesController extends Controller
    */
   public function index()
   {
-    $damages = Damage::all();
+  
+    $stock = Stock::all();
     $number_of_damages = Damage::count();
-    $cost_of_damages = DB::table('damages')->sum('total_cost');
-
-    return view('pages.main.stock.damages')->with(compact('damages', 'cost_of_damages', 'number_of_damages'));
+    $cost_of_damages = $this->getCostofDamages();
+    
+    return view('pages.main.stock.damages')->with(compact('stock', 'cost_of_damages', 'number_of_damages'));
   }
 
+
+  private function getCostofDamages(){
+    try{
+
+      $damages = Damage::all();
+      $cost_of_damages  = 0;
+
+      foreach($damages as $item){
+        $price = Stock::where('id', $item->item_id)->value('buying_price');
+        $cost = $item->quantity * $price;
+        $cost_of_damages += $cost;
+      }
+
+      return $cost_of_damages;
+    }catch(\Exception $ex){
+      throw $ex;
+    }
+  }
   /**
    * Show the form for creating a new resource.
    *
@@ -67,7 +87,7 @@ class DamagesController extends Controller
   {
 
     $validator = Validator::make($request->all(), [
-      'damage-item' => 'required',
+      'item_id' => 'required',
       'quantity' => 'required',
     ]);
 
@@ -78,41 +98,28 @@ class DamagesController extends Controller
       } else {
 
         $damage = new Damage;
-        $item = $request->input('damage-item');
+        $item_id = $request->input('item_id');
         $quantity = Helper::Numberize($request->input('quantity'));
         $method = "DamagesController@store";
 
-        $stockObj = $this->getItems_in_Stock();
 
-        $inventory = array();
-        foreach ($stockObj->toArray() as $value) {
-          $product = $value->item;
-          array_push($inventory, $product);
-        }
+          $product = Stock::find($item_id);
+          $current_quantity = $product->quantity;
+          $new_quantity = ($current_quantity - $quantity);
 
-        if (in_array($item, $inventory)) {
-          $data = $this->getdetailsofDamagedItem($item);
-          $available_qty = $this->getQtyBeforeAddingDamage($item);
-          $new_quantity = ($available_qty - $quantity);
+          $damage = [
+              'item_id' => $item_id,
+              'quantity' => $quantity,
+              'recorded_by' => Auth::user()->id
+          ];
 
-          $damage->item = $item;
-          $damage->quantity = $quantity;
+          if (Damage::create($damage)) {
 
-          foreach ($data as $key) {
-            $damage->item_id = $key->item_code;
-            $damage->category = $key->category;
-            $damage->buying_price = $key->buying_price;
-          }
+            $is_stock_updated = $product->update(['quantity' => $new_quantity]);
 
-          $save = $damage->save();
+            if ($is_stock_updated) {
 
-          if ($save) {
-            $res = DB::table('stock')
-              ->where('item', $item)
-              ->update(['quantity' => $new_quantity]);
-            if ($res) {
-
-              $action = "recorded damaged item " . $item . "";
+              $action = "recorded damaged item " . $product->item_name . "";
               Helper::logger($request, $action, now());
               $dataArr = array(
                 "code" => '200',
@@ -136,46 +143,31 @@ class DamagesController extends Controller
 
             } else {
 
-              $messageErr = "System has failed to update stock on recording damaged item";
+              $error = "System has failed to update stock on recording damaged item";
               $dataArr = array(
                 "code" => '101',
-                "message" => $messageErr,
+                "message" => $error,
                 "method" => $method
               );
               Helper::LogRequest($request, $dataArr);
-              $message = $this->FailedMessage($messageErr);
+
+              $message = $this->FailedMessage($error);
               return response()->json(['error' => $message]);
             }
 
           } else {
 
-            $messageErr = "Unable to record damaged stock";
+            $error = "Unable to record damaged stock";
             $dataArr = array(
               "code" => '101',
-              "message" => $messageErr,
+              "message" => $error,
               "method" => $method
             );
             Helper::LogRequest($request, $dataArr);
-            $message = $this->FailedMessage($messageErr);
+            $message = $this->FailedMessage($error);
             return response()->json(['error' => $message]);
 
           }
-
-
-        } else {
-
-          $messageErr = "Item " . $item . " not found in stock";
-          $dataArr = array(
-            "code" => '404',
-            "message" => $messageErr,
-            "method" => $method
-          );
-          Helper::LogRequest($request, $dataArr);
-          $message = $this->FailedMessage($messageErr);
-          return response()->json(['error' => $message]);
-
-        }
-
       }
 
     } catch (\Exception $ex) {
@@ -183,6 +175,17 @@ class DamagesController extends Controller
     }
 
 
+  }
+
+
+  private function getDamagedItemDetails($id){
+          try{
+            $damage = Damage::find($id);
+            $damage->item_name = Stock::where('id', $damage->item_id)->value('item_name');
+            return response()->json(['success' => 'ok', 'data' => $damage]);
+          }catch(\Exception $ex){
+            return response()->json(['error' => $ex->getMessage()]);
+          }
   }
 
   /**
@@ -193,8 +196,7 @@ class DamagesController extends Controller
    */
   public function show($id)
   {
-    $damage = Damage::find($id);
-    return response()->json($damage);
+     return $this->getDamagedItemDetails($id);
   }
 
   /**
@@ -205,8 +207,7 @@ class DamagesController extends Controller
    */
   public function edit($id)
   {
-    $damage = Damage::find($id);
-    return response()->json($damage);
+    return $this->getDamagedItemDetails($id);
   }
 
   /**
@@ -218,122 +219,6 @@ class DamagesController extends Controller
    */
   public function update(Request $request, $id)
   {
-
-
-    $request->validate([
-      'damage-item' => 'required',
-      'quantity' => 'required',
-    ]);
-
-    $uniqueId = $request->input('id');
-    $damage = Damage::find($uniqueId);
-
-    $item = $request->input('damage-item');
-    $quantity = Helper::Numberize($request->input('quantity'));
-    $method = "DamagesController@store";
-
-    $stockObj = $this->getItems_in_Stock();
-
-    $inventory = array();
-    foreach ($stockObj->toArray() as $value) {
-      $product = $value->item;
-      array_push($inventory, $product);
-    }
-
-    if (in_array($item, $inventory)) {
-      $data = $this->getdetailsofDamagedItem($item);
-      $available_qty = $this->getQtyBeforeAddingDamage($item);
-      $new_quantity = ($available_qty - $quantity);
-
-      $damage->item = $item;
-      $damage->quantity = $quantity;
-
-      foreach ($data as $key) {
-        $damage->item_id  = $key->item_code;
-        $damage->category  = $key->category;
-        $damage->buying_price  = $key->buying_price;
-      }
-
-      //$hasSaved = $damage->save();
-
-      $hasSaved = Damage::where('id', $uniqueId)->update([
-        'quantity' => $quantity,
-      ]);
-
-
-      if ($hasSaved) {
-
-        $res = DB::table('stock')
-          ->where('item', $item)
-          ->update(['quantity' => $new_quantity]);
-        if ($res) {
-
-          $action = "recorded damaged item " . $item . "";
-          Helper::logger($request, $action, now());
-          $dataArr = array(
-            "code" => '200',
-            "message" => $action,
-            "method" => $method
-          );
-          Helper::LogRequest($request, $dataArr);
-
-
-
-          $sessionVariable = 'success';
-          $responseInfo = $this->SuccessMessage($action);
-
-        } else {
-          $messageErr = "Damaged item not recorded!";
-          $dataArr = array(
-            "code" => '101',
-            "message" => $messageErr,
-            "method" => $method
-          );
-          Helper::LogRequest($request, $dataArr);
-          $sessionVariable = 'fail';
-          $responseInfo = $this->FailedMessage($messageErr);
-
-        }
-
-      } else {
-
-        $messageErr = "Unable to update stock";
-        $dataArr = array(
-          "code" => '101',
-          "message" => $messageErr,
-          "method" => $method
-        );
-        Helper::LogRequest($request, $dataArr);
-        $sessionVariable = 'fail';
-        $responseInfo = $this->FailedMessage($messageErr);
-
-      }
-
-
-    } else {
-
-      $messageErr = "Item " . $item . " not found in stock";
-      $dataArr = array(
-        "code" => '404',
-        "message" => $messageErr,
-        "method" => $method
-      );
-      Helper::LogRequest($request, $dataArr);
-      $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
-
-    }
-
-    $arr = $this->GetDamagesStats();
-    $totl_no = $arr['totl_no'];
-    $totl_amt = $arr['totl_amt'];
-
-    return response()
-      ->json([
-        $sessionVariable => $responseInfo,
-        'totl_no' => $totl_no,
-        'totl_amt' => $totl_amt,
-      ]);
 
 
   }
@@ -393,7 +278,8 @@ class DamagesController extends Controller
   protected function GetDamagesStats()
   {
     $totl_no = Damage::count();
-    $totl_cost = Damage::sum('total_cost');
+    $totl_cost = $this->getCostofDamages();
+
     $data = array(
       'totl_no' => $totl_no,
       'totl_amt' => $totl_cost,

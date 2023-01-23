@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Damage;
+use App\Models\Stock;
+use App\Staff;
 use Illuminate\Support\Str;
 
 class DamageFactory extends Factory
@@ -22,12 +24,15 @@ class DamageFactory extends Factory
   */
   public function definition()
   {
+
+    $item = Stock::inRandomOrder()->first();
+    $recorded_by = Staff::inRandomOrder()->first()->id;
+
+
     return [
-      'item_id' => Str::random(3),
-      'item' => Str::random(7),
-      'category' => Str::random(6),
+      'item_id' => $item->id,
       'quantity' => $this->faker->randomDigit,
-      'buying_price' => $this->faker->numberBetween($min=1000, $max=9000),
+      'recorded_by' => $recorded_by
     ];
   }
 }

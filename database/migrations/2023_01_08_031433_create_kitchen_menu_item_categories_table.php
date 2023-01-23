@@ -16,7 +16,8 @@ class CreateKitchenMenuItemCategoriesTable extends Migration
         Schema::create('kitchen_menu_item_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('created_by')->unsigned();
+            $table->boolean('is_deleted')->default(false);
+             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('staff');
