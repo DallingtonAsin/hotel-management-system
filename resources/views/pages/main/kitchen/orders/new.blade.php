@@ -293,8 +293,8 @@
 
                     <div class="form-group cancelled-option-fields">
                         <label><span class="text-danger pr-1">*</span> Reason for Cancelling</label>
-                        <input type="text" name="reason" class="form-control reason"
-                            placeholder="Enter reason for cancelling" />
+                        <textarea type="text" name="reason" class="form-control reason"
+                            placeholder="Enter reason for cancelling"></textarea>
                     </div>
 
                     <div class="form-group">

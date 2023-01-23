@@ -285,7 +285,10 @@ function viewOrder(url) {
             if (data.room_number) {
                 $('.room_no').val(data.room_number);
             }
-
+            if (data.table_number) {
+                $('.tbl_number').val(data.table_number);
+            }
+            
             $('.order_status').empty();
             $('.order_status').append('<option value=' + data.status + '>' + data.status +
                 '</option>');

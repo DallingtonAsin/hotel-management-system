@@ -471,7 +471,7 @@
 
             function editStock(stock_id) {
                 ShowHideBtns('show');
-                $('.addStockBtn').text("Edit stock");
+                $('.addStockBtn').text("Update stock");
                 $('#addStockModal').modal('show');
                 let Url = "{{ route('stock.show', ':id') }}";
                 Url = Url.replace(':id', stock_id);
