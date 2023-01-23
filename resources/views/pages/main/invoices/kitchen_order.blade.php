@@ -72,8 +72,10 @@
             <tr>
                 <th>Item</th>
                 <th>Quantity</th>
+                @if ($type === 'general')
                 <th>Price (Ush)</th>
                 <th>Total (Ush)</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -81,8 +83,10 @@
                 <tr>
                     <td>{{ $item->name }}</td>
                     <td>{{ number_format($item->quantity) }}</td>
+                    @if ($type === 'general')
                     <td>{{ number_format($item->price) }}</td>
                     <td>{{ number_format($item->total) }}</td>
+                    @endif
                 </tr>
             @endforeach
 

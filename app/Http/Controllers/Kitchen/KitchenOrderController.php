@@ -112,7 +112,7 @@ class KitchenOrderController extends Controller
                 }
 
                 $guest_id = $request->input('guest_id');
-                $customer_name = $request->input('customer_name');
+                $customer_name = ucwords($request->input('customer_name'));
                 $phone_number = $request->input('phone_number');
                 $tin_number = $request->input('tin_number');
                 $email = $request->input('email');
@@ -336,6 +336,10 @@ class KitchenOrderController extends Controller
             if ($kitchen_order->guest_id) {
                 $guest = Guest::find($kitchen_order->guest_id);
                 $kitchen_order->guest = $guest;
+            }
+
+            if($kitchen_order->customer_name){
+                $kitchen_order->customer_name = ucwords($kitchen_order->customer_name);
             }
 
             if ($kitchen_order->room_id) {

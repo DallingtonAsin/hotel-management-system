@@ -128,6 +128,7 @@ class StockController extends Controller
           ];
 
           $apiResponse = $this->stockService->addStock($efris_request_data);
+          // dd($apiResponse);
           if ($apiResponse['statusCode'] ==  200) {
 
             $threshold_quantity = null;

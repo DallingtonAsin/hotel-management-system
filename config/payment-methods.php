@@ -9,5 +9,5 @@ return [
     'cash',
     'mobile money',
     'credit card',
-    'debt card',
+    'debit card',
 ];

@@ -28,7 +28,7 @@ class CreateKitchenOrderInvoicesTable extends Migration
             $table->string('payment_method')->nullable();
             $table->unsignedBigInteger('completed_by')->unsigned()->nullable();
             $table->timestamp('cancelled_at')->nullable();
-            $table->string('cancelled_for')->nullable();
+            $table->text('cancelled_for')->nullable();
             $table->unsignedBigInteger('cancelled_by')->unsigned()->nullable();
 
 
