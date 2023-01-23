@@ -16,20 +16,22 @@ use Excel;
 use App\Helpers\Helper;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Validator;
+use App\Repositories\DamagedStockRepository;
 
 class DamagesController extends Controller
 {
 
   public $controller;
-  public function __construct()
+  protected $damagedStockRepository;
+
+  public function __construct(DamagedStockRepository $damagedStockRepository)
   {
     $this->controller = 'DamagesController';
-
+    $this->damagedStockRepository = $damagedStockRepository;
   }
 
   public function GetDamages(DamagesDataTable $dataTable)
   {
-
     return $dataTable->render('pages.main.stock.damages');
   }
 
@@ -44,29 +46,12 @@ class DamagesController extends Controller
   
     $stock = Stock::all();
     $number_of_damages = Damage::count();
-    $cost_of_damages = $this->getCostofDamages();
+    $cost_of_damages = $this->damagedStockRepository->getCostofDamages();
     
     return view('pages.main.stock.damages')->with(compact('stock', 'cost_of_damages', 'number_of_damages'));
   }
 
 
-  private function getCostofDamages(){
-    try{
-
-      $damages = Damage::all();
-      $cost_of_damages  = 0;
-
-      foreach($damages as $item){
-        $price = Stock::where('id', $item->item_id)->value('buying_price');
-        $cost = $item->quantity * $price;
-        $cost_of_damages += $cost;
-      }
-
-      return $cost_of_damages;
-    }catch(\Exception $ex){
-      throw $ex;
-    }
-  }
   /**
    * Show the form for creating a new resource.
    *
@@ -278,7 +263,7 @@ class DamagesController extends Controller
   protected function GetDamagesStats()
   {
     $totl_no = Damage::count();
-    $totl_cost = $this->getCostofDamages();
+    $totl_cost = $this->damagedStockRepository->getCostofDamages();
 
     $data = array(
       'totl_no' => $totl_no,

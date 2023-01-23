@@ -17,8 +17,7 @@ use App\Models\Supplier;
 use App\Models\Damage;
 use App\Models\Expense;
 use App\Models\Customer;
-use App\Exports\DailySalesReport;
-use App\Exports\ExportSales;
+use App\Repositories\DamagedStockRepository;
 use App\Helpers\Helper;
 use App\Helpers\Constants as Constant;
 use Excel;
@@ -28,11 +27,13 @@ use DataTable;
 class SalesController extends Controller
 {
 
-  public $controller;
-  public function __construct()
+  protected $controller;
+  protected $damagedStockRepository;
+
+  public function __construct(DamagedStockRepository $damagedStockRepository)
   {
     $this->controller = 'SalesController';
-
+    $this->damagedStockRepository = $damagedStockRepository;
   }
 
       protected function GetCustomSalesReview($startDate, $endDate){
@@ -42,7 +43,7 @@ class SalesController extends Controller
       $total_sales = $value2 = Sale::whereBetween('date', [$startDate, $endDate])->sum('paid_amount');
 
       $total_expenses = Expense::whereBetween('date_of_expenditure', [$startDate, $endDate])->sum('amount');
-      $cost_of_damages = Damage::whereBetween('recordedOn', [$startDate, $endDate])->sum('total_cost');
+      $cost_of_damages = $this->damagedStockRepository->getCostofDamages();
 
       $value3 = (Supplier::whereDate('created_at', ">=", $startDate)
                           ->whereDate('created_at', "<=", $endDate)
@@ -242,7 +243,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
       $value1 = Sale::where('date', Date('Y-m-d'))->sum('total_buying_cost');
       $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('paid_amount');
       $total_expenses = Expense::where('date_of_expenditure', Date('Y-m-d'))->sum('amount');
-      $cost_of_damages = Damage::whereDate('recordedOn', Date('Y-m-d'))->sum('total_cost');
+      $cost_of_damages = $this->damagedStockRepository->getCostofDamages();
       $value3 = (Supplier::whereDate('created_at', Date('Y-m-d'))->sum('credit')) -(Supplier::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
       $value4 = (Customer::whereDate('created_at', Date('Y-m-d'))->sum('credit')) -(Customer::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
 
@@ -363,7 +364,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
       $total_number_of_sales = Sale::where('fully_paid', 1)->where('balance', 0)->count(); 
       $total_sales= Sale::sum('paid_amount');
       $total_expenses = Expense::sum('amount');
-      $cost_of_damages = Damage::sum('total_cost');
+      $cost_of_damages = 0; // Damage::sum('total_cost');
       $total_initial_cost = Sale::sum('total_buying_cost');
       $supplier_debts = (Supplier::sum('credit')) -(Supplier::sum('debt'));
       $customer_debts = Sale::where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
@@ -386,7 +387,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
         $total_number_of_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->count(); 
         $total_sales= Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
         $total_expenses = Expense::sum('amount');
-        $cost_of_damages = Damage::sum('total_cost');
+        $cost_of_damages = 0; //  Damage::sum('total_cost');
         $total_initial_cost = Sale::sum('total_buying_cost');
         $supplier_debts = (Supplier::sum('credit')) -(Supplier::sum('debt'));
         $customer_debts = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');

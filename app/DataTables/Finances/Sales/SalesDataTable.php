@@ -6,6 +6,7 @@ use Yajra\DataTables\Services\DataTable;
 use App\Models\Sale;
 use Illuminate\Support\Facades\Gate;
 use App\Helpers\Helper;
+use App\Models\Stock;
 
 class SalesDataTable extends DataTable
 {
@@ -51,7 +52,9 @@ class SalesDataTable extends DataTable
         })->addColumn('checkbox', function ($sale) {
               $checkBox = '<input type="checkbox" id="'.$sale->id.'"/>';
              return $checkBox;
-        })->editColumn('quantity', function ($data) {
+        })->addColumn('item', function ($sale) {
+             return Stock::where('id', $sale->item_id)->first()->item_name;
+      })->editColumn('quantity', function ($data) {
             return Helper::convertNumber($data->quantity);
         })->editColumn('selling_price', function ($data) {
             return Helper::convertNumber($data->selling_price);
