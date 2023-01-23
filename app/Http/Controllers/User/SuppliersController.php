@@ -12,7 +12,7 @@ use App\Imports\ImportSuppliers;
 use App\Exports\ExportSuppliers;
 use App\DataTables\User\SuppliersDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use App\Helpers\Constants as Constant;
 use Excel;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;
@@ -90,11 +90,12 @@ class SuppliersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'address' => 'required',
+            'tin' => 'required',
             'contact' => 'required',
-            'email' => 'sometimes|nullable|email',
-            'debt' => 'sometimes|nullable',
+            'address' => 'required',
+            'email' => 'sometimes|nullable',
             'credit' => 'sometimes|nullable',
+            'debt' => 'sometimes|nullable',
         ]);
 
         try {
@@ -107,7 +108,8 @@ class SuppliersController extends Controller
                 $supplier_id = $request->input('id');
                 $supplier_name = $request->input('name');
                 $address = $request->input('address');
-                $contact = $request->input('contact');
+                $tin = $request->input('tin');
+                $phone_number = $request->input('contact');
                 $email = $request->input('email');
                 $credit = $request->input('credit');
                 $debt = $request->input('debt');
@@ -126,8 +128,9 @@ class SuppliersController extends Controller
                     $response = Supplier::where('id', $supplier_id)
                         ->update([
                             'name' => $supplier_name,
+                            'phone_number' => $phone_number,
+                            'tin' => $tin,
                             'address' => $address,
-                            'contact' => $contact,
                             'email' => $email,
                             'debt' => $debt,
                             'credit' => $credit,
@@ -136,9 +139,10 @@ class SuppliersController extends Controller
 
                     $supplier = [
                         'name' => $supplier_name,
-                        'address' => $address,
-                        'contact' => $contact,
+                        'tin' => $tin,
+                        'phone_number' => $phone_number,
                         'email' => $email,
+                        'address' => $address,
                         'debt' => $debt,
                         'credit' => $credit,
                         'created_by' => Auth::user()->id,
@@ -229,15 +233,20 @@ class SuppliersController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'address' => 'required',
+            'tin' => 'required',
             'contact' => 'required',
+            'address' => 'required',
+            'email' => 'sometimes|nullable',
+            'credit' => 'sometimes|nullable',
+            'debt' => 'sometimes|nullable',
         ]);
 
         $supplier = Supplier::find($id);
 
         $supplier->name = $supplier_name = $request->input('name');
         $supplier->address = $request->input('address');
-        $supplier->contact = $request->input('contact');
+        $supplier->tin = $request->input('tin');
+        $supplier->phone_number = $request->input('contact');
         $email = $request->input('email');
         $debt = Helper::Numberize($request->input('debt'));
         $credit = Helper::Numberize($request->input('credit'));
@@ -483,5 +492,19 @@ class SuppliersController extends Controller
     {
         $message = "" . $failmsg . "";
         return $message;
+    }
+
+    public function getSupplierDetailsAjax(Request $request, $id)
+    {
+        try {
+            if ($request->ajax()) {
+                $supplier = Supplier::find($id);
+                return response()->json(['success' => 'Ok', 'data' => $supplier]);
+            }else{
+              return response()->json(['error' => 'Request rejected: unknown request type']);
+            }
+        } catch (\Exception $ex) {
+          return response()->json(['error' => $ex->getMessage()]);
+        }
     }
 }

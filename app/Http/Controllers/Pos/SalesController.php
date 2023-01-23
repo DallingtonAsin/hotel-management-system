@@ -20,7 +20,7 @@ use App\Models\Customer;
 use App\Exports\DailySalesReport;
 use App\Exports\ExportSales;
 use App\Helpers\Helper;
-use Constant;
+use App\Helpers\Constants as Constant;
 use Excel;
 use DataTable;
 

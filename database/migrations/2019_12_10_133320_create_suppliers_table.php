@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CreateSuppliersTable extends Migration
 {
@@ -17,9 +17,10 @@ class CreateSuppliersTable extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('address');
-            $table->string('contact')->unique();
+            $table->string('tin')->unique();
+            $table->string('phone_number')->unique();
             $table->string('email')->nullable();
+            $table->string('address');
             $table->double('debt')->nullable();
             $table->double('credit')->nullable();
             $table->boolean('is_deleted')->default(false);
@@ -38,6 +39,8 @@ class CreateSuppliersTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('suppliers');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

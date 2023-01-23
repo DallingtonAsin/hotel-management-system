@@ -42,7 +42,6 @@ class ImportStock implements ToModel, WithHeadingRow
           'quantity' => floatval($row['quantity']),
           'buying_price' => floatval($row['cost_price']),
           'selling_price' => floatval($row['selling_price']),
-          'wholesale_price' => floatval($row['wholesale_price']),
           'supplier' => $row['supplier']
         ]);
 

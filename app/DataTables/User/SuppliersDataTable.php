@@ -54,8 +54,7 @@ class SuppliersDataTable extends DataTable
 
     public function query(Supplier $model)
     {
-               return $model->newQuery()->select('id', 'name', 'contact',
-                                                 'address','email','credit','debt');
+               return $model->newQuery()->select('id', 'name', 'phone_number', 'tin', 'address','email','credit','debt');
     }
 
     /**
@@ -85,7 +84,8 @@ class SuppliersDataTable extends DataTable
         return [
             'id',
             'name',
-            'contact',
+            'tin',
+            'phone_number',
             'address',
             'email',
             'credit',

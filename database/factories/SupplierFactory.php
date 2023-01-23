@@ -25,9 +25,10 @@ class SupplierFactory extends Factory
     $recorded_by = Staff::inRandomOrder()->first()->id;
     return [
       'name' => $this->faker->firstName,
-      'address' => $this->faker->state,
-      'contact' => $this->faker->e164phoneNumber,
+      'tin' => $this->faker->numberBetween(1000000, 9000000),
+      'phone_number' => $this->faker->e164phoneNumber,
       'email' => $this->faker->unique()->safeEmail,
+      'address' => $this->faker->state,
       'debt' => $this->faker->numberBetween($min = 1000, $max = 9000),
       'credit' => $this->faker->numberBetween($min = 9000, $max = 10000),
       'created_by' => $recorded_by

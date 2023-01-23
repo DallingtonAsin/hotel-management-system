@@ -9,7 +9,7 @@ use App\Exports\ExportStockCats;
 use Illuminate\Http\Request;
 use App\DataTables\Inventory\StockCatsDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use App\Helpers\Constants as Constant;
 use Excel;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;

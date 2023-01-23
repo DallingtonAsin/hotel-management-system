@@ -18,7 +18,7 @@ use App\Models\Stock;
 use App\Helpers\Helper;
 use App\Imports\ImportCustomers;
 use App\Exports\ExportCustomers;
-use Constant;
+use App\Helpers\Constants as Constant;
 use Excel;
 
 class CustomersController extends Controller

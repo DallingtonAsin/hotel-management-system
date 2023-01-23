@@ -28,22 +28,29 @@ class StockDataTable extends DataTable
             if(Gate::allows('isAdmin')){
 
             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
-            data-id="'.$stock->id.'" data-original-title="Edit" id="edit-stock"
-            class="px-3 py-1 border border-success rounded  edit-stock mx-2">
-             <span class="fa fa-pen text-success"></span></a>';
+            data-id="'.$stock->id.'" data-original-title="Edit" id="increase-stock"
+            class="px-3 py-1 border border-success rounded  increase-stock mx-2">
+             <small class="fa fa-plus-circle text-success pr-1"></small> stock</a>';
 
-            $btn .= '<a href="javascript:void(0);" id="delete-stock"
-            data-toggle="tooltip" data-original-title="Delete" data-id="'.$stock->id.'" 
-            class="px-3 py-1 border border-danger rounded trash-btn mx-2">
-            <span class="fa fa-trash-alt" ></span></a>';
+             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+             data-id="'.$stock->id.'" data-original-title="Edit" id="decrease-stock"
+             class="px-3 py-1 border border-success rounded  decrease-stock mx-2">
+              <small class="fa fa-minus-circle text-success pr-1"></small> stock</a>';
 
 
+              $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+              data-id="'.$stock->id.'" data-original-title="Edit" id="edit-stock"
+              class="px-3 py-1 border border-secondary rounded  edit-stock mx-2">edit stock</a>';
+
+            //  $btn .= '<a href="javascript:void(0);" id="delete-stock"
+            //  data-toggle="tooltip" data-original-title="Delete" data-id="'.$stock->id.'" 
+            //  class="px-3 py-1 border border-danger rounded trash-btn mx-2">
+            //  <span class="fa fa-trash-alt" ></span></a>';
             }
 
              $btn .= '<a href="javascript:void(0);" id="view-stock"
             data-toggle="tooltip" data-original-title="View"
-             data-id="'.$stock->id.'" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
-            <i class="fa fa-eye" ></i></a>';
+             data-id="'.$stock->id.'" class="px-3 py-1 border border-secondary rounded text-secondary">view details</a>';
 
 
            return $btn;
@@ -51,6 +58,9 @@ class StockDataTable extends DataTable
         })->addColumn('checkbox', function ($stock) {
               $checkBox = '<input type="checkbox" id="'.$stock->id.'"/>';
              return $checkBox;
+        })->editColumn('goods_type', function ($data) {
+            $goods_types = config('goods-type-codes');
+            return array_search($data->goods_type_code, $goods_types);
         })->editColumn('quantity', function ($data) {
             return number_format($data->quantity);
         })->editColumn('threshold_qty', function ($data) {
@@ -59,8 +69,6 @@ class StockDataTable extends DataTable
             return number_format($data->buying_price);
         })->editColumn('selling_price', function ($data) {
             return number_format($data->selling_price);
-        })->editColumn('wholesale_price', function ($data) {
-            return number_format($data->wholesale_price);
         })->rawColumns(['action', 'checkbox']);
 
     }
@@ -99,13 +107,13 @@ class StockDataTable extends DataTable
 
         return [
             'id',
+            'item_name',
             'item_code',
-            'item',
+            'goods_type_code',
             'quantity',
             'threshold_qty',
             'buying_price',
             'selling_price',
-            'wholesale_price',
             'supplier'
         ];
 
