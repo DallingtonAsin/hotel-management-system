@@ -19,7 +19,7 @@ class StockService
     public function addStock($productData)
     {
         try {
-           return $this->apiService->post($productData);
+           return $this->apiService->post('/add-stock', $productData);
         } catch (\Exception $e) {
             return $e;
         }
@@ -28,9 +28,7 @@ class StockService
     public function get()
     {
         try {
-            $response = $this->apiService->get();
-            $data = json_decode($response->getBody()->getContents());
-            return $data;
+            return $this->apiService->get('/get-stock');
         } catch (\Exception $e) {
             return $e->getMessage();
         }

@@ -114,68 +114,86 @@ class StockController extends Controller
           $supplier_id = $request->input('supplier');
           $expiry_date = $request->input('expiry_date');
           $remarks = $request->input('remarks');
+          $supplier = Supplier::find($supplier_id);
 
-          $threshold_quantity = null;
-          $expiry_date = null;
-
-          if ($request->filled('threshold_qty')) {
-            $threshold_quantity = Helper::Numberize($request->input('threshold_qty'));
-          }
-
-          $stock = [
-            'item_code' => $item_code,
-            'item_name' => $item_name,
-            'goods_type_code' => $goods_type_code,
-            'stockin_type_code' => $stockin_type_code,
-            'category_id' => $category_id,
-            'supplier_id' => $supplier_id,
+          $efris_request_data = [
+            'goodsCode' => $item_code,
+            'goodsTypeCode' => $goods_type_code,
             'quantity' => $quantity,
-            'threshold_qty' => $threshold_quantity,
-            'buying_price' => $buying_price,
-            'selling_price' => $selling_price,
-            'expiry_date' => empty($expiry_date) ? "" : $expiry_date,
-            'remarks' => $remarks,
-            'created_by' => Auth::user()->id,
+            'unitPrice' => $selling_price,
+            'stockInType' => $stockin_type_code,
+            'supplierTin' => $supplier->tin,
+            'supplierName' => $supplier->name,
+            'remarks' => $remarks
           ];
 
-          if ($this->stockRepository->create($stock)) {
+          $apiResponse = $this->stockService->addStock($efris_request_data);
+          if ($apiResponse['statusCode'] ==  200) {
 
-            $action = "recorded stock item " . $item_name . " in the system";
-            Helper::logger($request, $action, now());
-            $dataArr = array(
-              "code" => '200',
-              "message" => $action,
-              "method" => $method
-            );
+            $threshold_quantity = null;
+            $expiry_date = null;
 
-            Helper::LogRequest($request, $dataArr);
+            if ($request->filled('threshold_qty')) {
+              $threshold_quantity = Helper::Numberize($request->input('threshold_qty'));
+            }
 
-            $message = $this->ActionMessage($action);
-            $arr = $this->getStockStats();
+            $stock = [
+              'item_code' => $item_code,
+              'item_name' => $item_name,
+              'goods_type_code' => $goods_type_code,
+              'stockin_type_code' => $stockin_type_code,
+              'category_id' => $category_id,
+              'supplier_id' => $supplier_id,
+              'quantity' => $quantity,
+              'threshold_qty' => $threshold_quantity,
+              'buying_price' => $buying_price,
+              'selling_price' => $selling_price,
+              'expiry_date' => empty($expiry_date) ? "" : $expiry_date,
+              'remarks' => $remarks,
+              'created_by' => Auth::user()->id,
+            ];
 
-            return response()
-              ->json([
-                'success' => $message,
-                'data' => $arr
-              ]);
+            if ($this->stockRepository->create($stock)) {
+
+              $action = "recorded stock item " . $item_name . " in the system";
+              Helper::logger($request, $action, now());
+              $dataArr = array(
+                "code" => '200',
+                "message" => $action,
+                "method" => $method
+              );
+
+              Helper::LogRequest($request, $dataArr);
+
+              $message = $this->ActionMessage($action);
+              $arr = $this->getStockStats();
+
+              return response()
+                ->json([
+                  'success' => $message,
+                  'data' => $arr
+                ]);
+            } else {
+
+              $messageErr = "System has failed to add stock item";
+
+              $dataArr = array(
+                "code" => '101',
+                "message" => $messageErr,
+                "method" => $method
+              );
+
+              Helper::LogRequest($request, $dataArr);
+              $message = $this->FailedMessage($messageErr);
+              return response()->json(['error' => $message]);
+            }
           } else {
-
-            $messageErr = "System has failed to add stock item";
-
-            $dataArr = array(
-              "code" => '101',
-              "message" => $messageErr,
-              "method" => $method
-            );
-
-            Helper::LogRequest($request, $dataArr);
-            $message = $this->FailedMessage($messageErr);
-            return response()->json(['error' => $message]);
+            return response()->json(['error' => $apiResponse['message']]);
           }
         }
       }
     } catch (\Exception $ex) {
-      return response()->json(['error' => $ex->getMessage()]);
+      return response()->json(['error' => 'Unable to upload stock on EFRIS because of'. $ex->getMessage()]);
     }
   }
 

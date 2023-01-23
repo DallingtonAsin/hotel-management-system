@@ -28,22 +28,29 @@ class StockDataTable extends DataTable
             if(Gate::allows('isAdmin')){
 
             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
-            data-id="'.$stock->id.'" data-original-title="Edit" id="edit-stock"
-            class="px-3 py-1 border border-success rounded  edit-stock mx-2">
-             <span class="fa fa-pen text-success"></span></a>';
+            data-id="'.$stock->id.'" data-original-title="Edit" id="increase-stock"
+            class="px-3 py-1 border border-success rounded  increase-stock mx-2">
+             <small class="fa fa-plus-circle text-success pr-1"></small> stock</a>';
 
-            $btn .= '<a href="javascript:void(0);" id="delete-stock"
-            data-toggle="tooltip" data-original-title="Delete" data-id="'.$stock->id.'" 
-            class="px-3 py-1 border border-danger rounded trash-btn mx-2">
-            <span class="fa fa-trash-alt" ></span></a>';
+             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+             data-id="'.$stock->id.'" data-original-title="Edit" id="decrease-stock"
+             class="px-3 py-1 border border-success rounded  decrease-stock mx-2">
+              <small class="fa fa-minus-circle text-success pr-1"></small> stock</a>';
 
 
+              $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+              data-id="'.$stock->id.'" data-original-title="Edit" id="edit-stock"
+              class="px-3 py-1 border border-secondary rounded  edit-stock mx-2">edit stock</a>';
+
+            //  $btn .= '<a href="javascript:void(0);" id="delete-stock"
+            //  data-toggle="tooltip" data-original-title="Delete" data-id="'.$stock->id.'" 
+            //  class="px-3 py-1 border border-danger rounded trash-btn mx-2">
+            //  <span class="fa fa-trash-alt" ></span></a>';
             }
 
              $btn .= '<a href="javascript:void(0);" id="view-stock"
             data-toggle="tooltip" data-original-title="View"
-             data-id="'.$stock->id.'" class="px-3 py-1 border border-secondary rounded text-secondary bolded">
-            <i class="fa fa-eye" ></i></a>';
+             data-id="'.$stock->id.'" class="px-3 py-1 border border-secondary rounded text-secondary">view details</a>';
 
 
            return $btn;

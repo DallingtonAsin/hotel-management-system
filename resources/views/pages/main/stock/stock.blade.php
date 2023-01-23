@@ -192,7 +192,7 @@
 
                                     <div class="form-group">
                                         <span>Remarks</span>
-                                        <textarea class="form-control remarks" name="remarks"></textarea>
+                                        <textarea class="form-control remarks" name="remarks">add stock</textarea>
                                     </div>
                                 </div>
 
@@ -623,7 +623,9 @@
                             UpdateStock(id);
 
                         } else {
-                            recordStock();
+                            if(confirm(`Are you sure you want to add this as stock`)){
+                                recordStock();
+                            }
                         }
                     }
                 });
