@@ -47,7 +47,7 @@
                 <table class="table table-sm  table-bordered table-hover purchase-table" id="purchase-table">
                     <thead>
                         <tr>
-                            <th></th>
+                            {{-- <th></th> --}}
                             <th>ID</th>
                             <th>Item Code</th>
                             <th>Item</th>
@@ -280,22 +280,20 @@
             let table = $('.purchase-table');
             let title = "List of purchased items in the system";
             let columns = [0, 1, 2, 3, 4, 5, 6, 7];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
-                //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-                {
-                    data: 'id',
-                    name: 'id'
-                },
-                {
-                    data: 'item',
-                    name: 'item'
-                },
+            let dataColumns = [
+                // {
+                //     data: 'checkbox',
+                //     name: 'checkbox'
+                // },
+                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+             
                 {
                     data: 'item_code',
                     name: 'item_code'
+                },
+                {
+                    data: 'item_name',
+                    name: 'item_name'
                 },
                 {
                     data: 'quantity',

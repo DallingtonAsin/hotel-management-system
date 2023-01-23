@@ -288,7 +288,7 @@ class SuppliersController extends Controller
                 $method = "SuppliersController@destroy";
 
                 $supplier = Supplier::find(intval($id)); 
-                $response = $supplier->delete();
+                $response = $supplier->update(['is_deleted' => true]);
 
                 if ($response) {
                     
@@ -305,10 +305,8 @@ class SuppliersController extends Controller
 
                     return response()
                         ->json(['success' => $message,
-                            'totl_no' => $arr['totl_no'],
-                            'totl_credit' => $arr['totl_credit'],
-                            'totl_debt' => $arr['totl_debt'],
-                        ]);
+                                'data' => $arr,
+                               ]);
 
                 } else {
 

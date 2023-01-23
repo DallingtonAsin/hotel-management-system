@@ -454,10 +454,11 @@
                 $.ajax({
                     type: "DELETE",
                     url: url,
-                    success: function(data) {
-                        let message = data.success || data.error;
-                        let type = data.success ? 'success' : 'error';
-                        if (data.success) {
+                    success: function(response) {
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
+                        if (response.success) {
+                            let data = response.data;
                             $('.delete-ok-btn').html('Yes');
                             $('#deleteSuppliersModal').modal("hide");
                             ResetTblInfo(data);

@@ -16,6 +16,7 @@ class Supplier extends Model
     'email',
     'debt',
     'credit',
+    'is_deleted',
     'created_by'
   ];
   public $timestamps = true;
