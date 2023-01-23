@@ -8,6 +8,7 @@ use App\Staff;
 use App\Models\StockCat;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
+use App\Helpers\Helper;
 
 class StockFactory extends Factory
 {
@@ -29,11 +30,14 @@ class StockFactory extends Factory
     $random_supplier = Supplier::inRandomOrder()->first();
     $random_stock_type = StockCat::inRandomOrder()->first();
     $created_by = Staff::inRandomOrder()->first()->id;
-
+    $rand_goods_type_code = Helper::getRandomValue(config('goods-type-codes'));
+    $rand_stockin_type_code = Helper::getRandomValue(config('stockin-types'));
 
     return [
       'item_code' => Str::random(3),
       'item_name' => Str::random(7),
+      'goods_type_code' => $rand_goods_type_code,
+      'stockin_type_code' => $rand_stockin_type_code,
       'category_id' => $random_stock_type->id,
       'quantity' => $this->faker->randomDigit,
       'threshold_qty' => $this->faker->randomDigit,
@@ -44,5 +48,6 @@ class StockFactory extends Factory
       'expiry_date' => $this->faker->dateTimeThisYear($max = 'now', $timezone = null),
       'created_by' => $created_by
     ];
+
   }
 }

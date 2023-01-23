@@ -99,7 +99,7 @@
                         <label>Price category</label>
                         <select name="priceCategory" class="form-control" id="priceCategory">
                             <option value="retail">retail</option>
-                            <option value="wholesale">wholesale</option>
+                            {{-- <option value="wholesale">wholesale</option> --}}
                         </select>
                     </div>
 
@@ -283,9 +283,11 @@
                     $.each(resultData, function(index, row) {
 
                         let selling_price;
-                        priceCategory == 'retail' ?
-                            selling_price = row.selling_price :
-                            selling_price = row.wholesale_price;
+                        selling_price = row.selling_price
+
+                        // priceCategory == 'retail' ?
+                        //     selling_price = row.selling_price :
+                        //     selling_price = row.wholesale_price;
 
                         let sub_total = Convert2Num(quantity) * selling_price;
                         let sellingPrice = FormatNumber(selling_price);

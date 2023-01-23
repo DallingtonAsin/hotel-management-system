@@ -126,17 +126,17 @@
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger">*</span> Retail selling price</span>
+                            <span><span class="text-danger">*</span> Unit price</span>
                             <input type="text" class="form-control  retail_price" name="retail_price"
                                 placeholder="Enter retail price" Required autofocus>
                         </div>
 
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <span>Wholesale selling price</span>
                             <input type="text" class="form-control  wholesale_price" name="wholesale_price"
                                 placeholder="Enter wholesale price">
-                        </div>
+                        </div> --}}
 
 
                         <div class="form-group">

@@ -49,20 +49,14 @@
                 <table class="table table-bordered table-hover" id="stock-table">
                     <thead>
                         <tr>
-                            @can('isAdmin')
-                                <th></th>
-                            @endcan
-                            @can('isCashier')
-                                <th>No</th>
-                            @endcan
-                            <th>Item</th>
+                            <th>#</th>
                             <th>Item Code</th>
+                            <th>Item Name</th>
+                            <th>Good T.Code</th>
+                            <th>Good Type</th>
                             <th>Qty</th>
-                            @can('isAdmin')
-                                <th>Buying Price</th>
-                            @endcan
-                            <th>Retail Price</th>
-                            <th>Wholesale Price</th>
+                            <th>B. Price</th>
+                            <th>Unit Price</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -87,83 +81,118 @@
 
                             <div class="modal-body">
 
+                                <div class="row form-group">
 
-                                <div class="form-group">
-                                    <span><span class="text-danger pr-1">*</span>Item</span>
-                                    <input type="text" class="form-control  item_name" name="item"
-                                        placeholder="Enter item">
+                                    <div class="col-md-4">
+                                        <span><span class="text-danger pr-1">*</span>Product Name</span>
+                                        <input type="text" class="form-control  item_name" name="item"
+                                            placeholder="Enter product name">
+                                    </div>
 
-                                </div>
+                                    <div class="col-md-4">
+                                        <span><span class="text-danger pr-1">*</span>Product Code</span>
+                                        <input type="hidden" class="stockId" name="id">
+                                        <input type="text" class="form-control  item_code" name="item_code"
+                                            placeholder="Enter product code">
+                                    </div>
 
-                                <div class="form-group">
-                                    <span>Item ID</span>
-                                    <input type="hidden" class="stockId" name="id">
-                                    <input type="text" class="form-control  item_code" name="item_code"
-                                        placeholder="Enter item id or barcode">
-                                </div>
-
-                                <div class="form-group">
-                                    <span>Category</span>
-                                    <select class="form-control category" name="category" id="category">
-                                        <option value="">Select category</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}"> {{ $category->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <span>Supplier</span>
-                                    <select class="form-control " id="supplier" name="supplier">
-                                        <option value="" selected="true">Select supplier</option>
-                                        @foreach ($suppliers as $supplier)
-                                            <option value="{{ $supplier->id }}"> {{ $supplier->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <span>Expiry Date</span>
-                                    <input type="date" class="form-control  expiry_date" name="expiry_date"
-                                        placeholder="Enter who bought it">
+                                    <div class="col-md-4">
+                                        <span><span class="text-danger pr-1">*</span>Product Type Code</span>
+                                        <select name="goods_type_code" class="form-control goods_type_code">
+                                            @foreach (config('goods-type-codes') as $key => $value)
+                                                <option value="{{ $value }}">{{ $value }}: {{ ucfirst($key) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="row form-group">
-                                    <div class=" col-md-6">
-                                        <span><span class="text-danger pr-1">*</span>Quantity</span>
-                                        <input type="text" class="form-control  quantity" id="qty" name="quantity"
-                                            placeholder="Enter Quantity">
+                                    <div class="col-md-6">
+                                        <span><span class="text-danger pr-1">*</span> Stockin Type</span>
+                                        <select class="form-control stockin_type_code" name="stockin_type_code"
+                                            id="stockin_type_code">
+                                            @foreach (config('stockin-types') as $key => $value)
+                                                <option value="{{ $value }}"
+                                                    {{ str_contains($key, 'local') ? 'selected' : '' }}>{{ $value }}:
+                                                    {{ ucwords(str_replace('_', ' ', str_replace('&', '/ ', $key))) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                     <div class="col-md-6">
+                                        <span>Category</span>
+                                        <select class="form-control category" name="category" id="category">
+                                            <option value="">Select category</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}"> {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <span><span class="text-danger pr-1">*</span>Supplier</span>
+                                        <select class="form-control supplier" id="supplier" name="supplier">
+                                            <option value="" selected="true">Select supplier</option>
+                                            @foreach ($suppliers as $supplier)
+                                                <option value="{{ $supplier->id }}"> {{ $supplier->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <span><span class="text-danger pr-1">*</span>Supplier Tin Number</span>
+                                        <input type="text" class="form-control supplier_tin" name="supplier_tin"
+                                            placeholder="Enter supplier tin" readonly>
+                                    </div>
+                                </div>
+
+
+                                <div class="row form-group">
+                                    <div class=" col-md-4">
+                                        <span><span class="text-danger pr-1">*</span>Quantity</span>
+                                        <input type="text" class="form-control  quantity" id="qty"
+                                            name="quantity" placeholder="Enter Quantity">
+                                    </div>
+
+                                    <div class="col-md-4">
                                         <span>Threshold Quantity</span>
                                         <input type="text" class="form-control threshold_qty" id="threshold_qty"
                                             name="threshold_qty" placeholder="Enter threshold quantity">
                                     </div>
+
+                                    <div class="col-md-4">
+                                        <span>Expiry Date</span>
+                                        <input type="date" class="form-control  expiry_date" name="expiry_date"
+                                            placeholder="Enter who bought it">
+                                    </div>
+
                                 </div>
 
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <span><span class="text-danger pr-1">*</span>Buying Price</span>
-                                            <input type="text" class="form-control  original_price" name="original_price"
-                                                placeholder="Enter original price" required autofocus>
+                                            <input type="text" class="form-control  original_price"
+                                                name="original_price" placeholder="Enter original price" required
+                                                autofocus>
                                         </div>
 
-                                        <div class="col-lg-4 form-group">
-                                            <span><span class="text-danger pr-1">*</span>Retail Price</span>
+                                        <div class="col-lg-6">
+                                            <span><span class="text-danger pr-1">*</span>Unit Price</span>
                                             <input type="text" class="form-control  selling_price"
                                                 name="selling_price" placeholder="Enter selling price">
                                         </div>
 
-                                        <div class="col-lg-4 form-group">
-                                            <span>Wholesale Price</span>
-                                            <input type="text" class="form-control   wholesale_price"
-                                                name="wholesale_price" placeholder="Enter wholesale price" required
-                                                autofocus>
-                                        </div>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <span>Remarks</span>
+                                        <textarea class="form-control remarks" name="remarks"></textarea>
                                     </div>
                                 </div>
 
@@ -282,13 +311,8 @@
             let table = $('#stock-table');
             let title = "List of stock items in the system";
             let columns = [1, 2, 3, 4, 5];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
-                // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-                // {data: 'id', name:'id'},
-                //  {data: 'item_code', name:'item_code'},
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
                     data: 'item_name',
                     name: 'item_name'
@@ -297,12 +321,19 @@
                     data: 'item_code',
                     name: 'item_code'
                 },
-
+                {
+                    data: 'goods_type_code',
+                    name: 'goods_type_code'
+                },
+                {
+                    data: 'goods_type',
+                    name: 'goods_type'
+                },
                 {
                     data: 'quantity',
                     name: 'quantity'
                 },
-                //  {data: 'threshold_qty', name:'threshold_qty'},
+
                 {
                     data: 'buying_price',
                     name: 'buying_price'
@@ -311,11 +342,6 @@
                     data: 'selling_price',
                     name: 'selling_price'
                 },
-                {
-                    data: 'wholesale_price',
-                    name: 'wholesale_price'
-                },
-                //  {data: 'supplier', name:'supplier'},
                 {
                     data: 'action',
                     name: 'action',
@@ -355,10 +381,7 @@
                     data: 'selling_price',
                     name: 'selling_price'
                 },
-                {
-                    data: 'wholesale_price',
-                    name: 'wholesale_price'
-                },
+                
                 {
                     data: 'action',
                     name: 'action',
@@ -382,7 +405,40 @@
             Numberize(".threshold_qty");
             Numberize(".original_price");
             Numberize(".selling_price");
-            Numberize(".wholesale_price");
+
+            onSelectSupplier();
+
+            function onSelectSupplier() {
+                $('.supplier').on('change', function() {
+                    let supplier_id = $(this).find(":selected").val();
+                    if (supplier_id) {
+                        populateSupplierTin(supplier_id);
+                    }
+                });
+            }
+
+            function populateSupplierTin(supplier_id) {
+
+                let url = '{{ route('supplier.details.ajax.fetch', ':supplier_id') }}';
+                url = url.replace(':supplier_id', supplier_id);
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            $('.supplier_tin').val(data.tin);
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
+                    },
+                    error: function(data) {
+                        console.log('Error on fetching supplier details', data);
+                        displayResponse(null, data.error, 'error');
+                    }
+                });
+            }
 
             $.fn.dataTable.ext.errMode = 'none';
             $('#stock-table').on('error.dt', function(e, settings, techNote, message) {
@@ -432,12 +488,14 @@
                             populateProductDetails(data);
                             DisableFormFields(false);
                         } else {
+                            $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                             displayResponse(null, response.error, 'error');
                         }
 
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
+                        $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                         displayResponse(null, data.error, 'error');
                     }
                 });
@@ -499,6 +557,8 @@
                             ResetTblInfo(data);
                             let tbl = $('#stock-table').DataTable();
                             tbl.ajax.reload();
+                        }else{
+                           $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                         }
 
                         displayResponse('.response', resp, type);
@@ -506,7 +566,7 @@
                     error: function(data) {
                         console.log('Error:', data.error);
                         displayResponse('.response', data.error, 'error');
-                        $('.addStockBtn').html('Save Changes');
+                        $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     }
                 });
 
@@ -540,17 +600,17 @@
             function populateProductDetails(data) {
                 $('.stockId').val(data.id);
                 $('.item_code').val(data.item_code);
+                $('.goods_type_code').val(data.goods_type_code);
+                $('.stockin_type_code').val(data.stockin_type_code);
                 $('.item_name').val(data.item_name);
                 $('.category').val(data.category_id);
                 $('#supplier').val(data.supplier_id);
+                $('.supplier_tin').val(data.supplier_tin);
                 $('.quantity').val(data.quantity);
                 $('.threshold_qty').val(data.threshold_qty)
                 $('.expiry_date').val(data.expiry_date);
                 $('.original_price').val(FormatNumber(data.buying_price));
                 $('.selling_price').val(FormatNumber(data.selling_price));
-                if(data.wholesale_price){
-                    $('.wholesale_price').val(FormatNumber(data.wholesale_price));
-                }
             }
 
 
@@ -558,26 +618,15 @@
                 $('.addStockBtn').click(function(e) {
                     let id = $(".stockId").val();
                     e.preventDefault();
-                    let Errors = validateForm();
-                    if (Errors.length == 0) {
+                    let isValidForm = validateForm();
+                    if (isValidForm) {
                         if (id) {
                             UpdateStock(id);
 
                         } else {
                             recordStock();
                         }
-
-                    } else {
-                        let i;
-                        let message = "";
-                        for (i = 0; i < Errors.length; i++) {
-                            message += Errors[i] + "<br>";
-                        }
-                        //displayResponse('.errors-section', resp, 'error');
-                        $('.errors-section').html(message);
-
                     }
-
                 });
             }
 
@@ -591,7 +640,7 @@
                             let data = response.data;
                             $('.delete-confirm-text').html(
                                 `Are you sure you want to delete item ${data.item_name}?`
-                                );
+                            );
                             $("#deleteStockModal").modal('show');
                             $('.delete-ok-btn').on('click', function() {
                                 deleteRecord(stock_id);
@@ -643,7 +692,7 @@
                 $('.expiry_date').val('');
                 $('.original_price').val('');
                 $('.selling_price').val('');
-                $('.wholesale_price').val('');
+                $('.supplier_tin').val();
             }
 
 
@@ -659,7 +708,6 @@
                 $('.expiry_date').attr('disabled', bool);
                 $('.original_price').attr('disabled', bool);
                 $('.selling_price').attr('disabled', bool);
-                $('.wholesale_price').attr('disabled', bool);
             }
 
             function ShowHideBtns(action) {
@@ -685,32 +733,42 @@
             }
 
             function validateForm() {
+
                 let item = $('.item_name').val();
+                let item_code = $('.item_code').val();
+                let goods_type_code = $('.goods_type_code').val();
+                let stockin_type_code = $('.stockin_type_code').val();
+                let supplier = $('.supplier').val();
+                let supplier_tin = $('.supplier_tin').val();
                 let qty = $('#qty').val();
                 let bprice = $('.original_price').val();
                 let sprice = $('.selling_price').val();
 
-                let errors = [];
+                let isValidForm = false;
+
                 if (item.length < 1) {
-                    let itemNameErr = "Please enter the name of stock item";
-                    errors.push(itemNameErr);
-                }
-                if (qty.length < 1) {
-                    let qtyErr = "Please enter valid quantity of stock";
-                    errors.push(qtyErr);
-                }
-                if (bprice == "") {
-                    let bPriceErr = "Please enter valid buying price of an item";
-                    errors.push(bPriceErr);
+                    displayResponse(null, `Please enter product name`, `error`);
+                } else if (item_code.length < 1) {
+                    displayResponse(null, `Please enter product code`, `error`);
+                } else if (goods_type_code.length < 1) {
+                    displayResponse(null, `Please select goods type`, `error`);
+                } else if (stockin_type_code.length < 1) {
+                    displayResponse(null, `Please select stock in type`, `error`);
+                } else if (supplier.length < 1) {
+                    displayResponse(null, `Please select supplier`, `error`);
+                } else if (supplier_tin.length < 1) {
+                    displayResponse(null, `Please ensure supplier tin is not empty`, `error`);
+                } else if (qty.length < 1) {
+                    displayResponse(null, `Please enter valid quantity of stock`, `error`);
+                } else if (bprice == "") {
+                    displayResponse(null, `Please enter valid buying price`, `error`);
+                } else if (sprice == "") {
+                    displayResponse(null, `Please enter valid unit price`, `error`);
+                } else {
+                    isValidForm = true;
                 }
 
-                if (sprice == "") {
-                    let sPriceErr = "Please enter valid selling price of an item";
-                    errors.push(sPriceErr);
-                }
-
-                return errors;
-
+                return isValidForm;
             }
 
             $("#removeAllStockItems").bind("click", function() {

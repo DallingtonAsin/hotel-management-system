@@ -17,20 +17,22 @@ class CreateStockTable extends Migration
 
         Schema::create('stock', function (Blueprint $table) {
             $table->id();
-            $table->string('item_code')->nullable();
-            $table->string('item_name')->unique();
+            $table->string('item_code')->unique();
+            $table->string('item_name');
+            $table->string('goods_type_code');
+            $table->string('stockin_type_code');
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('supplier_id');
             $table->double('quantity');
-            $table->double('threshold_qty')->default('0');
+            $table->double('threshold_qty')->nullable()->default('0');
             $table->double('buying_price');
             $table->double('selling_price');
-            $table->double('wholesale_price')->default('0');
             $table->double('profit_per_item')->storedAs('selling_price-buying_price')->nullable();
             $table->double('total_cost_price')->storedAs('quantity*buying_price')->nullable();
             $table->double('total_profit')->storedAs('quantity*(selling_price-buying_price)')->nullable();
             $table->timestamp('date_of_entry')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('expiry_date')->nullable();
+            $table->date('remarks')->nullable();
             $table->unsignedBigInteger('created_by')->unsigned();
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

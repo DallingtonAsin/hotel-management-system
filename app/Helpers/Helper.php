@@ -65,6 +65,13 @@ class Helper
     }
   }
 
+  public static function getRandomValue($arr)
+  {
+      $random_key = array_rand($arr);
+      $random_value = $arr[$random_key];
+      return $random_value;
+  }
+
   public static function GetItemName($stockId)
   {
     try {

@@ -11,6 +11,7 @@ use App\Models\KitchenOrderInvoice;
 use Carbon\Carbon;
 use Faker\Generator;
 use Illuminate\Container\Container;
+use App\Helpers\Helper;
 
 
 class KitchenOrderInvoiceTableSeeder extends Seeder
@@ -76,7 +77,7 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
             $payment_method = null;
             if ($status == config('kitchen-order-statuses')['completed']) {
                 $data['status'] = config('kitchen-order-statuses')['completed'];
-                $payment_method = $this->getRandomValue(config('payment-methods'));
+                $payment_method = Helper::getRandomValue(config('payment-methods'));
                 $payment_date = Carbon::now();
                 $data['completed_by'] = 1;
                 
@@ -121,12 +122,5 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
             'tax' => $tax,
             'total' => $total
         ];
-    }
-
-    private function getRandomValue($arr)
-    {
-        $random_key = array_rand($arr);
-        $random_value = $arr[$random_key];
-        return $random_value;
     }
 }

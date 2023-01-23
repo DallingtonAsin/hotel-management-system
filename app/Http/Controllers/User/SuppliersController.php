@@ -12,7 +12,7 @@ use App\Imports\ImportSuppliers;
 use App\Exports\ExportSuppliers;
 use App\DataTables\User\SuppliersDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use App\Helpers\Constants as Constant;
 use Excel;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;
@@ -492,5 +492,19 @@ class SuppliersController extends Controller
     {
         $message = "" . $failmsg . "";
         return $message;
+    }
+
+    public function getSupplierDetailsAjax(Request $request, $id)
+    {
+        try {
+            if ($request->ajax()) {
+                $supplier = Supplier::find($id);
+                return response()->json(['success' => 'Ok', 'data' => $supplier]);
+            }else{
+              return response()->json(['error' => 'Request rejected: unknown request type']);
+            }
+        } catch (\Exception $ex) {
+          return response()->json(['error' => $ex->getMessage()]);
+        }
     }
 }

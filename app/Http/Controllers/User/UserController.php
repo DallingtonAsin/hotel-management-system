@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +20,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Designation;
 use App\Staff;
 use App\Helpers\Helper;
-use Constant;
+use App\Helpers\Constants as Constant;
 
 
 class UserController extends Controller
@@ -892,5 +891,7 @@ class UserController extends Controller
           echo "Error " . $ex->getMessage();
       }
   }
+
+ 
 
 }

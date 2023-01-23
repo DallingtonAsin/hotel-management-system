@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\DataTables\Inventory\StockDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use App\Helpers\Constants as Constant;
 use App\Helpers\Helper;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -68,13 +69,16 @@ class StockController extends Controller
 
     $validator = Validator::make($request->all(), [
       'item' => 'required',
-      'item_code' => 'sometimes|nullable',
+      'item_code' => 'required',
+      'goods_type_code' => 'required',
+      'stockin_type_code' => 'required',
       'category' => 'sometimes|nullable',
-      'supplier' => 'sometimes|nullable',
+      'supplier' => 'required',
       'quantity' => 'required',
       'original_price' => 'required',
       'selling_price' => 'required',
       'threshold_qty' => 'sometimes|nullable',
+      'remarks' => 'sometimes|nullable',
     ]);
 
     try {
@@ -84,72 +88,84 @@ class StockController extends Controller
         return response()->json(['error' => $message]);
       } else {
 
-        $stock = new Stock;
-        $method = "StockController@store";
-
         $item_code = $request->input('item_code');
-        $item_name = $request->input('item');
-        $category_id  = $request->input('category');
-        $supplier_id = $request->input('supplier');
-        $quantity = $request->input('quantity');
-        $quantity = Helper::Numberize($quantity);
+        $code_exists = Stock::where('item_code', $item_code)->exists();
 
-        $request->filled("threshold_qty")
-          ? $threshold_quantity = Helper::Numberize($request->input("threshold_qty"))
-          : $threshold_quantity = 0;
-
-        $expiry_date = $request->input('expiry_date');
-        $buying_price = Helper::Numberize($request->input('original_price'));
-        $selling_price = Helper::Numberize($request->input('selling_price'));
-        $wholesale_price = Helper::Numberize($request->input('wholesale_price'));
-
-        $stock = [
-          'item_code' => $item_code,
-          'item_name' => $item_name,
-          'category_id' => $category_id,
-          'supplier_id' => $supplier_id,
-          'quantity' => $quantity,
-          'threshold_qty' => $threshold_quantity,
-          'buying_price' => $buying_price,
-          'selling_price' => $selling_price,
-          'wholesale_price' => $wholesale_price,
-          'expiry_date' => empty($expiry_date) ? "" : $expiry_date,
-          'created_by' => Auth::user()->id,
-        ];
-
-        if (Stock::create($stock)) {
-
-          $action = "recorded stock item " . $item_name . " in the system";
-          Helper::logger($request, $action, now());
-          $dataArr = array(
-            "code" => '200',
-            "message" => $action,
-            "method" => $method
-          );
-
-          Helper::LogRequest($request, $dataArr);
-
-          $message = $this->ActionMessage($action);
-          $arr = $this->getStockStats();
-
-          return response()
-            ->json([
-              'success' => $message,
-              'data' => $arr
-            ]);
+        if ($code_exists) {
+          return response()->json(['error' => 'Product code ' . $item_code . ' already exists in the system']);
         } else {
 
-          $messageErr = "System has failed to add stock item";
+          $stock = new Stock;
+          $method = "StockController@store";
 
-          $dataArr = array(
-            "code" => '101',
-            "message" => $messageErr,
-            "method" => $method
-          );
+          $item_name = $request->input('item');
+          $goods_type_code = $request->input('goods_type_code');
+          $stockin_type_code = $request->input('stockin_type_code');
+          $quantity = Helper::Numberize($request->input('quantity'));
+          $buying_price = Helper::Numberize($request->input('original_price'));
+          $selling_price = Helper::Numberize($request->input('selling_price'));
+          $category_id  = $request->input('category');
+          $supplier_id = $request->input('supplier');
+          $expiry_date = $request->input('expiry_date');
+          $remarks = $request->input('remarks');
 
-          Helper::LogRequest($request, $dataArr);
-          $message = $this->FailedMessage($messageErr);
-          return response()->json(['error' => $message]);
+          $threshold_quantity = null;
+          $expiry_date = null;
+
+          if ($request->filled('threshold_qty')) {
+            $threshold_quantity = Helper::Numberize($request->input('threshold_qty'));
+          }
+
+          $stock = [
+            'item_code' => $item_code,
+            'item_name' => $item_name,
+            'goods_type_code' => $goods_type_code,
+            'stockin_type_code' => $stockin_type_code,
+            'category_id' => $category_id,
+            'supplier_id' => $supplier_id,
+            'quantity' => $quantity,
+            'threshold_qty' => $threshold_quantity,
+            'buying_price' => $buying_price,
+            'selling_price' => $selling_price,
+            'expiry_date' => empty($expiry_date) ? "" : $expiry_date,
+            'remarks' => $remarks,
+            'created_by' => Auth::user()->id,
+          ];
+
+          if (Stock::create($stock)) {
+
+            $action = "recorded stock item " . $item_name . " in the system";
+            Helper::logger($request, $action, now());
+            $dataArr = array(
+              "code" => '200',
+              "message" => $action,
+              "method" => $method
+            );
+
+            Helper::LogRequest($request, $dataArr);
+
+            $message = $this->ActionMessage($action);
+            $arr = $this->getStockStats();
+
+            return response()
+              ->json([
+                'success' => $message,
+                'data' => $arr
+              ]);
+          } else {
+
+            $messageErr = "System has failed to add stock item";
+
+            $dataArr = array(
+              "code" => '101',
+              "message" => $messageErr,
+              "method" => $method
+            );
+
+            Helper::LogRequest($request, $dataArr);
+            $message = $this->FailedMessage($messageErr);
+            return response()->json(['error' => $message]);
+          }
         }
       }
     } catch (\Exception $ex) {
@@ -172,6 +188,7 @@ class StockController extends Controller
   {
     try {
       $data = Stock::find($id);
+      $data->supplier_tin = Supplier::where('id', $data->supplier_id)->first()->tin;
       return response()->json(['success' => 'Ok', 'data' => $data]);
     } catch (\Exception $ex) {
       return response()->json(['error' => $ex->getMessage()]);
@@ -246,7 +263,6 @@ class StockController extends Controller
         $expiry_date = $request->input('expiry_date');
         $stock->buying_price = Helper::Numberize($request->input('original_price'));
         $stock->selling_price = Helper::Numberize($request->input('selling_price'));
-        $stock->wholesale_price = Helper::Numberize($request->input('wholesale_price'));
 
         $request->filled("threshold_qty")
           ? $threshold_quantity = Helper::Numberize($request->input("threshold_qty"))

@@ -51,6 +51,9 @@ class StockDataTable extends DataTable
         })->addColumn('checkbox', function ($stock) {
               $checkBox = '<input type="checkbox" id="'.$stock->id.'"/>';
              return $checkBox;
+        })->editColumn('goods_type', function ($data) {
+            $goods_types = config('goods-type-codes');
+            return array_search($data->goods_type_code, $goods_types);
         })->editColumn('quantity', function ($data) {
             return number_format($data->quantity);
         })->editColumn('threshold_qty', function ($data) {
@@ -59,8 +62,6 @@ class StockDataTable extends DataTable
             return number_format($data->buying_price);
         })->editColumn('selling_price', function ($data) {
             return number_format($data->selling_price);
-        })->editColumn('wholesale_price', function ($data) {
-            return number_format($data->wholesale_price);
         })->rawColumns(['action', 'checkbox']);
 
     }
@@ -99,13 +100,13 @@ class StockDataTable extends DataTable
 
         return [
             'id',
+            'item_name',
             'item_code',
-            'item',
+            'goods_type_code',
             'quantity',
             'threshold_qty',
             'buying_price',
             'selling_price',
-            'wholesale_price',
             'supplier'
         ];
 

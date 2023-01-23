@@ -275,6 +275,7 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('suppliers/getSuppliers4DT', [SuppliersController::class, 'GetSuppliersData'])->name('getSuppliers4DT');
 	Route::get('suppliers/home', [SuppliersController::class, 'GetSuppliers'])->name('suppliers.home');
 	Route::post('suppliers/delete/all', [SuppliersController::class, 'deleteAllSuppliers'])->name('suppliers.truncate');
+	Route::get('supplier/{supplier_id}/ajax', [SuppliersController::class, 'getSupplierDetailsAjax'])->name('supplier.details.ajax.fetch');
 
 
 	Route::resources([
