@@ -17,15 +17,21 @@ use App\Helpers\Constants as Constant;
 use App\Helpers\Helper;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Api\StockService;
+use App\Repositories\StockRepository;
 
 
 class StockController extends Controller
 {
 
-  public $controller;
-  public function __construct()
+  private $controller;
+  protected $stockRepository, $stockService;
+
+  public function __construct(StockRepository $stockRepository, StockService $stockService)
   {
     $this->controller = 'StockController';
+    $this->stockRepository = $stockRepository;
+    $this->stockService = $stockService;
   }
 
   public function index()
@@ -132,7 +138,7 @@ class StockController extends Controller
             'created_by' => Auth::user()->id,
           ];
 
-          if (Stock::create($stock)) {
+          if ($this->stockRepository->create($stock)) {
 
             $action = "recorded stock item " . $item_name . " in the system";
             Helper::logger($request, $action, now());
