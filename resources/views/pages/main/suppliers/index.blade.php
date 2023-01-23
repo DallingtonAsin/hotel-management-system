@@ -64,10 +64,11 @@
 
                     <thead>
                         <tr>
-                            <th></th>
+                            {{-- <th></th> --}}
                             <th class="td-sm">No</th>
                             <th>Supplier</th>
-                            <th>Mobile No</th>
+                            <th>Tin Number</th>
+                            <th>Phone No</th>
                             <th>Address</th>
                             <th>Email</th>
                             <th>Credit</th>
@@ -115,10 +116,10 @@
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Address</span>
-                            <input type="text" class="form-control address " name="address" placeholder="Enter address">
+                            <span><i class="text-danger pr-1">*</i>Tin Number</span>
+                            <input type="text" class="form-control tin" name="tin"
+                                placeholder="Enter TIN">
                         </div>
-
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Phone Number</span>
@@ -126,7 +127,12 @@
                                 placeholder="Enter phone number">
                         </div>
 
+                        <div class="form-group">
+                            <span><i class="text-danger pr-1">*</i>Address</span>
+                            <input type="text" class="form-control address " name="address" placeholder="Enter address">
+                        </div>
 
+                       
                         <div class="form-group">
                             <span>Email</span>
                             <input type="email" class="form-control email " name="email" placeholder="Email">
@@ -254,22 +260,24 @@
             let table = $('#suppliers-table');
             let title = "List of registered suppliers in the system";
             let columns = [1, 2, 3, 4];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
-                //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-                {
-                    data: 'id',
-                    name: 'id'
-                },
+            let dataColumns = [
+                // {
+                //     data: 'checkbox',
+                //     name: 'checkbox'
+                // },
+                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+            
                 {
                     data: 'name',
                     name: 'name'
                 },
                 {
-                    data: 'contact',
-                    name: 'contact'
+                    data: 'tin',
+                    name: 'tin'
+                },
+                {
+                    data: 'phone_number',
+                    name: 'phone_number'
                 },
                 {
                     data: 'address',
@@ -367,21 +375,24 @@
             function populateSupplierDetails(data) {
                 $('.supplier_id').val(data.id);
                 $('.name').val(data.name);
+                $('.tin').val(data.tin);
+                $('.contact').val(data.phone_number);
                 $('.address').val(data.address);
-                $('.contact').val(data.contact);
                 $('.email').val(data.email);
-                $('.debt').val(FormatNumber(data.debt));
-                $('.credit').val(FormatNumber(data.credit));
+                let debt = data.debt ?  FormatNumber(data.debt) : data.debt;
+                let credit = data.credit ?  FormatNumber(data.credit) : data.credit;
+                $('.debt').val(debt);
+                $('.credit').val(credit);
             }
 
 
             $('.addSupplierBtn').click(function(e) {
 
                 e.preventDefault();
-                let errors = validateForm();
+                let isValidForm = validateForm();
 
-                if (errors.length == 0) {
-                    $('.errors-section').html('');
+                if (isValidForm) {
+                    
                     $(this).html('Sending..');
 
                     $.ajax({
@@ -412,14 +423,6 @@
                             $('.addSupplierBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < errors.length; i++) {
-                        message += errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
                 }
 
             });
@@ -512,24 +515,30 @@
             }
 
             function validateForm() {
+
+                let isValidForm = false;
                 let name = $('.name').val();
-                let address = $('.address').val();
+                let tin = $('.tin').val();
                 let contact = $('.contact').val();
+                let address = $('.address').val();
+
                 let errors = [];
                 if (name.length < 1) {
-                    let nameErr = "Please enter the name of the supplier";
-                    errors.push(nameErr);
+                    displayResponse(null, "Please enter the name of the supplier", 'error');
                 }
-                if (address.length < 1) {
-                    let addressErr = "Please enter the address of the supplier";
-                    errors.push(addressErr);
+                else if (tin.length < 1) {
+                    displayResponse(null, "Please enter the tin number of the supplier", 'error');
                 }
-                if (contact.length < 1) {
-                    let contactErr = "Please enter supplier's contact";
-                    errors.push(contactErr);
+                else if (contact.length < 1) {
+                    displayResponse(null, "Please enter the phone number of the supplier", 'error');
+                }
+                else if (address.length < 1) {
+                    displayResponse(null, "Please enter the address of the supplier", 'error');
+                }else{
+                    isValidForm = true;
                 }
 
-                return errors;
+                return isValidForm;
 
             }
 

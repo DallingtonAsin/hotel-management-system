@@ -15,18 +15,10 @@ class DebtorsSuppliersTable extends Migration
     public function up()
     {
 
-        // SQL SERVER QUERY
-        // DB::statement("CREATE VIEW debtors_suppliers
-        //  AS select s.name AS 'name',s.contact AS 'contact',
-        //   sum(s.debt) AS 'debts' 
-        //     from suppliers as s group by
-        //      s.name,s.contact order by sum(s.debt) desc offset 0 rows ");
-
             DB::statement("CREATE OR REPLACE VIEW `debtors_suppliers` AS
-            select `name` AS `name`,`contact` AS `contact`, sum(`debt`) AS `debts` 
-            from `suppliers` group by `name`,`contact` 
+            select `name` AS `name`,`phone_number` AS `phone_number`, sum(`debt`) AS `debts` 
+            from `suppliers` group by `name`,`phone_number` 
             order by sum(`debt`) desc");
-
 
     }
 
