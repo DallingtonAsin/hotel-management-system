@@ -1,4 +1,4 @@
-<div class="az-content-body">
+<div class="az-content-body dashboard-body">
 
       <div class="row">
         <a href="{{ route('staff.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
