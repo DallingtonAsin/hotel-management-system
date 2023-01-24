@@ -26,7 +26,7 @@ class PurchasesController extends Controller
 
    public function GetPurchases(PurchasesDataTable $dataTable)
    {
-       return $dataTable->render('pages.main.stock.purchases');
+       return $dataTable->render('pages.main.inventory.purchases');
    }
 
 
@@ -38,7 +38,7 @@ class PurchasesController extends Controller
         $arr = $this->GetPurchaseDetails();
         $no_of_purchases = $arr['totl_no'];
         $totl_cost_of_purchases = $arr['totl_purchases'];
-        return view('pages.main.stock.purchases',
+        return view('pages.main.inventory.purchases',
         compact('purchases', 'suppliers', 'no_of_purchases',
                 'totl_cost_of_purchases'));
     }
@@ -51,7 +51,7 @@ class PurchasesController extends Controller
      */
     public function create()
     {
-        return view('pages.main.stock.purchases');
+        return view('pages.main.inventory.purchases');
     }
 
     /**
