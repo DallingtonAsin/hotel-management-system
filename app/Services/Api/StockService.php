@@ -16,10 +16,28 @@ class StockService
         $this->stockRepository = $stockRepository;
     }
 
-    public function addStock($productData)
+    public function addStock($data)
     {
         try {
-           return $this->apiService->post('/add-stock', $productData);
+           return $this->apiService->post('/add-stock', $data);
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function increaseStock($data)
+    {
+        try {
+           return $this->apiService->post('/increase-stock', $data);
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function decreaseStock($data)
+    {
+        try {
+           return $this->apiService->post('/decrease-stock', $data);
         } catch (\Exception $e) {
             return $e;
         }

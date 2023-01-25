@@ -151,11 +151,15 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::post('stock/import-stock', [StockController::class, 'importStock'])->name('stock.import');
 	Route::post('stock/search/item', [DamagesController::class, 'searchItem'])->name('stock-item.search');
 	Route::post('stock/deleteAll', [StockController::class, 'deleteAllStockItems'])->name('stock.truncate');
+	Route::put('stock/levels/increase/{id}', [StockController::class, 'increaseStock'])->name('stock.increase');
+	Route::put('stock/levels/decrease/{id}', [StockController::class, 'decreaseStock'])->name('stock.decrease');
 
 	Route::get('goods/ajax', [GoodsController::class, 'getsGoodsDataTable'])->name('goods.ajax');
+	Route::post('goods/search/ajax', [GoodsController::class, 'getSearchGoodsAjax'])->name('goods.search.ajax');
+	Route::get('goods/search/{goods_name}/ajax', [GoodsController::class, 'searchGoodDetails'])->name('good.find.ajax');
 	Route::get('commodity-categories/index/ajax', [CommodityCategoryController::class, 'getCommoditiesDataTable'])->name('commodities.category.ajax.fetch');
 	Route::get('commodity-categories/{category_id}/ajax', [CommodityCategoryController::class, 'findCommodityCategoryAjax'])->name('commodities.category.ajax.find');
-
+	
 	
 	Route::post('damaged-stock-items/deleteAll', [DamagesController::class, 'deleteAllDamages'])->name('damages.truncate');
 	Route::post('damaged-stock-items/import-damages', [DamagesController::class, 'importDamages'])->name('damages.import');

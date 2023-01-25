@@ -19,18 +19,21 @@ use App\Models\Supplier;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Api\StockService;
 use App\Repositories\StockRepository;
+use App\Repositories\SupplierRepository;
 
 
 class StockController extends Controller
 {
 
   private $controller;
-  protected $stockRepository, $stockService;
+  protected $stockRepository, $supplierRepository, $stockService;
 
-  public function __construct(StockRepository $stockRepository, StockService $stockService)
+  public function __construct(StockRepository $stockRepository, StockService $stockService,
+                              SupplierRepository $supplierRepository)
   {
     $this->controller = 'StockController';
     $this->stockRepository = $stockRepository;
+    $this->supplierRepository = $supplierRepository;
     $this->stockService = $stockService;
   }
 
@@ -48,16 +51,6 @@ class StockController extends Controller
   public function GetStock(StockDataTable $dataTable)
   {
     return $dataTable->render('pages.main.inventory.stock');
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    return view('pages.main.inventory.stock');
   }
 
   /**
@@ -110,7 +103,7 @@ class StockController extends Controller
           $supplier_id = $request->input('supplier');
           $expiry_date = $request->input('expiry_date');
           $remarks = $request->input('remarks');
-          $supplier = Supplier::find($supplier_id);
+          $supplier = $this->supplierRepository->get($supplier_id);
 
           $efris_request_data = [
             'goodsCode' => $item_code,
@@ -124,7 +117,8 @@ class StockController extends Controller
           ];
 
           $apiResponse = $this->stockService->addStock($efris_request_data);
-          // dd($apiResponse);
+          $apiResponse = json_decode(json_encode($apiResponse->getData()), true);
+
           if ($apiResponse['statusCode'] ==  200) {
 
             $threshold_quantity = null;
@@ -190,9 +184,222 @@ class StockController extends Controller
         }
       }
     } catch (\Exception $ex) {
-      return response()->json(['error' => 'Unable to upload stock on EFRIS because of'. $ex->getMessage()]);
+      return response()->json(['error' => 'Unable to upload stock on EFRIS because of' . $ex->getMessage()]);
     }
   }
+
+
+  public function increaseStock(Request $request, $id)
+  {
+
+    if (!empty($id)) {
+
+      $validator = Validator::make($request->all(), [
+        'item_code' => 'required',
+        'goods_type_code' => 'required',
+        'quantity' => 'required',
+        'selling_price' => 'required',
+        'stockin_type_code' => 'required',
+        'supplier' => 'required',
+        'remarks' => 'sometimes|nullable',
+      ]);
+
+      try {
+        if ($validator->fails()) {
+
+          $message = $validator->errors()->all();
+          return response()->json(['error' => $message]);
+        } else {
+
+          $item_code = $request->input('item_code');
+          $code_exists = $this->stockRepository->exists($id);
+
+          if (!$code_exists) {
+            return response()->json(['error' => 'Product code ' . $item_code . ' does not exist in the stock']);
+          } else {
+
+            $method = "StockController@increaseStock";
+
+            $item_name = $this->stockRepository->get($id)->item_name;
+
+            $supplier_id = $request->input('supplier');
+            $goods_type_code = $request->input('goods_type_code');
+            $stockin_type_code = $request->input('stockin_type_code');
+            $quantity = Helper::Numberize($request->input('quantity'));
+            $selling_price = Helper::Numberize($request->input('selling_price'));
+            $remarks = $request->input('remarks');
+            $supplier = $this->supplierRepository->get($supplier_id);
+
+
+            $efris_request_data = [
+              'goodsCode' => $item_code,
+              'goodsTypeCode' => $goods_type_code,
+              'quantity' => $quantity,
+              'unitPrice' => $selling_price,
+              'stockInType' => $stockin_type_code,
+              'supplierTin' => $supplier->tin,
+              'supplierName' => $supplier->name,
+              'remarks' => $remarks
+            ];
+
+            // dd($efris_request_data);
+
+            $apiResponse = $this->stockService->increaseStock($efris_request_data);
+            $apiResponse = json_decode(json_encode($apiResponse->getData()), true);
+
+            if ($apiResponse['statusCode'] ==  200) {
+
+              $is_updated = $this->stockRepository->increase($id, $quantity);
+
+              if ($is_updated) {
+
+                $action = "increased quantity for stock item " . $item_name . " by " . $quantity . " in the system";
+                Helper::logger($request, $action, now());
+
+                $dataArr = array(
+                  "code" => '200',
+                  "message" => $action,
+                  "method" => $method
+                );
+
+                Helper::LogRequest($request, $dataArr);
+
+                $message = Helper::ActionMessage($action);
+                $arr = $this->getStockStats();
+
+                return response()
+                  ->json([
+                    'success' => $message,
+                    'data' => $arr
+                  ]);
+              } else {
+
+                $messageErr = "System has failed to update stock quantity";
+
+                $dataArr = array(
+                  "code" => '101',
+                  "message" => $messageErr,
+                  "method" => $method
+                );
+
+                Helper::LogRequest($request, $dataArr);
+                $message = $this->FailedMessage($messageErr);
+                return response()->json(['error' => $message]);
+              }
+            } else {
+              return response()->json(['error' => $apiResponse['message']]);
+            }
+          }
+        }
+      } catch (\Exception $ex) {
+        return response()->json(['error' => 'Unable to increase stock on EFRIS because of ' . $ex->getMessage()]);
+      }
+    } else {
+      return response()->json(['error' => 'Unable to get stock item id']);
+    }
+  }
+
+
+
+  public function decreaseStock(Request $request, $id)
+  {
+
+    if (!empty($id)) {
+
+      $validator = Validator::make($request->all(), [
+        'item_code' => 'required',
+        'quantity' => 'required',
+        'selling_price' => 'required',
+        'adjust_type' => 'required',
+        'remarks' => 'sometimes|nullable'
+      ]);
+
+      try {
+        if ($validator->fails()) {
+
+          $message = $validator->errors()->all();
+          return response()->json(['error' => $message]);
+        } else {
+
+          $item_code = $request->input('item_code');
+          $code_exists = $this->stockRepository->exists($id);
+
+          if (!$code_exists) {
+            return response()->json(['error' => 'Product code ' . $item_code . ' does not exist in the stock']);
+          } else {
+
+            $method = "StockController@decreaseStock";
+            $item_name = $this->stockRepository->get($id)->item_name;
+            $quantity = Helper::Numberize($request->input('quantity'));
+            $selling_price = Helper::Numberize($request->input('selling_price'));
+            $adjust_type = $request->input('adjust_type');
+            $remarks = $request->input('remarks');
+
+            $efris_request_data = [
+              'goodsCode' => $item_code,
+              'quantity' => $quantity,
+              'unitPrice' => $selling_price,
+              'adjustType' => $adjust_type,
+              'remarks' => $remarks
+            ];
+
+            $apiResponse = $this->stockService->decreaseStock($efris_request_data);
+            $apiResponse = json_decode(json_encode($apiResponse->getData()), true);
+
+            if ($apiResponse['statusCode'] ==  200) {
+
+              $is_updated = $this->stockRepository->decrease($id, $quantity);
+
+              if ($is_updated) {
+
+                $action = "decreased quantity for stock item " . $item_name . " by " . $quantity . " in the system";
+                Helper::logger($request, $action, now());
+
+                $dataArr = array(
+                  "code" => '200',
+                  "message" => $action,
+                  "method" => $method
+                );
+
+                Helper::LogRequest($request, $dataArr);
+
+                $message = Helper::ActionMessage($action);
+                $arr = $this->getStockStats();
+
+                return response()
+                  ->json([
+                    'success' => $message,
+                    'data' => $arr
+                  ]);
+              } else {
+
+                $messageErr = "System has failed to update stock";
+
+                $dataArr = array(
+                  "code" => '101',
+                  "message" => $messageErr,
+                  "method" => $method
+                );
+
+                Helper::LogRequest($request, $dataArr);
+                $message = $this->FailedMessage($messageErr);
+                return response()->json(['error' => $message]);
+              }
+            } else {
+              return response()->json(['error' => $apiResponse['message']]);
+            }
+          }
+        }
+      } catch (\Exception $ex) {
+        return response()->json(['error' => 'Unable to decrease stock on EFRIS because of ' . $ex->getMessage()]);
+      }
+    } else {
+      return response()->json(['error' => 'Unable to get stock item id']);
+    }
+  }
+
+
+
 
   protected function getStockStats()
   {

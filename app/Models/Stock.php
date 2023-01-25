@@ -27,4 +27,16 @@ class Stock extends Model
 	];
 
 	public $timestamps = true; 
+
+	public function increase($quantity)
+    {
+        $this->quantity += $quantity;
+        return $this->save();
+    }
+
+	public function decrease($quantity)
+    {
+        $this->quantity -= $quantity;
+        return $this->save();
+    }
 }

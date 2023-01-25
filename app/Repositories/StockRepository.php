@@ -17,9 +17,12 @@ class StockRepository
         return $this->stock->create($stockData);
     }
 
-    public function get($id)
+    public function get($id = null)
     {
-        return $this->stock->find($id);
+        if($id){
+           return $this->stock->find($id);
+        }
+        return $this->stock->all();
     }
 
     public function update($id, $stockData)
@@ -35,4 +38,19 @@ class StockRepository
         $stock->delete();
         return $stock;
     }
+
+    public function exists($id){
+        $stock = $this->stock->where('id', $id)->exists();
+        return $stock; 
+    }
+
+    public function increase($id, $quantity){
+        return $this->stock->find($id)->increase($quantity);
+    }
+
+    public function decrease($id, $quantity){
+        return $this->stock->find($id)->decrease($quantity);
+    }
+
+    
 }

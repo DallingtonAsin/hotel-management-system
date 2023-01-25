@@ -55,4 +55,12 @@ class GoodsRepository
             return $e;
         }
     }
+
+    public function findGoodByName($goods_name){
+        return $this->good->where("goods_name", $goods_name)->first();
+    }
+
+    public function getGoodsByName($goods_name){
+        return $this->good->where("goods_name", "like", "%" . $goods_name . "%")->get();
+    }
 }
