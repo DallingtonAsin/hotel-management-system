@@ -6,10 +6,18 @@ use App\Models\Good;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Helpers\Helper;
+use App\Repositories\CurrencyRepository;
 
 
 class GoodsDataTable extends DataTable
 {
+
+    protected $currencyRepository;
+
+    public function __construct(CurrencyRepository $currencyRepository)
+    {
+      $this->currencyRepository =  $currencyRepository;
+    }
     /**
      * Build DataTable class.
      *
@@ -27,20 +35,10 @@ class GoodsDataTable extends DataTable
 
                 $btn = "";
 
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
-            data-id="' . $good->id . '" data-original-title="Edit" id="increase-good"
-            class="px-3 py-1 border border-success rounded  increase-good mx-2">
-             <small class="fa fa-plus-circle text-success pr-1"></small> good</a>';
-
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
-             data-id="' . $good->id . '" data-original-title="Edit" id="decrease-good"
-             class="px-3 py-1 border border-success rounded  decrease-good mx-2">
-              <small class="fa fa-minus-circle text-success pr-1"></small> good</a>';
-
-
+              
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
               data-id="' . $good->id . '" data-original-title="Edit" id="edit-good"
-              class="px-3 py-1 border border-secondary rounded  edit-good mx-2">edit good</a>';
+              class="px-3 py-1 border border-success rounded  edit-good mx-2 text-success">edit good</a>';
 
 
                 $btn .= '<a href="javascript:void(0);" id="view-good"
@@ -49,8 +47,13 @@ class GoodsDataTable extends DataTable
 
 
                 return $btn;
+            })->addColumn('currency_code', function($data){
+                $currency = $this->currencyRepository->get($data->currency_id);
+                return $currency->code;
             })->editColumn('created_by', function($data){
                 return Helper::getUserNames($data->created_by);
+              })->editColumn('unit_price', function($data){
+                return number_format($data->unit_price);
               })->rawColumns(['action']);
     }
 
@@ -99,7 +102,7 @@ class GoodsDataTable extends DataTable
             'goods_code',
             'measure_unit',
             'unit_price',
-            'currency_code',
+            'currency_id',
             'commodity_category_id',
             'have_excise_tax',
             'description',

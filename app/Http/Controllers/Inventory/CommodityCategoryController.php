@@ -96,4 +96,17 @@ class CommodityCategoryController extends Controller
     {
         //
     }
+
+    public function findCommodityCategoryAjax(Request $request, $id){
+      if($id){
+        if($request->ajax()){
+            $category = $this->commodityCategoryRepository->get($id);
+            return response()->json(['success' => 'Ok', 'data' => $category]);
+        }else{
+        return response()->json(['error' => 'Unknown request type']);
+        }
+      }else{
+        return response()->json(['error' => 'System unable to get commodity category id']);
+      }
+    }
 }

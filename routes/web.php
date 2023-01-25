@@ -154,7 +154,9 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 
 	Route::get('goods/ajax', [GoodsController::class, 'getsGoodsDataTable'])->name('goods.ajax');
 	Route::get('commodity-categories/index/ajax', [CommodityCategoryController::class, 'getCommoditiesDataTable'])->name('commodities.category.ajax.fetch');
+	Route::get('commodity-categories/{category_id}/ajax', [CommodityCategoryController::class, 'findCommodityCategoryAjax'])->name('commodities.category.ajax.find');
 
+	
 	Route::post('damaged-stock-items/deleteAll', [DamagesController::class, 'deleteAllDamages'])->name('damages.truncate');
 	Route::post('damaged-stock-items/import-damages', [DamagesController::class, 'importDamages'])->name('damages.import');
 	Route::get('damaged-stock-items/export-damages', [DamagesController::class, 'exportDamages'])->name('damages.export');

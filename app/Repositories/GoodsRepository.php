@@ -41,7 +41,7 @@ class GoodsRepository
 
     public function count(){
         try {
-            return Good::count();
+            return $this->good->count();
         } catch (\Exception $e) {
             return $e;
         }
@@ -49,7 +49,7 @@ class GoodsRepository
 
     public function existsGood($goods_code){
         try {
-            $exists = Good::where('goods_code', $goods_code)->exists();
+            $exists = $this->good->where('goods_code', $goods_code)->exists();
             return $exists;
         } catch (\Exception $e) {
             return $e;

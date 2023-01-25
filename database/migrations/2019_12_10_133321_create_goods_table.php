@@ -20,7 +20,7 @@ class CreateGoodsTable extends Migration
             $table->string('goods_code', 50)->unique();
             $table->string('measure_unit', 3);
             $table->double('unit_price');
-            $table->string('currency_code');
+            $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('commodity_category_id');
             $table->string('have_excise_tax', 3);
             $table->text('description')->nullable();
@@ -37,7 +37,7 @@ class CreateGoodsTable extends Migration
             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
-            $table->foreign('currency_code')->references('efris_code')->on('currencies');
+            $table->foreign('currency_id')->references('id')->on('currencies');
             $table->foreign('commodity_category_id')->references('id')->on('commodity_categories');
             $table->foreign('created_by')->references('id')->on('staff');
 

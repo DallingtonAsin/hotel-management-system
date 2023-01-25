@@ -472,7 +472,7 @@ class PurchasesController extends Controller
       "method" => "PurchasesController@importStock");
       Helper::LogRequest($request, $dataArr);
 
-     return back()->with('success', $this->ActionMessage($action));
+     return back()->with('success', Helper::ActionMessage($action));
    }
    else
    {

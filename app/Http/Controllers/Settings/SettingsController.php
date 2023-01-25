@@ -171,7 +171,7 @@ class SettingsController extends Controller
                 Helper::logger($request, $message, now());
 
                 if ($result) {
-                    return back()->with('success', $this->ActionMessage($message));
+                    return back()->with('success', Helper::ActionMessage($message));
                 } else {
                     return back()->with('fail', 'Technical error in recording company details');
                 }

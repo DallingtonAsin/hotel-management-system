@@ -178,7 +178,7 @@ class ProfileController extends Controller
                 Helper::logger($request, $action, now());
                 $actionx = Str::replaceFirst($gender, 'your', $action);
                 $sessionVariable = 'success';
-                $message = $this->ActionMessage($actionx);
+                $message = Helper::ActionMessage($actionx);
             } else {
                 $sessionVariable = 'error';
                 $message = 'Profile update failed';
@@ -275,7 +275,7 @@ class ProfileController extends Controller
                     Helper::logger($request, $action, now());
                     $actionx = Str::replaceFirst($gender, 'your', $action);
                     $sessionVariable = 'success';
-                    $message = $this->ActionMessage($actionx);
+                    $message = Helper::ActionMessage($actionx);
                 } else {
                     $sessionVariable = 'error';
                     $message = 'Profile update failed';

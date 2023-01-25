@@ -41,7 +41,7 @@ class CommodityCategoryRepository
 
     public function count(){
         try {
-            return CommodityCategory::count();
+            return $this->goodCategory->count();
         } catch (\Exception $e) {
             return $e;
         }

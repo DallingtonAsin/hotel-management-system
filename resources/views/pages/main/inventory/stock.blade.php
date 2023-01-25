@@ -67,7 +67,7 @@
             <!--Add new Stock -->
             <div class="modal fade nunito-font" id="addStockModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-dialog mx-auto modal-dialog-xlg">
                     <div class="modal-content">
 
                         <form name="StockForm" id="StockForm">

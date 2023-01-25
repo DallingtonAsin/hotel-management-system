@@ -11,16 +11,21 @@ use Illuminate\Support\Facades\Validator;
 use App\Repositories\CommodityCategoryRepository;
 use App\Repositories\GoodsRepository;
 use App\Helpers\Helper;
+use App\Repositories\CurrencyRepository;
 
 
 class GoodsController extends Controller
 {
 
     protected $goodsService, $goodsRepository, $goodsCategoryRepository;
-    public function __construct(GoodsService $goodsService, GoodsRepository $goodsRepository, CommodityCategoryRepository $goodsCategoryRepository)
+    protected $currencyRepository;
+
+    public function __construct(GoodsService $goodsService, GoodsRepository $goodsRepository, CurrencyRepository $currencyRepository,
+                               CommodityCategoryRepository $goodsCategoryRepository)
     {
         $this->goodsService = $goodsService;
         $this->goodsRepository = $goodsRepository;
+        $this->currencyRepository = $currencyRepository;
         $this->goodsCategoryRepository = $goodsCategoryRepository;
     }
     /**
@@ -31,8 +36,10 @@ class GoodsController extends Controller
     public function index()
     {
         $number_of_goods = $this->goodsRepository->count();
+        $currencies = $this->currencyRepository->get();
         $commodity_categories = $this->goodsCategoryRepository->get();
-        return view('pages.main.inventory.goods.index')->with(compact('commodity_categories', 'number_of_goods'));
+        // $currencies
+        return view('pages.main.inventory.goods.index')->with(compact('commodity_categories', 'number_of_goods', 'currencies'));
     }
 
     public function getsGoodsDataTable(GoodsDataTable $dataTable)
@@ -60,12 +67,13 @@ class GoodsController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'goods_code' => 'required',
             'goods_name' => 'required',
+            'goods_code' => 'required',
             'measure_unit' => 'required',
             'unit_price' => 'required',
-            'currency' => 'sometimes|nullable',
-            'commodity_category_id' => 'required',
+            'currency' => 'required',
+            'commodity_category' => 'required',
+            'stock_prewarning' => 'required',
             'have_excise_tax' => 'required',
             'have_piece_unit' => 'required',
             'have_other_unit' => 'required'
@@ -89,28 +97,38 @@ class GoodsController extends Controller
                     $method = "GoodsController@store";
 
                     $goods_name = $request->input('goods_name');
+                    $goods_code = $request->input('goods_code');
+
                     $measure_unit = $request->input('measure_unit');
-                    $currency_code = $request->input('currency_code');
+                    $currency_id = $request->input('currency');
                     $unit_price = Helper::Numberize($request->input('unit_price'));
-                    $commodity_category_id  = $request->input('commodity_category_id');
-                    $has_exercise_tax = $request->input('has_exercise_tax');
+                    $stock_prewarning = Helper::Numberize($request->input('stock_prewarning'));
+                    $commodity_category_id  = $request->input('commodity_category');
+                    $have_excise_tax = $request->input('have_excise_tax');
                     $have_piece_unit = $request->input('have_piece_unit');
                     $have_other_unit = $request->input('have_other_unit');
 
+                    $currency = $this->currencyRepository->get($currency_id);
+                    $commodity_category = $this->goodsCategoryRepository->get($commodity_category_id);
+
+                   
                     $efris_goods_data = [
                         'goodsName' => $goods_name,
                         'goodsCode' => $goods_code,
                         'measureUnit' => $measure_unit,
                         'unitPrice' => $unit_price,
-                        'currency' => $currency_code,
-                        'commodityCategoryId' => $commodity_category_id,
-                        'haveExciseTax' => $has_exercise_tax,
+                        'currency' => $currency->efris_code,
+                        'commodityCategoryId' => $commodity_category->code,
+                        'stockPrewarning' => $stock_prewarning,
+                        'haveExciseTax' => $have_excise_tax,
                         'havePieceUnit' => $have_piece_unit,
                         'haveOtherUnit' => $have_other_unit,
                     ];
-
+            
                     $apiResponse = $this->goodsService->addGood($efris_goods_data);
                     // dd($apiResponse);
+                    $apiResponse = json_decode(json_encode($apiResponse->getData()), true);
+               
                     if ($apiResponse['statusCode'] ==  200) {
 
                         $good = [
@@ -118,9 +136,10 @@ class GoodsController extends Controller
                             'goods_code' => $goods_code,
                             'measure_unit' => $measure_unit,
                             'unit_price' => $unit_price,
-                            'currency' => $currency_code,
-                            'commodity_category_id' => $commodity_category_id,
-                            'have_excise_tax' => $has_exercise_tax,
+                            'currency_id' => $currency->id,
+                            'commodity_category_id' => $commodity_category->id,
+                            'stock_prewarning' => $stock_prewarning,
+                            'have_excise_tax' => $have_excise_tax,
                             'have_piece_unit' => $have_piece_unit,
                             'have_other_unit' => $have_other_unit,
                             'created_by' => Auth::user()->id,
@@ -138,8 +157,8 @@ class GoodsController extends Controller
 
                             Helper::LogRequest($request, $dataArr);
 
-                            $message = $this->ActionMessage($action);
-                            $arr = $this->getStockStats();
+                            $message = Helper::ActionMessage($action);
+                            $arr['total'] = $this->goodsRepository->count();
 
                             return response()
                                 ->json([

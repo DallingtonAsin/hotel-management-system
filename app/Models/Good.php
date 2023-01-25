@@ -18,7 +18,7 @@ class Good extends Model
         'goods_code',
         'measure_unit',
         'unit_price',
-        'currency_code',
+        'currency_id',
         'commodity_category_id',
         'have_excise_tax',
         'description',

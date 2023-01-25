@@ -10,7 +10,7 @@
                 <h6 class="text-left text-dark">
                     <i class="fa fa-home text-success"> /</i>
                     <strong>Commodity Categories</strong>
-                    <span class="badge badge-info totl-stock">
+                    <span class="badge badge-info totl_categories">
                         @isset($number_of_categories)
                             {{ number_format($number_of_categories) }}
                         @endisset
@@ -22,7 +22,7 @@
             <div class="col">
                 <div class="btn-group float-right justify-content-between mb-2">
                     <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewStock"><i
-                            class="fa fa-plus-circle pr-1"></i>Add good</button>
+                            class="fa fa-plus-circle pr-1"></i>Add commodity category</button>
                 </div>
             </div>
 
@@ -46,7 +46,7 @@
 
 
             <!--Add new Stock -->
-            <div class="modal fade nunito-font" id="addStockModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade nunito-font" id="addCommodityCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
@@ -64,110 +64,23 @@
 
                                 <div class="row form-group">
 
-                                    <div class="col-md-4">
-                                        <span><span class="text-danger pr-1">*</span>Product Name</span>
-                                        <input type="text" class="form-control  item_name" name="item"
-                                            placeholder="Enter product name">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <span><span class="text-danger pr-1">*</span>Product Code</span>
-                                        <input type="hidden" class="stockId" name="id">
-                                        <input type="text" class="form-control  item_code" name="item_code"
-                                            placeholder="Enter product code">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <span><span class="text-danger pr-1">*</span>Product Type Code</span>
-                                        <select name="goods_type_code" class="form-control goods_type_code">
-                                            @foreach (config('goods-type-codes') as $key => $value)
-                                                <option value="{{ $value }}">{{ $value }}: {{ ucfirst($key) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row form-group">
                                     <div class="col-md-6">
-                                        <span><span class="text-danger pr-1">*</span> Stockin Type</span>
-                                        <select class="form-control stockin_type_code" name="stockin_type_code"
-                                            id="stockin_type_code">
-                                            @foreach (config('stockin-types') as $key => $value)
-                                                <option value="{{ $value }}"
-                                                    {{ str_contains($key, 'local') ? 'selected' : '' }}>{{ $value }}:
-                                                    {{ ucwords(str_replace('_', ' ', str_replace('&', '/ ', $key))) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                
-                                </div>
-
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <span><span class="text-danger pr-1">*</span>Supplier</span>
-                                        <select class="form-control supplier" id="supplier" name="supplier">
-                                            <option value="" selected="true">Select supplier</option>
-                                        </select>
+                                        <span><span class="text-danger pr-1">*</span>Category Name</span>
+                                        <input type="text" class="form-control category_name" name="category_name"
+                                            placeholder="Enter category name">
                                     </div>
 
                                     <div class="col-md-6">
-                                        <span><span class="text-danger pr-1">*</span>Supplier Tin Number</span>
-                                        <input type="text" class="form-control supplier_tin" name="supplier_tin"
-                                            placeholder="Enter supplier tin" readonly>
-                                    </div>
-                                </div>
-
-
-                                <div class="row form-group">
-                                    <div class=" col-md-4">
-                                        <span><span class="text-danger pr-1">*</span>Quantity</span>
-                                        <input type="text" class="form-control  quantity" id="qty"
-                                            name="quantity" placeholder="Enter Quantity">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <span>Threshold Quantity</span>
-                                        <input type="text" class="form-control threshold_qty" id="threshold_qty"
-                                            name="threshold_qty" placeholder="Enter threshold quantity">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <span>Expiry Date</span>
-                                        <input type="date" class="form-control  expiry_date" name="expiry_date"
-                                            placeholder="Enter who bought it">
+                                        <span><span class="text-danger pr-1">*</span>Category Code (EFRIS)</span>
+                                        <input type="hidden" class="category_id" name="category_id">
+                                        <input type="text" class="form-control category_code" name="category_code"
+                                            placeholder="Enter category code">
                                     </div>
 
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <span><span class="text-danger pr-1">*</span>Buying Price</span>
-                                            <input type="text" class="form-control  original_price"
-                                                name="original_price" placeholder="Enter original price" required
-                                                autofocus>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <span><span class="text-danger pr-1">*</span>Unit Price</span>
-                                            <input type="text" class="form-control  selling_price"
-                                                name="selling_price" placeholder="Enter selling price">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <span>Remarks</span>
-                                        <textarea class="form-control remarks" name="remarks">add stock</textarea>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-sm btn-primary addStockBtn"
+                                    <button type="submit" class="btn btn-sm btn-primary addCommodityCatBtn"
                                         name="AddItemBtn"><i></i>Save</button>
                                     <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
                                 </div>
@@ -182,7 +95,7 @@
                 </div>
             </div>
 
-            <!--Import Stock -->
+            <!--Import Commodity Categories -->
             <div class="modal fade nunito-font" id="importStock" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -230,8 +143,8 @@
                 </div>
             </div>
 
-            <!--Modal DeleteStock -->
-            <div class="modal fade" id="deleteStockModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <!--Modal Delete Stock -->
+            <div class="modal fade" id="deleteCommodityCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
                 aria-labelledby="ModalLabel">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -261,7 +174,7 @@
                     </div>
                 </div>
             </div>
-            <!-- end of modal DeleteStock-->
+            <!-- end of modal Delete Stock-->
         </div>
     </div>
 
@@ -301,8 +214,6 @@
     </script>
 
 
-
-
     <script type="text/javascript">
         $(document).ready(function() {
             $.ajaxSetup({
@@ -310,50 +221,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            Numberize(".quantity");
-            Numberize(".threshold_qty");
-            Numberize(".original_price");
-            Numberize(".selling_price");
-
-            onSelectSupplier();
-
-            function onSelectSupplier() {
-                $('.supplier').on('change', function() {
-                    let supplier_id = $(this).find(":selected").val();
-                    if (supplier_id) {
-                        populateSupplierTin(supplier_id);
-                    }
-                });
-            }
-
-            function populateSupplierTin(supplier_id) {
-
-                let url = '{{ route('supplier.details.ajax.fetch', ':supplier_id') }}';
-                url = url.replace(':supplier_id', supplier_id);
-
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    success: function(response) {
-                        if (response.success) {
-                            let data = response.data;
-                            $('.supplier_tin').val(data.tin);
-                        } else {
-                            displayResponse(null, response.error, 'error');
-                        }
-                    },
-                    error: function(data) {
-                        console.log('Error on fetching supplier details', data);
-                        displayResponse(null, data.error, 'error');
-                    }
-                });
-            }
-
-            $.fn.dataTable.ext.errMode = 'none';
-            $('#commodity-category-table').on('error.dt', function(e, settings, techNote, message) {
-                console.log('An error has been reported by DataTables: ', message);
-            }).DataTable();
-
+         
             onClickSubmitBtn();
 
             $('#createNewStock').click(function(e) {
@@ -361,27 +229,27 @@
                 checkPermission(permissions.add_stock, function(stock) {
                     NullifyFields();
                     ShowHideBtns('show');
-                    $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('#StockForm').trigger("reset");
-                    $('#modalHeading').html("Record new stock");
+                    $('#modalHeading').html("Add new commodity category");
                     DisableFormFields(false);
-                    $('#addStockModal').modal('show');
+                    $('#addCommodityCategoryModal').modal('show');
                 });
             });
 
             //modal used to edit stock details [each row of the tbl]
-            $('body').on('click', '#edit-stock', function(event) {
+            $('body').on('click', '#edit-commodity-category', function(event) {
                 let stock_id = $(this).data('id');
                 event.preventDefault();
                 checkPermission(permissions.edit_stock, function(stock) {
-                    editStock(stock_id);
+                    editCommodityCategory(stock_id);
                 });
             });
 
-            function editStock(stock_id) {
+            function editCommodityCategory(stock_id) {
                 ShowHideBtns('show');
-                $('.addStockBtn').text("Update stock");
-                $('#addStockModal').modal('show');
+                $('.addCommodityCatBtn').text("Update stock");
+                $('#addCommodityCategoryModal').modal('show');
                 let Url = "{{ route('stock.show', ':id') }}";
                 Url = Url.replace(':id', stock_id);
                 $.ajax({
@@ -397,23 +265,23 @@
                             populateProductDetails(data);
                             DisableFormFields(false);
                         } else {
-                            $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                            $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                             displayResponse(null, response.error, 'error');
                         }
 
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
-                        $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                        $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                         displayResponse(null, data.error, 'error');
                     }
                 });
             }
 
-            function UpdateStock(stock_id) {
+            function updateCommodityCategory(stock_id) {
 
                 $('.errors-section').html('');
-                $('.addStockBtn').html('Updating item...');
+                $('.addCommodityCatBtn').html('Updating item...');
                 let Url = "{{ route('stock.update', ':id') }}";
                 Url = Url.replace(':id', stock_id);
 
@@ -429,7 +297,7 @@
                         if (response.success) {
                             let data = response.data;
                             $('#StockForm').trigger("reset");
-                            $('#addStockModal').modal("hide");
+                            $('#addCommodityCategoryModal').modal("hide");
                             ResetTblInfo(data);
                             let tbl = $('#commodity-category-table').DataTable();
                             tbl.ajax.reload();
@@ -440,15 +308,15 @@
                     error: function(data) {
                         console.log('Error:', data.error);
                         displayResponse('.response', data.error, 'error');
-                        $('.addStockBtn').html('Save Changes');
+                        $('.addCommodityCatBtn').html('Save Changes');
                     }
                 });
 
             }
 
-            function recordStock() {
+            function addCommodityCategory() {
                 $('.errors-section').html('');
-                $('.addStockBtn').html('Sending data..');
+                $('.addCommodityCatBtn').html('Sending data..');
                 $.ajax({
                     data: $('#StockForm').serialize(),
                     url: "{{ route('stock.store') }}",
@@ -462,12 +330,12 @@
                         if (response.success) {
                             let data = response.data;
                             $('#StockForm').trigger("reset");
-                            $('#addStockModal').modal("hide");
+                            $('#addCommodityCategoryModal').modal("hide");
                             ResetTblInfo(data);
                             let tbl = $('#commodity-category-table').DataTable();
                             tbl.ajax.reload();
                         } else {
-                            $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                            $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                         }
 
                         displayResponse('.response', resp, type);
@@ -475,7 +343,7 @@
                     error: function(data) {
                         console.log('Error:', data.error);
                         displayResponse('.response', data.error, 'error');
-                        $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                        $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     }
                 });
 
@@ -486,17 +354,17 @@
                 let stock_id = $(this).data('id');
                 event.preventDefault();
                 checkPermission(permissions.view_stock, function(stock) {
-                    viewStock(stock_id);
+                    viewCommodityCategory(stock_id);
                 });
             });
 
-            function viewStock(stock_id) {
+            function viewCommodityCategory(stock_id) {
                 ShowHideBtns('hide');
                 $.get("{{ route('stock.index') }}" + '/' + stock_id + '', function(response) {
                     if (response.success) {
                         let data = response.data;
                         $('#modalHeading').html("Details of stock " + data.item_name + "");
-                        $('#addStockModal').modal('show');
+                        $('#addCommodityCategoryModal').modal('show');
                         populateProductDetails(data);
                         DisableFormFields(true);
                     } else {
@@ -506,34 +374,24 @@
             }
 
             function populateProductDetails(data) {
-                $('.stockId').val(data.id);
-                $('.item_code').val(data.item_code);
-                $('.goods_type_code').val(data.goods_type_code);
-                $('.stockin_type_code').val(data.stockin_type_code);
-                $('.item_name').val(data.item_name);
-                $('.category').val(data.category_id);
-                $('#supplier').val(data.supplier_id);
-                $('.supplier_tin').val(data.supplier_tin);
-                $('.quantity').val(data.quantity);
-                $('.threshold_qty').val(data.threshold_qty)
-                $('.expiry_date').val(data.expiry_date);
-                $('.original_price').val(FormatNumber(data.buying_price));
-                $('.selling_price').val(FormatNumber(data.selling_price));
+                $('.category_id').val(data.category_id);
+                $('.category_name').val(data.category_name);
+                $('.category_code').val(data.category_code);
             }
 
 
             function onClickSubmitBtn() {
-                $('.addStockBtn').click(function(e) {
-                    let id = $(".stockId").val();
+                $('.addCommodityCatBtn').click(function(e) {
+                    let id = $(".category_id").val();
                     e.preventDefault();
                     let isValidForm = validateForm();
                     if (isValidForm) {
                         if (id) {
-                            UpdateStock(id);
+                            updateCommodityCategory(id);
 
                         } else {
-                            if (confirm(`Are you sure you want to add this as stock`)) {
-                                recordStock();
+                            if (confirm(`Are you sure you want to add this as commodity category`)) {
+                                addCommodityCategory();
                             }
                         }
                     }
@@ -541,7 +399,7 @@
             }
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-stock', function(e) {
+            $('body').on('click', '#delete-commodity-category', function(e) {
                 let stock_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_stock, function(stock) {
@@ -549,9 +407,9 @@
                         if (response.success) {
                             let data = response.data;
                             $('.delete-confirm-text').html(
-                                `Are you sure you want to delete item ${data.item_name}?`
+                                `Are you sure you want to delete commodity category ${data.item_name}?`
                             );
-                            $("#deleteStockModal").modal('show');
+                            $("#deleteCommodityCategoryModal").modal('show');
                             $('.delete-ok-btn').on('click', function() {
                                 deleteRecord(stock_id);
                             });
@@ -578,7 +436,7 @@
                         if (response.success) {
                             let data = response.data;
                             $('.delete-ok-btn').html('Yes');
-                            $('#deleteStockModal').modal("hide");
+                            $('#deleteCommodityCategoryModal').modal("hide");
                             ResetTblInfo(data);
                             let tbl = $('#commodity-category-table').DataTable();
                             tbl.ajax.reload();
@@ -593,41 +451,26 @@
             }
 
             function NullifyFields() {
-                $('.stockId').val('');
-                $('.item_code').val('');
-                $('.item_name').val('');
-                $('.category').val('');
-                $('#supplier').val('');
-                $('.quantity').val('');
-                $('.expiry_date').val('');
-                $('.original_price').val('');
-                $('.selling_price').val('');
-                $('.supplier_tin').val();
+                $('.category_id').val('');
+                $('.category_name').val('');
+                $('.category_code').val('');
             }
-
-
 
             function DisableFormFields(bool) {
 
-                $('.stockId').attr('disabled', bool);
-                $('.item_code').attr('disabled', bool);
-                $('.item_name').attr('disabled', bool);
-                $('.category').attr('disabled', bool);
-                $('#supplier').attr('disabled', bool);
-                $('.quantity').attr('disabled', bool);
-                $('.expiry_date').attr('disabled', bool);
-                $('.original_price').attr('disabled', bool);
-                $('.selling_price').attr('disabled', bool);
+                $('.category_id').attr('disabled', bool);
+                $('.category_name').attr('disabled', bool);
+                $('.category_code').attr('disabled', bool);
             }
 
             function ShowHideBtns(action) {
 
                 if (action == 'hide') {
-                    $('.addStockBtn').hide();
+                    $('.addCommodityCatBtn').hide();
                     $('.clearBtn').hide();
                     $('.closeBtn').hide();
                 } else if (action == 'show') {
-                    $('.addStockBtn').show();
+                    $('.addCommodityCatBtn').show();
                     $('.clearBtn').show();
                     $('.closeBtn').show();
                 }
@@ -635,45 +478,22 @@
 
 
             function ResetTblInfo(response) {
-                let totl_stock, stockValue;
-                totl_stock = FormatNumber(response.totl);
-                stockValue = FormatNumber(response.value);
-                $('.totl-stock').html(totl_stock);
-                $('.stock-value').html(stockValue);
+                let totl_categories;
+                totl_categories = FormatNumber(response.totl);
+                $('.totl_categories').html(totl_categories);
             }
 
             function validateForm() {
 
-                let item = $('.item_name').val();
-                let item_code = $('.item_code').val();
-                let goods_type_code = $('.goods_type_code').val();
-                let stockin_type_code = $('.stockin_type_code').val();
-                let supplier = $('.supplier').val();
-                let supplier_tin = $('.supplier_tin').val();
-                let qty = $('#qty').val();
-                let bprice = $('.original_price').val();
-                let sprice = $('.selling_price').val();
+                let category_name = $('.category_name').val();
+                let category_code = $('.category_code').val();
 
                 let isValidForm = false;
 
-                if (item.length < 1) {
-                    displayResponse(null, `Please enter product name`, `error`);
-                } else if (item_code.length < 1) {
-                    displayResponse(null, `Please enter product code`, `error`);
-                } else if (goods_type_code.length < 1) {
-                    displayResponse(null, `Please select goods type`, `error`);
-                } else if (stockin_type_code.length < 1) {
-                    displayResponse(null, `Please select stock in type`, `error`);
-                } else if (supplier.length < 1) {
-                    displayResponse(null, `Please select supplier`, `error`);
-                } else if (supplier_tin.length < 1) {
-                    displayResponse(null, `Please ensure supplier tin is not empty`, `error`);
-                } else if (qty.length < 1) {
-                    displayResponse(null, `Please enter valid quantity of stock`, `error`);
-                } else if (bprice == "") {
-                    displayResponse(null, `Please enter valid buying price`, `error`);
-                } else if (sprice == "") {
-                    displayResponse(null, `Please enter valid unit price`, `error`);
+                if (category_name.length < 1) {
+                    displayResponse(null, `Please enter category name`, `error`);
+                } else if (category_code.length < 1) {
+                    displayResponse(null, `Please enter category code`, `error`);
                 } else {
                     isValidForm = true;
                 }
