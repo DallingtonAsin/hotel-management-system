@@ -32,7 +32,7 @@ class CreateStockTable extends Migration
             $table->double('total_profit')->storedAs('quantity*(selling_price-buying_price)')->nullable();
             $table->timestamp('date_of_entry')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('expiry_date')->nullable();
-            $table->date('remarks')->nullable();
+            $table->text('remarks')->nullable();
             $table->unsignedBigInteger('created_by')->unsigned();
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

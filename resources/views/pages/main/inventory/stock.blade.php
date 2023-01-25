@@ -83,8 +83,7 @@
                                 <div class="row form-group">
                                     <div class="col-md-4">
                                         <span><span class="text-danger pr-1">*</span>Product Name</span>
-                                        <input type="text" class="form-control  item_name" name="item"
-                                            placeholder="Enter product name">
+                                        <input type="text" class="form-control  item_name" name="item" placeholder="Enter product name">
                                     </div>
 
                                     <div class="col-md-4">
@@ -318,7 +317,8 @@
         const stock_actions = {
             increase: 0,
             decrease: 1,
-            edit: 2
+            edit: 2,
+            view: 3
         }
     </script>
 
@@ -464,6 +464,7 @@
                 $('.edit_stock_action').val('');
                 $('.show-on-edit').show();
                 $('.adjust-type-div').hide();
+                $('.quantity_text').text('Quantity');
                 e.preventDefault();
                 checkPermission(permissions.add_stock, function(stock) {
                     NullifyFields();
@@ -501,7 +502,8 @@
 
                 event.preventDefault();
                 checkPermission(permissions.view_stock, function(stock) {
-                    editStock(stock_id, disableFieldsOnChangingQuantity, "Increase stock for stock item");
+                    editStock(stock_id, disableFieldsOnChangingQuantity,
+                        "Increase stock for stock item");
                     $('.quantity_text').text('New Quantity');
                     $('.remarks').text('increase stock');
 
@@ -516,7 +518,8 @@
 
                 event.preventDefault();
                 checkPermission(permissions.view_stock, function(stock) {
-                    editStock(stock_id, disableFieldsOnChangingQuantity, "Decrease stock for stock item");
+                    editStock(stock_id, disableFieldsOnChangingQuantity,
+                        "Decrease stock for stock item");
                     $('.quantity_text').text('Decrease quantity by');
                     $('.remarks').text('decrease stock');
 
@@ -666,6 +669,7 @@
             //View Modal used to view each row [stock details]
             $('body').on('click', '#view-stock', function(event) {
                 let stock_id = $(this).data('id');
+                $('.edit_stock_action').val(stock_actions.view);
                 $('.show-on-edit').show();
                 $('.adjust-type-div').hide();
                 event.preventDefault();
@@ -704,7 +708,7 @@
                 $('.selling_price').val(FormatNumber(data.selling_price));
 
                 let action = $('.edit_stock_action').val();
-                if (!action) {
+                if (action == stock_actions.edit || action == stock_actions.view) {
                     $('.quantity').val(data.quantity);
                 }
             }
@@ -790,24 +794,34 @@
                 $('.original_price').val('');
                 $('.selling_price').val('');
                 $('.supplier_tin').val('');
-                $('.remarks').va('')
+                $('.remarks').val('')
             }
 
 
             function disableFormFields(bool) {
 
                 $('.stockId').attr('readonly', bool);
-                $('.item_code').attr('readonly', bool);
                 $('.item_name').attr('readonly', bool);
                 $('.category').attr('readonly', bool);
                 $('.stockin_type_code').attr('readonly', bool);
                 $('.goods_type_code').attr('readonly', bool);
                 $('#supplier').attr('readonly', bool);
-                $('.quantity').attr('readonly', true);
-                $('.expiry_date').attr('readonly', bool);
                 $('.original_price').attr('readonly', bool);
-                $('.selling_price').attr('readonly', bool);
                 $('.remarks').attr('readonly', bool);
+                let stock_action = $('.edit_stock_action').val();
+                if (stock_action == stock_actions.edit) {
+                    $('.quantity').attr('readonly', true);
+                    $('.threshold_qty').attr('readonly', false);
+                    $('.expiry_date').attr('readonly', false);
+                } else if(stock_action == stock_actions.view){
+                    $('.quantity').attr('readonly', true);
+                    $('.threshold_qty').attr('readonly', true);
+                    $('.expiry_date').attr('readonly', true);
+                } else {
+                    $('.quantity').attr('readonly', bool);
+                    $('.threshold_qty').attr('readonly', bool);
+                    $('.expiry_date').attr('readonly', bool);
+                }
             }
 
             function ShowHideBtns(action) {
@@ -866,14 +880,14 @@
                 } else if (sprice == "") {
                     displayResponse(null, `Please enter valid unit price`, `error`);
                 } else {
-                    if(stock_action == stock_actions.decrease){
+                    if (stock_action == stock_actions.decrease) {
                         let adjust_type = $('.adjust_type').val();
                         if (adjust_type.length < 1) {
-                           displayResponse(null, `Please select adjust type`, `error`);
-                        }else{
-                          isValidForm = true;
+                            displayResponse(null, `Please select adjust type`, `error`);
+                        } else {
+                            isValidForm = true;
                         }
-                    }else{
+                    } else {
                         isValidForm = true;
                     }
                 }
