@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\DataTables\Inventory\DamagesDataTable;
 use Illuminate\Support\Str;
 use App\Helpers\Constants as Constant;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\Helper;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Validator;

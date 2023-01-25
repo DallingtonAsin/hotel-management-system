@@ -17,11 +17,10 @@ class CreateStockTable extends Migration
 
         Schema::create('stock', function (Blueprint $table) {
             $table->id();
-            $table->string('item_code')->unique();
             $table->string('item_name');
+            $table->string('item_code');
             $table->string('goods_type_code');
             $table->string('stockin_type_code');
-            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('supplier_id');
             $table->double('quantity');
             $table->double('threshold_qty')->nullable()->default('0');
@@ -37,8 +36,9 @@ class CreateStockTable extends Migration
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
 
+            
             $table->foreign('supplier_id')->references('id')->on('suppliers');
-            $table->foreign('category_id')->references('id')->on('stock_categories');
+            $table->foreign('item_code')->references('goods_code')->on('goods');
             $table->foreign('created_by')->references('id')->on('staff');
 
         }); 

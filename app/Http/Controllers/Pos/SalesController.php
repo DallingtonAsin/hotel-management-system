@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Pos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Controllers\LogsController;
 use App\Http\Controllers\Controller;
 use App\DataTables\Finances\Sales\SalesDataTable;
 use App\DataTables\Finances\Sales\SalesWithDebtsDataTable;
@@ -14,26 +13,25 @@ use App\DataTables\Finances\Sales\TodaySalesWithDebtsDataTable;
 use Illuminate\Support\Str;
 use App\Models\Sale;
 use App\Models\Supplier;
-use App\Models\Damage;
 use App\Models\Expense;
 use App\Models\Customer;
 use App\Repositories\DamagedStockRepository;
 use App\Helpers\Helper;
 use App\Helpers\Constants as Constant;
-use Excel;
-use DataTable;
+use Yajra\DataTables\Facades\DataTables as DataTable;
 
 
 class SalesController extends Controller
 {
 
   protected $controller;
-  protected $damagedStockRepository;
+  protected $damagedStockRepository, $salesDataTable;
 
-  public function __construct(DamagedStockRepository $damagedStockRepository)
+  public function __construct(DamagedStockRepository $damagedStockRepository, SalesDataTable $salesDataTable)
   {
     $this->controller = 'SalesController';
     $this->damagedStockRepository = $damagedStockRepository;
+    $this->salesDataTable = $salesDataTable;
   }
 
       protected function GetCustomSalesReview($startDate, $endDate){
@@ -217,8 +215,8 @@ public function filterSalesWithDebts(Request $request){
 
 
 
-public function GetSales(SalesDataTable $dataTable){
-   return $dataTable->render('pages.main.sales.index');
+public function GetSales(){
+   return $this->salesDataTable->render('pages.main.sales.index');
 }
 
 public function GetTodaySales(TodaySalesDataTable $dataTable){

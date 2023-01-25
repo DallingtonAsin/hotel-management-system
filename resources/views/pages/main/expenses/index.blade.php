@@ -33,8 +33,8 @@
                 <div class="btn-group float-right justify-content-between mb-2">
                     <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewExpense"><i
                             class="fa fa-plus-circle pr-1"></i>Add expense</button>
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#importExpenses"><i class="fa fa-file-import pr-1"></i>Import file</button>
+                    {{-- <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#importExpenses"><i class="fa fa-file-import pr-1"></i>Import file</button> --}}
                 </div>
             </div>
 
