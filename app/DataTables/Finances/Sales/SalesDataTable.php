@@ -44,7 +44,7 @@ class SalesDataTable extends DataTable
 
             $btn .= '<a href="javascript:void(0);" id="view-sale"
             data-toggle="tooltip" data-original-title="View"
-             data-id="'.$sale->id.'" class="px-3 py-1 border border-info rounded text-info bolded pr-4">
+             data-id="'.$sale->id.'" class="px-3 py-1 border border-secondary rounded text-secondary bolded pr-4">
             <i class="fa fa-eye" ></i></a>';
 
            return $btn;
@@ -53,7 +53,13 @@ class SalesDataTable extends DataTable
               $checkBox = '<input type="checkbox" id="'.$sale->id.'"/>';
              return $checkBox;
         })->addColumn('item', function ($sale) {
-             return Stock::where('id', $sale->item_id)->first()->item_name;
+             
+             $stock = Stock::where('id', $sale->item_id)->first();
+             if($stock){
+                return $stock->item_name;
+             }
+             return 'Test item '.$sale->item_id;
+
       })->editColumn('quantity', function ($data) {
             return Helper::convertNumber($data->quantity);
         })->editColumn('selling_price', function ($data) {

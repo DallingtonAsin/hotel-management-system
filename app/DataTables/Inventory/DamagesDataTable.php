@@ -3,12 +3,18 @@
 namespace App\DataTables\Inventory;
 
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Support\Facades\Gate;
 use App\Models\Damage;
 use App\Models\Stock;
+use App\Repositories\StockRepository;
 
 class DamagesDataTable extends DataTable
 {
+
+    protected $stockRepository;
+    public function __construct(StockRepository $stockRepository)
+    {
+        $this->stockRepository = $stockRepository;
+    }
     /**
      * Build DataTable class.
      *
@@ -46,17 +52,32 @@ class DamagesDataTable extends DataTable
                 $checkBox = '<input type="checkbox" id="' . $damage->id . '"/>';
                 return $checkBox;
             })->addColumn('item_code', function ($data) {
-                $item = Stock::where('id', $data->item_id)->first();
-                return $item->item_code;
+
+                $item = $this->stockRepository->get($data->item_id);
+                if($item){
+                    return $item->item_code;
+                }
+                return 'Test item '.$data->item_id;
+
             })->addColumn('item_name', function ($data) {
-                $item = Stock::where('id', $data->item_id)->first();
-                return $item->item_name;
+                $item = $this->stockRepository->get($data->item_id);
+                if($item){
+                    return $item->item_name;
+                }
+                return 'Test item '.$data->item_id;
+
             })->addColumn('buying_price', function ($data) {
                 $item = Stock::where('id', $data->item_id)->first();
-                return number_format($item->buying_price);
+                if($item){
+                    number_format($item->buying_price);
+                }
+                return 0;
             })->addColumn('total_cost', function ($data) {
                 $item = Stock::where('id', $data->item_id)->first();
-                return number_format($data->quantity * $item->buying_price);
+                if($item){
+                    return number_format($data->quantity * $item->buying_price);
+                }
+                return 0;
             })->editColumn('quantity', function ($data) {
                 return number_format($data->quantity);
             })->editColumn('recorded_on', function ($data) {
