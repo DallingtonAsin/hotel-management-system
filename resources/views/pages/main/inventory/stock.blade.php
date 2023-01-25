@@ -457,10 +457,6 @@
                 });
             }
 
-            // $.fn.dataTable.ext.errMode = 'none';
-            // $('#stock-table').on('error.dt', function(e, settings, techNote, message) {
-            //     console.log('An error has been reported by DataTables: ', message);
-            // }).DataTable();
 
             onClickSubmitBtn();
 
@@ -505,8 +501,7 @@
 
                 event.preventDefault();
                 checkPermission(permissions.view_stock, function(stock) {
-                    editStock(stock_id, disableFieldsOnChangingQuantity,
-                        "Increase stock for stock item");
+                    editStock(stock_id, disableFieldsOnChangingQuantity, "Increase stock for stock item");
                     $('.quantity_text').text('New Quantity');
                     $('.remarks').text('increase stock');
 
@@ -521,8 +516,7 @@
 
                 event.preventDefault();
                 checkPermission(permissions.view_stock, function(stock) {
-                    editStock(stock_id, disableFieldsOnChangingQuantity,
-                        "Decrease stock for stock item");
+                    editStock(stock_id, disableFieldsOnChangingQuantity, "Decrease stock for stock item");
                     $('.quantity_text').text('Decrease quantity by');
                     $('.remarks').text('decrease stock');
 
@@ -534,6 +528,8 @@
             $('body').on('click', '#edit-stock', function(event) {
                 let stock_id = $(this).data('id');
                 $('.edit_stock_action').val(stock_actions.edit);
+                $('.show-on-edit').show();
+                $('.adjust-type-div').hide();
                 event.preventDefault();
                 checkPermission(permissions.edit_stock, function(stock) {
                     editStock(stock_id, disableFormFields(false), "Edit details of stock item");
@@ -653,9 +649,8 @@
                             let tbl = $('#stock-table').DataTable();
                             tbl.ajax.reload();
                         }
+
                         $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-
-
                         displayResponse('.response', resp, type);
                     },
                     error: function(data) {
@@ -668,10 +663,11 @@
             }
 
 
-
             //View Modal used to view each row [stock details]
             $('body').on('click', '#view-stock', function(event) {
                 let stock_id = $(this).data('id');
+                $('.show-on-edit').show();
+                $('.adjust-type-div').hide();
                 event.preventDefault();
                 checkPermission(permissions.view_stock, function(stock) {
                     viewStock(stock_id);
@@ -793,9 +789,9 @@
                 $('.expiry_date').val('');
                 $('.original_price').val('');
                 $('.selling_price').val('');
-                $('.supplier_tin').val();
+                $('.supplier_tin').val('');
+                $('.remarks').va('')
             }
-
 
 
             function disableFormFields(bool) {
@@ -807,10 +803,11 @@
                 $('.stockin_type_code').attr('readonly', bool);
                 $('.goods_type_code').attr('readonly', bool);
                 $('#supplier').attr('readonly', bool);
-                $('.quantity').attr('readonly', bool);
+                $('.quantity').attr('readonly', true);
                 $('.expiry_date').attr('readonly', bool);
                 $('.original_price').attr('readonly', bool);
                 $('.selling_price').attr('readonly', bool);
+                $('.remarks').attr('readonly', bool);
             }
 
             function ShowHideBtns(action) {
