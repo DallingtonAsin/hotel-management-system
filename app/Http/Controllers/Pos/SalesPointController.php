@@ -222,7 +222,7 @@ class SalesPointController extends Controller
                             );
                             
                             Helper::LogRequest($req, $dataArr);
-                            $message = $this->ActionMessage($action);
+                            $message = Helper::ActionMessage($action);
                             $type = 'success';
 
                         } else {

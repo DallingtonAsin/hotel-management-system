@@ -41,17 +41,13 @@ class StockController extends Controller
     $stock_value = DB::table('stock')->sum('total_cost_price');
     $categories = StockCat::get();
     $suppliers = DB::table('suppliers')->get();
-    return view('pages.main.stock.stock')->with(compact('stock', 'stock_value', 'categories', 'suppliers', 'number_of_stockItems'));
+    return view('pages.main.inventory.stock')->with(compact('stock', 'stock_value', 'categories', 'suppliers', 'number_of_stockItems'));
   }
 
 
   public function GetStock(StockDataTable $dataTable)
   {
-    //if(Auth::check()){
-    return $dataTable->render('pages.main.stock.stock');
-    // }else{
-    //    return redirect('/');
-    // }
+    return $dataTable->render('pages.main.inventory.stock');
   }
 
   /**
@@ -61,7 +57,7 @@ class StockController extends Controller
    */
   public function create()
   {
-    return view('pages.main.stock.stock');
+    return view('pages.main.inventory.stock');
   }
 
   /**
@@ -166,7 +162,7 @@ class StockController extends Controller
 
               Helper::LogRequest($request, $dataArr);
 
-              $message = $this->ActionMessage($action);
+              $message = Helper::ActionMessage($action);
               $arr = $this->getStockStats();
 
               return response()
@@ -310,7 +306,7 @@ class StockController extends Controller
           Helper::LogRequest($request, $dataArr);
 
           $arr = $this->getStockStats();
-          $message = $this->ActionMessage($action);
+          $message = Helper::ActionMessage($action);
           return response()
             ->json([
               'success' => $message,
@@ -359,7 +355,7 @@ class StockController extends Controller
           );
           Helper::LogRequest($request, $dataArr);
 
-          $message = $this->ActionMessage($action);
+          $message = Helper::ActionMessage($action);
           $arr = $this->getStockStats();
 
           return response()
@@ -401,8 +397,8 @@ class StockController extends Controller
         "method" => "StockController@deleteAllStockItems"
       );
       Helper::LogRequest($request, $dataArr);
-      $responseInfo = $this->ActionMessage($action);
-      //return back()->with("success", $this->ActionMessage($action));
+      $responseInfo = Helper::ActionMessage($action);
+      //return back()->with("success", Helper::ActionMessage($action));
     } else {
       $sessionVariable = 'fail';
       $messageErr = "stock items not deleted from the system!";
@@ -497,7 +493,7 @@ class StockController extends Controller
       );
       Helper::LogRequest($request, $dataArr);
 
-      return back()->with('success', $this->ActionMessage($action));
+      return back()->with('success', Helper::ActionMessage($action));
     } else {
       $messageErr = "Excel stock data not imported!";
       $dataArr = array(

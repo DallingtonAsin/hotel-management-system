@@ -32,7 +32,7 @@ class DamagesController extends Controller
 
   public function GetDamages(DamagesDataTable $dataTable)
   {
-    return $dataTable->render('pages.main.stock.damages');
+    return $dataTable->render('pages.main.inventory.damages');
   }
 
 
@@ -48,7 +48,7 @@ class DamagesController extends Controller
     $number_of_damages = Damage::count();
     $cost_of_damages = $this->damagedStockRepository->getCostofDamages();
     
-    return view('pages.main.stock.damages')->with(compact('stock', 'cost_of_damages', 'number_of_damages'));
+    return view('pages.main.inventory.damages')->with(compact('stock', 'cost_of_damages', 'number_of_damages'));
   }
 
 
@@ -59,7 +59,7 @@ class DamagesController extends Controller
    */
   public function create()
   {
-    return view('pages.main.stock.damages');
+    return view('pages.main.inventory.damages');
   }
 
   /**

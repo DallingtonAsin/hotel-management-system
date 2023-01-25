@@ -34,6 +34,8 @@ use App\Http\Controllers\HR\StaffPermissionController;
 
 
 // Inventory Controllers
+use App\Http\Controllers\Inventory\GoodsController;
+use App\Http\Controllers\Inventory\CommodityCategoryController;
 use App\Http\Controllers\Inventory\DamagesController;
 use App\Http\Controllers\Inventory\PurchasesController;
 use App\Http\Controllers\Inventory\StockCategoryController;
@@ -55,7 +57,7 @@ use App\Http\Controllers\Messages\NotificationController;
 use App\Http\Controllers\Messages\SmsController;
 
 // Pos Controllers
-use App\Http\Controllers\Pos\SalesPointController ;
+use App\Http\Controllers\Pos\SalesPointController;
 use App\Http\Controllers\Pos\SalesController;
 
 // Reports Controllers
@@ -149,6 +151,12 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::post('stock/import-stock', [StockController::class, 'importStock'])->name('stock.import');
 	Route::post('stock/search/item', [DamagesController::class, 'searchItem'])->name('stock-item.search');
 	Route::post('stock/deleteAll', [StockController::class, 'deleteAllStockItems'])->name('stock.truncate');
+
+	Route::get('goods/ajax', [GoodsController::class, 'getsGoodsDataTable'])->name('goods.ajax');
+	Route::get('commodity-categories/index/ajax', [CommodityCategoryController::class, 'getCommoditiesDataTable'])->name('commodities.category.ajax.fetch');
+	Route::get('commodity-categories/{category_id}/ajax', [CommodityCategoryController::class, 'findCommodityCategoryAjax'])->name('commodities.category.ajax.find');
+
+	
 	Route::post('damaged-stock-items/deleteAll', [DamagesController::class, 'deleteAllDamages'])->name('damages.truncate');
 	Route::post('damaged-stock-items/import-damages', [DamagesController::class, 'importDamages'])->name('damages.import');
 	Route::get('damaged-stock-items/export-damages', [DamagesController::class, 'exportDamages'])->name('damages.export');
@@ -199,19 +207,19 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('sales/debts', [SalesController::class, 'salesWithDebtsIndex'])->name('sales.debts');
 	Route::get('sales/debts/ajax', [SalesController::class, 'GetSalesWithDebts'])->name('get-sales-with-debts');
 	Route::get('sales/today/debts/ajax', [SalesController::class, 'GetTodaySalesWithDebts'])->name('get-daily-sales-with-debts');
-	Route::post('sale/transact', [SalesPointController ::class, 'recordSale'])->name('sale.record');
+	Route::post('sale/transact', [SalesPointController::class, 'recordSale'])->name('sale.record');
 	Route::post('sales/remove/selected', [SalesController::class, 'RemoveSelected'])->name('selected-sales.remove');
 	Route::post('sales/filtered-sales', [SalesController::class, 'filterSales'])->name('filtersales');
 	Route::post('sales/debts/search', [SalesController::class, 'filterSalesWithDebts'])->name('sales.debts.filter');
 	Route::put('sales/records/update/', [SalesController::class, 'updateSaleRecord'])->name('sales.records.update');
-	Route::get('sale/make-receipt', [SalesPointController ::class, 'getReceipt']);
-	Route::post('pos/session/update', [SalesPointController ::class, 'updateItemInSession'])->name('session.update');
-	Route::post('pos/record', [SalesPointController ::class, 'MakeSaleGateway'])->name('sale.transact');
-	Route::post('pos/barcode/getItem', [SalesPointController ::class, 'getProductItemDetails'])->name('item.get');
-	Route::post('pos/search', [SalesPointController ::class, 'searchItem'])->name('item.search');
-	Route::post('pos/searchprice', [SalesPointController ::class, 'getItemPrice'])->name('cart.searchprice');
-	Route::post('pos/clear', [SalesPointController ::class, 'ClearCart'])->middleware('password.confirm');
-	Route::post('pos/handler', [SalesPointController ::class, 'PopulateCart'])->name('cart.handle');
+	Route::get('sale/make-receipt', [SalesPointController::class, 'getReceipt']);
+	Route::post('pos/session/update', [SalesPointController::class, 'updateItemInSession'])->name('session.update');
+	Route::post('pos/record', [SalesPointController::class, 'MakeSaleGateway'])->name('sale.transact');
+	Route::post('pos/barcode/getItem', [SalesPointController::class, 'getProductItemDetails'])->name('item.get');
+	Route::post('pos/search', [SalesPointController::class, 'searchItem'])->name('item.search');
+	Route::post('pos/searchprice', [SalesPointController::class, 'getItemPrice'])->name('cart.searchprice');
+	Route::post('pos/clear', [SalesPointController::class, 'ClearCart'])->middleware('password.confirm');
+	Route::post('pos/handler', [SalesPointController::class, 'PopulateCart'])->name('cart.handle');
 
 	// Reports Routes
 	Route::get('reports/ajax/monthly-sales', [ReportsController::class, 'GetMonthlySalesDT'])->name('monthly-sales.ajax');
@@ -279,6 +287,8 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 
 
 	Route::resources([
+		'goods' => GoodsController::class,
+		'commodity-categories' => CommodityCategoryController::class,
 		'stock' => StockController::class,
 		'sales' => SalesController::class,
 		'product-categories' => StockCategoryController::class,
@@ -291,7 +301,7 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 		'logs' => LogsController::class,
 		'calendar' => CalendarController::class,
 		'users' => UserController::class,
-		'pos' => SalesPointController ::class,
+		'pos' => SalesPointController::class,
 		'kitchen-orders' => KitchenOrderController::class,
 		'room_types' => RoomTypeController::class,
 		'rooms' => RoomController::class,

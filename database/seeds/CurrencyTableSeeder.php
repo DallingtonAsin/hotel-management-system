@@ -15,23 +15,38 @@ class CurrencyTableSeeder extends Seeder
     public function run()
     {
         Currency::create([
-            'country' => 'Uganda',
             'code' => 'UGX',
-            'rate' => 3700,
+            'efris_code' => '101',
+            'country' => 'Uganda',
+            'rate' => 1,
+            'description' => 'shilling,shillings,cent,cents',
             "created_by"  => 1
         ]);
 
         Currency::create([
-            'country' => 'Kenya',
-            'code' => 'KES',
-            'rate' => 2000,
-            "created_by"  => 2
+            'code' => 'USD',
+            'efris_code' => '102',
+            'country' => 'USA',
+            'rate' => 3700,
+            'description' => 'dollar,dollars,cent,cents',
+            "created_by"  => 1
         ]);
 
         Currency::create([
-            'country' => 'Tanzania',
+            'code' => 'KES',
+            'efris_code' => '108',
+            'country' => 'Kenya',
+            'rate' => 1500,
+            'description' => 'shilling,shillings,cent,cents',
+            "created_by"  => 1
+        ]);
+
+        Currency::create([
             'code' => 'TZS',
-            'rate' => 3000,
+            'efris_code' => '110',
+            'country' => 'Tanzania',
+            'description' => 'shilling,shillings,cent,cents',
+            'rate' => 1000,
             "created_by"  => 1
         ]);
     }

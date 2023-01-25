@@ -27,7 +27,7 @@ class StockCategoryController extends Controller
 
   public function StockCatAjaxIndex(StockCatsDataTable $dataTable)
   {
-    return $dataTable->render('pages.main.stock.product-categories');
+    return $dataTable->render('pages.main.inventory.product-categories');
   }
 
   /**
@@ -39,7 +39,7 @@ class StockCategoryController extends Controller
   {
     $pdt_categories = StockCat::all();
     $total_categories = StockCat::count();
-    return view('pages.main.stock.product-categories', ['total_categories' => $total_categories])
+    return view('pages.main.inventory.product-categories', ['total_categories' => $total_categories])
       ->with(compact('pdt_categories', 'total_categories'));
   }
 
@@ -50,7 +50,7 @@ class StockCategoryController extends Controller
    */
   public function create()
   {
-    return view('pages.main.stock.product-categories');
+    return view('pages.main.inventory.product-categories');
   }
 
   /**

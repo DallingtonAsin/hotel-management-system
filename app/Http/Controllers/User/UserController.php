@@ -153,7 +153,7 @@ class UserController extends Controller
               );
               Helper::LogRequest($request, $dataArr);
               return response()
-                ->json(['success' => $this->ActionMessage($action)]);
+                ->json(['success' => Helper::ActionMessage($action)]);
 
             } else {
 
@@ -188,7 +188,7 @@ class UserController extends Controller
               );
               Helper::LogRequest($request, $dataArr);
               return response()
-                ->json(['success' => $this->ActionMessage($action)]);
+                ->json(['success' => Helper::ActionMessage($action)]);
 
             } else {
               $messageErr = 'Unable to change user account status!';
@@ -246,7 +246,7 @@ class UserController extends Controller
             );
             Helper::LogRequest($request, $dataArr);
             return back()
-              ->with('success', $this->ActionMessage($action));
+              ->with('success', Helper::ActionMessage($action));
 
           } else {
 
@@ -281,7 +281,7 @@ class UserController extends Controller
             );
             Helper::LogRequest($request, $dataArr);
             return back()
-              ->with('success', $this->ActionMessage($action));
+              ->with('success', Helper::ActionMessage($action));
 
           } else {
             $messageErr = 'Account activation failed!';
@@ -626,7 +626,7 @@ class UserController extends Controller
       );
       Helper::LogRequest($request, $data);
       return back()
-        ->with("success", $this->ActionMessage($action));
+        ->with("success", Helper::ActionMessage($action));
 
     } else {
       $messageErr = "Failedto update details of user " . $person . "!";
@@ -675,7 +675,7 @@ class UserController extends Controller
         );
         Helper::LogRequest($request, $data);
         $sessionVariable = 'success';
-        $message = $this->ActionMessage($action);
+        $message = Helper::ActionMessage($action);
       } else {
 
         $messageErr = "Users not removed from the system!";
@@ -721,7 +721,7 @@ class UserController extends Controller
         );
         Helper::LogRequest($request, $data);
         return back()
-          ->with("success", $this->ActionMessage($action));
+          ->with("success", Helper::ActionMessage($action));
 
       } else {
         $messageErr = 'Active users not removed from the system!';
@@ -758,7 +758,7 @@ class UserController extends Controller
         );
         Helper::LogRequest($request, $data);
         return back()
-          ->with("success", $this->ActionMessage($action));
+          ->with("success", Helper::ActionMessage($action));
 
       } else {
         $messageErr = 'Locked users not removed from the system!';

@@ -491,7 +491,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
       "method" => "".$this->controller."@updateSaleRecord");
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
-      $responseInfo = $this->ActionMessage($action);
+      $responseInfo = Helper::ActionMessage($action);
 
     }
     else

@@ -3,6 +3,7 @@
 namespace App\Services\Api;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class ApiService
 {
@@ -20,7 +21,6 @@ class ApiService
         try {
             $response = $this->client->get($this->url . '' . $endpoint);
             return $this->getApiResponse($response);
-
         } catch (\Exception $ex) {
             throw $ex;
         }
@@ -32,26 +32,29 @@ class ApiService
             $response = $this->client->post($this->url . '' . $endpoint, [
                 'json' => $data
             ]);
-            
+
             return $this->getApiResponse($response);
-          
-        } catch (\Exception $ex) {
-            throw $ex;
+        }catch (ClientException $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+            if ($e->getResponse()->getStatusCode() == 400) {
+                return response()->json(['statusCode' => $statusCode, 'message' => $e->getMessage()]);
+            }
+
         }
     }
 
-        private function getApiResponse($response){
-            try{
-                if ($response->getStatusCode() == 200) {
-                    $result['data'] = json_decode($response->getBody()->getContents());
-                } else {
-                    $result['message'] = (string) $response->getBody() || $response->getReasonPhrase();
-                }
-    
-                $result['statusCode'] = $response->getStatusCode();
-                return $result;
-            }catch(\Exception $ex){
-                throw $ex;
+    private function getApiResponse($response)
+    {
+        try {
+            if ($response->getStatusCode() == 200) {
+                $data = json_decode($response->getBody()->getContents());
+                return response()->json(['statusCode' => $response->getStatusCode(), 'data' => $data]);
+            } else {
+                $message = (string) $response->getBody() || $response->getReasonPhrase();
+                return response()->json(['statusCode' => $response->getStatusCode(), 'message' => $message]);
             }
+        } catch (ClientException $e) {
+             throw $e;
         }
+    }
 }

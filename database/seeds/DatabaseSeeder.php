@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
             StaffPermissionsTableSeeder::class,
 
+            CommodityCategoryTableSeeder::class,
             StockCategoriesTableSeeder::class,
             SuppliersTableSeeder::class,
             StockTableSeeder::class,

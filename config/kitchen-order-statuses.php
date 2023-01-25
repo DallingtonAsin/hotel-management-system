@@ -6,8 +6,7 @@
  */
 
 return [
-
-    // statuses
+    
     'pending' => 'pending',
     'completed' => 'paid',
     'cancelled' => 'cancelled'

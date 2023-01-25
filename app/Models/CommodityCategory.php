@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Currency extends Model
+class CommodityCategory extends Model
 {
     use HasFactory;
 
-    protected $table = 'currencies';
+    protected $table = 'commodity_categories';
     public $timestamps = true;
     
     protected $fillable = [
+        'name',
         'code',
-        'efris_code',
-        'country',
-        'rate',
-        'description',
         'created_by'
     ];
 

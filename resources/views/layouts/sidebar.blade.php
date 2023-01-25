@@ -93,6 +93,20 @@
                 <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Store & Procurement</a>
                 <ul class="nav-sub">
                     <li class="nav-item">
+                        <a href="" class="nav-link with-sub">Commodites</a>
+                        <ul class="nav-sub">
+                            @haspermission(config('permissions')['view_stock'])
+                            <li class="nav-sub-item"><a href="{{ Route('goods.index') }}"
+                                    class="nav-sub-link">Goods</a></li>
+                            @endhaspermission
+                            @haspermission(config('permissions')['view_stock'])
+                                <li class="nav-sub-item"><a href="{{ Route('commodity-categories.index') }}"
+                                        class="nav-sub-link">Commodity Categories</a></li>
+                            @endhaspermission
+
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <a href="" class="nav-link with-sub">Inventory</a>
                         <ul class="nav-sub">
                             @haspermission(config('permissions')['view_stock'])
@@ -122,7 +136,19 @@
                     @endhaspermission
 
                     @haspermission(config('permissions')['view_expenses'])
-                        <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link"> Expenses</a>
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub">Expenses</a>
+                            <ul class="nav-sub">
+                                @haspermission(config('permissions')['view_expenses'])
+                                <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}"
+                                        class="nav-sub-link">Expenses</a></li>
+                                @endhaspermission
+                                @haspermission(config('permissions')['view_expenses'])
+                                    <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}"
+                                            class="nav-sub-link">Expenses Categories</a></li>
+                                @endhaspermission
+    
+                            </ul>
                         </li>
                     @endhaspermission
 
@@ -200,10 +226,7 @@
 
                         </ul>
                     </li>
-
-
                 </ul>
-
             </li>
 
 

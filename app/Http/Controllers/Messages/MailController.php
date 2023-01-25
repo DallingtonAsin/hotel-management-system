@@ -200,7 +200,7 @@ class MailController extends Controller
             // $notified = Notification::send($usersToBeNotified, new NewEmailNotifier($data));
 
              return back()
-                        ->with('success', $this->ActionMessage($action));
+                        ->with('success', Helper::ActionMessage($action));
 
 
        }

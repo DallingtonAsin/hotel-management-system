@@ -159,7 +159,7 @@ class Helper
       //     return back()->with("fail", "Sorry, message has not been sent!");
 
       // }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo ('Problems thhh');
       return back()->with("fail", "Sorry, message has not been sent!");
     }
@@ -209,7 +209,7 @@ class Helper
         dd("What is not right?");
       }
       return true;
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       throw $ex;
     }
   }
@@ -274,7 +274,7 @@ class Helper
         $stock->save();
       }
       return true;
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       throw $ex;
     }
   }
@@ -298,7 +298,7 @@ class Helper
         'supplier' => $row['supplier']
       ]);
       return true;
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       throw $ex;
     }
   }
@@ -407,7 +407,7 @@ class Helper
       $netProfitPerMonth = (($totalSales - $totalBuyingCost) - ($totalExpenses + $totalDamages) + ($supplierDebts + $customerDebts));
 
       return $netProfitPerMonth;
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       throw $ex;
     }
   }
@@ -718,5 +718,11 @@ class Helper
     } catch (\Exception $ex) {
       throw $ex;
     }
+  }
+
+  public static function ActionMessage($action)
+  {
+    $message = "You have successfully " . $action . "";
+    return $message;
   }
 }
