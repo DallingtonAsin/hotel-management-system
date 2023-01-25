@@ -19,7 +19,7 @@ use App\Helpers\Helper;
 use App\Imports\ImportCustomers;
 use App\Exports\ExportCustomers;
 use App\Helpers\Constants as Constant;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomersController extends Controller
 {

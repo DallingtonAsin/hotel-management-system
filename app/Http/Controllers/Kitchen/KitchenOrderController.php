@@ -16,7 +16,7 @@ use App\Models\KitchenOrder;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
 use App\Models\KitchenMenuItem;
-use DataTable;
+use Yajra\DataTables\Facades\DataTables as DataTable;
 
 
 class KitchenOrderController extends Controller

@@ -35,11 +35,10 @@
                 <div class="btn-group float-right justify-content-between mb-2">
                     <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewStock"><i
                             class="fa fa-plus-circle pr-1"></i>Add stock</button>
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#importStock"><i class="fa fa-file-import pr-1"></i>Import file</button>
+                    {{-- <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#importStock"><i class="fa fa-file-import pr-1"></i>Import file</button> --}}
                 </div>
             </div>
-
         </div>
 
 
@@ -81,19 +80,21 @@
 
                             <div class="modal-body">
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <span><span class="text-danger pr-1">*</span>Product Name</span>
                                         <input type="text" class="form-control  item_name" name="item" placeholder="Enter product name">
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <span><span class="text-danger pr-1">*</span>Product Code</span>
                                         <input type="hidden" class="stockId" name="id">
                                         <input type="text" class="form-control item_code" name="item_code"
                                             placeholder="Enter product code" readonly>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-4">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
                                         <span><span class="text-danger pr-1">*</span>Product Type Code</span>
                                         <select name="goods_type_code" class="form-control goods_type_code">
                                             @foreach (config('goods-type-codes') as $key => $value)
@@ -102,9 +103,6 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
-
-                                <div class="row form-group">
                                     <div class="col-md-6">
                                         <span><span class="text-danger pr-1">*</span> Stockin Type</span>
                                         <select class="form-control stockin_type_code" name="stockin_type_code"
@@ -113,17 +111,6 @@
                                                 <option value="{{ $value }}"
                                                     {{ str_contains($key, 'local') ? 'selected' : '' }}>{{ $value }}:
                                                     {{ ucwords(str_replace('_', ' ', str_replace('&', '/ ', $key))) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <span>Category</span>
-                                        <select class="form-control category" name="category" id="category">
-                                            <option value="">Select category</option>
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}"> {{ $category->name }}
                                                 </option>
                                             @endforeach
                                         </select>

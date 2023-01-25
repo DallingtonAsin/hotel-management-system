@@ -67,7 +67,6 @@ class StockController extends Controller
       'item_code' => 'required',
       'goods_type_code' => 'required',
       'stockin_type_code' => 'required',
-      'category' => 'sometimes|nullable',
       'supplier' => 'required',
       'quantity' => 'required',
       'original_price' => 'required',
@@ -87,7 +86,7 @@ class StockController extends Controller
         $code_exists = Stock::where('item_code', $item_code)->exists();
 
         if ($code_exists) {
-          return response()->json(['error' => 'Product code ' . $item_code . ' already exists in the system']);
+          return response()->json(['error' => 'Stock item with code ' . $item_code . ' does not exist in the system. Please just update.']);
         } else {
 
           $stock = new Stock;
@@ -99,7 +98,6 @@ class StockController extends Controller
           $quantity = Helper::Numberize($request->input('quantity'));
           $buying_price = Helper::Numberize($request->input('original_price'));
           $selling_price = Helper::Numberize($request->input('selling_price'));
-          $category_id  = $request->input('category');
           $supplier_id = $request->input('supplier');
           $expiry_date = $request->input('expiry_date');
           $remarks = $request->input('remarks');
@@ -133,7 +131,6 @@ class StockController extends Controller
               'item_name' => $item_name,
               'goods_type_code' => $goods_type_code,
               'stockin_type_code' => $stockin_type_code,
-              'category_id' => $category_id,
               'supplier_id' => $supplier_id,
               'quantity' => $quantity,
               'threshold_qty' => $threshold_quantity,
@@ -476,11 +473,6 @@ class StockController extends Controller
         $stock = Stock::find($id);
         $stock->item_name = $item = $request->input('item');
         $stock->item_code = $request->input('item_code');
-        $stock_category = $request->input('category');
-
-        empty($request->input('category'))
-          ? $stock->category_id = $stock->category_id
-          : $stock->category_id = $stock_category;
 
         empty($request->input('supplier'))
           ? $stock->supplier_id = $stock->supplier_id

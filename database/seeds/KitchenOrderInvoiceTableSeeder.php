@@ -51,8 +51,6 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
     public function run()
     {
 
-
-
         $order_numbers = DB::table('kitchen_orders')->pluck('order_number');
         foreach ($order_numbers as $number) {
 

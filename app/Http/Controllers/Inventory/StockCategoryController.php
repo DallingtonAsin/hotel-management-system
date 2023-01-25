@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\DataTables\Inventory\StockCatsDataTable;
 use Illuminate\Support\Str;
 use App\Helpers\Constants as Constant;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

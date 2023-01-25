@@ -9,6 +9,9 @@ use App\Models\StockCat;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
 use App\Helpers\Helper;
+use App\Models\CommodityCategory;
+use App\Models\Good;
+
 
 class StockFactory extends Factory
 {
@@ -28,17 +31,17 @@ class StockFactory extends Factory
   {
 
     $random_supplier = Supplier::inRandomOrder()->first();
-    $random_stock_type = StockCat::inRandomOrder()->first();
     $created_by = Staff::inRandomOrder()->first()->id;
     $rand_goods_type_code = Helper::getRandomValue(config('goods-type-codes'));
     $rand_stockin_type_code = Helper::getRandomValue(config('stockin-types'));
+    $random_good = Good::inRandomOrder()->first();
+
 
     return [
-      'item_code' => Str::random(3),
       'item_name' => Str::random(7),
+      'item_code' => $random_good->goods_code,
       'goods_type_code' => $rand_goods_type_code,
       'stockin_type_code' => $rand_stockin_type_code,
-      'category_id' => $random_stock_type->id,
       'quantity' => $this->faker->randomDigit,
       'threshold_qty' => $this->faker->randomDigit,
       'buying_price' => $this->faker->numberBetween($min=4000, $max=6000),

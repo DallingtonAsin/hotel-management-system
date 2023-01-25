@@ -13,7 +13,7 @@ use App\Exports\ExportSuppliers;
 use App\DataTables\User\SuppliersDataTable;
 use Illuminate\Support\Str;
 use App\Helpers\Constants as Constant;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Auth;
 

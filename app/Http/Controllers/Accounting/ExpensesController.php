@@ -14,7 +14,7 @@ use App\DataTables\Finances\ExpensesDataTable;
 use App\Models\ExpenseType;
 use Illuminate\Support\Str;
 use App\Helpers\Constants as Constant;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
 class ExpensesController extends Controller
