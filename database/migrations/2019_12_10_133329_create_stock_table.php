@@ -26,9 +26,9 @@ class CreateStockTable extends Migration
             $table->double('threshold_qty')->nullable()->default('0');
             $table->double('buying_price');
             $table->double('selling_price');
-            $table->double('profit_per_item')->storedAs('selling_price-buying_price')->nullable();
-            $table->double('total_cost_price')->storedAs('quantity*buying_price')->nullable();
-            $table->double('total_profit')->storedAs('quantity*(selling_price-buying_price)')->nullable();
+            $table->double('profit_per_item')->storedAs('selling_price-buying_price');
+            $table->double('total_cost_price')->storedAs('quantity*buying_price');
+            $table->double('total_profit')->storedAs('quantity*(selling_price-buying_price)');
             $table->timestamp('date_of_entry')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('expiry_date')->nullable();
             $table->text('remarks')->nullable();
@@ -36,7 +36,7 @@ class CreateStockTable extends Migration
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
 
-            
+
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->foreign('item_code')->references('goods_code')->on('goods');
             $table->foreign('created_by')->references('id')->on('staff');
