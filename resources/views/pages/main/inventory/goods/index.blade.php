@@ -317,8 +317,7 @@
 
                             <div class="form-group">
                                 <div class="text-center">
-                                    <label class="text-danger delete-confirm-text">Are you sure you want to delete
-                                        item?</label>
+                                    <label class="text-danger delete-confirm-text">Are you sure you want to delete item?</label>
                                 </div>
                             </div>
 
@@ -616,7 +615,7 @@
                             updateGoods(id);
 
                         } else {
-                            if(confirm(`Are you sure you want to add this as stock`)){
+                            if(confirm(`Are you sure you want to add this as good?`)){
                                 recordGoods();
                             }
                         }

@@ -317,3 +317,31 @@ function downloadKOT(invoice_id, type) {
 }
 
 
+function onTyping(element, url, afterSelect) {
+
+    let search_qry = $(element).val();
+    $(element).typeahead({
+        source: function (search_qry, result) {
+            $.ajax({
+                url: url,
+                method: 'post',
+                data: {
+                    query: search_qry,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    result($.map(data, function (item) {
+                        return item;
+                    }));
+                },
+                error: function (data) {
+                    console.log(data);
+                },
+            });
+        },
+        afterSelect: afterSelect
+    });
+
+}
+
+

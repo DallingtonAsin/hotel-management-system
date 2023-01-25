@@ -20,9 +20,12 @@ class GoodsController extends Controller
     protected $goodsService, $goodsRepository, $goodsCategoryRepository;
     protected $currencyRepository;
 
-    public function __construct(GoodsService $goodsService, GoodsRepository $goodsRepository, CurrencyRepository $currencyRepository,
-                               CommodityCategoryRepository $goodsCategoryRepository)
-    {
+    public function __construct(
+        GoodsService $goodsService,
+        GoodsRepository $goodsRepository,
+        CurrencyRepository $currencyRepository,
+        CommodityCategoryRepository $goodsCategoryRepository
+    ) {
         $this->goodsService = $goodsService;
         $this->goodsRepository = $goodsRepository;
         $this->currencyRepository = $currencyRepository;
@@ -44,7 +47,7 @@ class GoodsController extends Controller
 
     public function getsGoodsDataTable(GoodsDataTable $dataTable)
     {
-      return $dataTable->render('pages.main.inventory.goods.index');
+        return $dataTable->render('pages.main.inventory.goods.index');
     }
 
     /**
@@ -84,7 +87,6 @@ class GoodsController extends Controller
 
                 $message = $validator->errors()->all();
                 return response()->json(['error' => $message]);
-
             } else {
 
                 $goods_code = $request->input('goods_code');
@@ -111,7 +113,7 @@ class GoodsController extends Controller
                     $currency = $this->currencyRepository->get($currency_id);
                     $commodity_category = $this->goodsCategoryRepository->get($commodity_category_id);
 
-                   
+
                     $efris_goods_data = [
                         'goodsName' => $goods_name,
                         'goodsCode' => $goods_code,
@@ -124,11 +126,10 @@ class GoodsController extends Controller
                         'havePieceUnit' => $have_piece_unit,
                         'haveOtherUnit' => $have_other_unit,
                     ];
-            
+
                     $apiResponse = $this->goodsService->addGood($efris_goods_data);
-                    // dd($apiResponse);
                     $apiResponse = json_decode(json_encode($apiResponse->getData()), true);
-               
+
                     if ($apiResponse['statusCode'] ==  200) {
 
                         $good = [
@@ -233,4 +234,49 @@ class GoodsController extends Controller
     {
         //
     }
+
+
+    public function getSearchGoodsAjax(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                if ($request->input('query')) {
+                  
+
+                    $query = $request->input('query');
+                    $data = array();
+                    $goods = $this->goodsRepository->getGoodsByName($query);
+        
+                    foreach ($goods as $good) {
+                        $data[] = $good->goods_name;
+                        $data[] = $good->goods_code;
+                    }
+                    echo json_encode($data);
+                } else {
+                    return response()->json(['error' => 'Unknown request type']);
+                }
+            } else {
+                return response()->json(['error' => 'System unable to get search name']);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
+    public function searchGoodDetails(Request $request, $goods_name){
+        try {
+            if ($request->ajax()) {
+                
+                    $good = $this->goodsRepository->findGoodByName($goods_name);
+                    return response()->json(['success' => 'Ok', 'data' => $good]);
+        
+            } else {
+                return response()->json(['error' => 'System unable to get search name']);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
+
 }

@@ -184,7 +184,6 @@
 
         $('.barcode').focus();
 
-
         designCartTable();
 
         function designCartTable() {
@@ -617,7 +616,6 @@
             }
 
         }
-
 
         $("#UpdateCartForm").submit(function(e) {
             return false;

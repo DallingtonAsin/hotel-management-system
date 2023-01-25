@@ -80,9 +80,7 @@
                             </div>
 
                             <div class="modal-body">
-
                                 <div class="row form-group">
-
                                     <div class="col-md-4">
                                         <span><span class="text-danger pr-1">*</span>Product Name</span>
                                         <input type="text" class="form-control  item_name" name="item"
@@ -92,8 +90,8 @@
                                     <div class="col-md-4">
                                         <span><span class="text-danger pr-1">*</span>Product Code</span>
                                         <input type="hidden" class="stockId" name="id">
-                                        <input type="text" class="form-control  item_code" name="item_code"
-                                            placeholder="Enter product code">
+                                        <input type="text" class="form-control item_code" name="item_code"
+                                            placeholder="Enter product code" readonly>
                                     </div>
 
                                     <div class="col-md-4">
@@ -154,21 +152,34 @@
 
                                 <div class="row form-group">
                                     <div class=" col-md-4">
-                                        <span><span class="text-danger pr-1">*</span>Quantity</span>
+                                        <span><span class="text-danger pr-1">*</span><span
+                                                class="quantity_text">Quantity</span></span>
                                         <input type="text" class="form-control  quantity" id="qty"
                                             name="quantity" placeholder="Enter Quantity">
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 show-on-edit">
                                         <span>Threshold Quantity</span>
                                         <input type="text" class="form-control threshold_qty" id="threshold_qty"
                                             name="threshold_qty" placeholder="Enter threshold quantity">
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 show-on-edit">
                                         <span>Expiry Date</span>
                                         <input type="date" class="form-control  expiry_date" name="expiry_date"
                                             placeholder="Enter who bought it">
+                                    </div>
+
+                                    <div class="col-md-8 adjust-type-div">
+                                        <span><span class="text-danger pr-1">*</span>AdjustType</span>
+                                        <select class="form-control adjust_type" name="adjust_type" id="adjust_type">
+                                            <option value="">Select Adjust Type</option>
+                                            @foreach (config('stock-adjust-types') as $key => $type)
+                                                <option value="{{ $value }}">
+                                                    {{ ucwords(str_replace('_', ' ', $key)) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                 </div>
@@ -178,14 +189,13 @@
                                         <div class="col-lg-6">
                                             <span><span class="text-danger pr-1">*</span>Buying Price</span>
                                             <input type="text" class="form-control  original_price"
-                                                name="original_price" placeholder="Enter original price" required
-                                                autofocus>
+                                                name="original_price" placeholder="Enter original price">
                                         </div>
 
                                         <div class="col-lg-6">
                                             <span><span class="text-danger pr-1">*</span>Unit Price</span>
-                                            <input type="text" class="form-control  selling_price"
-                                                name="selling_price" placeholder="Enter selling price">
+                                            <input type="text" class="form-control selling_price" name="selling_price"
+                                                placeholder="Enter selling price" readonly>
                                         </div>
 
                                     </div>
@@ -198,6 +208,8 @@
 
 
                                 <div class="form-group">
+                                    <input type="hidden" class="form-control edit_stock_action"
+                                        name="edit_stock_action">
                                     <button type="submit" class="btn btn-sm btn-primary addStockBtn"
                                         name="AddItemBtn"><i></i>Save</button>
                                     <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
@@ -303,95 +315,62 @@
         const deletedSeletectedUrl = @json(route('selected-stock.remove'));
         const cat = 'stock';
         const token = "{{ csrf_token() }}";
+        const stock_actions = {
+            increase: 0,
+            decrease: 1,
+            edit: 2
+        }
     </script>
 
-    @can('isAdmin')
-        <script>
-            //code that displays results of the table index()
-            let table = $('#stock-table');
-            let title = "List of stock items in the system";
-            let columns = [1, 2, 3, 4, 5];
-            let dataColumns = [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-                {
-                    data: 'item_name',
-                    name: 'item_name'
-                },
-                {
-                    data: 'item_code',
-                    name: 'item_code'
-                },
-                {
-                    data: 'goods_type_code',
-                    name: 'goods_type_code'
-                },
-                {
-                    data: 'goods_type',
-                    name: 'goods_type'
-                },
-                {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
+    <script>
+        //code that displays results of the table index()
+        let table = $('#stock-table');
+        let title = "List of stock items in the system";
+        let columns = [1, 2, 3, 4, 5];
+        let dataColumns = [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'item_name',
+                name: 'item_name'
+            },
+            {
+                data: 'item_code',
+                name: 'item_code'
+            },
+            {
+                data: 'goods_type_code',
+                name: 'goods_type_code'
+            },
+            {
+                data: 'goods_type',
+                name: 'goods_type'
+            },
+            {
+                data: 'quantity',
+                name: 'quantity'
+            },
 
-                {
-                    data: 'buying_price',
-                    name: 'buying_price'
-                },
-                {
-                    data: 'selling_price',
-                    name: 'selling_price'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ];
-            makeDataTable(table, title, columns, dataColumns);
-        </script>
-    @endcan
-
-    @can('isCashier')
-        <script>
-            //code that displays results of the table index()
-            let table = $('#stock-table');
-            let title = "List of stock items in the system";
-            let columns = [1, 2, 3, 4, 5];
-            let dataColumns = [
-                //  {data: 'id', name:'id'},
-                {
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'item',
-                    name: 'item'
-                },
-                {
-                    data: 'item_code',
-                    name: 'item_code'
-                },
-                {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
-                {
-                    data: 'selling_price',
-                    name: 'selling_price'
-                },
-                
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ];
-            makeDataTable2(table, title, columns, dataColumns);
-        </script>
-    @endcan
+            {
+                data: 'buying_price',
+                name: 'buying_price'
+            },
+            {
+                data: 'selling_price',
+                name: 'selling_price'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            },
+        ];
+        makeDataTable(table, title, columns, dataColumns);
+    </script>
 
 
     <script type="text/javascript">
@@ -401,10 +380,48 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             Numberize(".quantity");
             Numberize(".threshold_qty");
             Numberize(".original_price");
             Numberize(".selling_price");
+
+            let searchGoodsUrl = '{{ route('goods.search.ajax') }}';
+            onTyping('.item_name', searchGoodsUrl, afterSelectingProduct);
+
+            function afterSelectingProduct(product_name) {
+                populateGoodDetails(product_name);
+            }
+
+            function populateGoodDetails(product_name) {
+                console.log("Details loading... for item", product_name);
+
+                let url = "{{ route('good.find.ajax', ':product_name') }}"
+                url = url.replace(':product_name', product_name);
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            if (data.goods_code) {
+                                $('.item_code').val(data.goods_code);
+                            }
+                            if (data.unit_price) {
+                                $('.selling_price').val(FormatNumber(data.unit_price));
+                            }
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
+                    },
+                    error: function(data) {
+                        console.log('Error on fetching product details', data);
+                        console.log('Error:', data.error);
+                        displayResponse('.response', data.error, 'error');
+                    }
+                });
+            }
 
             onSelectSupplier();
 
@@ -440,14 +457,17 @@
                 });
             }
 
-            $.fn.dataTable.ext.errMode = 'none';
-            $('#stock-table').on('error.dt', function(e, settings, techNote, message) {
-                console.log('An error has been reported by DataTables: ', message);
-            }).DataTable();
+            // $.fn.dataTable.ext.errMode = 'none';
+            // $('#stock-table').on('error.dt', function(e, settings, techNote, message) {
+            //     console.log('An error has been reported by DataTables: ', message);
+            // }).DataTable();
 
             onClickSubmitBtn();
 
             $('#createNewStock').click(function(e) {
+                $('.edit_stock_action').val('');
+                $('.show-on-edit').show();
+                $('.adjust-type-div').hide();
                 e.preventDefault();
                 checkPermission(permissions.add_stock, function(stock) {
                     NullifyFields();
@@ -455,21 +475,72 @@
                     $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('#StockForm').trigger("reset");
                     $('#modalHeading').html("Record new stock");
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     $('#addStockModal').modal('show');
                 });
             });
 
-            //modal used to edit stock details [each row of the tbl]
-            $('body').on('click', '#edit-stock', function(event) {
+
+
+            function disableFieldsOnChangingQuantity() {
+                $('.stockId').attr('readonly', true);
+                $('.item_code').attr('readonly', true);
+                $('.item_name').attr('readonly', true);
+                $('.category').attr('readonly', true);
+                $('.goods_type_code').attr('readonly', true);
+                $('.stockin_type_code').attr('readonly', true);
+                $('.threshold_qty').attr('readonly', true);
+                $('#supplier').attr('readonly', true);
+                $('.quantity').attr('readonly', false);
+                $('.expiry_date').attr('readonly', true);
+                $('.original_price').attr('readonly', true);
+                $('.selling_price').attr('readonly', true);
+            }
+
+            $('body').on('click', '#increase-stock', function(event) {
                 let stock_id = $(this).data('id');
+                $('.edit_stock_action').val(stock_actions.increase);
+                $('.show-on-edit').show();
+                $('.adjust-type-div').hide();
+
                 event.preventDefault();
-                checkPermission(permissions.edit_stock, function(stock) {
-                    editStock(stock_id);
+                checkPermission(permissions.view_stock, function(stock) {
+                    editStock(stock_id, disableFieldsOnChangingQuantity,
+                        "Increase stock for stock item");
+                    $('.quantity_text').text('New Quantity');
+                    $('.remarks').text('increase stock');
+
                 });
             });
 
-            function editStock(stock_id) {
+            $('body').on('click', '#decrease-stock', function(event) {
+                let stock_id = $(this).data('id');
+                $('.edit_stock_action').val(stock_actions.decrease);
+                $('.show-on-edit').hide();
+                $('.adjust-type-div').show();
+
+                event.preventDefault();
+                checkPermission(permissions.view_stock, function(stock) {
+                    editStock(stock_id, disableFieldsOnChangingQuantity,
+                        "Decrease stock for stock item");
+                    $('.quantity_text').text('Decrease quantity by');
+                    $('.remarks').text('decrease stock');
+
+                });
+            });
+
+
+            //modal used to edit stock details [each row of the tbl]
+            $('body').on('click', '#edit-stock', function(event) {
+                let stock_id = $(this).data('id');
+                $('.edit_stock_action').val(stock_actions.edit);
+                event.preventDefault();
+                checkPermission(permissions.edit_stock, function(stock) {
+                    editStock(stock_id, disableFormFields(false), "Edit details of stock item");
+                });
+            });
+
+            function editStock(stock_id, disableFormFields, modal_title) {
                 ShowHideBtns('show');
                 $('.addStockBtn').text("Update stock");
                 $('#addStockModal').modal('show');
@@ -483,10 +554,9 @@
                     success: function(response) {
                         if (response.success) {
                             let data = response.data;
-                            $('#modalHeading').html("Edit details of stock item " + data.item_name +
-                                "");
+                            $('#modalHeading').html(modal_title + ' ' + data.item_name);
                             populateProductDetails(data);
-                            DisableFormFields(false);
+                            disableFormFields();
                         } else {
                             $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                             displayResponse(null, response.error, 'error');
@@ -503,37 +573,62 @@
 
             function UpdateStock(stock_id) {
 
-                $('.errors-section').html('');
-                $('.addStockBtn').html('Updating item...');
-                let Url = "{{ route('stock.update', ':id') }}";
-                Url = Url.replace(':id', stock_id);
+                let url = "",
+                    message = "";
+                let action = $('.edit_stock_action').val();
+                let item_name = $('.item_name').val();
+                let quantity = $('.quantity').val();
 
-                $.ajax({
-                    data: $('#StockForm').serialize(),
-                    url: Url,
-                    type: "PUT",
-                    dataType: 'json',
-                    success: function(response) {
-                        let message = response.success || response.error;
-                        let type = response.success ? 'success' : 'error';
+                if (action == stock_actions.increase) {
+                    url = "{{ route('stock.increase', ':id') }}";
+                    url = url.replace(':id', stock_id);
+                    message = "Are you sure you want to increase stock item " + item_name + " by " + quantity;
+                } else if (action == stock_actions.decrease) {
+                    url = "{{ route('stock.decrease', ':id') }}";
+                    url = url.replace(':id', stock_id);
+                    message = "Are you sure you want to reduce stock item " + item_name + " by " + quantity;
+                } else if (action == stock_actions.edit) {
+                    url = "{{ route('stock.update', ':id') }}";
+                    url = url.replace(':id', stock_id);
+                    message = "Are you sure you want to update stock item";
+                }
 
-                        if (response.success) {
-                            let data = response.data;
-                            $('#StockForm').trigger("reset");
-                            $('#addStockModal').modal("hide");
-                            ResetTblInfo(data);
-                            let tbl = $('#stock-table').DataTable();
-                            tbl.ajax.reload();
+
+                if (confirm(message)) {
+
+                    $('.errors-section').html('');
+                    $('.addStockBtn').html('Updating item...');
+
+                    $.ajax({
+                        data: $('#StockForm').serialize(),
+                        url: url,
+                        type: "PUT",
+                        dataType: 'json',
+                        success: function(response) {
+                            let message = response.success || response.error;
+                            let type = response.success ? 'success' : 'error';
+
+                            if (response.success) {
+                                let data = response.data;
+                                $('#StockForm').trigger("reset");
+                                $('#addStockModal').modal("hide");
+                                ResetTblInfo(data);
+                                let tbl = $('#stock-table').DataTable();
+                                tbl.ajax.reload();
+                                $('.edit_stock_action').val('');
+                            }
+
+                            displayResponse(null, message, type);
+                            $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+
+                        },
+                        error: function(data) {
+                            console.log('Error:', data.error);
+                            displayResponse('.response', data.error, 'error');
+                            $('.addStockBtn').html('Save Changes');
                         }
-
-                        displayResponse(null, message, type);
-                    },
-                    error: function(data) {
-                        console.log('Error:', data.error);
-                        displayResponse('.response', data.error, 'error');
-                        $('.addStockBtn').html('Save Changes');
-                    }
-                });
+                    });
+                }
 
             }
 
@@ -557,9 +652,9 @@
                             ResetTblInfo(data);
                             let tbl = $('#stock-table').DataTable();
                             tbl.ajax.reload();
-                        }else{
-                           $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                         }
+                        $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+
 
                         displayResponse('.response', resp, type);
                     },
@@ -571,6 +666,8 @@
                 });
 
             }
+
+
 
             //View Modal used to view each row [stock details]
             $('body').on('click', '#view-stock', function(event) {
@@ -589,7 +686,7 @@
                         $('#modalHeading').html("Details of stock " + data.item_name + "");
                         $('#addStockModal').modal('show');
                         populateProductDetails(data);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                     } else {
                         displayResponse(null, response.error, 'error');
                     }
@@ -598,18 +695,22 @@
 
             function populateProductDetails(data) {
                 $('.stockId').val(data.id);
+                $('.item_name').val(data.item_name);
                 $('.item_code').val(data.item_code);
                 $('.goods_type_code').val(data.goods_type_code);
                 $('.stockin_type_code').val(data.stockin_type_code);
-                $('.item_name').val(data.item_name);
                 $('.category').val(data.category_id);
                 $('#supplier').val(data.supplier_id);
                 $('.supplier_tin').val(data.supplier_tin);
-                $('.quantity').val(data.quantity);
-                $('.threshold_qty').val(data.threshold_qty)
+                $('.threshold_qty').val(data.threshold_qty);
                 $('.expiry_date').val(data.expiry_date);
                 $('.original_price').val(FormatNumber(data.buying_price));
                 $('.selling_price').val(FormatNumber(data.selling_price));
+
+                let action = $('.edit_stock_action').val();
+                if (!action) {
+                    $('.quantity').val(data.quantity);
+                }
             }
 
 
@@ -621,9 +722,8 @@
                     if (isValidForm) {
                         if (id) {
                             UpdateStock(id);
-
                         } else {
-                            if(confirm(`Are you sure you want to add this as stock`)){
+                            if (confirm(`Are you sure you want to add this as stock?`)) {
                                 recordStock();
                             }
                         }
@@ -698,17 +798,19 @@
 
 
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
 
-                $('.stockId').attr('disabled', bool);
-                $('.item_code').attr('disabled', bool);
-                $('.item_name').attr('disabled', bool);
-                $('.category').attr('disabled', bool);
-                $('#supplier').attr('disabled', bool);
-                $('.quantity').attr('disabled', bool);
-                $('.expiry_date').attr('disabled', bool);
-                $('.original_price').attr('disabled', bool);
-                $('.selling_price').attr('disabled', bool);
+                $('.stockId').attr('readonly', bool);
+                $('.item_code').attr('readonly', bool);
+                $('.item_name').attr('readonly', bool);
+                $('.category').attr('readonly', bool);
+                $('.stockin_type_code').attr('readonly', bool);
+                $('.goods_type_code').attr('readonly', bool);
+                $('#supplier').attr('readonly', bool);
+                $('.quantity').attr('readonly', bool);
+                $('.expiry_date').attr('readonly', bool);
+                $('.original_price').attr('readonly', bool);
+                $('.selling_price').attr('readonly', bool);
             }
 
             function ShowHideBtns(action) {
@@ -744,6 +846,7 @@
                 let qty = $('#qty').val();
                 let bprice = $('.original_price').val();
                 let sprice = $('.selling_price').val();
+                let stock_action = $('.edit_stock_action').val();
 
                 let isValidForm = false;
 
@@ -766,7 +869,16 @@
                 } else if (sprice == "") {
                     displayResponse(null, `Please enter valid unit price`, `error`);
                 } else {
-                    isValidForm = true;
+                    if(stock_action == stock_actions.decrease){
+                        let adjust_type = $('.adjust_type').val();
+                        if (adjust_type.length < 1) {
+                           displayResponse(null, `Please select adjust type`, `error`);
+                        }else{
+                          isValidForm = true;
+                        }
+                    }else{
+                        isValidForm = true;
+                    }
                 }
 
                 return isValidForm;

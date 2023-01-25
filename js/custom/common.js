@@ -11,7 +11,7 @@ function Numberize(i) {
 
 function displayResponse(area = null, message, errorType = 'error') {
 
-  let config = { timeOut: 10000 };
+  let config = { timeOut: 8000 };
 
   switch (true) {
     case errorType == 'success':
