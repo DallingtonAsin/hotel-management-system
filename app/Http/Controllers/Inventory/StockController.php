@@ -92,12 +92,16 @@ class StockController extends Controller
           $stock = new Stock;
           $method = "StockController@store";
 
+          $buying_price = Helper::Numberize($request->input('original_price'));
+          $selling_price = Helper::Numberize($request->input('selling_price'));
+          if($buying_price > $selling_price){
+            return response()->json(['error' => 'Buying price cannot be greater than selling price']);
+          }
+
           $item_name = $request->input('item');
           $goods_type_code = $request->input('goods_type_code');
           $stockin_type_code = $request->input('stockin_type_code');
           $quantity = Helper::Numberize($request->input('quantity'));
-          $buying_price = Helper::Numberize($request->input('original_price'));
-          $selling_price = Helper::Numberize($request->input('selling_price'));
           $supplier_id = $request->input('supplier');
           $expiry_date = $request->input('expiry_date');
           $remarks = $request->input('remarks');
