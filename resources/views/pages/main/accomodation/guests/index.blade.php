@@ -21,7 +21,7 @@
 
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone No.</th>
@@ -96,10 +96,8 @@
             let table = $('#guests-table');
             let title = "List of guests in the system";
             let columns = [1, 2, 3, 4];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
                     data: 'name',
                     name: 'name'

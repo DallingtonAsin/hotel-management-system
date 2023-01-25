@@ -6,7 +6,7 @@
             <span class="response"></span>
             <h6 class="card-title mb-0 text-dark">
                 <i class="fa fa-home text-success"> /</i>
-                <strong>Permissions</strong>
+                <strong>Staff Permissions</strong>
                 <span class="badge badge-info total_permissions">
                     @isset($total_permissions)
                         {{ number_format($total_permissions) }}

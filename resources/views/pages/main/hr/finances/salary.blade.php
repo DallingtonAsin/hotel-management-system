@@ -22,7 +22,7 @@
                 <table class="table table-bordered table-hover salaries-table" id="salaries-table">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Employee Name</th>
                             <th>Amount</th>
                             <th>Pay Date</th>
@@ -194,10 +194,9 @@
             let table = $('#salaries-table');
             let title = "List of recorded salaries in the system";
             let columns = [1, 2, 3, 4];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+
                 {
                     data: 'employee_name',
                     name: 'employee_name'
