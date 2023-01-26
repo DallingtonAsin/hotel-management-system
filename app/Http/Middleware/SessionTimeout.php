@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
-use App\Staff;
+use App\Models\Staff;
 
 class SessionTimeout
 {

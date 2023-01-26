@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use App\Staff;
+use App\Models\Staff;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View; 
 use Illuminate\Support\Facades\Auth; 

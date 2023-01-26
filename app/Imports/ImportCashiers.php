@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\Role;
-use App\Staff;
+use App\Models\Staff;
 
 class ImportCashiers implements ToModel, WithHeadingRow
 {

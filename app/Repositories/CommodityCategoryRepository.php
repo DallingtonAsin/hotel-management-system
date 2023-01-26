@@ -47,12 +47,29 @@ class CommodityCategoryRepository
         }
     }
 
-    public function existsGoodCategory($goodCategorys_code){
+    public function existsCommodityCategory($code, $name = null){
         try {
-            $exists = CommodityCategory::where('goods_code', $goodCategorys_code)->exists();
-            return $exists;
+            $commodity_category = CommodityCategory::where('code', $code);
+            if($name){
+                $commodity_category = $commodity_category->orWhere('name', $name);
+            }
+            return $commodity_category->exists();
         } catch (\Exception $e) {
             return $e;
         }
     }
+
+    public function checkCommodityCategoryonUpdate($id, $code, $name = null){
+        try {
+            $commodity_category = CommodityCategory::where('id', '!=', $id)->where('code', $code);
+            if($name){
+                $commodity_category = $commodity_category->orWhere('name', $name);
+            }
+            return $commodity_category->exists();
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+
 }

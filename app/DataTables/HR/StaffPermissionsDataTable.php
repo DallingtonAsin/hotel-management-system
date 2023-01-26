@@ -7,7 +7,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\StaffPermission;
 use App\Models\Permission;
-use App\Staff;
+use App\Models\Staff;
 
 
 class StaffPermissionsDataTable extends DataTable

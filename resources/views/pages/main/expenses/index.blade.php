@@ -52,6 +52,7 @@
                             <th>expense</th>
                             <th>Amount</th>
                             <th>Date of Expenditure</th>
+                            <th>Is deleted</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -81,7 +82,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control expenseId  expenseId" name="id"
+                            <input type="hidden" class="form-control expense_id  expense_id" name="id"
                                 placeholder="Enter expense id" Required autofocus>
                         </div>
 
@@ -112,7 +113,6 @@
                             <button type="submit" class="btn btn-primary" id="addExpensesBtn"
                                 name="AddExpenseBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                            <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
                         </div>
 
                         <div class="form-group">
@@ -174,7 +174,7 @@
     </div>
 
 
-    <!--Modal Deleteexpenses -->
+    <!--Modal Delete Expenses -->
 
     <div class="modal fade" id="deleteExpensesModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
@@ -228,10 +228,10 @@
             });
 
             //code that displays results of the table index()
-            var table = $('.expenses-table');
-            var title = "List of recorded expenses in the system";
-            var columns = [0, 1, 2, 3];
-            var dataColumns = [
+            let table = $('.expenses-table');
+            let title = "List of recorded expenses in the system";
+            let columns = [0, 1, 2, 3];
+            let dataColumns = [
              
                  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
@@ -245,6 +245,11 @@
                 {
                     data: 'date_of_expenditure',
                     name: 'date-of_expenditure'
+                },
+                
+                {
+                    data: 'is_deleted',
+                    name: 'is_deleted'
                 },
                 {
                     data: 'action',
@@ -261,8 +266,8 @@
                 checkPermission(permissions.add_expenses, function(expense) {
                     DisableFormFields(false);
                     ShowBtns();
-                    $('#addExpensesBtn').text("Record expense");
-                    $('.expenseId').val('');
+                    $('#addExpensesBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.expense_id').val('');
                     $('#ExpensesForm').trigger("reset");
                     $('#modalHeading').html("Record new expense");
                     $('#addExpensesModal').modal('show');
@@ -270,7 +275,7 @@
             });
 
             function SanitizeString(str) {
-                var newStr = str.replace(/,/g, '').trim();
+                let newStr = str.replace(/,/g, '').trim();
                 return newStr;
             }
 
@@ -278,7 +283,7 @@
 
             //modal used to edit expenses details [each row of the tbl]
             $('body').on('click', '#edit-expense', function(event) {
-                var expense_id = $(this).data('id');
+                let expense_id = $(this).data('id');
                 event.preventDefault();
                 checkPermission(permissions.edit_expenses, function(expense) {
                     editExpense(expense_id);
@@ -299,7 +304,7 @@
 
             //View Modal used to view each row [expenses details]
             $('body').on('click', '#view-expense', function(event) {
-                var expense_id = $(this).data('id');
+                let expense_id = $(this).data('id');
                 event.preventDefault();
                 checkPermission(permissions.view_expenses, function(expense) {
                     viewExpense(expense_id);
@@ -317,7 +322,7 @@
             }
 
             function populateExpenseDetails(data){
-                   $('.expenseId').val(data.id);
+                    $('.expense_id').val(data.id);
                     $('.expense').val(data.type_id);
                     $('.amount').val(FormatNumber(data.amount));
                     $('.date').val(data.date_of_expenditure);
@@ -327,56 +332,57 @@
             $('#addExpensesBtn').click(function(e) {
 
                 e.preventDefault();
-                var Errors = validateForm();
+                let isValidForm = validateForm();
 
-                if (Errors.length == 0) {
+                if (isValidForm) {
 
-                    $('.errors-section').html('');
+                    let id = $('.expense_id').val();
+                    let url = "", method = "";
+                    if(id){
+                        url = "{{ route('expenses.update', ':id') }}",
+                        url = url.replace(':id', id);
+                        method = "PUT";
+                    }else{
+                        url = "{{ route('expenses.store') }}";
+                        method = "POST";
+                    }
+
                     $(this).html('Sending..');
 
                     $.ajax({
                         data: $('#ExpensesForm').serialize(),
-                        url: "{{ route('expenses.store') }}",
-                        type: "POST",
+                        url: url,
+                        type: method,
                         dataType: 'json',
-                        success: function(data) {
+                        success: function(response) {
 
-                            $('#ExpensesForm').trigger("reset");
-                            $('#addExpensesModal').modal("hide");
+                            let message = response.success || response.error;
+                            let type = response.success ? 'success' : 'error';
+                            if(response.success){
+                                let data = response.data;
 
-                            var resp = data.success || data.error;
-                            let type = data.success ? 'success' : 'error';
-
-                            if (data.success) {
                                 ResetTblInfo(data);
-                                var tbl = $('.expenses-table').DataTable();
+                                let tbl = $('.expenses-table').DataTable();
                                 tbl.ajax.reload();
+                                $('#ExpensesForm').trigger("reset");
+                                $('#addExpensesModal').modal("hide");
                             }
 
-                            displayResponse('.response', resp, type);
-
+                            displayResponse(null, message, type);
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
-                            displayResponse('.response', data.error, 'error');
+                            displayResponse(null, data.error, 'error');
                             $('#addExpensesBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    var i;
-                    var message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
-                }
+                } 
 
             });
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-expense', function(e) {
-                var expense_id = $(this).data("id");
+                let expense_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_expenses, function(expense) {
                 $.get("{{ route('expenses.index') }}" + '/' + expense_id + '/edit', function(data) {
@@ -391,31 +397,31 @@
 
 
             function deleteRecord(id) {
-                var deleteUrl = '{{ route('expenses.destroy', ':id') }}';
-                deleteUrl = deleteUrl.replace(':id', id);
+
+                let url = '{{ route('expenses.destroy', ':id') }}';
+                url = url.replace(':id', id);
+
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
                     type: "DELETE",
-                    url: deleteUrl,
-                    success: function(data) {
-                        var resp = data.success;
-                        $('.delete-ok-btn').html('Yes');
-                        $('#deleteExpensesModal').modal("hide");
+                    url: url,
+                    success: function(response) {
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
 
-                        var resp = data.success || data.error;
-                        let type = data.success ? 'success' : 'error';
-
-                        if (data.success) {
+                        if(response.success){
+                            let data = response.data;
+                            $('.delete-ok-btn').html('Yes');
+                            $('#deleteExpensesModal').modal("hide");
                             ResetTblInfo(data);
-                            var tbl = $('.expenses-table').DataTable();
+                            let tbl = $('.expenses-table').DataTable();
                             tbl.ajax.reload();
                         }
-
-                        displayResponse('.response', resp, type);
+                        displayResponse(null, message, type);
                     },
                     error: function(data) {
                         console.log('Error:', data);
-                        displayResponse('.response', data.error, 'error');
+                        displayResponse(null, data.error, 'error');
                     }
                 });
             }
@@ -443,40 +449,41 @@
 
 
             function ResetTblInfo(response) {
-                var totl_amt, totl_no;
-                totl_no = FormatNumber(response.totl_no);
-                totl_amt = FormatNumber(response.totl_expenses);
+                let totl_amt, totl_no;
+                totl_no = FormatNumber(response.total);
+                totl_amt = FormatNumber(response.value);
                 $('.totl_no').html(totl_no)
                 $('.totl_amt').html(totl_amt);
             }
 
             function validateForm() {
-                var expense = $('.expense').val();
-                var amt = $('.amount').val();
-                var when = $('.date').val();
-                var errors = [];
+
+                let expense = $('.expense').val();
+                let amt = $('.amount').val();
+                let date = $('.date').val();
+                let isValidForm = false;
+                
                 if (expense.length < 1) {
-                    var expenseErr = "Please enter the name of the expense";
-                    errors.push(expenseErr);
+                    displayResponse(null, "Please select expense type", 'error');
                 }
-                if (!amt) {
-                    var amtErr = "Please enter the amount";
-                    errors.push(amtErr);
+                else if (!amt) {
+                    displayResponse(null, "Please enter the amount", 'error');
                 }
 
-                if (!Date.parse(when)) {
-                    var dateErr = "Please enter a valid date of expenditure";
-                    errors.push(dateErr);
+                else if (!Date.parse(date)) {
+                    displayResponse(null, "Please enter a valid date of expenditure", 'error');
+                }
+                else{
+                    isValidForm = true;
                 }
 
-                return errors;
-
+                return isValidForm;
             }
 
             function isValidDate(value) {
-                var re =
+                let re =
                     /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-.\/])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/;
-                var flag = re.test(value);
+                let flag = re.test(value);
                 return flag;
             }
 
@@ -497,7 +504,7 @@
                     content: 'Are you sure you want to remove all expenses',
                     buttons: {
                         confirm: function() {
-                            var self = this;
+                            let self = this;
                             return $.ajax({
                                 data: {
                                     "_token": "{{ csrf_token() }}",
@@ -513,7 +520,7 @@
                                 });
                                 $(".totl_no").text(data.totl_no);
                                 $(".totl_amt").text(data.totl_expenses);
-                                var tbl = $('.expenses-table').DataTable();
+                                let tbl = $('.expenses-table').DataTable();
                                 tbl.ajax.reload();
 
 

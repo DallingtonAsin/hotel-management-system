@@ -8,7 +8,7 @@ use App\DataTables\Finances\SalariesDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Salary;
 use App\Helpers\Helper;
-use App\Staff;
+use App\Models\Staff;
 
 class SalaryController extends Controller
 {

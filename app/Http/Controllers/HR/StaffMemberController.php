@@ -5,7 +5,7 @@ namespace App\Http\Controllers\HR;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\DataTables\HR\StaffMembersDataTable;
-use App\Staff;
+use App\Models\Staff;
 
 class StaffMemberController extends Controller
 {

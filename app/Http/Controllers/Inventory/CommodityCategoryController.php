@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DataTables\Inventory\CommodityCategoriesDataTable;
 use App\Repositories\CommodityCategoryRepository;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\Helper;
+
 
 class CommodityCategoryController extends Controller
 {
@@ -49,9 +53,69 @@ class CommodityCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'category_name' => 'required',
+            'category_code' => 'required'
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $method = "CommodityCategoryController@store";
+
+                $category_name = $request->input('category_name');
+                $category_code = $request->input('category_code');
+
+                if ($this->commodityCategoryRepository->existsCommodityCategory($category_code, $category_name)) {
+                    return response()->json(['error' => 'Commodity category with code ' . $category_code . ' or name '.$category_name.' already exists']);
+                } else {
+
+                    $expense_type = [
+                        'name' => $category_name,
+                        'code' => $category_code,
+                        'created_by' => Auth::user()->id,
+                    ];
+
+                    if ($this->commodityCategoryRepository->create($expense_type)) {
+                        $action = "added commodity category " . $category_name . "";
+
+                        Helper::logger($request, $action, now());
+                        $dataArr = ["code" => '200', "message" => $action, "method" => $method];
+                        Helper::LogRequest($request, $dataArr);
+
+                        $message = Helper::ActionMessage($action);
+                        $arr['total'] = $this->commodityCategoryRepository->count();
+
+                        return response()->json(['success' => $message,  'data' => $arr]);
+                    } else {
+
+                        $error = 'System has failed to add commodity category';
+                        $dataArr = ["code" => '101', "message" => $error,  "method" => $method];
+
+                        Helper::LogRequest($request, $dataArr);
+                        $message = Helper::FailedMessage($error);
+
+                        return response()->json(['error' => $message]);
+                    }
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
     }
 
+    private function getCommodityCatDetails($id){
+        try {
+
+            $commodity_category = $this->commodityCategoryRepository->get($id);
+            return response()->json(['success' => 'Ok', 'data' => $commodity_category]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -60,7 +124,7 @@ class CommodityCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getCommodityCatDetails($id);
     }
 
     /**
@@ -71,7 +135,7 @@ class CommodityCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getCommodityCatDetails($id);
     }
 
     /**
@@ -83,7 +147,63 @@ class CommodityCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        if($id){
+
+        $validator = Validator::make($request->all(), [
+            'category_name' => 'required',
+            'category_code' => 'required'
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $method = "CommodityCategoryController@store";
+
+                $category_name = $request->input('category_name');
+                $category_code = $request->input('category_code');
+
+                if ($this->commodityCategoryRepository->checkCommodityCategoryonUpdate($category_code, $category_name)) {
+                    return response()->json(['error' => 'Commodity category with code ' . $category_code . ' or name '.$category_name.' already exists']);
+                } else {
+
+                    $expense_type = [
+                        'name' => $category_name,
+                        'code' => $category_code,
+                    ];
+
+                    if ($this->commodityCategoryRepository->update($id, $expense_type)) {
+                        $action = "updated commodity category " . $category_name . "";
+
+                        Helper::logger($request, $action, now());
+                        $dataArr = ["code" => '200', "message" => $action, "method" => $method];
+                        Helper::LogRequest($request, $dataArr);
+
+                        $message = Helper::ActionMessage($action);
+                        $arr['total'] = $this->commodityCategoryRepository->count();
+
+                        return response()->json(['success' => $message,  'data' => $arr]);
+                    } else {
+
+                        $error = 'System has failed to update commodity category';
+                        $dataArr = ["code" => '101', "message" => $error,  "method" => $method];
+
+                        Helper::LogRequest($request, $dataArr);
+                        $message = Helper::FailedMessage($error);
+
+                        return response()->json(['error' => $message]);
+                    }
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }else{
+        return response()->json(['error' => 'System unable to get commodity category id']);
+    }
     }
 
     /**
@@ -92,9 +212,47 @@ class CommodityCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if (!empty($id)) {
+            try {
+
+              $method = "CommodityCategoryController@destroy";
+        
+              if ($this->commodityCategoryRepository->update($id, ['is_deleted' => true])) {
+
+                $category = $this->commodityCategoryRepository->get($id);
+                $name = $category->name;
+      
+                $action = "deleted commodity category " . $name . "";
+                Helper::logger($request, $action, now());
+                $dataArr = ["code" => '200', "message" => $action, "method" => $method];
+      
+                Helper::LogRequest($request, $dataArr);
+                $message = Helper::ActionMessage($action);
+                $arr['total'] = $this->commodityCategoryRepository->count();
+
+                return response()
+                  ->json([
+                    'success' => $message,
+                    'data' => $arr,
+                  ]);
+
+              } else {
+      
+                $error = 'System unable to delete commodity category';
+                $dataArr = ["code" => '200', "message" => $error, "method" => $method];
+                Helper::LogRequest($request, $dataArr);
+                $message = Helper::FailedMessage($error);
+
+                return response()->json(['error' => $message]);
+              }
+            } catch (\Exception $ex) {
+              return response()->json(['error' => $ex->getMessage()]);
+            }
+          } else {
+            return response()->json(['error' => 'System is unable to capture category id']);
+          }
     }
 
     public function findCommodityCategoryAjax(Request $request, $id){

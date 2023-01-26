@@ -15,6 +15,7 @@ class CommodityCategory extends Model
     protected $fillable = [
         'name',
         'code',
+        'is_deleted',
         'created_by'
     ];
 

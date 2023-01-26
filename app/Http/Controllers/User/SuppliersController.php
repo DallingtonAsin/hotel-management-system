@@ -27,8 +27,6 @@ class SuppliersController extends Controller
         $this->controller = 'SuppliersController';
     }
 
-
-
     public function GetSuppliers(SuppliersDataTable $dataTable)
     {
         return $dataTable->render('pages.main.suppliers.index');
@@ -172,15 +170,15 @@ class SuppliersController extends Controller
                     ]);
                 } else {
 
-                    $messageErr = "registering of supplier details not failed!";
+                    $error = "registering of supplier details not failed!";
                     $dataArr = array(
                         "code" => '101',
-                        "message" => $messageErr,
+                        "message" => $error,
                         "method" => "SuppliersController@store"
                     );
                     Helper::LogRequest($request, $dataArr);
 
-                    $message = $this->FailedMessage($messageErr);
+                    $message = Helper::FailedMessage($error);
                     return response()->json(['error' => $message]);
                 }
             }
@@ -194,7 +192,7 @@ class SuppliersController extends Controller
         try {
 
             $supplier = Supplier::find($id);
-            return response()->json(['success' => 'Ok', 'data' =>  $supplier]);
+            return response()->json(['success' => 'Ok', 'data' => $supplier]);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);
         }
@@ -270,14 +268,14 @@ class SuppliersController extends Controller
 
             return back()->with("success", Helper::ActionMessage($action));
         } else {
-            $messageErr = "supplier details not updated!";
+            $error = "supplier details not updated!";
             $dataArr = array(
                 "code" => '101',
-                "message" => $messageErr,
+                "message" => $error,
                 "method" => "SuppliersController@update"
             );
             Helper::LogRequest($request, $dataArr);
-            return back()->with('fail', $messageErr);
+            return back()->with('fail', $error);
         }
     }
 
@@ -296,11 +294,11 @@ class SuppliersController extends Controller
 
                 $method = "SuppliersController@destroy";
 
-                $supplier = Supplier::find(intval($id)); 
+                $supplier = Supplier::find(intval($id));
                 $response = $supplier->update(['is_deleted' => true]);
 
                 if ($response) {
-                    
+
                     $action = "removed supplier " . $supplier->name . " from the system";
                     Helper::logger($request, $action, now());
                     $dataArr = array(
@@ -313,29 +311,32 @@ class SuppliersController extends Controller
                     $arr = $this->GetSumupDetails();
 
                     return response()
-                        ->json(['success' => $message,
-                                'data' => $arr,
-                               ]);
+                        ->json([
+                            'success' => $message,
+                            'data' => $arr,
+                        ]);
 
                 } else {
 
-                    $messageErr = "supplier not removed";
+                    $error = "supplier not removed";
                     $dataArr = array(
                         "code" => '101',
-                        "message" => $messageErr,
+                        "message" => $error,
                         "method" => $method
                     );
                     Helper::LogRequest($request, $dataArr);
 
-                    $message = $this->FailedMessage($messageErr);
+                    $message = Helper::FailedMessage($error);
                     return response()->json(['error' => $message]);
 
                 }
 
-               
+
             } catch (\Exception $ex) {
                 return response()->json(['error' => $ex->getMessage()]);
             }
+        }else{
+            return response()->json(['error' => 'System unable to find supplier id']);
         }
     }
 
@@ -357,16 +358,16 @@ class SuppliersController extends Controller
             $responseInfo = Helper::ActionMessage($action);
             //  return back()->with("success", Helper::ActionMessage($action));
         } else {
-            $messageErr = "suppliers not removed from the system!";
+            $error = "suppliers not removed from the system!";
             $dataArr = array(
                 "code" => '101',
-                "message" => $messageErr,
+                "message" => $error,
                 "method" => "SuppliersController@deleteAllSuppliers"
             );
             Helper::LogRequest($request, $dataArr);
             $sessionVariable = 'error';
-            $responseInfo = $messageErr;
-            // return back()->with('fail', $messageErr);
+            $responseInfo = $error;
+            // return back()->with('fail', $error);
         }
 
         $arr = $this->GetSumupDetails();
@@ -403,14 +404,14 @@ class SuppliersController extends Controller
             Helper::LogRequest($request, $dataArr);
             return back()->with('success', Helper::ActionMessage($action));
         } else {
-            $messageErr = "Excel suppliers data not imported!";
+            $error = "Excel suppliers data not imported!";
             $dataArr = array(
                 "code" => '101',
-                "message" => $messageErr,
+                "message" => $error,
                 "method" => "SuppliersController@importSuppliers"
             );
             Helper::LogRequest($request, $dataArr);
-            return back()->with('fail', $messageErr);
+            return back()->with('fail', $error);
         }
     }
 
@@ -418,7 +419,7 @@ class SuppliersController extends Controller
     public function RemoveSelected(Request $request)
     {
         try {
-            $ids =  $request->input('selected_rows');
+            $ids = $request->input('selected_rows');
             $DeletedSuppliers = array();
 
             if (count($ids) > 0) {
@@ -478,19 +479,9 @@ class SuppliersController extends Controller
         return Excel::download(new ExportSuppliers, 'suppliers.xlsx');
     }
 
-
-
-
     protected function SuccessMessage($msg)
     {
         $message = "You have successfully " . $msg . "";
-        return $message;
-    }
-
-
-    protected function FailedMessage($failmsg)
-    {
-        $message = "" . $failmsg . "";
         return $message;
     }
 
@@ -500,11 +491,11 @@ class SuppliersController extends Controller
             if ($request->ajax()) {
                 $supplier = Supplier::find($id);
                 return response()->json(['success' => 'Ok', 'data' => $supplier]);
-            }else{
-              return response()->json(['error' => 'Request rejected: unknown request type']);
+            } else {
+                return response()->json(['error' => 'Request rejected: unknown request type']);
             }
         } catch (\Exception $ex) {
-          return response()->json(['error' => $ex->getMessage()]);
+            return response()->json(['error' => $ex->getMessage()]);
         }
     }
 }

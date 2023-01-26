@@ -38,6 +38,8 @@ class ExpensesDataTable extends DataTable
 
            return $btn;
 
+        })->editColumn('is_deleted', function ($data) {
+            return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>'; 
         })->addColumn('expense_type', function ($expense) {
              $expense_type = ExpenseType::where('id', $expense->type_id)->first()->name;
              return $expense_type;
@@ -46,7 +48,7 @@ class ExpensesDataTable extends DataTable
            return $checkBox;
       })->editColumn('amount', function ($data) {
             return number_format($data->amount);
-        })->rawColumns(['action', 'checkbox']);
+        })->rawColumns(['action', 'is_deleted', 'checkbox']);
     }
 
  

@@ -14,6 +14,7 @@ class ExpenseType extends Model
 
     protected $fillable = [
         'name',
+        'is_deleted',
         'created_by',
     ];
 }

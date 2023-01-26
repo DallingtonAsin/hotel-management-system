@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Staff;
+use App\Models\Staff;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\Helper;

@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Expense;
 use App\Models\ExpenseType;
-use App\Staff;
+use App\Models\Staff;
 use Illuminate\Support\Str;
 
 class ExpenseFactory extends Factory

@@ -160,8 +160,8 @@
 @if(session()->get('success'))
 <script>
     $(document).ready(function(){
-     var LoginMessageError = "{{ session()->get('success') }}";
-      ShowLoginErrorMessage(LoginMessageError);
+     var Login$erroror = "{{ session()->get('success') }}";
+      ShowLoginErrorMessage(Login$erroror);
       function ShowLoginErrorMessage(messageString)
     {
       $(".response").notify(messageString,{
@@ -178,8 +178,8 @@
 @if(session()->get('error'))
 <script>
     $(document).ready(function(){
-     var LoginMessageError = "{{ session()->get('error') }}";
-      ShowLoginErrorMessage(LoginMessageError);
+     var Login$erroror = "{{ session()->get('error') }}";
+      ShowLoginErrorMessage(Login$erroror);
       function ShowLoginErrorMessage(messageString)
     {
       $(".response").notify(messageString,{

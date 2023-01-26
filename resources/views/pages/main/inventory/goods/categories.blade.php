@@ -18,7 +18,7 @@
                 </h6>
             </div>
 
-         
+
             <div class="col">
                 <div class="btn-group float-right justify-content-between mb-2">
                     <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewStock"><i
@@ -38,23 +38,26 @@
                             <th>#</th>
                             <th>Commodity Name</th>
                             <th>Commodity Code</th>
+                            <th>Is deleted</th>
                             <th>Created By</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                 </table>
             </div>
 
 
-            <!--Add new Stock -->
-            <div class="modal fade nunito-font" id="addCommodityCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!--Add new commodity category -->
+            <div class="modal fade nunito-font" id="addCommodityCategoryModal" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
 
-                        <form name="StockForm" id="StockForm">
+                        <form name="CommodityCategoryForm" id="CommodityCategoryForm">
                             @csrf
                             <div class="modal-header d-flex justify-content-between">
-                                <h6 class="modal-title w-100 font-weight-bold" id="modalHeading"> Add new stock item</h6>
+                                <h6 class="modal-title w-100 font-weight-bold" id="modalHeading"> Add new commodity category</h6>
                                 <button type="button" class="close mt-1" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -95,54 +98,7 @@
                 </div>
             </div>
 
-            <!--Import Commodity Categories -->
-            <div class="modal fade nunito-font" id="importStock" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-
-                        <form action="{{ Route('stock.import') }}" method="post" enctype="multipart/form-data"
-                            name="inportStockForm">
-                            @csrf
-
-                            <div class="modal-header text-center">
-                                <h6 class="modal-title w-100 font-weight-bold">
-                                    Import an excel file of stock items</h6>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-
-                                <div class="form-group">
-                                    <span>Select file for Upload</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="file"
-                                        class="form-control-file @error('select_file') is-invalid @enderror"
-                                        name="select_file">
-                                </div>
-
-                                @error('select_file')
-                                    <div class='alert alert-danger alert-dismissible text-center' role='alert'>
-                                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                            <span aria-hidden='true'>&times;</span></button>
-                                        <strong>Sorry!</strong> {{ $message }}
-                                    </div>
-                                @enderror
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" name="AddItemBtn">Upload</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
+       
             <!--Modal Delete Stock -->
             <div class="modal fade" id="deleteCommodityCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
@@ -205,9 +161,20 @@
                 name: 'code'
             },
             {
+                data: 'is_deleted',
+                name: 'is_deleted'
+            },
+            {
                 data: 'created_by',
                 name: 'created_by'
-            }
+            },
+
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            },
 
         ];
         makeDataTable(table, title, columns, dataColumns);
@@ -216,56 +183,58 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-         
+
             onClickSubmitBtn();
 
             $('#createNewStock').click(function(e) {
                 e.preventDefault();
-                checkPermission(permissions.add_stock, function(stock) {
+                checkPermission(permissions.add_stock, function(commodity_category) {
                     NullifyFields();
                     ShowHideBtns('show');
                     $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('#StockForm').trigger("reset");
+                    $('#CommodityCategoryForm').trigger("reset");
                     $('#modalHeading').html("Add new commodity category");
                     DisableFormFields(false);
                     $('#addCommodityCategoryModal').modal('show');
                 });
             });
 
-            //modal used to edit stock details [each row of the tbl]
+            //modal used to edit commodity category details [each row of the tbl]
             $('body').on('click', '#edit-commodity-category', function(event) {
-                let stock_id = $(this).data('id');
+                let category_id = $(this).data('id');
                 event.preventDefault();
                 checkPermission(permissions.edit_stock, function(stock) {
-                    editCommodityCategory(stock_id);
+                    editCommodityCategory(category_id);
                 });
             });
 
-            function editCommodityCategory(stock_id) {
+            function editCommodityCategory(category_id) {
                 ShowHideBtns('show');
-                $('.addCommodityCatBtn').text("Update stock");
+                $('.addCommodityCatBtn').text("Update");
                 $('#addCommodityCategoryModal').modal('show');
-                let Url = "{{ route('stock.show', ':id') }}";
-                Url = Url.replace(':id', stock_id);
+                let Url = "{{ route('commodity-categories.show', ':id') }}";
+                Url = Url.replace(':id', category_id);
                 $.ajax({
 
                     url: Url,
                     type: "GET",
                     dataType: 'json',
                     success: function(response) {
+                        console.log("Commodity response", response);
                         if (response.success) {
                             let data = response.data;
-                            $('#modalHeading').html("Edit details of stock item " + data.item_name +
-                                "");
+                            $('#modalHeading').html("Edit details of commodity category " + data.name + "");
                             populateProductDetails(data);
                             DisableFormFields(false);
                         } else {
-                            $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                            $('.addCommodityCatBtn').html(
+                                "<i class='fa fa-plus-circle pr-1'></i>Submit");
                             displayResponse(null, response.error, 'error');
                         }
 
@@ -278,15 +247,14 @@
                 });
             }
 
-            function updateCommodityCategory(stock_id) {
+            function updateCommodityCategory(category_id) {
 
-                $('.errors-section').html('');
                 $('.addCommodityCatBtn').html('Updating item...');
-                let Url = "{{ route('stock.update', ':id') }}";
-                Url = Url.replace(':id', stock_id);
+                let Url = "{{ route('commodity-categories.update', ':id') }}";
+                Url = Url.replace(':id', category_id);
 
                 $.ajax({
-                    data: $('#StockForm').serialize(),
+                    data: $('#CommodityCategoryForm').serialize(),
                     url: Url,
                     type: "PUT",
                     dataType: 'json',
@@ -296,9 +264,9 @@
 
                         if (response.success) {
                             let data = response.data;
-                            $('#StockForm').trigger("reset");
+                            $('#CommodityCategoryForm').trigger("reset");
                             $('#addCommodityCategoryModal').modal("hide");
-                            ResetTblInfo(data);
+                            resetTableInfo(data);
                             let tbl = $('#commodity-category-table').DataTable();
                             tbl.ajax.reload();
                         }
@@ -315,11 +283,11 @@
             }
 
             function addCommodityCategory() {
-                $('.errors-section').html('');
+
                 $('.addCommodityCatBtn').html('Sending data..');
                 $.ajax({
-                    data: $('#StockForm').serialize(),
-                    url: "{{ route('stock.store') }}",
+                    data: $('#CommodityCategoryForm').serialize(),
+                    url: "{{ route('commodity-categories.store') }}",
                     type: "POST",
                     dataType: 'json',
                     success: function(response) {
@@ -329,13 +297,14 @@
 
                         if (response.success) {
                             let data = response.data;
-                            $('#StockForm').trigger("reset");
+                            $('#CommodityCategoryForm').trigger("reset");
                             $('#addCommodityCategoryModal').modal("hide");
-                            ResetTblInfo(data);
+                            resetTableInfo(data);
                             let tbl = $('#commodity-category-table').DataTable();
                             tbl.ajax.reload();
                         } else {
-                            $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                            $('.addCommodityCatBtn').html(
+                                "<i class='fa fa-plus-circle pr-1'></i>Submit");
                         }
 
                         displayResponse('.response', resp, type);
@@ -349,21 +318,21 @@
 
             }
 
-            //View Modal used to view each row [stock details]
-            $('body').on('click', '#view-stock', function(event) {
-                let stock_id = $(this).data('id');
+            //View Modal used to view each row [commodity category details]
+            $('body').on('click', '#view-commodity-category', function(event) {
+                let category_id = $(this).data('id');
                 event.preventDefault();
-                checkPermission(permissions.view_stock, function(stock) {
-                    viewCommodityCategory(stock_id);
+                checkPermission(permissions.view_stock, function(commodity_category) {
+                    viewCommodityCategory(category_id);
                 });
             });
 
-            function viewCommodityCategory(stock_id) {
+            function viewCommodityCategory(category_id) {
                 ShowHideBtns('hide');
-                $.get("{{ route('stock.index') }}" + '/' + stock_id + '', function(response) {
+                $.get("{{ route('commodity-categories.index') }}" + '/' + category_id + '', function(response) {
                     if (response.success) {
                         let data = response.data;
-                        $('#modalHeading').html("Details of stock " + data.item_name + "");
+                        $('#modalHeading').html("Details of commodity category " + data.name + "");
                         $('#addCommodityCategoryModal').modal('show');
                         populateProductDetails(data);
                         DisableFormFields(true);
@@ -374,9 +343,9 @@
             }
 
             function populateProductDetails(data) {
-                $('.category_id').val(data.category_id);
-                $('.category_name').val(data.category_name);
-                $('.category_code').val(data.category_code);
+                $('.category_id').val(data.id);
+                $('.category_name').val(data.name);
+                $('.category_code').val(data.code);
             }
 
 
@@ -400,29 +369,30 @@
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-commodity-category', function(e) {
-                let stock_id = $(this).data("id");
+                let category_id = $(this).data("id");
                 e.preventDefault();
-                checkPermission(permissions.delete_stock, function(stock) {
-                    $.get("{{ route('stock.index') }}" + '/' + stock_id + '', function(response) {
-                        if (response.success) {
-                            let data = response.data;
-                            $('.delete-confirm-text').html(
-                                `Are you sure you want to delete commodity category ${data.item_name}?`
-                            );
-                            $("#deleteCommodityCategoryModal").modal('show');
-                            $('.delete-ok-btn').on('click', function() {
-                                deleteRecord(stock_id);
-                            });
-                        } else {
-                            displayResponse(null, response.error, 'error');
-                        }
-                    });
+                checkPermission(permissions.delete_stock, function(commodity_category) {
+                    $.get("{{ route('commodity-categories.index') }}" + '/' + category_id + '',
+                        function(response) {
+                            if (response.success) {
+                                let data = response.data;
+                                $('.delete-confirm-text').html(
+                                    `Are you sure you want to delete commodity category ${data.name}?`
+                                );
+                                $("#deleteCommodityCategoryModal").modal('show');
+                                $('.delete-ok-btn').on('click', function() {
+                                    deleteRecord(category_id);
+                                });
+                            } else {
+                                displayResponse(null, response.error, 'error');
+                            }
+                        });
                 });
             });
 
 
             function deleteRecord(id) {
-                let deleteUrl = '{{ route('stock.destroy', ':id') }}';
+                let deleteUrl = '{{ route('commodity-categories.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
@@ -437,7 +407,7 @@
                             let data = response.data;
                             $('.delete-ok-btn').html('Yes');
                             $('#deleteCommodityCategoryModal').modal("hide");
-                            ResetTblInfo(data);
+                            resetTableInfo(data);
                             let tbl = $('#commodity-category-table').DataTable();
                             tbl.ajax.reload();
                         }
@@ -477,9 +447,9 @@
             }
 
 
-            function ResetTblInfo(response) {
+            function resetTableInfo(response) {
                 let totl_categories;
-                totl_categories = FormatNumber(response.totl);
+                totl_categories = FormatNumber(response.total);
                 $('.totl_categories').html(totl_categories);
             }
 

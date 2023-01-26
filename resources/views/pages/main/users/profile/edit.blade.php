@@ -119,8 +119,8 @@
     $(document).ready(function(){
      var div = ".response";
      var type = "success";
-     var LoginMessageError = "{{ session()->get('success') }}";
-     ShowLoginErrorMessage(div, type, LoginMessageError);
+     var Login$erroror = "{{ session()->get('success') }}";
+     ShowLoginErrorMessage(div, type, Login$erroror);
     });
 </script>
 @endif  
@@ -131,8 +131,8 @@
     $(document).ready(function(){
      var div = ".response";
      var type = "error";
-     var LoginMessageError = "{{ session()->get('error') }}";
-     ShowLoginErrorMessage(div, type, LoginMessageError);
+     var Login$erroror = "{{ session()->get('error') }}";
+     ShowLoginErrorMessage(div, type, Login$erroror);
     });
 </script>
 @endif 

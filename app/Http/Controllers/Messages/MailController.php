@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LogsController;
 use App\Jobs\SendingEmail;
-use App\Staff;
+use App\Models\Staff;
 use App\Helpers\Helper;
 
 

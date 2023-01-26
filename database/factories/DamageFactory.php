@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Damage;
 use App\Models\Stock;
-use App\Staff;
+use App\Models\Staff;
 use Illuminate\Support\Str;
 
 class DamageFactory extends Factory

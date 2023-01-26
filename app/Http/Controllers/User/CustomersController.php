@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\LogsController;
 use App\Http\Controllers\Controller;
 use App\DataTables\User\Customer\CustomersDataTable;
 use App\DataTables\User\Customer\CustomersWithDebtsDataTable;
@@ -160,13 +159,13 @@ class CustomersController extends Controller
       else
       {
         
-        $messageErr = "registering of customer details not failed!";
+        $error = "registering of customer details not failed!";
         $dataArr = array("code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "CustomersController@store");
         Helper::LogRequest($req, $dataArr);
         $sessionVariable = 'fail';
-        $responseInfo = $this->FailedMessage($messageErr);
+        $responseInfo = Helper::FailedMessage($error);
         
         
       }
@@ -285,20 +284,20 @@ class CustomersController extends Controller
     }
     else
     {
-      // $messageErr = 'Customer Update failed!';
+      // $error = 'Customer Update failed!';
       // $dataArr = array("code" => '101',
-      // "message" => $messageErr,
+      // "message" => $error,
       // "method" => "CustomersController@update");
       // Helper::LogRequest($req, $dataArr);
-      // return back()->with('fail', $messageErr);
+      // return back()->with('fail', $error);
       
-      $messageErr = "editing of customer details not failed!";
+      $error = "editing of customer details not failed!";
       $dataArr = array("code" => '101',
-      "message" => $messageErr,
+      "message" => $error,
       "method" => "CustomersController@update");
       Helper::LogRequest($req, $dataArr);
       $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
+      $responseInfo = Helper::FailedMessage($error);
       
       
       
@@ -340,12 +339,12 @@ class CustomersController extends Controller
     //     }
     //     else
     //     {
-      //       $messageErr = 'Customer not deleted!';
+      //       $error = 'Customer not deleted!';
       //       $dataArr = array("code" => '101',
-      //       "message" => $messageErr,
+      //       "message" => $error,
       //       "method" => "CustomersController@destroy");
       //       Helper::LogRequest($request, $dataArr);
-      //       return back()->with('fail', $messageErr);
+      //       return back()->with('fail', $error);
       //    }
       
       //  }
@@ -375,13 +374,13 @@ class CustomersController extends Controller
         else
         {
           
-          $messageErr = "customer not removed";
+          $error = "customer not removed";
           $dataArr = array("code" => '101',
-          "message" => $messageErr,
+          "message" => $error,
           "method" => $method);
           Helper::LogRequest($request, $dataArr);
           $sessionVariable = 'fail';
-          $responseInfo = $this->FailedMessage($messageErr);
+          $responseInfo = Helper::FailedMessage($error);
           
         }
         
@@ -414,14 +413,14 @@ class CustomersController extends Controller
       }
       else
       {
-        $messageErr = 'Customers not removed from the system!';
+        $error = 'Customers not removed from the system!';
         $dataArr = array("code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "CustomersController@deleteAllCustomers");
         Helper::LogRequest($request, $dataArr);
         $sessionVariable = 'fail';
-        $responseInfo = $messageErr;
-        //  return back()->with('fail', $messageErr);
+        $responseInfo = $error;
+        //  return back()->with('fail', $error);
       }
       
       $arr = $this->GetSumupDetails();
@@ -511,12 +510,12 @@ if($importSuccess){
 }
 else
 {
-  $messageErr = "Excel Customers data not imported!";
+  $error = "Excel Customers data not imported!";
   $dataArr = array("code" => '101',
-  "message" => $messageErr,
+  "message" => $error,
   "method" => "CustomersController@importCustomers");
   Helper::LogRequest($request, $dataArr);
-  return back()->with('fail', $messageErr);
+  return back()->with('fail', $error);
 }
 
 
@@ -541,13 +540,6 @@ public function downloadCustomersPdf(){
 protected function SuccessMessage($msg)
 {
   $message = "You have successfully ".$msg."";
-  return $message;
-}
-
-
-protected function FailedMessage($failmsg)
-{
-  $message = "".$failmsg."";
   return $message;
 }
 
@@ -602,23 +594,23 @@ public function updateCustomerDebts(CustomerDebtPaymentService $debtPaymentServi
  
     }
     else{
-      $messageErr = "Unable to update customer debt!";
+      $error = "Unable to update customer debt!";
       $dataArr = array("code" => '101',
-      "message" => $messageErr,
+      "message" => $error,
       "method" => "CustomersController@updateCustomerDebts");
       Helper::LogRequest($req, $dataArr);
       $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
+      $responseInfo = Helper::FailedMessage($error);
     }
     
   }else{
-    $messageErr = "Unable to get sale id!";
+    $error = "Unable to get sale id!";
     $dataArr = array("code" => '101',
-    "message" => $messageErr,
+    "message" => $error,
     "method" => "CustomersController@updateCustomerDebts");
     Helper::LogRequest($req, $dataArr);
     $sessionVariable = 'fail';
-    $responseInfo = $this->FailedMessage($messageErr);
+    $responseInfo = Helper::FailedMessage($error);
   }
   $arr = $this->GetDebtStats();
   

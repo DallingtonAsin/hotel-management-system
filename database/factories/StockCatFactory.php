@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\StockCat;
 use Illuminate\Support\Str;
-use App\Staff;
+use App\Models\Staff;
 
 class StockCatFactory extends Factory
 {

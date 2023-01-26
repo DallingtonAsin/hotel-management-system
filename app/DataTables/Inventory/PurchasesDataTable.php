@@ -53,7 +53,7 @@ class PurchasesDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Staff $model
+     * @param \App\Models\Staff $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Purchase $model)

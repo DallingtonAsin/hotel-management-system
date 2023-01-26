@@ -167,16 +167,16 @@ class StockController extends Controller
                 ]);
             } else {
 
-              $messageErr = "System has failed to add stock item";
+              $error = "System has failed to add stock item";
 
               $dataArr = array(
                 "code" => '101',
-                "message" => $messageErr,
+                "message" => $error,
                 "method" => $method
               );
 
               Helper::LogRequest($request, $dataArr);
-              $message = $this->FailedMessage($messageErr);
+              $message = Helper::FailedMessage($error);
               return response()->json(['error' => $message]);
             }
           } else {
@@ -257,11 +257,7 @@ class StockController extends Controller
                 $action = "increased quantity for stock item " . $item_name . " by " . $quantity . " in the system";
                 Helper::logger($request, $action, now());
 
-                $dataArr = array(
-                  "code" => '200',
-                  "message" => $action,
-                  "method" => $method
-                );
+                $dataArr = ["code" => '200', "message" => $action, "method" => $method];
 
                 Helper::LogRequest($request, $dataArr);
 
@@ -275,16 +271,12 @@ class StockController extends Controller
                   ]);
               } else {
 
-                $messageErr = "System has failed to update stock quantity";
+                $error = "System has failed to update stock quantity";
 
-                $dataArr = array(
-                  "code" => '101',
-                  "message" => $messageErr,
-                  "method" => $method
-                );
+                $dataArr = ["code" => '200', "message" => $action, "method" => $method];
 
                 Helper::LogRequest($request, $dataArr);
-                $message = $this->FailedMessage($messageErr);
+                $message = Helper::FailedMessage($error);
                 return response()->json(['error' => $message]);
               }
             } else {
@@ -356,11 +348,7 @@ class StockController extends Controller
                 $action = "decreased quantity for stock item " . $item_name . " by " . $quantity . " in the system";
                 Helper::logger($request, $action, now());
 
-                $dataArr = array(
-                  "code" => '200',
-                  "message" => $action,
-                  "method" => $method
-                );
+                $dataArr = ["code" => '200', "message" => $action, "method" => $method];
 
                 Helper::LogRequest($request, $dataArr);
 
@@ -374,16 +362,12 @@ class StockController extends Controller
                   ]);
               } else {
 
-                $messageErr = "System has failed to update stock";
+                $error = "System has failed to update stock";
 
-                $dataArr = array(
-                  "code" => '101',
-                  "message" => $messageErr,
-                  "method" => $method
-                );
+                $dataArr = ["code" => '200', "message" => $action, "method" => $method];
 
                 Helper::LogRequest($request, $dataArr);
-                $message = $this->FailedMessage($messageErr);
+                $message = Helper::FailedMessage($error);
                 return response()->json(['error' => $message]);
               }
             } else {
@@ -516,15 +500,15 @@ class StockController extends Controller
               'data' => $arr
             ]);
         } else {
-          $messageErr = "Stock Update failed!";
+          $error = "Stock Update failed!";
           $dataArr = array(
             "code" => '101',
-            "message" => $messageErr,
+            "message" => $error,
             "method" => "StockController@update"
           );
           Helper::LogRequest($request, $dataArr);
 
-          $message = $this->FailedMessage($messageErr);
+          $message = Helper::FailedMessage($error);
           return response()->json(['error' => $message]);
         }
       }
@@ -575,7 +559,7 @@ class StockController extends Controller
             "method" => "StockController@destroy"
           );
           Helper::LogRequest($request, $dataArr);
-          $message = $this->FailedMessage($error);
+          $message = Helper::FailedMessage($error);
           return response()->json(['error' => $message]);
         }
       } catch (\Exception $ex) {
@@ -604,15 +588,15 @@ class StockController extends Controller
       //return back()->with("success", Helper::ActionMessage($action));
     } else {
       $sessionVariable = 'fail';
-      $messageErr = "stock items not deleted from the system!";
+      $error = "stock items not deleted from the system!";
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "StockController@deleteAllStockItems"
       );
       Helper::LogRequest($request, $dataArr);
-      $responseInfo = $this->FailedMessage($messageErr);
-      //return back()->with('fail', $messageErr);
+      $responseInfo = Helper::FailedMessage($error);
+      //return back()->with('fail', $error);
     }
 
     $arr = $this->getStockStats();
@@ -698,14 +682,14 @@ class StockController extends Controller
 
       return back()->with('success', Helper::ActionMessage($action));
     } else {
-      $messageErr = "Excel stock data not imported!";
+      $error = "Excel stock data not imported!";
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "StockController@importStock"
       );
       Helper::LogRequest($request, $dataArr);
-      return back()->with('fail', $messageErr);
+      return back()->with('fail', $error);
     }
   }
 
@@ -722,11 +706,6 @@ class StockController extends Controller
   {
     $message = "You have successfully " . $action . "";
     return $message;
-  }
-
-  protected function FailedMessage($failmsg)
-  {
-    return $failmsg;
   }
 
   protected function ActionMessage($action)

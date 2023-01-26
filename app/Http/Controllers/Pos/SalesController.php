@@ -494,24 +494,24 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
     }
     else
     {
-      $messageErr = "Unable to update sale details of item ".$sale->item."!";
+      $error = "Unable to update sale details of item ".$sale->item."!";
       $dataArr = array("code" => '101',
-      "message" => $messageErr,
+      "message" => $error,
       "method" => "".$this->controller."@updateSaleRecord");
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'error';
-      $responseInfo = $this->FailedMessage($messageErr);
+      $responseInfo = Helper::FailedMessage($error);
 
     }
 
 }else{
-      $messageErr = "Unable to find sale item id";
+      $error = "Unable to find sale item id";
       $dataArr = array("code" => '101',
-      "message" => $messageErr,
+      "message" => $error,
       "method" => "".$this->controller."@updateSaleRecord");
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'error';
-      $responseInfo = $this->FailedMessage($messageErr);
+      $responseInfo = Helper::FailedMessage($error);
 
 }
 
@@ -552,13 +552,13 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
       }
       else
       {
-        $messageErr = "Sale not deleted!";
+        $error = "Sale not deleted!";
         $dataArr = array("code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "".$this->controller."@store");
           Helper::LogRequest($request, $dataArr);
           $sessionVariable = 'fail';
-          $responseInfo = $this->FailedMessage($messageErr);
+          $responseInfo = Helper::FailedMessage($error);
      }
 
      $arr = $this->GetSalesReview();
@@ -645,12 +645,5 @@ protected function SuccessMessage($action)
   $message = "You have successfully ".$action."";
   return $message;
 }
-
-protected function FailedMessage($failmsg)
-{
-  return $failmsg;
-}
-
-
 
 }

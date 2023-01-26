@@ -4,7 +4,7 @@
 namespace App\Http\View\Composers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use App\Staff;
+use App\Models\Staff;
 use Auth;
 
 class ComposerNotifications{
