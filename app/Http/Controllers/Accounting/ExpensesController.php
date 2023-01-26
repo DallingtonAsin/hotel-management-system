@@ -16,15 +16,19 @@ use Illuminate\Support\Str;
 use App\Helpers\Constants as Constant;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use App\Repositories\ExpenseRepository;
 
 class ExpensesController extends Controller
 {
-  public $date_of_action, $controller;
 
-  public function __construct()
+  protected $date_of_action, $controller;
+  protected $expenseRepository;
+
+  public function __construct(ExpenseRepository $expenseRepository)
   {
     $this->date_of_action = now();
     $this->controller = 'ExpensesController';
+    $this->expenseRepository = $expenseRepository;
   }
 
 
@@ -68,17 +72,15 @@ class ExpensesController extends Controller
       'date_of_expense' => 'required'
     ]);
 
-
-
     try {
+
       if ($validator->fails()) {
+
         $message = $validator->errors()->all();
         return response()->json(['error' => $message]);
       } else {
 
         $method = "ExpensesController@store";
-
-        $expense_id = $request->input('id');
         $expense_type_id = $request->input('expense');
         $amount = Helper::Numberize($request->input('expenditure_amount'));
         $date_of_expenditure = $request->input('date_of_expense');
@@ -86,31 +88,17 @@ class ExpensesController extends Controller
         $type_name = ExpenseType::where('id', $expense_type_id)->first()->name;
         $recorded_by  = Auth::user()->id;
 
-        if (isset($expense_id)) {
+        $expense = [
+          'type_id' => $expense_type_id,
+          'amount' => $amount,
+          'date_of_expenditure' => $date_of_expenditure,
+          'recorded_by' => $recorded_by
+        ];
 
-          $expense = Expense::find($expense_id);
-          $response = Expense::where('id', $expense_id)->update(
-            [
-              'type_id' => $expense_type_id,
-              'amount' => $amount,
-              'date_of_expenditure' => $date_of_expenditure,
-              'recorded_by' => $recorded_by
-            ]
-          );
 
-          $action = "updated expense " . $type_name . "";
-        } else {
+        if ($this->expenseRepository->create($expense)) {
 
-          $expense = new Expense;
-          $expense->type_id = $expense_type_id;
-          $expense->amount = $amount;
-          $expense->date_of_expenditure = $date_of_expenditure;
-          $expense->recorded_by = $recorded_by;
-          $response = $expense->save();
           $action = "recorded expense " . $type_name . "";
-        }
-
-        if ($response) {
 
           Helper::logger($request, $action, now());
           $dataArr = array(
@@ -122,11 +110,7 @@ class ExpensesController extends Controller
 
           $message = Helper::ActionMessage($action);
           $arr = $this->GetTotlExpenses();
-          return response()->json([
-            'success' => $message,
-            'totl_no' => $arr['totl_no'],
-            'totl_expenses' => $arr['totl_expenses'],
-          ]);
+          return response()->json(['success' => $message, 'data' => $arr]);
         } else {
 
           $error = 'System has failed to record expense';
@@ -189,43 +173,67 @@ class ExpensesController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $request->validate([
+
+    $validator = Validator::make($request->all(), [
       'expense' => 'required',
       'expenditure_amount' => 'required',
       'date_of_expense' => 'required'
-
     ]);
 
-    $expense = Expense::find($id);
+    try {
 
-    $expense->type_id = $expense_type_id = $request->input('expense');
-    $expense->amount = Helper::Numberize($request->input('expenditure_amount'));
-    $expense->date_of_expenditure = $request->input('date_of_expense');
-    $expense->recorded_by = Auth::user()->id;
-    
+      if ($validator->fails()) {
+        $message = $validator->errors()->all();
+        return response()->json(['error' => $message]);
+      } else {
 
-    $expense_update_status = $expense->save();
+        $expense = Expense::find($id);
 
-    if ($expense_update_status) {
+        $expense_type_id = $request->input('expense');
+        $amount = Helper::Numberize($request->input('expenditure_amount'));
+        $date_of_expenditure = $request->input('date_of_expense');
+        $recorded_by = Auth::user()->id;
 
-      $action = "updated details of expense " . $expense_type_id . "";
-      Helper::logger($request, $action, now());
-      $dataArr = array(
-        "code" => '200',
-        "message" => $action,
-        "method" => "ExpensesController@update"
-      );
-      Helper::LogRequest($request, $dataArr);
-      return back()->with('success', Helper::ActionMessage($action));
-    } else {
-      $error = 'Expense Update failed!';
-      $dataArr = array(
-        "code" => '101',
-        "message" => $error,
-        "method" => "ExpensesController@update"
-      );
-      Helper::LogRequest($request, $dataArr);
-      return back()->with('fail', $error);
+        $expense = [
+          'type_id' => $expense_type_id,
+          'amount' => $amount,
+          'date_of_expenditure' => $date_of_expenditure,
+          'recorded_by' => $recorded_by
+        ];
+
+        if ($this->expenseRepository->update($id, $expense)) {
+
+          $type_name = ExpenseType::where('id', $expense_type_id)->first()->name;
+          $message = "updated details of expense " . $type_name . "";
+
+          Helper::logger($request, $message, now());
+          $dataArr = array(
+            "code" => '200',
+            "message" => $message,
+            "method" => "ExpensesController@update"
+          );
+
+          Helper::LogRequest($request, $dataArr);
+          $arr = $this->GetTotlExpenses();
+          return response()->json([
+            'success' =>  Helper::ActionMessage($message),
+            'data' => $arr
+          ]);
+        } else {
+
+          $error = 'System is unable to update expense';
+          $dataArr = array(
+            "code" => '101',
+            "message" => $error,
+            "method" => "ExpensesController@update"
+          );
+
+          Helper::LogRequest($request, $dataArr);
+          return response()->json(['error' => $error]);
+        }
+      }
+    } catch (\Exception $ex) {
+      return response()->json(['error' => $ex->getMessage()]);
     }
   }
 
@@ -240,42 +248,47 @@ class ExpensesController extends Controller
 
     try {
 
-      $method = "ExpensesController@destroy";
-      $expense_type_id = Expense::where('id', $id)->value('type_id');
-      $type_name = ExpenseType::where('id', $expense_type_id)->first()->name;
-      $response = Expense::find($id)->delete();
+      if ($id) {
 
-      if ($response) {
+        $id = intval($id);
+        $method = "ExpensesController@destroy";
+        $expense = Expense::find($id);
+        $expense_type_id = $expense->type_id;
 
-        $action = "deleted expense " . $type_name . " from the system";
-        Helper::logger($request, $action, now());
-        $dataArr = array(
-          "code" => '200',
-          "message" => $action,
-          "method" => $method
-        );
-        Helper::LogRequest($request, $dataArr);
+        if ($this->expenseRepository->update($id, ['is_deleted' => true])) {
 
-        $message = Helper::ActionMessage($action);
-        $arr = $this->GetTotlExpenses();
-        return response()
-          ->json([
+          $type_name = ExpenseType::where('id', $expense_type_id)->first()->name;
+          $action = "deleted expense " . $type_name . " from the system";
+          Helper::logger($request, $action, now());
+
+          $dataArr = array(
+            "code" => '200',
+            "message" => $action,
+            "method" => $method
+          );
+          Helper::LogRequest($request, $dataArr);
+
+          $message = Helper::ActionMessage($action);
+          $arr = $this->GetTotlExpenses();
+          return response()->json([
             'success' => $message,
-            'totl_no' => $arr['totl_no'],
-            'totl_expenses' => $arr['totl_expenses'],
+            'data' => $arr
           ]);
+        } else {
+
+          $error = 'System has failed to delete expense';
+          $dataArr = array(
+            "code" => '101',
+            "message" => $error,
+            "method" => $method
+          );
+
+          Helper::LogRequest($request, $dataArr);
+          $error = Helper::FailedMessage($error);
+          return response()->json(['error' => $error]);
+        }
       } else {
-
-        $error = 'System has failed to delete expense';
-        $dataArr = array(
-          "code" => '101',
-          "message" => $error,
-          "method" => $method
-        );
-
-        Helper::LogRequest($request, $dataArr);
-        $message = Helper::FailedMessage($error);
-        return response()->json(['error' => $message]);
+        return response()->json(['error' => 'System is unable to find expense id']);
       }
     } catch (\Exception $ex) {
       return response()->json(['error' => $ex->getMessage()]);
@@ -283,14 +296,14 @@ class ExpensesController extends Controller
   }
 
 
-  protected function GetTotlExpenses()
+  private function GetTotlExpenses()
   {
 
-    $totl_no = Expense::count();
-    $totl_amt = Expense::sum('amount');
+    $total_no = $this->expenseRepository->count();
+    $total_amt = $this->expenseRepository->value();
     $data = array(
-      'totl_no' => $totl_no,
-      'totl_expenses' => $totl_amt,
+      'total' => $total_no,
+      'value' => $total_amt,
     );
     return $data;
   }
@@ -310,29 +323,22 @@ class ExpensesController extends Controller
         "method" => "ExpensesController@deleteAllExpenses"
       );
       Helper::LogRequest($request, $dataArr);
-      $sessionVariable = 'success';
-      $responseInfo = Helper::ActionMessage($action);
-      // return back()->with("success", Helper::ActionMessage($action));
+
+      $message = Helper::ActionMessage($action);
+      $arr = $this->GetTotlExpenses();
+      return response()->json(['success' => $message, 'data' => $arr]);
     } else {
+
       $error = "Expenses not removed from the system!";
       $dataArr = array(
         "code" => '101',
         "message" => $error,
         "method" => "ExpensesController@deleteAllExpenses"
       );
-      Helper::LogRequest($request, $dataArr);
-      $sessionVariable = 'fail';
-      $responseInfo = $error;
-      // return back()->with('fail', $error);
-    }
 
-    $arr = $this->GetTotlExpenses();
-    return response()
-      ->json([
-        $sessionVariable => $responseInfo,
-        'totl_no' => $arr['totl_no'],
-        'totl_expenses' => $arr['totl_expenses'],
-      ]);
+      Helper::LogRequest($request, $dataArr);
+      return response()->json(['error' => $error]);
+    }
   }
 
 
@@ -369,8 +375,7 @@ class ExpensesController extends Controller
       return response()
         ->json([
           $sessionVariable => $response,
-          'totl_no' => $arr['totl_no'],
-          'totl_expenses' => $arr['totl_expenses'],
+          'data' => $arr
         ]);
     } catch (\Exception $ex) {
       $data = array(
@@ -434,5 +439,4 @@ class ExpensesController extends Controller
     $message = "You have successfully " . $action . "";
     return $message;
   }
-
 }

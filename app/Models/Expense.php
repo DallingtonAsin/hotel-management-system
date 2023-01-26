@@ -16,6 +16,7 @@ class Expense extends Model
         'type_id',
         'amount',
         'date_of_expenditure',
+        'is_deleted',
         'recorded_by',
     ];
 }
