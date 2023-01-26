@@ -35,7 +35,7 @@ class ExpensesController extends Controller
   public function index()
   {
     $expenses = Expense::All();
-    $expense_types = ExpenseType::all();
+    $expense_types = ExpenseType::where('is_deleted', false)->get();
     $number_of_total_expenses = Expense::count();
     $total_expenses = DB::table('expenses')->sum('amount');
     return view('pages.main.expenses.index')->with(compact('expenses', 'expense_types', 'total_expenses', 'number_of_total_expenses'));

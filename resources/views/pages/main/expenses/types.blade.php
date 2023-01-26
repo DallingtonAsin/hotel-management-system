@@ -257,11 +257,23 @@
                 if (isValidForm) {
 
                     $(this).html('Sending..');
+                    let url = '', method = '';
+
+                    let id = $('.expense_type_id').val();
+                    if(id){
+                        url = "{{ route('expense-types.update', ':id') }}";
+                        url = url.replace(':id', id);
+                       method = 'PUT';
+                    }else{
+                       url = "{{ route('expense-types.store') }}";
+                       method = 'POST';
+                    }
+
 
                     $.ajax({
                         data: $('#ExpenseTypesForm').serialize(),
-                        url: "{{ route('expense-types.store') }}",
-                        type: "POST",
+                        url: url,
+                        type: method,
                         dataType: 'json',
                         success: function(response) {
 
@@ -316,13 +328,13 @@
 
             function deleteRecord(id) {
 
-                let deleteUrl = '{{ route('expense-types.destroy', ':id') }}';
-                deleteUrl = deleteUrl.replace(':id', id);
+                let url = '{{ route('expense-types.destroy', ':id') }}';
+                url = url.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
 
                 $.ajax({
                     type: "DELETE",
-                    url: deleteUrl,
+                    url: url,
                     success: function(response) {
 
                         let message = response.success || response.error;

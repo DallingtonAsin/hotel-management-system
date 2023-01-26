@@ -113,7 +113,6 @@
                             <button type="submit" class="btn btn-primary" id="addExpensesBtn"
                                 name="AddExpenseBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                            <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
                         </div>
 
                         <div class="form-group">

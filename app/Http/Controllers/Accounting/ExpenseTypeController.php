@@ -145,7 +145,54 @@ class ExpenseTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $method = "ExpensesController@update";
+
+                $name = $request->input('name');
+                if ($this->expenseTypeRepository->checkIfExpenseNameExists($name)) {
+                    return response()->json(['error' => 'Expense type name ' . $name . ' already exists']);
+                } else {
+
+                    $expense_type = [
+                        'name' => $name,
+                        'created_by' => Auth::user()->id,
+                    ];
+
+                    if ($this->expenseTypeRepository->update($id, $expense_type)) {
+                        $action = "updated expense type " . $name . "";
+
+                        Helper::logger($request, $action, now());
+                        $dataArr = ["code" => '200', "message" => $action, "method" => $method];
+                        Helper::LogRequest($request, $dataArr);
+
+                        $message = Helper::ActionMessage($action);
+                        $arr['total'] = $this->expenseTypeRepository->count();
+
+                        return response()->json(['success' => $message,  'data' => $arr]);
+                    } else {
+
+                        $error = 'System has failed to update expense type';
+                        $dataArr = ["code" => '101', "message" => $error,  "method" => $method];
+
+                        Helper::LogRequest($request, $dataArr);
+                        $message = Helper::FailedMessage($error);
+
+                        return response()->json(['error' => $message]);
+                    }
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
     }
 
     /**
