@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper;
 
-class CreateOrdersTable extends Migration
+class CreateSalesOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('sales_orders', function (Blueprint $table) {
 
             $table->id();
             $table->string('order_number')->unique();
@@ -47,7 +47,7 @@ class CreateOrdersTable extends Migration
          Schema::table('orders', function (Blueprint $table) {
             $table->dropIndex(['order_number']);
         });
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('sales_orders');
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
