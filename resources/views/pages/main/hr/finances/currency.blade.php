@@ -58,26 +58,32 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control currencyId  currencyId" name="id"
-                                placeholder="Enter currency id" required autofocus>
+                            <input type="hidden" class="form-control currencyId  currencyId" name="id" placeholder="Enter currency id">
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Country</span>
-                            <input type="text" class="form-control country_name " name="country_name"
-                                placeholder="Enter country name" required autofocus>
+                            <input type="text" class="form-control country_name " name="country_name" placeholder="Enter country name">
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Currency Code</span>
-                            <input type="text" class="form-control currency_code " name="currency_code"
-                                placeholder="Enter currency code" required autofocus>
+                            <input type="text" class="form-control currency_code " name="currency_code" placeholder="Enter currency code">
+                        </div>
+
+                        <div class="form-group">
+                            <span><i class="text-danger pr-1">*</i>EFRIS Code</span>
+                            <input type="text" class="form-control efris_code " name="efris_code" placeholder="Enter EFRIS code">
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Rate</span>
-                            <input type="text" class="form-control rate " name="rate" placeholder="Enter rate"
-                                required autofocus>
+                            <input type="text" class="form-control rate " name="rate" placeholder="Enter rate">
+                        </div>
+
+                        <div class="form-group">
+                            <span>Description</span>
+                            <textarea class="form-control description " name="description" placeholder="Enter description"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -122,7 +128,7 @@
 
                         <div class="form-group">
                             <input type="file" class="form-control-file @error('select_file') is-invalid @enderror"
-                                name="select_file" required autofocus>
+                                name="select_file">
                         </div>
 
                         @error('select_file')
@@ -250,11 +256,10 @@
 
                 e.preventDefault();
 
-                let Errors = validateForm();
-                if (Errors.length == 0) {
+                let isValidForm = validateForm();
+                if (isValidForm) {
 
                     $(this).html('Sending..');
-                    $('.errors-section').html('');
 
                     $.ajax({
                         data: $('#CurrencyForm').serialize(),
@@ -283,14 +288,6 @@
                             $('.addCurrencyBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
                 }
 
             });
@@ -414,23 +411,30 @@
             }
 
             function validateForm() {
+                
+                let isValidForm = false;
                 let country_name = $('.country_name').val();
                 let currency_code = $('.currency_code').val();
+                let efris_code = $('.efris_code').val();
                 let rate = $('.rate').val();
 
                 let errors = [];
                 if (country_name.length < 1) {
-                    errors.push("Please enter country name");
+                    displayResponse(null, "Please enter country name", 'error');
                 }
-                if (currency_code.length < 1) {
-                    errors.push("Please enter currency code");
+                else if (currency_code.length < 1) {
+                    displayResponse(null, "Please enter currency code", 'error');
+                }
+                else if (efris_code.length < 1) {
+                    displayResponse(null, "Please enter EFRIS code", 'error');
+                }
+                else if (rate.length < 1) {
+                    displayResponse(null, "Please enter the rate", 'error');
+                }else{
+                    isValidForm = true;
                 }
 
-                if (rate.length < 1) {
-                    errors.push("Please enter the rate");
-                }
-
-                return errors;
+                return isValidForm;
 
             }
 

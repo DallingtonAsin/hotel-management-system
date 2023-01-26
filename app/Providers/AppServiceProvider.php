@@ -62,13 +62,12 @@ class AppServiceProvider extends ServiceProvider
      
     Blade::if('haspermission', function ($permission) {
         if(Auth::check()){
-            return Auth::user()->hasPermission($permission);
+            $staff = Staff::find(Auth::user()->id);
+            return $staff->hasPermission($permission);
         }else{
             return view('auth.login');
         }
     });
-
-
 
     }
 }

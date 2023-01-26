@@ -798,7 +798,7 @@ class UserController extends Controller
       if (count($ids) == 1) {
         $action = Str::replaceFirst('users', 'user', $action);
       }
-      $response = $this->SuccessMessage($action);
+      $response = Helper::ActionMessage($action);
 
       $dataArr = array(
         "code" => '200',

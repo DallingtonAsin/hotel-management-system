@@ -141,7 +141,7 @@
                                         class="nav-sub-link">Expenses</a></li>
                                 @endhaspermission
                                 @haspermission(config('permissions')['view_expenses'])
-                                    <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}"
+                                    <li class="nav-sub-item"><a href="{{ Route('expense-types.index') }}"
                                             class="nav-sub-link">Expenses Categories</a></li>
                                 @endhaspermission
     

@@ -2,15 +2,20 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\StaffRepository;
 
 class PermissionService
 {
+
+    protected $staffRepository;
+    public function __construct(StaffRepository $staffRepository)
+    {
+        $this->staffRepository = $staffRepository;
+    }
     public function hasPermission($permissionName)
     {
         try{
-            return Auth::user()->hasPermission($permissionName);
-
+            return $this->staffRepository->hasPermissions($permissionName);
         }catch(\Exception $ex){
             throw $ex;
         }

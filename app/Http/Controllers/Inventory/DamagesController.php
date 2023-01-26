@@ -112,7 +112,7 @@ class DamagesController extends Controller
                 "method" => $method
               );
               Helper::LogRequest($request, $dataArr);
-              $message = $this->SuccessMessage($action);
+              $message = Helper::ActionMessage($action);
 
               $arr = $this->GetDamagesStats();
               $totl_no = $arr['totl_no'];
@@ -233,7 +233,7 @@ class DamagesController extends Controller
 
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
+      $responseInfo = Helper::ActionMessage($action);
 
     } else {
 
@@ -310,7 +310,7 @@ class DamagesController extends Controller
       );
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
+      $responseInfo = Helper::ActionMessage($action);
 
     } else {
       $messageErr = "Damaged items not deleted from the system!";
@@ -357,7 +357,7 @@ class DamagesController extends Controller
       if (count($ids) == 1) {
         $action = Str::replaceFirst('items', 'item', $action);
       }
-      $response = $this->SuccessMessage($action);
+      $response = Helper::ActionMessage($action);
 
       $dataArr = array(
         "code" => '200',
@@ -414,7 +414,7 @@ class DamagesController extends Controller
         "method" => "DamagesController@importDamages"
       );
       Helper::LogRequest($request, $dataArr);
-      return back()->with('success', $this->SuccessMessage($action));
+      return back()->with('success', Helper::ActionMessage($action));
     } else {
       $messageErr = "Damages data not imported!!";
       $dataArr = array(

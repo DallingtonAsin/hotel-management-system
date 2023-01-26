@@ -547,7 +547,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
         Helper::LogRequest($request, $dataArr);
  
         $sessionVariable = 'success';
-        $responseInfo = $this->SuccessMessage($action);
+        $responseInfo = Helper::ActionMessage($action);
    
       }
       else
@@ -590,7 +590,7 @@ public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable){
             if (count($ids) == 1) {
                 $action = Str::replaceFirst('items', 'item', $action);
             }
-            $response = $this->SuccessMessage($action);
+            $response = Helper::ActionMessage($action);
 
             $dataArr = array("code" => '200',
                 "message" => $action,
