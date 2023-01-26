@@ -11,7 +11,7 @@ use App\Models\Customer;
 use App\Models\Role;
 use App\Jobs\MailDailySalesReport;
 use Illuminate\Support\Facades\DB;
-use App\Staff;
+use App\Models\Staff;
 use App\Helpers\Helper;
 use Constant;
 

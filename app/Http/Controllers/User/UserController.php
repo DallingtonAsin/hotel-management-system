@@ -18,7 +18,7 @@ use App\DataTables\InactiveUserAccountsDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Designation;
-use App\Staff;
+use App\Models\Staff;
 use App\Helpers\Helper;
 use App\Helpers\Constants as Constant;
 

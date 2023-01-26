@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Supplier;
-use App\Staff;
+use App\Models\Staff;
 
 class SupplierFactory extends Factory
 {

@@ -1,7 +1,7 @@
 <?php 
 namespace App\Repositories;
 
-use App\Staff;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
 
 class StaffRepository

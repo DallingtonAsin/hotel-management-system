@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Reports;
 
-use App\Staff;
+use App\Models\Staff;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\MonthlySale;
 use App\Models\MonthlyPurchase;

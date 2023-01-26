@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Stock;
-use App\Staff;
+use App\Models\Staff;
 use App\Models\StockCat;
 use App\Models\Supplier;
 use Illuminate\Support\Str;

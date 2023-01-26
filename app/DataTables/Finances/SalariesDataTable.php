@@ -6,7 +6,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Helpers\Helper;
 use App\Models\Salary;
-use App\Staff;
+use App\Models\Staff;
 
 class SalariesDataTable extends DataTable
 {

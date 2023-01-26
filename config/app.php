@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://collection-hub.test'),
+    'url' => env('APP_URL', 'https://casamiltu.pivosoftltd.com'),
 
     'asset_url' => env('ASSET_URL', null),
 

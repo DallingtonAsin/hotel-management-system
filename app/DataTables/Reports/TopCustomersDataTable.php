@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Reports;
 
-use App\Staff;
+use App\Models\Staff;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\TopCustomer;
 
@@ -29,7 +29,7 @@ class TopCustomersDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Staff $model
+     * @param \App\Models\Staff $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(TopCustomer $model)

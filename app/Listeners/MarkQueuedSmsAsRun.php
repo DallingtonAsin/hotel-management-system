@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\SMSNotifier;
 use App\Events\SmsQueued;
-use App\Staff;
+use App\Models\Staff;
 
 class MarkQueuedSmsAsRun
 {

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\Helper;
-use App\Staff;
+use App\Models\Staff;
 
 class ProfileController extends Controller
 {

@@ -12,7 +12,7 @@ class StaffTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Staff::factory()->count(15)->create();
+        \App\Models\Staff::factory()->count(15)->create();
 
     }
 }

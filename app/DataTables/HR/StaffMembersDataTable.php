@@ -2,7 +2,7 @@
 
 namespace App\DataTables\HR;
 
-use App\Staff;
+use App\Models\Staff;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Department;
@@ -68,7 +68,7 @@ class StaffMembersDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Staff $model
+     * @param \App\Models\Staff $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Staff $model)

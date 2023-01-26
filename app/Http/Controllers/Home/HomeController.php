@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Room;
 use App\Models\Guest;
 use App\Models\Reservation;
-use App\Staff;
+use App\Models\Staff;
 
 class HomeController extends Controller
 {

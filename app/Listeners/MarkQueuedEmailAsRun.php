@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\NewEmailNotifier;
 use App\Models\QueuedEmail;
 use App\Mail\SendMail;
-use App\Staff;
+use App\Models\Staff;
 
 class MarkQueuedEmailAsRun
 {

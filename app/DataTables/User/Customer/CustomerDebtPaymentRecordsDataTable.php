@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Models\CustomerDebtPayment;
 use App\Models\Sale;
-use App\Staff;
+use App\Models\Staff;
 use App\Helpers\Helper;
 
 class CustomerDebtPaymentRecordsDataTable extends DataTable

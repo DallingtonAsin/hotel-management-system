@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\StaffPermission;
 use App\DataTables\HR\StaffPermissionsDataTable;
 use App\Models\Permission;
-use App\Staff;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Validator;
 use App\Services\PermissionService;
 

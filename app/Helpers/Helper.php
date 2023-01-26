@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
-use App\Staff;
+use App\Models\Staff;
 use App\Helpers\Constants as Constant;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Models\RequestResponse;
@@ -653,7 +653,7 @@ class Helper
     $newLog->name = $name = $user->firsname . ' ' . $user->last_name;
     $newLog->role = $userPosition = Helper::getDesignation($request->user()->designation_id);
     $newLog->logged_action = $action;
-    $newLog->ip_address = \Request::getClientIp();
+    $newLog->ip_address = $request->getClientIp();
     $newLog->date = $date;
 
     $newLog->save();

@@ -6,7 +6,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use App\Staff;
+use App\Models\Staff;
 use App\Models\Stock;
 use App\Models\Sale;
 use App\Models\Damage;
