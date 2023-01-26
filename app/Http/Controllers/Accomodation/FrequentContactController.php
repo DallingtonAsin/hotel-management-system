@@ -9,12 +9,10 @@ use Illuminate\Http\Request;
 use App\Helpers\Helper;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Validator;
-use App\Traits\UserBehaviour;
 
 class FrequentContactController extends Controller
 {
 
-    use UserBehaviour;
     protected $permissions;
 
     public function __construct()
