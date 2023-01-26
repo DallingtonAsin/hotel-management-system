@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\DataTables\Finances\CurrencyDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\Helper;
-use Symfony\Polyfill\Intl\Icu\Currencies;
 
 class CurrencyController extends Controller
 {
@@ -50,7 +49,9 @@ class CurrencyController extends Controller
         $validator = Validator::make($request->all(), [
             'country_name' => 'required',
             'currency_code' => 'required',
-            'rate' => 'required'
+            'efris_code' => 'required',
+            'rate' => 'required',
+            'description' => 'sometimes|nullable',
         ]);
 
         try {
@@ -61,6 +62,8 @@ class CurrencyController extends Controller
 
                 $country_name = ucfirst($request->input('country_name'));
                 $currency_code = strtoupper($request->input('currency_code'));
+                $efris_code = strtoupper($request->input('efris_code'));
+                $description = strtoupper($request->input('description'));
 
                 $exists = $this->checkIfCurrencyExists($country_name, $currency_code);
                 if ($exists) {
@@ -73,7 +76,9 @@ class CurrencyController extends Controller
                     $data = [
                         'country' => $country_name,
                         'code' => $currency_code,
+                        'efris_code' => $efris_code,
                         'rate' => $rate,
+                        'description' => $description,
                         'created_by' => $created_by
                     ];
 

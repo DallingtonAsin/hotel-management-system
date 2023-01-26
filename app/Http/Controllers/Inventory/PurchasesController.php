@@ -292,7 +292,7 @@ class PurchasesController extends Controller
 
         $arr = $this->GetPurchaseDetails();
         $sessionVariable == 'success' 
-        ? $message = $this->SuccessMessage($message)
+        ? $message = Helper::ActionMessage($message)
         : $message = $this->FailedMessage($message);
 
         return response()
@@ -341,7 +341,7 @@ class PurchasesController extends Controller
         Helper::LogRequest($request, $dataArr);
 
         $sessionVariable = 'success';
-        $responseInfo = $this->SuccessMessage($action);
+        $responseInfo = Helper::ActionMessage($action);
       }
       else
       {
@@ -380,7 +380,7 @@ class PurchasesController extends Controller
     "method" => $method);
      Helper::LogRequest($request, $dataArr);
      $sessionVariable = "success";
-     $responseInfo = $this->SuccessMessage($action);
+     $responseInfo = Helper::ActionMessage($action);
   }
   else
   {
@@ -422,7 +422,7 @@ class PurchasesController extends Controller
             if (count($ids) == 1) {
                 $action = Str::replaceFirst('purchases', 'purchased item', $action);
             }
-            $response = $this->SuccessMessage($action);
+            $response = Helper::ActionMessage($action);
 
             $dataArr = array("code" => '200',
                 "message" => $action,

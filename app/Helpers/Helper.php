@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
 use App\Staff;
-use Constant;
+use App\Helpers\Constants as Constant;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Models\RequestResponse;
 use Illuminate\Support\Facades\Mail;
@@ -689,24 +689,6 @@ class Helper
     }
   }
 
-
-
-  public static function hasPermissions($permission_name)
-  {
-    try {
-
-      $hasAccess = Auth::user()->hasPermission($permission_name);
-      if (!$hasAccess) {
-        return redirect('home');
-      } else {
-        dd($hasAccess);
-      }
-    } catch (\Exception $ex) {
-      throw $ex;
-    }
-  }
-
-
   public static function getKitchenOrderStatuses(): array
   {
     try {
@@ -725,4 +707,13 @@ class Helper
     $message = "You have successfully " . $action . "";
     return $message;
   }
+
+  public static function FailedMessage($failmsg)
+  {
+    return $failmsg;
+  }
+
+
+
+
 }

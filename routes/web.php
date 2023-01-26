@@ -14,6 +14,7 @@ use App\Http\Controllers\Accomodation\RoomTypeController;
 // Accounting Controllers
 use App\Http\Controllers\Accounting\AccountingController;
 use App\Http\Controllers\Accounting\ExpensesController;
+use App\Http\Controllers\Accounting\ExpenseTypeController;
 
 // Audit Controllers
 use App\Http\Controllers\Audit\LogsController;
@@ -113,7 +114,9 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('expenses/export-expenses', [ExpensesController::class, 'exportExpenses'])->name('expenses.export');
 	Route::post('expenses/remove/selected', [ExpensesController::class, 'RemoveSelected'])->name('selected-expenses.remove');
 	Route::post('expenses/deleteAll', [ExpensesController::class, 'deleteAllExpenses'])->name('expenses.truncate');
-	Route::get('expenses/get-data', [ExpensesController::class, 'GetExpenses'])->name('get-expenses');
+	Route::get('expenses/ajax', [ExpensesController::class, 'GetExpenses'])->name('get-expenses');
+	Route::get('expense-types/ajax', [ExpenseTypeController::class, 'getExpenseTypesDataTable'])->name('expenses.index.ajax');
+
 
 	// Audit Routes
 	Route::get('logs/get-data', [LogsController::class, 'GetLogs'])->name('get-logs');
@@ -300,6 +303,7 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 		'suppliers' => SuppliersController::class,
 		'purchases' => PurchasesController::class,
 		'expenses' => ExpensesController::class,
+		'expense-types' => ExpenseTypeController::class,
 		'profile' => ProfileController::class,
 		'mail' => MailController::class,
 		'logs' => LogsController::class,

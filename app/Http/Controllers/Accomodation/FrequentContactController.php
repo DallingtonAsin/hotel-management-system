@@ -9,13 +9,10 @@ use Illuminate\Http\Request;
 use App\Helpers\Helper;
 use App\Models\Currency;
 use Illuminate\Support\Facades\Validator;
-use App\Traits\UserBehaviour;
-use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Current;
 
 class FrequentContactController extends Controller
 {
 
-    use UserBehaviour;
     protected $permissions;
 
     public function __construct()
@@ -29,8 +26,6 @@ class FrequentContactController extends Controller
      */
     public function index()
     {
-        $hasAccess = $this->hasPermissions($this->permissions['view_rooms']);
-
         $total_frequent_contacts = FrequentContact::count();
         return view('pages.main.accomodation.guests.frequent_contacts')->with(compact('total_frequent_contacts'));
     }

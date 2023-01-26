@@ -120,7 +120,7 @@ class ExpensesController extends Controller
           );
           Helper::LogRequest($request, $dataArr);
 
-          $message = $this->SuccessMessage($action);
+          $message = Helper::ActionMessage($action);
           $arr = $this->GetTotlExpenses();
           return response()->json([
             'success' => $message,
@@ -216,7 +216,7 @@ class ExpensesController extends Controller
         "method" => "ExpensesController@update"
       );
       Helper::LogRequest($request, $dataArr);
-      return back()->with('success', $this->SuccessMessage($action));
+      return back()->with('success', Helper::ActionMessage($action));
     } else {
       $messageErr = 'Expense Update failed!';
       $dataArr = array(
@@ -256,7 +256,7 @@ class ExpensesController extends Controller
         );
         Helper::LogRequest($request, $dataArr);
 
-        $message = $this->SuccessMessage($action);
+        $message = Helper::ActionMessage($action);
         $arr = $this->GetTotlExpenses();
         return response()
           ->json([
@@ -311,8 +311,8 @@ class ExpensesController extends Controller
       );
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
-      // return back()->with("success", $this->SuccessMessage($action));
+      $responseInfo = Helper::ActionMessage($action);
+      // return back()->with("success", Helper::ActionMessage($action));
     } else {
       $messageErr = "Expenses not removed from the system!";
       $dataArr = array(
@@ -355,7 +355,7 @@ class ExpensesController extends Controller
       if (count($ids) == 1) {
         $action = Str::replaceFirst('expenses', 'expense', $action);
       }
-      $response = $this->SuccessMessage($action);
+      $response = Helper::ActionMessage($action);
 
       $dataArr = array(
         "code" => '200',
@@ -407,7 +407,7 @@ class ExpensesController extends Controller
       );
       Helper::LogRequest($request, $dataArr);
 
-      return back()->with('success', $this->SuccessMessage($action));
+      return back()->with('success', Helper::ActionMessage($action));
     } else {
       $messageErr = 'Expenses data not imported!';
       $dataArr = array(
@@ -435,8 +435,4 @@ class ExpensesController extends Controller
     return $message;
   }
 
-  protected function FailedMessage($failmsg)
-  {
-    return $failmsg;
-  }
 }

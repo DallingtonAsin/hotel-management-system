@@ -161,7 +161,7 @@ class SuppliersController extends Controller
                     );
                     Helper::LogRequest($request, $dataArr);
 
-                    $message = $this->SuccessMessage($action);
+                    $message = Helper::ActionMessage($action);
                     $arr = $this->GetSumupDetails();
 
                     return response()->json([
@@ -268,7 +268,7 @@ class SuppliersController extends Controller
             );
             Helper::LogRequest($request, $dataArr);
 
-            return back()->with("success", $this->SuccessMessage($action));
+            return back()->with("success", Helper::ActionMessage($action));
         } else {
             $messageErr = "supplier details not updated!";
             $dataArr = array(
@@ -309,7 +309,7 @@ class SuppliersController extends Controller
                         "method" => $method
                     );
                     Helper::LogRequest($request, $dataArr);
-                    $message = $this->SuccessMessage($action);
+                    $message = Helper::ActionMessage($action);
                     $arr = $this->GetSumupDetails();
 
                     return response()
@@ -354,8 +354,8 @@ class SuppliersController extends Controller
             );
             Helper::LogRequest($request, $dataArr);
             $sessionVariable = 'success';
-            $responseInfo = $this->SuccessMessage($action);
-            //  return back()->with("success", $this->SuccessMessage($action));
+            $responseInfo = Helper::ActionMessage($action);
+            //  return back()->with("success", Helper::ActionMessage($action));
         } else {
             $messageErr = "suppliers not removed from the system!";
             $dataArr = array(
@@ -401,7 +401,7 @@ class SuppliersController extends Controller
                 "method" => "SuppliersController@importSuppliers"
             );
             Helper::LogRequest($request, $dataArr);
-            return back()->with('success', $this->SuccessMessage($action));
+            return back()->with('success', Helper::ActionMessage($action));
         } else {
             $messageErr = "Excel suppliers data not imported!";
             $dataArr = array(
@@ -434,7 +434,7 @@ class SuppliersController extends Controller
             if (count($ids) == 1) {
                 $action = Str::replaceFirst('suppliers', 'supplier', $action);
             }
-            $response = $this->SuccessMessage($action);
+            $response = Helper::ActionMessage($action);
 
             $dataArr = array(
                 "code" => '200',

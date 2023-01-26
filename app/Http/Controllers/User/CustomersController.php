@@ -152,7 +152,7 @@ class CustomersController extends Controller
         "method" => "CustomersController@store");
         Helper::LogRequest($req, $dataArr);
         $sessionVariable = 'success';
-        $responseInfo = $this->SuccessMessage($action);
+        $responseInfo = Helper::ActionMessage($action);
         
         
         
@@ -271,7 +271,7 @@ class CustomersController extends Controller
       // "message" => $action,
       // "method" => "CustomersController@update");
       // Helper::LogRequest($req, $dataArr);
-      // return back()->with("success", $this->SuccessMessage($action));
+      // return back()->with("success", Helper::ActionMessage($action));
       
       $action = "updated record for customer ".$customer_name."";
       Helper::logger($req, $action, now());
@@ -280,7 +280,7 @@ class CustomersController extends Controller
       "method" => "CustomersController@update");
       Helper::LogRequest($req, $dataArr);
       $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
+      $responseInfo = Helper::ActionMessage($action);
       
     }
     else
@@ -336,7 +336,7 @@ class CustomersController extends Controller
     //       "message" => $action,
     //       "method" => "CustomersController@destroy");
     //       Helper::LogRequest($request, $dataArr);
-    //       return back()->with("success", $this->SuccessMessage($action));
+    //       return back()->with("success", Helper::ActionMessage($action));
     //     }
     //     else
     //     {
@@ -369,7 +369,7 @@ class CustomersController extends Controller
           "method" => $method);
           Helper::LogRequest($request, $dataArr);
           $sessionVariable = 'success';
-          $responseInfo = $this->SuccessMessage($action);
+          $responseInfo = Helper::ActionMessage($action);
           
         }
         else
@@ -409,8 +409,8 @@ class CustomersController extends Controller
         "method" => "CustomersController@deleteAllCustomers");
         Helper::LogRequest($request, $dataArr);
         $sessionVariable = 'success';
-        $responseInfo = $this->SuccessMessage($action);
-        //  return back()->with("success", $this->SuccessMessage($action));
+        $responseInfo = Helper::ActionMessage($action);
+        //  return back()->with("success", Helper::ActionMessage($action));
       }
       else
       {
@@ -455,7 +455,7 @@ class CustomersController extends Controller
       if (count($ids) == 1) {
         $action = Str::replaceFirst('customers', 'customer', $action);
       }
-      $response = $this->SuccessMessage($action);
+      $response = Helper::ActionMessage($action);
       
       $dataArr = array("code" => '200',
       "message" => $action,
@@ -507,7 +507,7 @@ if($importSuccess){
   "method" => "CustomersController@importCustomers");
   Helper::LogRequest($request, $dataArr);
   
-  return back()->with('success', $this->SuccessMessage($action));
+  return back()->with('success', Helper::ActionMessage($action));
 }
 else
 {
@@ -598,7 +598,7 @@ public function updateCustomerDebts(CustomerDebtPaymentService $debtPaymentServi
         "method" => "CustomersController@updateCustomerDebts");
         Helper::LogRequest($req, $dataArr);
         $sessionVariable = 'success';
-        $responseInfo = $this->SuccessMessage($action);
+        $responseInfo = Helper::ActionMessage($action);
  
     }
     else{

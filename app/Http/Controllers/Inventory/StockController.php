@@ -644,7 +644,7 @@ class StockController extends Controller
       if (count($ids) == 1) {
         $action = Str::replaceFirst('stock', 'stock item', $action);
       }
-      $response = $this->SuccessMessage($action);
+      $response = Helper::ActionMessage($action);
 
       $dataArr = array(
         "code" => '200',

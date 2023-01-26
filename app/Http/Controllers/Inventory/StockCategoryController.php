@@ -86,7 +86,7 @@ class StockCategoryController extends Controller
           );
 
           Helper::LogRequest($request, $dataArr);
-          $message = $this->SuccessMessage($action);
+          $message = Helper::ActionMessage($action);
           $arr = $this->GetStockCatStats();
 
           return response()->json([
@@ -189,7 +189,7 @@ class StockCategoryController extends Controller
               "method" => "StockCategoryController@update"
             );
             Helper::LogRequest($request, $dataArr);
-            $message = $this->SuccessMessage($action);
+            $message = Helper::ActionMessage($action);
             $arr = $this->GetStockCatStats();
 
             return response()
@@ -244,7 +244,7 @@ class StockCategoryController extends Controller
           );
 
           Helper::LogRequest($request, $dataArr);
-          $message = $this->SuccessMessage($action);
+          $message = Helper::ActionMessage($action);
           $arr = $this->GetStockCatStats();
 
           return response()
@@ -287,7 +287,7 @@ class StockCategoryController extends Controller
       );
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
-      $responseInfo = $this->SuccessMessage($action);
+      $responseInfo = Helper::ActionMessage($action);
     } else {
       $messageErr = 'stock item categories not deleted from the system!';
       $dataArr = array(
@@ -329,7 +329,7 @@ class StockCategoryController extends Controller
       if (count($ids) == 1) {
         $action = Str::replaceFirst('categories', 'category', $action);
       }
-      $response = $this->SuccessMessage($action);
+      $response = Helper::ActionMessage($action);
 
       $dataArr = array(
         "code" => '200',
@@ -378,7 +378,7 @@ class StockCategoryController extends Controller
       );
       Helper::LogRequest($request, $dataArr);
       return back()
-        ->with('success', $this->SuccessMessage($action));
+        ->with('success', Helper::ActionMessage($action));
     } else {
       $messageErr = 'Categories data not imported!';
       $dataArr = array(
