@@ -92,6 +92,28 @@ input[type="radio"]:checked {
   color: #009688;
 }
 
+table tr:hover{
+  background-color: #80cccc !important;
+  color: #fff !important;
+}
+
+table tr:hover a{
+  border-color: #fff !important;
+  color: #fff !important;
+}
+
+table tr:hover .fa{
+  color: #fff !important;
+}
+
+table tr:hover a:hover{
+  color: #fff !important;
+}
+
+table tr a:hover .fa{
+  color: #fff !important;
+}
+
 .btn-sm {
   padding: .25rem .5rem;
   font-size: .84rem;

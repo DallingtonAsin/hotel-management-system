@@ -508,12 +508,11 @@
             $('.addStaffBtn').click(function(e) {
 
                 e.preventDefault();
-                let Errors = validateForm();
+                let isValidForm = validateForm();
 
-                if (Errors.length == 0) {
+                if (isValidForm) {
 
                     $(this).html('Sending..');
-                    $('.errors-section').html('');
 
                     $.ajax({
                         data: $('#userForm').serialize(),
@@ -541,13 +540,6 @@
                             $('.addStaffBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
                 }
 
             });
@@ -676,42 +668,48 @@
                 let address = $('.address').val();
                 let national_id = $('.national_id').val();
                 let phone_number = $('.phone_number').val();
+                let department = $('.departments_section').val();
                 let designation = $('.designation_section').val();
                 let gender = $('.gender').val();
                 let staff_type = $('.staff_type').val();
                 let status = $('.status').val();
 
-                let errors = [];
+                let isValidForm = false;
+
                 if (first_name.length < 1) {
-                    errors.push("Please enter first name");
+                    displayResponse(null, "Please enter first name", 'error');
                 }
-                if (last_name.length < 1) {
-                    errors.push("Please enter last name");
+                else if (last_name.length < 1) {
+                    displayResponse(null, "Please enter last name", 'error');
                 }
-                if (address.length < 1) {
-                    errors.push("Please enter address");
+                else if (phone_number.length < 1) {
+                    displayResponse(null, "Please enter primary phone number", 'error');
                 }
-
-                if (phone_number.length < 1) {
-                    errors.push("Please enter primary phone number");
+                else if (address.length < 1) {
+                    displayResponse(null, "Please enter address", 'error');
                 }
-                if (designation.length < 1) {
-                    errors.push("Please enter staff's designation");
+                else if (gender.length < 1) {
+                    displayResponse(null, "Please select gender", 'error');
                 }
-
-                if (gender.length < 1) {
-                    errors.push("Please select gender");
+                else if (department.length < 1) {
+                    displayResponse(null, `Please select department`, 'error');
                 }
-
-                if (staff_type.length < 1) {
-                    errors.push("Please select staff type");
+                else if (designation.length < 1) {
+                    displayResponse(null, "Please select staff member's designation", 'error');
                 }
 
-                if (status.length < 1) {
-                    errors.push("Please select status");
+                else if (staff_type.length < 1) {
+                    displayResponse(null, "Please select staff type", 'error');
                 }
 
-                return errors;
+                else if (status.length < 1) {
+                    displayResponse(null, "Please select status", 'error');
+                }
+                else{
+                    isValidForm = true;
+                }
+
+                return isValidForm;
 
             }
 

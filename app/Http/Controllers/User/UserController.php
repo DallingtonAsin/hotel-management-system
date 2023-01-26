@@ -384,14 +384,14 @@ class UserController extends Controller
           $save_status = $user->save();
           if ($save_status) {
 
-            $subject = 'User Registration';
+            $subject = 'Staff Registration';
             $userEmail = $request->email;
             $registraPosition = Designation::where('id', Auth::user()->designation_id)->value('name');
             $registraEmail = $request->user()->email;
             $default_password = $defaultPwd;
             $now = now();
 
-            $action = "registered user " . $name . "";
+            $action = "registered staff " . $name . "";
             $sendAction = "You have been registered as a
                       " . $designation . " today at " . $now . "";
             Helper::logger($request, $action, now());
@@ -411,7 +411,7 @@ class UserController extends Controller
               'activity' => 'registration',
             );
 
-            $message = "User " . $name . " has been registered successfully";
+            $message = "Staff member " . $name . " has been registered successfully";
             $dataArr = array(
               "code" => '201',
               "message" => $message,
@@ -424,7 +424,7 @@ class UserController extends Controller
 
             return response()->json(['success' => $message, 'total' => $number_of_users]);
           } else {
-            $message = "User registration failed!";
+            $message = "Staff member registration has failed!";
             $dataArr = array(
               "code" => '101',
               "message" => $message,

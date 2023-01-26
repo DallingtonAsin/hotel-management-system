@@ -70,7 +70,7 @@ class DepartmentController extends Controller
                     ];
 
                     if (Department::create($data)) {
-                        $message = "Department " . $name . " added successfully";
+                        $message = "Department " . $name . " has been added successfully";
                         $stats = $this->GetDepartmentStats();
                         $data = [
                             'success' => $message,

@@ -11,9 +11,7 @@
     <title><?= isset($companyData) ? $companyData['company_name'] : env('APP_NAME') ?></title>
 
     <script>
-        window.Laravel = {
-            csrfToken: 'csrf_token()'
-        }
+        window.Laravel = { csrfToken: 'csrf_token()' }
     </script>
 
     <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
@@ -78,14 +76,11 @@
 
     <script>
         var permissions = {!! json_encode(config('permissions')) !!};
-        
     </script>
-
 </head>
 
 
 @auth
-
     <body>
         <div class="az-body az-body-sidebar az-light">
             @include('layouts.sidebar')
