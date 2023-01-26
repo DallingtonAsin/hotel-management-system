@@ -168,16 +168,16 @@ class GoodsController extends Controller
                                 ]);
                         } else {
 
-                            $messageErr = "System has failed to add good";
+                            $error = "System has failed to add good";
 
                             $dataArr = array(
                                 "code" => '101',
-                                "message" => $messageErr,
+                                "message" => $error,
                                 "method" => $method
                             );
 
                             Helper::LogRequest($request, $dataArr);
-                            $message = $this->FailedMessage($messageErr);
+                            $message = Helper::FailedMessage($error);
                             return response()->json(['error' => $message]);
                         }
                     } else {

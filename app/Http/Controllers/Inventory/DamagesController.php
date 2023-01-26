@@ -136,7 +136,7 @@ class DamagesController extends Controller
               );
               Helper::LogRequest($request, $dataArr);
 
-              $message = $this->FailedMessage($error);
+              $message = Helper::FailedMessage($error);
               return response()->json(['error' => $message]);
             }
 
@@ -149,7 +149,7 @@ class DamagesController extends Controller
               "method" => $method
             );
             Helper::LogRequest($request, $dataArr);
-            $message = $this->FailedMessage($error);
+            $message = Helper::FailedMessage($error);
             return response()->json(['error' => $message]);
 
           }
@@ -237,15 +237,15 @@ class DamagesController extends Controller
 
     } else {
 
-      $messageErr = "Damaged item not deleted!";
+      $error = "Damaged item not deleted!";
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => $method
       );
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
-      $responseInfo = $this->FailedMessage($messageErr);
+      $responseInfo = Helper::FailedMessage($error);
 
     }
 
@@ -313,15 +313,15 @@ class DamagesController extends Controller
       $responseInfo = Helper::ActionMessage($action);
 
     } else {
-      $messageErr = "Damaged items not deleted from the system!";
+      $error = "Damaged items not deleted from the system!";
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "DamagesController@deleteAllDamages"
       );
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
-      $responseInfo = $messageErr;
+      $responseInfo = $error;
 
     }
 
@@ -416,14 +416,14 @@ class DamagesController extends Controller
       Helper::LogRequest($request, $dataArr);
       return back()->with('success', Helper::ActionMessage($action));
     } else {
-      $messageErr = "Damages data not imported!!";
+      $error = "Damages data not imported!!";
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "DamagesController@importDamages"
       );
       Helper::LogRequest($request, $dataArr);
-      return back()->with('fail', $messageErr);
+      return back()->with('fail', $error);
     }
   }
 
@@ -478,14 +478,5 @@ class DamagesController extends Controller
     $message = "You have successfully " . $msg . "";
     return $message;
   }
-
-
-  protected function FailedMessage($failmsg)
-  {
-    return $failmsg;
-  }
-
-
-
 
 } //end of the class

@@ -74,8 +74,8 @@
             $(document).ready(function() {
                 var div = ".response";
                 var type = "success";
-                var LoginMessageError = "{{ session()->get('success') }}";
-                ShowLoginErrorMessage(div, type, LoginMessageError);
+                var Login$erroror = "{{ session()->get('success') }}";
+                ShowLoginErrorMessage(div, type, Login$erroror);
             });
         </script>
     @endif

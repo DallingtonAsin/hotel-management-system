@@ -88,11 +88,11 @@ class ExpenseTypeController extends Controller
                         return response()->json(['success' => $message,  'data' => $arr]);
                     } else {
 
-                        $messageErr = 'System has failed to add expense type';
-                        $dataArr = ["code" => '101', "message" => $messageErr,  "method" => $method];
+                        $error = 'System has failed to add expense type';
+                        $dataArr = ["code" => '101', "message" => $error,  "method" => $method];
 
                         Helper::LogRequest($request, $dataArr);
-                        $message = Helper::FailedMessage($messageErr);
+                        $message = Helper::FailedMessage($error);
 
                         return response()->json(['error' => $message]);
                     }

@@ -129,14 +129,14 @@ class ExpensesController extends Controller
           ]);
         } else {
 
-          $messageErr = 'System has failed to record expense';
+          $error = 'System has failed to record expense';
           $dataArr = array(
             "code" => '101',
-            "message" => $messageErr,
+            "message" => $error,
             "method" => $method
           );
           Helper::LogRequest($request, $dataArr);
-          $message = $this->FailedMessage($messageErr);
+          $message = Helper::FailedMessage($error);
 
           return response()->json(['error' => $message]);
         }
@@ -218,14 +218,14 @@ class ExpensesController extends Controller
       Helper::LogRequest($request, $dataArr);
       return back()->with('success', Helper::ActionMessage($action));
     } else {
-      $messageErr = 'Expense Update failed!';
+      $error = 'Expense Update failed!';
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "ExpensesController@update"
       );
       Helper::LogRequest($request, $dataArr);
-      return back()->with('fail', $messageErr);
+      return back()->with('fail', $error);
     }
   }
 
@@ -266,15 +266,15 @@ class ExpensesController extends Controller
           ]);
       } else {
 
-        $messageErr = 'System has failed to delete expense';
+        $error = 'System has failed to delete expense';
         $dataArr = array(
           "code" => '101',
-          "message" => $messageErr,
+          "message" => $error,
           "method" => $method
         );
 
         Helper::LogRequest($request, $dataArr);
-        $message = $this->FailedMessage($messageErr);
+        $message = Helper::FailedMessage($error);
         return response()->json(['error' => $message]);
       }
     } catch (\Exception $ex) {
@@ -314,16 +314,16 @@ class ExpensesController extends Controller
       $responseInfo = Helper::ActionMessage($action);
       // return back()->with("success", Helper::ActionMessage($action));
     } else {
-      $messageErr = "Expenses not removed from the system!";
+      $error = "Expenses not removed from the system!";
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "ExpensesController@deleteAllExpenses"
       );
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
-      $responseInfo = $messageErr;
-      // return back()->with('fail', $messageErr);
+      $responseInfo = $error;
+      // return back()->with('fail', $error);
     }
 
     $arr = $this->GetTotlExpenses();
@@ -409,14 +409,14 @@ class ExpensesController extends Controller
 
       return back()->with('success', Helper::ActionMessage($action));
     } else {
-      $messageErr = 'Expenses data not imported!';
+      $error = 'Expenses data not imported!';
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "ExpensesController@importExpenses"
       );
       Helper::LogRequest($request, $dataArr);
-      return back()->with('fail', $messageErr);
+      return back()->with('fail', $error);
     }
   }
 

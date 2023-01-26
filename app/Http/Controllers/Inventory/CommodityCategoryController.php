@@ -92,11 +92,11 @@ class CommodityCategoryController extends Controller
                         return response()->json(['success' => $message,  'data' => $arr]);
                     } else {
 
-                        $messageErr = 'System has failed to add commodity category';
-                        $dataArr = ["code" => '101', "message" => $messageErr,  "method" => $method];
+                        $error = 'System has failed to add commodity category';
+                        $dataArr = ["code" => '101', "message" => $error,  "method" => $method];
 
                         Helper::LogRequest($request, $dataArr);
-                        $message = Helper::FailedMessage($messageErr);
+                        $message = Helper::FailedMessage($error);
 
                         return response()->json(['error' => $message]);
                     }
@@ -188,11 +188,11 @@ class CommodityCategoryController extends Controller
                         return response()->json(['success' => $message,  'data' => $arr]);
                     } else {
 
-                        $messageErr = 'System has failed to update commodity category';
-                        $dataArr = ["code" => '101', "message" => $messageErr,  "method" => $method];
+                        $error = 'System has failed to update commodity category';
+                        $dataArr = ["code" => '101', "message" => $error,  "method" => $method];
 
                         Helper::LogRequest($request, $dataArr);
-                        $message = Helper::FailedMessage($messageErr);
+                        $message = Helper::FailedMessage($error);
 
                         return response()->json(['error' => $message]);
                     }
@@ -212,9 +212,47 @@ class CommodityCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if (!empty($id)) {
+            try {
+
+              $method = "CommodityCategoryController@destroy";
+        
+              if ($this->commodityCategoryRepository->update($id, ['is_deleted' => true])) {
+
+                $category = $this->commodityCategoryRepository->get($id);
+                $name = $category->name;
+      
+                $action = "deleted commodity category " . $name . "";
+                Helper::logger($request, $action, now());
+                $dataArr = ["code" => '200', "message" => $action, "method" => $method];
+      
+                Helper::LogRequest($request, $dataArr);
+                $message = Helper::ActionMessage($action);
+                $arr['total'] = $this->commodityCategoryRepository->count();
+
+                return response()
+                  ->json([
+                    'success' => $message,
+                    'data' => $arr,
+                  ]);
+
+              } else {
+      
+                $error = 'System unable to delete commodity category';
+                $dataArr = ["code" => '200', "message" => $error, "method" => $method];
+                Helper::LogRequest($request, $dataArr);
+                $message = Helper::FailedMessage($error);
+
+                return response()->json(['error' => $message]);
+              }
+            } catch (\Exception $ex) {
+              return response()->json(['error' => $ex->getMessage()]);
+            }
+          } else {
+            return response()->json(['error' => 'System is unable to capture category id']);
+          }
     }
 
     public function findCommodityCategoryAjax(Request $request, $id){

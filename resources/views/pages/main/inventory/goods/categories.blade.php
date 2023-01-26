@@ -47,7 +47,7 @@
             </div>
 
 
-            <!--Add new Stock -->
+            <!--Add new commodity category -->
             <div class="modal fade nunito-font" id="addCommodityCategoryModal" tabindex="-1"
                 aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -57,7 +57,7 @@
                         <form name="CommodityCategoryForm" id="CommodityCategoryForm">
                             @csrf
                             <div class="modal-header d-flex justify-content-between">
-                                <h6 class="modal-title w-100 font-weight-bold" id="modalHeading"> Add new stock item</h6>
+                                <h6 class="modal-title w-100 font-weight-bold" id="modalHeading"> Add new commodity category</h6>
                                 <button type="button" class="close mt-1" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -194,7 +194,7 @@
 
             $('#createNewStock').click(function(e) {
                 e.preventDefault();
-                checkPermission(permissions.add_stock, function(stock) {
+                checkPermission(permissions.add_stock, function(commodity_category) {
                     NullifyFields();
                     ShowHideBtns('show');
                     $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
@@ -205,7 +205,7 @@
                 });
             });
 
-            //modal used to edit stock details [each row of the tbl]
+            //modal used to edit commodity category details [each row of the tbl]
             $('body').on('click', '#edit-commodity-category', function(event) {
                 let category_id = $(this).data('id');
                 event.preventDefault();
@@ -318,11 +318,11 @@
 
             }
 
-            //View Modal used to view each row [stock details]
+            //View Modal used to view each row [commodity category details]
             $('body').on('click', '#view-commodity-category', function(event) {
                 let category_id = $(this).data('id');
                 event.preventDefault();
-                checkPermission(permissions.view_stock, function(stock) {
+                checkPermission(permissions.view_stock, function(commodity_category) {
                     viewCommodityCategory(category_id);
                 });
             });
@@ -371,7 +371,7 @@
             $('body').on('click', '#delete-commodity-category', function(e) {
                 let category_id = $(this).data("id");
                 e.preventDefault();
-                checkPermission(permissions.delete_stock, function(stock) {
+                checkPermission(permissions.delete_stock, function(commodity_category) {
                     $.get("{{ route('commodity-categories.index') }}" + '/' + category_id + '',
                         function(response) {
                             if (response.success) {
@@ -392,7 +392,7 @@
 
 
             function deleteRecord(id) {
-                let deleteUrl = '{{ route('stock.destroy', ':id') }}';
+                let deleteUrl = '{{ route('commodity-categories.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({

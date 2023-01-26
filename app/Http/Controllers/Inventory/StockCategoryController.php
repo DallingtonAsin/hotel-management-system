@@ -95,15 +95,15 @@ class StockCategoryController extends Controller
           ]);
         } else {
 
-          $messageErr = 'Item category not recorded!';
+          $error = 'Item category not recorded!';
           $dataArr = array(
             "code" => '101',
-            "message" => $messageErr,
+            "message" => $error,
             "method" => "StockCategoryController@store"
           );
 
           Helper::LogRequest($request, $dataArr);
-          $message = $this->FailedMessage($messageErr);
+          $message = Helper::FailedMessage($error);
           return response()->json(['error' => $message]);
         }
       }
@@ -206,7 +206,7 @@ class StockCategoryController extends Controller
             );
             Helper::LogRequest($request, $dataArr);
 
-            $message = $this->FailedMessage($error);
+            $message = Helper::FailedMessage($error);
             return response()->json(['error' => $message]);
           }
         } else {
@@ -254,14 +254,14 @@ class StockCategoryController extends Controller
             ]);
         } else {
 
-          $messageErr = 'Item category not deleted!!';
+          $error = 'Item category not deleted!!';
           $dataArr = array(
             "code" => '101',
-            "message" => $messageErr,
+            "message" => $error,
             "method" => $method
           );
           Helper::LogRequest($request, $dataArr);
-          $message = $this->FailedMessage($messageErr);
+          $message = Helper::FailedMessage($error);
           return response()->json(['error' => $message]);
         }
       } catch (\Exception $ex) {
@@ -289,15 +289,15 @@ class StockCategoryController extends Controller
       $sessionVariable = 'success';
       $responseInfo = Helper::ActionMessage($action);
     } else {
-      $messageErr = 'stock item categories not deleted from the system!';
+      $error = 'stock item categories not deleted from the system!';
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "StockCategoryController@deleteAllStockCategories"
       );
       Helper::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
-      $responseInfo = $messageErr;
+      $responseInfo = $error;
     }
 
     $arr = $this->GetStockCatStats();
@@ -380,15 +380,15 @@ class StockCategoryController extends Controller
       return back()
         ->with('success', Helper::ActionMessage($action));
     } else {
-      $messageErr = 'Categories data not imported!';
+      $error = 'Categories data not imported!';
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => "StockCategoryController@importCategories"
       );
       Helper::LogRequest($request, $dataArr);
       return back()
-        ->with('fail', $messageErr);
+        ->with('fail', $error);
     }
   }
 
@@ -408,8 +408,4 @@ class StockCategoryController extends Controller
     return $message;
   }
 
-  protected function FailedMessage($failmsg)
-  {
-    return $failmsg;
-  }
 }

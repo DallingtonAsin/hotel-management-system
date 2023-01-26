@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Notifications\UserRegistration;
 use App\Jobs\MailRegistration;
-use App\DataTables\ManagersDataTable;
-use App\DataTables\CashiersDataTable;
-use App\DataTables\UsersDataTable;
-use App\DataTables\ActiveUserAccountsDataTable;
-use App\DataTables\InactiveUserAccountsDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Designation;
@@ -42,7 +37,6 @@ class UserController extends Controller
         $number_of_users = Staff::where('is_deleted', false)->count();
         return view('pages.users.index', ['total_staff' => $number_of_users])
           ->with(compact('users', 'number_of_users'));
-
       } catch (\Exception $ex) {
         $data = array(
           'username' => $request->username,
@@ -58,28 +52,6 @@ class UserController extends Controller
     }
   }
 
-
-  public function GetUsers(UsersDataTable $dataTable)
-  {
-    return $dataTable->render('pages.users.index');
-  }
-
-  public function GetManagers(ManagersDataTable $dataTable)
-  {
-    return $dataTable->render('pages.users.managers');
-  }
-
-  public function GetCashiers(CashiersDataTable $dataTable)
-  {
-    return $dataTable->render('pages.users.cashiers');
-  }
-
-  public function ActiveUsersAjax(ActiveUserAccountsDataTable $dataTable)
-  {
-    return $dataTable->render('pages.users.active-users');
-  }
-
-
   public function ActiveUsersIndex(Request $request)
   {
     try {
@@ -90,17 +62,10 @@ class UserController extends Controller
         $number_of_users = Staff::where('is_active', true)->count();
         return view('pages.users.active-users')
           ->with(compact('users', 'number_of_users'));
-
       }
     } catch (\Exception $ex) {
       dd($ex->getMessage());
     }
-  }
-
-
-  public function LockedUsersAjax(InactiveUserAccountsDataTable $dataTable)
-  {
-    return $dataTable->render('pages.users.inactive-users');
   }
 
   public function LockedUsersIndex(Request $request)
@@ -154,18 +119,17 @@ class UserController extends Controller
               Helper::LogRequest($request, $dataArr);
               return response()
                 ->json(['success' => Helper::ActionMessage($action)]);
-
             } else {
 
-              $messageErr = 'Unable to deactivate user account!';
+              $error = 'Unable to deactivate user account!';
               $dataArr = array(
                 "code" => '101',
-                "message" => $messageErr,
+                "message" => $error,
                 "method" => $method
               );
               Helper::LogRequest($request, $dataArr);
               return response()
-                ->json(['error' => $messageErr]);
+                ->json(['error' => $error]);
             }
             break;
 
@@ -189,34 +153,29 @@ class UserController extends Controller
               Helper::LogRequest($request, $dataArr);
               return response()
                 ->json(['success' => Helper::ActionMessage($action)]);
-
             } else {
-              $messageErr = 'Unable to change user account status!';
+              $error = 'Unable to change user account status!';
               $dataArr = array(
                 "code" => '101',
-                "message" => $messageErr,
+                "message" => $error,
                 "method" => $method
               );
               Helper::LogRequest($request, $dataArr);
               return response()
-                ->json(['error' => $messageErr]);
+                ->json(['error' => $error]);
             }
 
             break;
-
         }
-
       } else {
 
-        $messageErr = "Unable to get id and status in request";
+        $error = "Unable to get id and status in request";
         return response()
-          ->json(['error' => $messageErr]);
+          ->json(['error' => $error]);
       }
-
     } catch (\Exception $ex) {
       dd("Exception while locking/unlocking user account" . $ex->getMessage());
     }
-
   }
 
 
@@ -247,18 +206,17 @@ class UserController extends Controller
             Helper::LogRequest($request, $dataArr);
             return back()
               ->with('success', Helper::ActionMessage($action));
-
           } else {
 
-            $messageErr = 'Account deactivation failed!';
+            $error = 'Account deactivation failed!';
             $dataArr = array(
               "code" => '101',
-              "message" => $messageErr,
+              "message" => $error,
               "method" => $method
             );
             Helper::LogRequest($request, $dataArr);
             return back()
-              ->with('fail', $messageErr);
+              ->with('fail', $error);
           }
           break;
 
@@ -282,24 +240,21 @@ class UserController extends Controller
             Helper::LogRequest($request, $dataArr);
             return back()
               ->with('success', Helper::ActionMessage($action));
-
           } else {
-            $messageErr = 'Account activation failed!';
+            $error = 'Account activation failed!';
             $dataArr = array(
               "code" => '101',
-              "message" => $messageErr,
+              "message" => $error,
               "method" => $method
             );
             Helper::LogRequest($request, $dataArr);
             return back()
-              ->with('fail', $messageErr);
+              ->with('fail', $error);
           }
 
           break;
-
       }
     }
-
   }
 
 
@@ -344,67 +299,65 @@ class UserController extends Controller
       'gender' => 'required',
       'staff_type' => 'required',
       'status' => 'required',
-  ]);
+    ]);
 
-  try {
+    try {
 
       if ($validator->fails()) {
-          $message = $validator->errors()->all();
-          return response()->json(['error' => $message]);
-      } else {
-
-      $method = "UserController@store";
-
-      $fname = $request->input('first_name');
-      $lname = $request->input('last_name');
-      $address = $request->input('address');
-      $email = $request->input('email');
-      $phone_number = $request->input('phone_number');
-      $other_phone_number = $request->input('other_phone_number');
-      $gender = $request->input('gender');
-      $nin = $request->input('nin');
-      $tin_number = $request->input('tin_number');
-      $nssf_number = $request->input('nssf_number');
-      $next_of_kin = $request->input('next_of_kin');
-      $department_id = $request->input('department');
-      $designation_id = $request->input('designation');
-      $staff_type = ucfirst($request->input('staff_type'));
-      $status = ucfirst($request->input('status'));
-      $staff_id = Helper::generateStaffId($department_id);
-     
-     
-      $designation = Designation::where('id', $designation_id)->value('name');
-
-      $registra = $request->user()->name;
-      $name = $fname . " " . $lname;
-      $defaultPwd = '12345678';
-
-      if ($request->has('id') && $request->filled('id')) {
-        $user = Staff::find($request->input('id'));
-        $username = $user->username;
-        $password = $user->password;
-
-      } else {
-        $user = new Staff();
-        $name = $fname . " " . $lname;
-        $username = strtolower(Str::random(6) . "." . $fname);
-        $password = Hash::make($defaultPwd, ['rounds' => 12]);
-      }
-
-      $bool_userExists = Staff::where('username', $username)->exists();
-
-      if (!$request->filled('id') && $bool_userExists) {
-
-        $message = "username " . $name . " has already been taken, choose another one";
-        $dataArr = array(
-          "code" => '101',
-          "message" => $message,
-          "method" => $method
-        );
-
-        Helper::LogRequest($request, $dataArr);
+        $message = $validator->errors()->all();
         return response()->json(['error' => $message]);
+      } else {
 
+        $method = "UserController@store";
+
+        $fname = $request->input('first_name');
+        $lname = $request->input('last_name');
+        $address = $request->input('address');
+        $email = $request->input('email');
+        $phone_number = $request->input('phone_number');
+        $other_phone_number = $request->input('other_phone_number');
+        $gender = $request->input('gender');
+        $nin = $request->input('nin');
+        $tin_number = $request->input('tin_number');
+        $nssf_number = $request->input('nssf_number');
+        $next_of_kin = $request->input('next_of_kin');
+        $department_id = $request->input('department');
+        $designation_id = $request->input('designation');
+        $staff_type = ucfirst($request->input('staff_type'));
+        $status = ucfirst($request->input('status'));
+        $staff_id = Helper::generateStaffId($department_id);
+
+
+        $designation = Designation::where('id', $designation_id)->value('name');
+
+        $registra = $request->user()->name;
+        $name = $fname . " " . $lname;
+        $defaultPwd = '12345678';
+
+        if ($request->has('id') && $request->filled('id')) {
+          $user = Staff::find($request->input('id'));
+          $username = $user->username;
+          $password = $user->password;
+        } else {
+          $user = new Staff();
+          $name = $fname . " " . $lname;
+          $username = strtolower(Str::random(6) . "." . $fname);
+          $password = Hash::make($defaultPwd, ['rounds' => 12]);
+        }
+
+        $bool_userExists = Staff::where('username', $username)->exists();
+
+        if (!$request->filled('id') && $bool_userExists) {
+
+          $message = "username " . $name . " has already been taken, choose another one";
+          $dataArr = array(
+            "code" => '101',
+            "message" => $message,
+            "method" => $method
+          );
+
+          Helper::LogRequest($request, $dataArr);
+          return response()->json(['error' => $message]);
         } else {
 
           $user->first_name = $fname;
@@ -470,7 +423,6 @@ class UserController extends Controller
             $number_of_users = $statArr['totl'];
 
             return response()->json(['success' => $message, 'total' => $number_of_users]);
-
           } else {
             $message = "User registration failed!";
             $dataArr = array(
@@ -488,7 +440,6 @@ class UserController extends Controller
       $number_of_users = $statArr['totl'];
       return response()->json(['error' => $ex->getMessage(), 'total' => $number_of_users]);
     }
-
   }
 
   /**
@@ -521,7 +472,6 @@ class UserController extends Controller
       ->where('role', $role)
       ->value('id');
     return $roleId;
-
   }
 
 
@@ -543,7 +493,6 @@ class UserController extends Controller
       'contact1' => 'required',
       // 'roleID' => 'required',
     ]);
-
   }
 
   /**
@@ -627,22 +576,17 @@ class UserController extends Controller
       Helper::LogRequest($request, $data);
       return back()
         ->with("success", Helper::ActionMessage($action));
-
     } else {
-      $messageErr = "Failedto update details of user " . $person . "!";
+      $error = "Failedto update details of user " . $person . "!";
       $dataArr = array(
         "code" => '101',
-        "message" => $messageErr,
+        "message" => $error,
         "method" => $method
       );
       Helper::LogRequest($request, $dataArr);
       return back()
-        ->with('fail', $messageErr);
+        ->with('fail', $error);
     }
-
-
-
-
   }
 
   /**
@@ -678,15 +622,15 @@ class UserController extends Controller
         $message = Helper::ActionMessage($action);
       } else {
 
-        $messageErr = "Users not removed from the system!";
+        $error = "Users not removed from the system!";
         $dataArr = array(
           "code" => '101',
-          "message" => $messageErr,
+          "message" => $error,
           "method" => $method
         );
         Helper::LogRequest($request, $dataArr);
         $sessionVariable = 'fail';
-        $message = $messageErr;
+        $message = $error;
       }
 
       $statArr = Helper::GetUserStats();
@@ -697,9 +641,7 @@ class UserController extends Controller
           $sessionVariable => $message,
           'total' => $number_of_users,
         ]);
-
     }
-
   }
 
   public function RemoveAllActiveUsers(Request $request)
@@ -722,21 +664,18 @@ class UserController extends Controller
         Helper::LogRequest($request, $data);
         return back()
           ->with("success", Helper::ActionMessage($action));
-
       } else {
-        $messageErr = 'Active users not removed from the system!';
+        $error = 'Active users not removed from the system!';
         $dataArr = array(
           "code" => '101',
-          "message" => $messageErr,
+          "message" => $error,
           "method" => $method
         );
         Helper::LogRequest($request, $dataArr);
         return back()
-          ->with('fail', $messageErr);
+          ->with('fail', $error);
       }
-
     }
-
   }
 
   public function RemoveAllLockedUsers(Request $request)
@@ -759,21 +698,18 @@ class UserController extends Controller
         Helper::LogRequest($request, $data);
         return back()
           ->with("success", Helper::ActionMessage($action));
-
       } else {
-        $messageErr = 'Locked users not removed from the system!';
+        $error = 'Locked users not removed from the system!';
         $dataArr = array(
           "code" => '101',
-          "message" => $messageErr,
+          "message" => $error,
           "method" => $method
         );
         Helper::LogRequest($request, $dataArr);
         return back()
-          ->with('fail', $messageErr);
+          ->with('fail', $error);
       }
-
     }
-
   }
 
 
@@ -816,8 +752,6 @@ class UserController extends Controller
           $sessionVariable => $response,
           'totl_no' => $number_of_users,
         ]);
-
-
     } catch (\Exception $ex) {
       $data = array(
         'username' => auth()->user()->username,
@@ -846,7 +780,6 @@ class UserController extends Controller
       ->where('id', $userRoleId)
       ->value('role');
     return $userRole;
-
   }
 
 
@@ -872,26 +805,16 @@ class UserController extends Controller
     return $message;
   }
 
-
-  protected function FailedMessage($failmsg)
-  {
-    $message = "" . $failmsg . "";
-    return $message;
-  }
-
   public function fetchStaffAjax(Request $request)
   {
-      try {
-          if ($request->ajax()) {
-              $staff_members = Staff::get();
-              echo json_encode($staff_members);
-              die();
-          }
-      } catch (\Exception $ex) {
-          echo "Error " . $ex->getMessage();
+    try {
+      if ($request->ajax()) {
+        $staff_members = Staff::get();
+        echo json_encode($staff_members);
+        die();
       }
+    } catch (\Exception $ex) {
+      echo "Error " . $ex->getMessage();
+    }
   }
-
- 
-
 }

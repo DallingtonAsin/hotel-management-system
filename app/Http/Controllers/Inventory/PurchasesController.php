@@ -293,7 +293,7 @@ class PurchasesController extends Controller
         $arr = $this->GetPurchaseDetails();
         $sessionVariable == 'success' 
         ? $message = Helper::ActionMessage($message)
-        : $message = $this->FailedMessage($message);
+        : $message = Helper::FailedMessage($message);
 
         return response()
         ->json([$sessionVariable => $message,
@@ -345,14 +345,14 @@ class PurchasesController extends Controller
       }
       else
       {
-        $messageErr = "item not removed!";
+        $error = "item not removed!";
         $dataArr = array("code" => '101',
-                        "message" => $messageErr,
+                        "message" => $error,
                         "method" => $method);
        Helper::LogRequest($request, $dataArr);
 
        $sessionVariable = 'fail';
-       $responseInfo = $this->FailedMessage($messageErr);
+       $responseInfo = Helper::FailedMessage($error);
      }
 
      $arr = $this->GetPurchaseDetails();
@@ -385,13 +385,13 @@ class PurchasesController extends Controller
   else
   {
 
-    $messageErr = "Purchase items not deleted from the system!";
+    $error = "Purchase items not deleted from the system!";
     $dataArr = array("code" => '101',
-    "message" => $messageErr,
+    "message" => $error,
     "method" => $method);
      Helper::LogRequest($request, $dataArr);
      $sessionVariable = "fail";
-     $responseInfo = $this->FailedMessage($messageErr);
+     $responseInfo = Helper::FailedMessage($error);
  }
 
      $arr = $this->GetPurchaseDetails();
@@ -476,12 +476,12 @@ class PurchasesController extends Controller
    }
    else
    {
-     $messageErr = "Excel file of purchases not imported!";
+     $error = "Excel file of purchases not imported!";
      $dataArr = array("code" => '101',
-                     "message" => $messageErr,
+                     "message" => $error,
                      "method" => "PurchasesController@importStock");
      Helper::LogRequest($request, $dataArr);
-     return back()->with('fail', $messageErr);
+     return back()->with('fail', $error);
    }
 
 
@@ -499,11 +499,5 @@ class PurchasesController extends Controller
   $message = "You have successfully ".$action."";
   return $message;
 }
-
-protected function FailedMessage($failmsg)
-{
-  return $failmsg;
-}
-
 
 } //end of class Purchases
