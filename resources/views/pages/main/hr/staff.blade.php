@@ -253,7 +253,6 @@
 
                     <thead>
                         <tr>
-                            <th></th>
                             <th>#</th>
                             <th>Name</th>
                             <th>Gender</th>
@@ -300,10 +299,7 @@
             let table = $('#staff-table');
             let title = "List of registered staff in the system";
             let columns = [0, 1];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
                 {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',

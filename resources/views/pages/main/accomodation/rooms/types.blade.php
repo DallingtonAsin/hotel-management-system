@@ -46,7 +46,7 @@
 
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Room Type</th>
                             <th>Single Occupancy Rate($)</th>
                             <th>Double Occupancy Rate($)</th>
@@ -222,10 +222,8 @@
             let table = $('#room-types-table');
             let title = "List of registered room types in the system";
             let columns = [1, 2, 3, 4];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
                     data: 'name',
                     name: 'name'

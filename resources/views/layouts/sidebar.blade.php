@@ -41,26 +41,23 @@
             @endhaspermission
 
             <li class="nav-item">
-                <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i
-                        class="fa fa-shopping-cart"></i>Restaurant & Bar</a>
+                <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i class="fa fa-wine-glass-alt ml-1"></i>Bar</a>
                 <ul class="nav-sub">
                     @haspermission(config('permissions')['view_pos'])
                         <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link">Point of Sale</a></li>
                         <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales</a></li>
-
                     @endhaspermission
-
                 </ul>
             </li>
 
             <li class="nav-item">
-                <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i class="fa fa-coffee"></i>Kitchen</a>
+                <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i class="fa fa-coffee"></i>Restaurant</a>
 
                 <ul class="nav-sub">
 
                     @haspermission(config('permissions')['view_kitchen_orders'])
                         <li class="nav-item">
-                            <a href="" class="nav-link with-sub">Orders</a>
+                            <a href="" class="nav-link with-sub">Kitchen Orders</a>
                             <ul class="nav-sub">
                                 <li class="nav-sub-item"><a href="{{ Route('kitchen-orders.index') }}" class="nav-sub-link">New Order</a></li>
                                 <li class="nav-sub-item"><a href="{{ route('orders.status', ['status' => config("kitchen-order-statuses")["pending"] ]) }}" class="nav-sub-link">Pending Orders</a></li>

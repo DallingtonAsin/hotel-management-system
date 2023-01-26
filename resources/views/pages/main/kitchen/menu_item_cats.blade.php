@@ -23,7 +23,7 @@
                 <table class="table table-bordered table-hover menu-items-cats-table" id="menu-items-cats-table">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>name</th>
                             <th>created by</th>
                             <th>Action</th>
@@ -135,10 +135,8 @@
             let table = $('#menu-items-cats-table');
             let title = "List of recorded menu item categories in the system";
             let columns = [1, 2, 3, 4];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
                     data: 'name',
                     name: 'name'

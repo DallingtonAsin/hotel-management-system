@@ -48,8 +48,7 @@
 
                     <thead>
                         <tr>
-                            <th></th>
-                            <!-- <th class="td-md">No</th>  -->
+                            <th>#</th>
                             <th>expense</th>
                             <th>Amount</th>
                             <th>Date of Expenditure</th>
@@ -232,12 +231,9 @@
             var table = $('.expenses-table');
             var title = "List of recorded expenses in the system";
             var columns = [0, 1, 2, 3];
-            var dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
-                //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-                // {data: 'id', name:'id'},
+            var dataColumns = [
+             
+                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
                     data: 'expense_type',
                     name: 'expense'

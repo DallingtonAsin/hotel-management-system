@@ -25,7 +25,7 @@
 
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Guest Name</th>
                             <th>Invoice No.</th>
                             <th>Amount</th>
@@ -174,7 +174,7 @@
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete payment</h6>
-                    <button type="button" class=method"close" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -219,10 +219,9 @@
             let table = $('#payments-table');
             let title = "List of recorded payments in the system";
             let columns = [1, 2, 3, 4, 5, 6];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+
                 {
                     data: 'guest_name',
                     name: 'guest_name'

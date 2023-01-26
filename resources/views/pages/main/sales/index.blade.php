@@ -3,9 +3,7 @@
 @section('content')
     <div class="card">
         @include('pages.main.messages.response')
-        <div class="card-header">
-            <div class="panel-title nunito-font">
-                <div class="row nunito-font">
+        <div class="card-header card-header d-flex justify-content-between">
                     <span class="response"></span>
 
                     @can('isAdmin')
@@ -64,14 +62,11 @@
                     @cannot('isCashier')
                         <div class="col-lg-3">
                             <small>
-                                <a href="{{ Route('sales.index') }}" class=" bolded">Load all</a>
+                                <a href="{{ Route('sales.index') }}" class="outline-none ml-auto bolded">Load all sales</a>
                             </small>
                         </div>
                     @endcannot
 
-                </div>
-
-            </div>
         </div>
 
         <div class="card-body">

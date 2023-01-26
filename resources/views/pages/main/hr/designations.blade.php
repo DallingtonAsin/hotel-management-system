@@ -45,7 +45,7 @@
 
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Designation</th>
                             <th>Department</th>
                             <th>Added By</th>
@@ -215,10 +215,8 @@
             let table = $('#designations-table');
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
                     data: 'name',
                     name: 'name'

@@ -23,11 +23,11 @@
                 <table class="table table-bordered table-hover frequent-contacts-table" id="frequent-contacts-table">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>name</th>
                             <th>Phone Number</th>
                             <th>tin</th>
-                            <th>Contact person</th>
+                            {{-- <th>Contact person</th> --}}
                             <th>Price</th>
                             <th>Currency</th>
                             <th>Added By</th>
@@ -181,10 +181,8 @@
             let table = $('#frequent-contacts-table');
             let title = "List of registered frequent contacts in the system";
             let columns = [1, 2, 3, 4];
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
+            let dataColumns = [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
                     data: 'name',
                     name: 'name'
@@ -197,10 +195,10 @@
                     data: 'tin',
                     name: 'tin'
                 },
-                {
-                    data: 'contact_person',
-                    name: 'contact_person'
-                },
+                // {
+                //     data: 'contact_person',
+                //     name: 'contact_person'
+                // },
                 {
                     data: 'price',
                     name: 'price'
