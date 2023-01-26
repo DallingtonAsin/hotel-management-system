@@ -1,4 +1,3 @@
-
 function Numberize(i) {
   $(document).on("keyup", i, function () {
     if (this.value.length > 0) {
@@ -12,7 +11,10 @@ function Numberize(i) {
 function displayResponse(area = null, message, errorType = 'error') {
 
   let config = { timeOut: 8000 };
-
+  toastr.options.closeButton = true;
+  toastr.options.preventDuplicates = true;
+  // toastr.options.progressBar = true;
+  
   switch (true) {
     case errorType == 'success':
       toastr.success(message, "", config);

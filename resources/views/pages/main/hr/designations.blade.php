@@ -309,8 +309,9 @@
 
                 e.preventDefault();
 
-                let Errors = validateForm();
-                if (Errors.length == 0) {
+                let isValidForm = validateForm();
+                if (isValidForm) {
+
                     $(this).html('Sending..');
 
                     $.ajax({
@@ -335,14 +336,6 @@
                             $('.addDesignationBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
                 }
 
             });
@@ -418,16 +411,18 @@
 
                 let department = $('.departments_section').val();
                 let designation = $('.designation').val();
+                let isValidForm = false;
 
-                let errors = [];
                 if (department.length < 1) {
-                    errors.push(`Please select department`);
+                    displayResponse(null, `Please select department`, 'error');
                 }
-                if (designation.length < 1) {
-                    errors.push(`Please enter designation`);
+                else if (designation.length < 1) {
+                    displayResponse(null, `Please select designation`, 'error');
+                }else{
+                    isValidForm = true;
                 }
 
-                return errors;
+                return isValidForm;
 
             }
 

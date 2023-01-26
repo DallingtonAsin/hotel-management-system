@@ -1,4 +1,3 @@
-
 function populateDepartments() {
     $.ajax({
         type: "GET",

@@ -261,8 +261,8 @@
 
                 e.preventDefault();
 
-                let Errors = validateForm();
-                if (Errors.length == 0) {
+                let isValidForm = validateForm();
+                if (isValidForm) {
                     $(this).html('Sending..');
 
                     $.ajax({
@@ -293,14 +293,6 @@
                             $('.addDepartmentBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
                 }
 
             });
@@ -429,16 +421,18 @@
 
                 let code = $('.code').val();
                 let name = $('.name').val();
+                let isValidForm = false;
 
-                let errors = [];
                 if (code.length < 1) {
-                    errors.push("Please enter department code");
+                    displayResponse(null, "Please enter department code", "error");
                 }
-                if (name.length < 1) {
-                    errors.push("Please enter the name of the department");
+                else if (name.length < 1) {
+                    displayResponse(null, "Please enter the name of the department", "error");
+                }else{
+                    isValidForm = true;
                 }
 
-                return errors;
+                return isValidForm;
 
             }
 
