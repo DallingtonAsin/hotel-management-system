@@ -22,7 +22,7 @@ class CreateSalesOrderItemsTable extends Migration
             $table->double('price', 10, 2);
             $table->timestamps();
 
-            $table->foreign('order_number')->references('order_number')->on('orders')->onDelete('cascade');
+            $table->foreign('order_number')->references('order_number')->on('sales_orders')->onDelete('cascade');
             $table->foreign('item_id')->references('id')->on('stock')->onDelete('cascade');
     
         });

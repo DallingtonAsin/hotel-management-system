@@ -19,7 +19,7 @@ class CreateSalesInvoicesTable extends Migration
             $table->double('total', 10, 2);
             $table->string('status');
             $table->timestamps();
-            $table->foreign('order_number')->references('order_number')->on('orders')->onDelete('cascade');
+            $table->foreign('order_number')->references('order_number')->on('sales_orders')->onDelete('cascade');
         });
     }
 
