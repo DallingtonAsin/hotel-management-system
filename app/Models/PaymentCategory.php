@@ -15,6 +15,7 @@ class PaymentCategory extends Model
 	protected $fillable = [
 		'name',
 		'transaction_type',
+        'is_deleted',
 		'created_by'
 	];
 

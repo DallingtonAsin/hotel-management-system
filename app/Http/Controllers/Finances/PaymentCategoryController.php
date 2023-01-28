@@ -109,6 +109,16 @@ class PaymentCategoryController extends Controller
         }
     }
 
+    private function getPaymentCategoryDetails($id){
+        try {
+
+            $payment_category = $this->paymentCategoryRepository->get($id);
+            return response()->json(['success' => 'Ok', 'data' => $payment_category]);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -117,7 +127,7 @@ class PaymentCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getPaymentCategoryDetails($id);
     }
 
     /**
@@ -128,7 +138,7 @@ class PaymentCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getPaymentCategoryDetails($id);
     }
 
     /**
@@ -149,8 +159,47 @@ class PaymentCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if (!empty($id)) {
+            try {
+
+              $method = "PaymentCategoryController@destroy";
+              $category = $this->paymentCategoryRepository->get($id);
+              $action =  $category->is_deleted ? 'undeleted' : 'deleted';
+
+              if ($this->paymentCategoryRepository->update($id, ['is_deleted' => !$category->is_deleted])) {
+
+                $name = $category->name;
+      
+                $action = $action." payment category " . $name . "";
+                Helper::logger($request, $action, now());
+                $dataArr = ["code" => '200', "message" => $action, "method" => $method];
+      
+                Helper::LogRequest($request, $dataArr);
+                $message = Helper::ActionMessage($action);
+                $arr['total'] = $this->paymentCategoryRepository->count();
+
+                return response()
+                  ->json([
+                    'success' => $message,
+                    'data' => $arr,
+                  ]);
+
+              } else {
+      
+                $error = 'System unable to delete payment category';
+                $dataArr = ["code" => '200', "message" => $error, "method" => $method];
+                Helper::LogRequest($request, $dataArr);
+                $message = Helper::FailedMessage($error);
+
+                return response()->json(['error' => $message]);
+              }
+            } catch (\Exception $ex) {
+              return response()->json(['error' => $ex->getMessage()]);
+            }
+          } else {
+            return response()->json(['error' => 'System is unable to get payment category id']);
+          }
     }
 }

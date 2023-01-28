@@ -303,13 +303,19 @@
             $('body').on('click', '#delete-payment-category', function(e) {
                 let category_id = $(this).data("id");
                 e.preventDefault();
-                checkPermission(permissions.delete_payments, function(payment_category) {
-                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit', function(data) {
-                    $("#deletePaymentCategoryModal").modal('show');
-                    $(".delete-alert-text").html(`Are you sure you want to delete payment category ${data.name}?`);
-                    $('.delete-ok-btn').on('click', function() {
-                        deleteRecord(category_id);
-                    });
+                checkPermission(permissions.cancel_payments, function(payment_category) {
+                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit', function(response) {
+                    if(response.success){
+                        let data = response.data;
+                        let action = data.is_deleted ? 'undelete' : 'delete';
+                        $("#deletePaymentCategoryModal").modal('show');
+                        $(".delete-alert-text").html(`Are you sure you want to ${action} payment category ${data.name}?`);
+                        $('.delete-ok-btn').on('click', function() {
+                            deleteRecord(category_id);
+                        });
+                    }else{
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
                 });
             });
