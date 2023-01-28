@@ -23,6 +23,8 @@ use App\Http\Controllers\Audit\LogsController;
 use App\Http\Controllers\Finances\CurrencyController;
 use App\Http\Controllers\Finances\PaymentController;
 use App\Http\Controllers\Finances\SalaryController;
+use App\Http\Controllers\Finances\StaffPaymentController;
+use App\Http\Controllers\Finances\PaymentCategoryController;
 
 // Home Controllers
 use App\Http\Controllers\Home\HomeController;
@@ -127,6 +129,8 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('salaries/fetch/ajax', [SalaryController::class, 'getSalariesDataTable'])->name('salaries.index.ajax');
 	Route::get('currencies/fetch/ajax', [CurrencyController::class, 'getCurrencyDataTable'])->name('currencies.index.ajax');
 	Route::get('currencies/ajax', [CurrencyController::class, 'fetchCurrenciesAjax'])->name('currencies.ajax.fetch');
+	Route::get('staff/payments/ajax', [StaffPaymentController::class, 'getStaffPaymentsDataTable'])->name('staff.payments.ajax.fetch');
+	Route::get('payment/categories/ajax', [PaymentCategoryController::class, 'getPaymentCategoriesDataTable'])->name('payments.categories.ajax.fetch');
 
 	// Home Routes
 	Route::get('home', [HomeController::class, 'index'])->name('home');
@@ -321,8 +325,13 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 		'designations' => DesignationController::class,
 		'staff' => StaffMemberController::class,
 		'staff-permissions' => StaffPermissionController::class,
+
 		'payments' => PaymentController::class,
 		'salary' => SalaryController::class,
+
+		'payment-categories' => PaymentCategoryController::class,
+		'staff-payments' => StaffPaymentController::class,
+
 		'customers' => CustomersController::class,
 		'menu-items' => MenuItemController::class,
 		'currencies' => CurrencyController::class,

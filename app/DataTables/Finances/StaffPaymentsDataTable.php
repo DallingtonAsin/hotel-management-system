@@ -2,12 +2,12 @@
 
 namespace App\DataTables\Finances;
 
-use App\Helpers\Helper;
-use App\Models\ExpenseType;
+use App\Models\StaffPayment;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
+use App\Helpers\Helper;
 
-class ExpenseTypesDataTable extends DataTable
+class StaffPaymentsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,24 +20,21 @@ class ExpenseTypesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addIndexColumn()
-            ->addColumn('action', function ($data) {
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-                data-id="'.$data->id.'" data-original-title="Edit" id="edit-expense-type"
-                  class="px-3 py-1 border border-success rounded  edit-expense mx-2">
-                 <span class="fa fa-pen text-success pr-1"></span></a>';
-              
-                $btn .= '<a href="javascript:void(0);" id="delete-expense-type" 
-                data-toggle="tooltip" data-original-title="Delete" data-id="'.$data->id.'"
-                 class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
-                <span class="fa fa-trash-alt pr-1" ></span></a>';
-    
-               $btn .= '<a href="javascript:void(0);" id="view-expense-type" 
-               data-toggle="tooltip" data-original-title="View" data-id="'.$data->id.'" 
-               class="px-3 py-1 border border-secondary rounded text-secondary bolded">
-               <i class="fa fa-eye pr-1" ></i></a>';
-    
-               return $btn;
-    
+            ->addColumn('action', function ($payment) {
+
+                $btn = "";
+
+                $btn .= '<a href="javascript:void(0);" id="view-payment" 
+            data-toggle="tooltip" data-original-title="view details"
+            data-id="' . $payment->id . '" data-status="{{$status}}"
+             class="px-3 py-1 border border-primary rounded mr-2 text-primary">view details</a>';
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+             data-id="' . $payment->id . '" data-original-title="Download Invoice" id="edit-payment"
+             class="px-3 py-1 border border-secondary rounded text-secondary ml-2">
+             invoice</a>';
+
+                return $btn;
             })->editColumn('is_deleted', function ($data) {
                 return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>'; 
             })->editColumn('created_by', function($data){
@@ -48,10 +45,10 @@ class ExpenseTypesDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\ExpenseType $model
+     * @param \App\Models\StaffPayment $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(ExpenseType $model)
+    public function query(StaffPayment $model)
     {
         return $model->newQuery();
     }
@@ -64,7 +61,7 @@ class ExpenseTypesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('finances/expensetypes-table')
+                    ->setTableId('finances/staffpaymentsdatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')
@@ -87,7 +84,10 @@ class ExpenseTypesDataTable extends DataTable
     {
         return [
             'id',
-            'name',
+            'staff_id',
+            'payment_payment_id',
+            'amount',
+            'payment_date',
             'created_by'
         ];
     }
@@ -99,6 +99,6 @@ class ExpenseTypesDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'ExpenseTypes_' . date('YmdHis');
+        return 'Finances/StaffPayments_' . date('YmdHis');
     }
 }

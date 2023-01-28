@@ -21,7 +21,8 @@ class CreateStaffPaymentsTable extends Migration
             $table->unsignedBigInteger('payment_category_id');
             $table->decimal('amount', 8, 2);
             $table->date('payment_date'); 
-             $table->unsignedBigInteger('created_by')->unsigned();
+            $table->boolean('is_deleted')->default(false);
+            $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 
             $table->foreign('staff_id')->references('id')->on('staff')->onDelete('cascade');

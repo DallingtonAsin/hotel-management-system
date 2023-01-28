@@ -17,6 +17,7 @@ class CreatePaymentCategoriesTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->enum('transaction_type', ['credit', 'debt']);
+            $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
 

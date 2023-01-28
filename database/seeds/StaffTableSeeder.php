@@ -14,5 +14,6 @@ class StaffTableSeeder extends Seeder
     public function run()
     {
         Staff::factory()->count(15)->create();
+        Staff::where('id', 1)->update(['first_name' => 'Dallington', 'last_name' => 'Asingwire', 'username' => 'Dallington']);
     }
 }
