@@ -1,98 +1,5 @@
 
 var oTable;
-function makeDataTabless(table, title, columnArray, dataColumns) {
-    $(document).ready(function () {
-        $(table).DataTable({
-            "paging": true,
-            "dom":
-                "<'row'<'col-sm-1'l><'col-sm-8 pb-3 text-center'B><'col-sm-3'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            "processing": true,
-            "stateSave": false,
-            "searching": true,
-            "info": false,
-            "pageLength": 15,
-            "lengthMenu": [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
-            "columnDefs": [{
-                "targets": '_all',
-                "orderable": false,
-                "searchable": false
-            }],
-            "columnDefs": [{
-                "targets": 0,
-                "checkboxes": {
-                    "selectRow": true
-                }
-            }],
-            "select": {
-                "style": 'multi'
-            },
-            "order": [
-                [1, 'asc']
-            ],
-            "ajax": ajaxUrl,
-            "columns": dataColumns,
-            "buttons": [
-
-                $.extend(
-                    true,
-                    {},
-                    {
-                        extend: "excelHtml5",
-                        text: '<i class="fa fa-download "></i> Excel',
-                        className: "btn btn-sm btn-default border-secondary",
-                        title: title,
-                        exportOptions: {
-                            columns: columnArray
-                        }
-                    }
-                ),
-
-                $.extend(
-                    true,
-                    {},
-                    {
-                        extend: "pdfHtml5",
-                        text: '<i class="fa fa-download"></i> Pdf',
-                        className: "btn btn-sm btn-default border-secondary",
-                        title: title,
-                        exportOptions: {
-                            columns: columnArray
-                        }
-                    }
-                ),
-
-                $.extend(
-                    true,
-                    {},
-                    {
-                        extend: "print",
-                        exportOptions: {
-                            columns: columnArray,
-                            modifier: {
-                                selected: null
-                            }
-                        },
-                        text: '<i class="fa fa-save"></i> Print',
-                        className: "btn btn-sm btn-default border-secondary",
-                        title: title
-                    }
-                ),
-            ],
-              rowCallback: function(row, data, dataIndex) {
-                var rowId = data.id;
-                var rows_selected = 1;
-                if ($.inArray(rowId, rows_selected) !== -1) {
-                  $(row).find('input[type="checkbox"]').prop('checked', true);
-                  $(row).addClass('selected');
-                }
-              }
-        });
-    });
-}
-
-
 
 function makeDataTable(table, title, columnArray, dataColumns) {
 
@@ -104,7 +11,7 @@ function makeDataTable(table, title, columnArray, dataColumns) {
         processing: true,
         stateSave: false,
         pageLength: 15,
-        ordering: false,
+        ordering: true,
         "lengthMenu": [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
         buttons: [
             // {
@@ -192,6 +99,9 @@ function makeDataTable(table, title, columnArray, dataColumns) {
 }
 
 
+
+
+
 function makeDataTable2(table, title, columnArray, dataColumns) {
 
     oTable = $(table).dataTable({
@@ -255,6 +165,100 @@ function makeDataTable2(table, title, columnArray, dataColumns) {
         order: [[0, "asc"]]
     });
 
+}
+
+
+function makeDataTabless(table, title, columnArray, dataColumns) {
+    $(document).ready(function () {
+        $(table).DataTable({
+            "paging": true,
+            "dom":
+                "<'row'<'col-sm-1'l><'col-sm-8 pb-3 text-center'B><'col-sm-3'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "processing": true,
+            "stateSave": false,
+            "serverSide": true,
+            "searching": true,
+            "info": false,
+            "pageLength": 15,
+            "lengthMenu": [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
+            "columnDefs": [{
+                "targets": '_all',
+                "orderable": false,
+                "searchable": false
+            }],
+            "columnDefs": [{
+                "targets": 0,
+                "checkboxes": {
+                    "selectRow": true
+                }
+            }],
+            "select": {
+                "style": 'multi'
+            },
+            "order": [
+                [1, 'asc']
+            ],
+            "ajax": ajaxUrl,
+            "columns": dataColumns,
+            "buttons": [
+
+                $.extend(
+                    true,
+                    {},
+                    {
+                        extend: "excelHtml5",
+                        text: '<i class="fa fa-download "></i> Excel',
+                        className: "btn btn-sm btn-default border-secondary",
+                        title: title,
+                        exportOptions: {
+                            columns: columnArray
+                        }
+                    }
+                ),
+
+                $.extend(
+                    true,
+                    {},
+                    {
+                        extend: "pdfHtml5",
+                        text: '<i class="fa fa-download"></i> Pdf',
+                        className: "btn btn-sm btn-default border-secondary",
+                        title: title,
+                        exportOptions: {
+                            columns: columnArray
+                        }
+                    }
+                ),
+
+                $.extend(
+                    true,
+                    {},
+                    {
+                        extend: "print",
+                        exportOptions: {
+                            columns: columnArray,
+                            modifier: {
+                                selected: null
+                            }
+                        },
+                        text: '<i class="fa fa-save"></i> Print',
+                        className: "btn btn-sm btn-default border-secondary",
+                        title: title
+                    }
+                ),
+            ],
+              rowCallback: function(row, data, dataIndex) {
+                var rowId = data.id;
+                var rows_selected = 1;
+                if ($.inArray(rowId, rows_selected) !== -1) {
+                  $(row).find('input[type="checkbox"]').prop('checked', true);
+                  $(row).addClass('selected');
+                }
+              }
+        });
+    });
 }
 
 

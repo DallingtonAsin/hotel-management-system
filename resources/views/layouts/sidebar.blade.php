@@ -170,10 +170,7 @@
 
                 <ul class="nav-sub">
 
-                    @haspermission(config('permissions')['view_frequent_contacts'])
-                        <li class="nav-sub-item"><a href="{{ Route('frequent-contacts.index') }}"
-                                class="nav-sub-link">Frequent contacts</a> </li>
-                    @endhaspermission
+            
 
                     <li class="nav-item">
 
@@ -203,6 +200,11 @@
                             @haspermission(config('permissions')['view_guest_types'])
                                 <li class="nav-sub-item"><a href="{{ Route('guest_types.index') }}"
                                         class="nav-sub-link">Guest types</a></li>
+                            @endhaspermission
+
+                            @haspermission(config('permissions')['view_frequent_contacts'])
+                            <li class="nav-sub-item"><a href="{{ Route('frequent-contacts.index') }}"
+                                    class="nav-sub-link">Frequent contacts</a> </li>
                             @endhaspermission
 
                         </ul>
@@ -261,14 +263,14 @@
                                         class="nav-sub-link">Currencies</a></li>
                             @endhaspermission
 
-                            @haspermission(config('permissions')['view_salaries'])
-                                <li class="nav-sub-item"><a href="{{ Route('salary.index') }}"
-                                        class="nav-sub-link">Salaries</a></li>
+                            @haspermission(config('permissions')['view_payments'])
+                                <li class="nav-sub-item"><a href="{{ Route('staff-payments.index') }}"
+                                        class="nav-sub-link">Staff Payments</a></li>
                             @endhaspermission
 
-                            @haspermission(config('permissions')['view_payments'])
-                                <li class="nav-sub-item"><a href="{{ Route('payments.index') }}"
-                                        class="nav-sub-link">Payments</a></li>
+                            @haspermission(config('permissions')['view_salaries'])
+                            <li class="nav-sub-item"><a href="{{ Route('payment-categories.index') }}"
+                                    class="nav-sub-link">Payment Categories</a></li>
                             @endhaspermission
 
                         </ul>

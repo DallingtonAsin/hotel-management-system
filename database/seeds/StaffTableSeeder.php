@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
+use App\Models\Staff;
 
 class StaffTableSeeder extends Seeder
 {
@@ -12,7 +13,7 @@ class StaffTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Staff::factory()->count(15)->create();
-
+        Staff::factory()->count(15)->create();
+        Staff::where('id', 1)->update(['first_name' => 'Charity', 'last_name' => 'Manager', 'username' => 'admin']);
     }
 }

@@ -42,7 +42,7 @@ class ExpenseTypesDataTable extends DataTable
                 return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>'; 
             })->editColumn('created_by', function($data){
                 return Helper::getUserNames($data->created_by);
-            }) ->rawColumns(['action', 'is_deleted']);
+            })->rawColumns(['action', 'is_deleted']);
     }
 
     /**

@@ -2,11 +2,10 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="{{ config('app.name') }}">
-    <meta name="author" content="DallingtonCompanies">
+    <meta name="author" content="PivoSoftLtd">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title><?= isset($companyData) ? $companyData['company_name'] : env('APP_NAME') ?></title>
 
@@ -41,7 +40,6 @@
     <script src="{{ asset('vendors/js/jquery.flot.resize.js') }}"></script>
     <script src="{{ asset('vendors/js/sidebar-dropdown.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap/js/bootstrap.bundle-5.0.2.min.js') }}"></script>
-
 
     <script src="{{ asset('vendors/js/azia.js') }}"></script>
     <script src="{{ asset('js/custom/datatables.js') }}"></script>

@@ -27,7 +27,7 @@ class StaffFactory extends Factory
 
     $department_id = $this->faker->randomElement([1, 2, 3, 4, 5, 6]);
     $staff_id = Helper::generateStaffId($department_id);
-
+    $default_password = "admin@123";
 
     return [
       'first_name' => $this->faker->firstName,
@@ -47,7 +47,7 @@ class StaffFactory extends Factory
       'next_of_kin'  => $this->faker->name,
       'email_verified_at' => now(),
       'image' => NULL,
-      'password' => Hash::make('12345678'),
+      'password' => Hash::make($default_password),
       'remember_token' => Str::random(10),
     ];
   }
