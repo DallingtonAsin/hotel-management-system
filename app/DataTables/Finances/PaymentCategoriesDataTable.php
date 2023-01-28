@@ -26,7 +26,7 @@ class PaymentCategoriesDataTable extends DataTable
 
                 $btn = "";
 
-                $btn .= '<a href="javascript:void(0);" id="view-payment-category" 
+                $btn .= '<a href="javascript:void(0);" id="edit-payment-category" 
                     data-toggle="tooltip" data-original-title="edit details"
                     data-id="' . $category->id . '" data-status="{{$status}}"
                      class="px-3 py-1 border border-primary rounded mr-2 text-primary"><i class="fa fa-pen"></i></a>';

@@ -161,7 +161,7 @@ class CommodityCategoryController extends Controller
                 return response()->json(['error' => $message]);
             } else {
 
-                $method = "CommodityCategoryController@store";
+                $method = "CommodityCategoryController@update";
 
                 $category_name = $request->input('category_name');
                 $category_code = $request->input('category_code');

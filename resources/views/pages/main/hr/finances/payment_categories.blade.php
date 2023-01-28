@@ -74,7 +74,8 @@
 
                         <div class="form-group">
                             <span><span class="text-danger pr-1">*</span>Category name</span>
-                            <input type="text" class="form-control category_name" name="category_name"  placeholder="Enter category name">
+                            <input type="text" class="form-control category_name" name="category_name"
+                                placeholder="Enter category name">
                         </div>
 
                         <div class="form-group">
@@ -87,7 +88,8 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" id="addPaymentCategoryBtn" name="submit">Save</button>
+                            <button type="submit" class="btn btn-primary" id="addPaymentCategoryBtn"
+                                name="submit">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
                         </div>
 
@@ -97,7 +99,7 @@
         </div>
     </div>
 
- 
+
 
 
     <!--Modal Delete Payment Category -->
@@ -137,7 +139,7 @@
         </div>
     </div> <!-- end of modal DeleteExpenses-->
 
- 
+
     <script>
         const ajaxUrl = @json(route('payments.categories.ajax.fetch'));
         const cat = 'payment-categories';
@@ -157,8 +159,13 @@
             let title = "List of recorded payment categories in the system";
             let columns = [0, 1, 2, 3];
             let dataColumns = [
-             
-                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
                 {
                     data: 'name',
                     name: 'name'
@@ -171,7 +178,7 @@
                     data: 'is_deleted',
                     name: 'is_deleted'
                 },
-                
+
                 {
                     data: 'created_by',
                     name: 'created_by'
@@ -191,7 +198,8 @@
                 checkPermission(permissions.create_payments, function(payment_category) {
                     DisableFormFields(false);
                     ShowBtns();
-                    $('#addPaymentCategoryBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('#addPaymentCategoryBtn').html(
+                        "<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('.category_id').val('');
                     $('#PaymentCategoriesForm').trigger("reset");
                     $('#modalHeading').html("Add new payment category");
@@ -199,6 +207,9 @@
                 });
             });
 
+            $('.modal').on('hidden.bs.modal', function() {
+                $('.category_id').val('');
+            });
 
             //modal used to edit payment category details [each row of the tbl]
             $('body').on('click', '#edit-payment-category', function(event) {
@@ -210,13 +221,18 @@
             });
 
             function editExpense(category_id) {
-                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of payment category " + data.name + "");
-                    $('#addPaymentCategoryBtn').text("Update");
-                    $('#addPaymentCategoryModal').modal('show');
-                    populatePaymentCatDetails(data);
-                    DisableFormFields(false);
-                    ShowBtns();
+                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Edit details of payment category " + data.name + "");
+                        $('#addPaymentCategoryBtn').text("Update");
+                        $('#addPaymentCategoryModal').modal('show');
+                        populatePaymentCatDetails(data);
+                        DisableFormFields(false);
+                        ShowBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -231,19 +247,24 @@
             });
 
             function viewExpense(category_id) {
-                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '', function(data) {
-                    $('#modalHeading').html("Details of payment category " + data.name + "");
-                    $('#addPaymentCategoryModal').modal('show');
-                    populatePaymentCatDetails(data);
-                    DisableFormFields(true);
-                    HideBtns();
+                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Details of payment category " + data.name + "");
+                        $('#addPaymentCategoryModal').modal('show');
+                        populatePaymentCatDetails(data);
+                        DisableFormFields(true);
+                        HideBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
-            function populatePaymentCatDetails(data){
-                    $('.category_id').val(data.id);
-                    $('.name').val(data.name);
-                    $('.transaction_type').val(data.transaction_type);
+            function populatePaymentCatDetails(data) {
+                $('.category_id').val(data.id);
+                $('.category_name').val(data.name);
+                $('.transaction_type').val(data.transaction_type);
             }
 
 
@@ -255,12 +276,13 @@
                 if (isValidForm) {
 
                     let id = $('.category_id').val();
-                    let url = "", method = "";
-                    if(id){
+                    let url = "",
+                        method = "";
+                    if (id) {
                         url = "{{ route('payment-categories.update', ':id') }}",
-                        url = url.replace(':id', id);
+                            url = url.replace(':id', id);
                         method = "PUT";
-                    }else{
+                    } else {
                         url = "{{ route('payment-categories.store') }}";
                         method = "POST";
                     }
@@ -277,14 +299,14 @@
                             let message = response.success || response.error;
                             let type = response.success ? 'success' : 'error';
 
-                            if(response.success){
+                            if (response.success) {
                                 let data = response.data;
-
                                 resetTblInfo(data);
                                 let tbl = $('.payment-categories-table').DataTable();
                                 tbl.ajax.reload();
                                 $('#PaymentCategoriesForm').trigger("reset");
                                 $('#addPaymentCategoryModal').modal("hide");
+                                $('.category_id').val('');
                             }
 
                             displayResponse(null, message, type);
@@ -295,7 +317,7 @@
                             $('#addPaymentCategoryBtn').html('Save Changes');
                         }
                     });
-                } 
+                }
 
             });
 
@@ -304,19 +326,22 @@
                 let category_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.cancel_payments, function(payment_category) {
-                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit', function(response) {
-                    if(response.success){
-                        let data = response.data;
-                        let action = data.is_deleted ? 'undelete' : 'delete';
-                        $("#deletePaymentCategoryModal").modal('show');
-                        $(".delete-alert-text").html(`Are you sure you want to ${action} payment category ${data.name}?`);
-                        $('.delete-ok-btn').on('click', function() {
-                            deleteRecord(category_id);
+                    $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit',
+                        function(response) {
+                            if (response.success) {
+                                let data = response.data;
+                                let action = data.is_deleted == 1 ? 'undelete' : 'delete';
+                                $("#deletePaymentCategoryModal").modal('show');
+                                $(".delete-alert-text").html(
+                                    `Are you sure you want to ${action} payment category ${data.name}?`
+                                );
+                                $('.delete-ok-btn').on('click', function() {
+                                    deleteRecord(category_id);
+                                });
+                            } else {
+                                displayResponse(null, response.error, 'error');
+                            }
                         });
-                    }else{
-                        displayResponse(null, response.error, 'error');
-                    }
-                });
                 });
             });
 
@@ -334,13 +359,14 @@
                         let message = response.success || response.error;
                         let type = response.success ? 'success' : 'error';
 
-                        if(response.success){
+                        if (response.success) {
                             let data = response.data;
                             $('.delete-ok-btn').html('Yes');
                             $('#deletePaymentCategoryModal').modal("hide");
                             resetTblInfo(data);
                             let tbl = $('.payment-categories-table').DataTable();
                             tbl.ajax.reload();
+                            $('.category_id').val('');
                         }
                         displayResponse(null, message, type);
                     },
@@ -352,8 +378,8 @@
             }
 
             function DisableFormFields(bool) {
-                $('.category_name').attr('readonly', bool);
-                $('.transaction_type').attr('readonly', bool);
+                $('.category_name').attr('disabled', bool);
+                $('.transaction_type').attr('disabled', bool);
             }
 
             function HideBtns() {
@@ -370,8 +396,8 @@
 
 
             function resetTblInfo(response) {
-                if(response.total){
-                  $('.total_no').html(FormatNumber(response.total));
+                if (response.total) {
+                    $('.total_no').html(FormatNumber(response.total));
                 }
             }
 
@@ -380,14 +406,12 @@
                 let category_name = $('.category_name').val();
                 let transaction_type = $('.transaction_type').val();
                 let isValidForm = false;
-                
+
                 if (category_name.length < 1) {
                     displayResponse(null, "Please enter payment category name", 'error');
-                }
-                else if (transaction_type.length < 1) {
+                } else if (transaction_type.length < 1) {
                     displayResponse(null, "Please select transaction type", 'error');
-                }
-                else{
+                } else {
                     isValidForm = true;
                 }
 
