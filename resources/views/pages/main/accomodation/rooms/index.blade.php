@@ -364,12 +364,9 @@
                     $('.addRoomBtn').click(function(e) {
 
                         e.preventDefault();
-                        // alert("Hey");
 
-
-                        let Errors = validateForm();
-                        // console.log('Errors', errors);
-                        if (Errors.length == 0) {
+                        let isValidForm = validateForm();
+                        if (isValidForm) {
                             $(this).html('Sending..');
 
                             $.ajax({
@@ -394,14 +391,6 @@
                                     $('.addRoomBtn').html('Save Changes');
                                 }
                             });
-                        } else {
-                            let i;
-                            let message = "";
-                            for (i = 0; i < Errors.length; i++) {
-                                message += Errors[i] + "<br>";
-                            }
-                            $('.errors-section').html(message);
-
                         }
 
                     });
@@ -482,33 +471,37 @@
                         }
 
                         function validateForm() {
+
                             let room_type = $('.room_types_section').val();
                             let room_number = $('.room_number').val();
                             let floor_number = $('.floor_number').val();
                             let status = $('.status').val();
                             let description = $('.description').val();
 
-                            let errors = [];
+                            let isValidForm = false;
+
                             if (room_type.length < 1) {
-                                errors.push("Please enter room type");
+                                displayResponse(null, "Please select room type", "error");
                             }
-                            if (room_number.length < 1) {
-                                errors.push("Please enter room number");
+                            else if (room_number.length < 1) {
+                                displayResponse(null, "Please enter room number", "error");
                             }
-                            if (floor_number.length < 1) {
-                                errors.push("Please enter floor number on which the room is located");
-                            }
-
-                            if (status.length < 1) {
-                                errors.push("Please select room status");
+                            else if (floor_number.length < 1) {
+                                displayResponse(null, "Please enter floor number on which the room is located", "error");
                             }
 
-                            return errors;
+                            else if (status.length < 1) {
+                                displayResponse(null, "Please select room status", "error");
+                            }
+
+                            else {
+                                isValidForm = true;
+                            }
+
+                            return isValidForm;
 
                         }
 
                     });
     </script>
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection
