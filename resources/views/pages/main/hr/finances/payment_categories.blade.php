@@ -348,7 +348,7 @@
 
             function deleteRecord(id) {
 
-                let url = '{{ route('payment-categories.destroy', ':id') }}';
+                let url = "{{ route('payment-categories.destroy', ':id') }}";
                 url = url.replace(':id', id);
 
                 $('.delete-ok-btn').html('Deleting...');

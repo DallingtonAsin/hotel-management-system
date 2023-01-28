@@ -44,9 +44,22 @@ class StaffPaymentRepository
         return $staffPayment; 
     }
     
-
     public function count(){
         return $this->staffPayment->count();
+    }
+
+    public function checkIfPaymentExists($staff_id, $category_id, $date){
+        return $this->staffPayment->where('staff_id', $staff_id)
+                     ->where('payment_category_id', $category_id)
+                     ->where('payment_date', $date)
+                     ->exists();
+    }
+
+    public function checkIfPaymentExistsonUpdate($id, $staff_id, $category_id, $date){
+        return $this->staffPayment->where('id', '!=', $id)->where('staff_id', $staff_id)
+                     ->where('payment_category_id', $category_id)
+                     ->where('payment_date', $date)
+                     ->exists();
     }
 
 }

@@ -29,14 +29,15 @@ class StaffPaymentsDataTable extends DataTable
 
                 $btn = "";
 
-                $btn .= '<a href="javascript:void(0);" id="view-payment" 
-            data-toggle="tooltip" data-original-title="view details"
-            data-id="' . $payment->id . '" data-status="{{$status}}"
-             class="px-3 py-1 border border-secondary rounded mr-2 text-secondary">view</a>';
+                $btn .= '<a href="javascript:void(0);" id="edit-staff-payment" data-toggle="tooltip" data-original-title="edit details" data-id="' . $payment->id . '" 
+                class="px-3 py-1 border border-secondary rounded mr-2 text-secondary">edit</a>';
 
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-             data-id="' . $payment->id . '" data-original-title="Download Invoice" id="edit-payment"
-             class="px-3 py-1 border border-danger rounded text-danger ml-2">delete</a>';
+                $btn .= '<a href="javascript:void(0);" id="view-staff-payment" 
+                         data-toggle="tooltip" data-original-title="view details" data-id="' . $payment->id . '"
+                         class="px-3 py-1 border border-secondary rounded mr-2 text-secondary">view</a>';
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $payment->id . '" data-original-title="Delete payment" id="delete-staff-payment"
+                         class="px-3 py-1 border border-danger rounded text-danger ml-2">delete</a>';
 
                 return $btn;
             })->addColumn('employee_name', function($data){
@@ -105,9 +106,10 @@ class StaffPaymentsDataTable extends DataTable
         return [
             'id',
             'staff_id',
-            'payment_payment_id',
+            'payment_category_id',
             'amount',
             'payment_date',
+            'is_deleted',
             'created_by'
         ];
     }

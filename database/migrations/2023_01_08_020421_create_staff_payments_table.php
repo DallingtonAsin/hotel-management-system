@@ -19,7 +19,7 @@ class CreateStaffPaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('staff_id');
             $table->unsignedBigInteger('payment_category_id');
-            $table->decimal('amount', 8, 2);
+            $table->double('amount');
             $table->date('payment_date'); 
             $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('created_by')->unsigned();

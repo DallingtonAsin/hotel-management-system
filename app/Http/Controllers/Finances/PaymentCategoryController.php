@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 
-
 class PaymentCategoryController extends Controller
 {
 

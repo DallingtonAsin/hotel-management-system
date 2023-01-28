@@ -19,7 +19,7 @@ class PaymentCategoriesDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->order(function($query){
+            ->order(function ($query) {
                 $query->orderBy('id', 'desc');
             })->addIndexColumn()
             ->addColumn('action', function ($category) {
@@ -31,14 +31,14 @@ class PaymentCategoriesDataTable extends DataTable
                     data-id="' . $category->id . '" data-status="{{$status}}"
                      class="px-3 py-1 border border-primary rounded mr-2 text-primary"><i class="fa fa-pen"></i></a>';
 
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                     data-id="' . $category->id . '" data-original-title="Delete Payment Category" id="delete-payment-category"
+                     class="px-3 py-1 border border-danger rounded text-danger ml-2"><i class="fa fa-trash-alt"></i></a>';
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                      data-id="' . $category->id . '" data-original-title="View Payment Category" id="view-payment-category"
                      class="px-3 py-1 border border-secondary rounded text-secondary ml-2"><i class="fa fa-eye"></i></a>';
 
-                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                     data-id="' . $category->id . '" data-original-title="Delete Payment Category" id="delete-payment-category"
-                     class="px-3 py-1 border border-danger rounded text-danger ml-2"><i class="fa fa-trash-alt"></i></a>';
 
                 return $btn;
             })->editColumn('is_deleted', function ($data) {
@@ -102,6 +102,6 @@ class PaymentCategoriesDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Finances/PaymentCategories_' . date('YmdHis');
+        return 'PaymentCategories_' . date('YmdHis');
     }
 }
