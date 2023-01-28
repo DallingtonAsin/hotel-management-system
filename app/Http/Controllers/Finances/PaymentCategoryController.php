@@ -6,6 +6,11 @@ use App\DataTables\Finances\PaymentCategoriesDataTable;
 use App\Repositories\PaymentCategoryRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Helpers\Helper;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class PaymentCategoryController extends Controller
 {
@@ -50,7 +55,58 @@ class PaymentCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'category_name' => 'required',
+            'transaction_type' => 'required'
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
+
+                $method = "PaymentCategoryController@store";
+
+                $category_name = $request->input('category_name');
+                $transaction_type = $request->input('transaction_type');
+
+                if ($this->paymentCategoryRepository->existsPaymentCategory($category_name)) {
+                    return response()->json(['error' => 'Payment category with code ' . $category_name . ' already exists']);
+                } else {
+
+                    $payment_category = [
+                        'name' => $category_name,
+                        'transaction_type' => $transaction_type,
+                        'created_by' => Auth::user()->id,
+                    ];
+
+                    if ($this->paymentCategoryRepository->create($payment_category)) {
+                        $action = "added payment category " . $category_name . "";
+
+                        Helper::logger($request, $action, now());
+                        $dataArr = ["code" => '200', "message" => $action, "method" => $method];
+                        Helper::LogRequest($request, $dataArr);
+
+                        $message = Helper::ActionMessage($action);
+                        $arr['total'] = $this->paymentCategoryRepository->count();
+
+                        return response()->json(['success' => $message,  'data' => $arr]);
+                    } else {
+
+                        $error = 'System has failed to add payment category';
+                        $dataArr = ["code" => '101', "message" => $error,  "method" => $method];
+
+                        Helper::LogRequest($request, $dataArr);
+                        $message = Helper::FailedMessage($error);
+
+                        return response()->json(['error' => $message]);
+                    }
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
     }
 
     /**

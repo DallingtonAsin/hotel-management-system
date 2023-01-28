@@ -49,4 +49,12 @@ class PaymentCategoryRepository
         return $this->paymentCategory->count();
     }
 
+    public function existsPaymentCategory($name){
+            return $this->paymentCategory->where('name', $name)->exists();
+    }
+
+    public function checkPaymentCategoryonUpdate($id, $name){
+            return $this->paymentCategory->where('id', '!=', $id)->where('name', $name)->exists();
+    }
+
 }

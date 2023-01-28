@@ -8,7 +8,7 @@
                 <h6 class="text-left text-dark">
                     <i class="fa fa-home text-success"> /</i>
                     <strong>Payment Categories</strong>
-                    <span class="badge badge-info totl_no">
+                    <span class="badge badge-info total_no">
                         @isset($total_categories)
                             {{ number_format($total_categories) }}
                         @endisset
@@ -50,7 +50,7 @@
 
 
     <!--Add payment categories -->
-    <div class="modal fade nunito-font" id="addExpensesModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade nunito-font" id="addPaymentCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
@@ -68,32 +68,27 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control expense_id  expense_id" name="id"
-                                placeholder="Enter expense id" Required autofocus>
+                            <input type="hidden" class="form-control category_id" name="category_id">
                         </div>
 
 
                         <div class="form-group">
-                            <span><span class="text-danger pr-1">*</span>Amount</span>
-                            <input type="text" class="form-control amount " name="expenditure_amount"
-                                placeholder="Amount in shs." Required autofocus>
-
+                            <span><span class="text-danger pr-1">*</span>Category name</span>
+                            <input type="text" class="form-control category_name" name="category_name"  placeholder="Enter category name">
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger pr-1">*</span>Date</span>
-                            <input type="date" class="form-control date " value="{{ date('Y-m-d') }}"
-                                name="date_of_expense" placeholder="Enter cost of expense" Required autofocus>
+                            <span><span class="text-danger pr-1">*</span>Transaction Type</span>
+                            <select name="transaction_type" class="form-control transaction_type">
+                                <option value="">Select transaction type</option>
+                                <option value="credit">Credit</option>
+                                <option value="debt">Debt</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" id="addExpensesBtn"
-                                name="AddExpenseBtn">Save</button>
+                            <button type="submit" class="btn btn-primary" id="addPaymentCategoryBtn" name="submit">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                        </div>
-
-                        <div class="form-group">
-                            <span class="errors-section text-danger nunito-font"></span>
                         </div>
 
                     </div>
@@ -193,87 +188,80 @@
 
             $('#createNewPaymentCategory').click(function(e) {
                 e.preventDefault();
-                checkPermission(permissions.add_expenses, function(expense) {
+                checkPermission(permissions.create_payments, function(payment_category) {
                     DisableFormFields(false);
                     ShowBtns();
-                    $('#addExpensesBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('.expense_id').val('');
+                    $('#addPaymentCategoryBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                    $('.category_id').val('');
                     $('#PaymentCategoriesForm').trigger("reset");
-                    $('#modalHeading').html("Record new expense");
-                    $('#addExpensesModal').modal('show');
+                    $('#modalHeading').html("Add new payment category");
+                    $('#addPaymentCategoryModal').modal('show');
                 });
             });
 
-            function SanitizeString(str) {
-                let newStr = str.replace(/,/g, '').trim();
-                return newStr;
-            }
 
-            Numberize(".amount");
-
-            //modal used to edit expenses details [each row of the tbl]
-            $('body').on('click', '#edit-expense', function(event) {
-                let expense_id = $(this).data('id');
+            //modal used to edit payment category details [each row of the tbl]
+            $('body').on('click', '#edit-payment-category', function(event) {
+                let category_id = $(this).data('id');
                 event.preventDefault();
-                checkPermission(permissions.edit_expenses, function(expense) {
-                    editExpense(expense_id);
+                checkPermission(permissions.edit_payments, function(payment_category) {
+                    editExpense(category_id);
                 });
             });
 
-            function editExpense(expense_id) {
-                $.get("{{ route('expenses.index') }}" + '/' + expense_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of expense " + data.type_name + "");
-                    $('#addExpensesBtn').text("Edit expense");
-                    $('#addExpensesModal').modal('show');
-                    populateExpenseDetails(data);
+            function editExpense(category_id) {
+                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit', function(data) {
+                    $('#modalHeading').html("Edit details of payment category " + data.name + "");
+                    $('#addPaymentCategoryBtn').text("Update");
+                    $('#addPaymentCategoryModal').modal('show');
+                    populatePaymentCatDetails(data);
                     DisableFormFields(false);
                     ShowBtns();
                 });
             }
 
 
-            //View Modal used to view each row [expenses details]
-            $('body').on('click', '#view-expense', function(event) {
-                let expense_id = $(this).data('id');
+            //View Modal used to view each row 
+            $('body').on('click', '#view-payment-category', function(event) {
+                let category_id = $(this).data('id');
                 event.preventDefault();
-                checkPermission(permissions.view_expenses, function(expense) {
-                    viewExpense(expense_id);
+                checkPermission(permissions.view_payments, function(payment_category) {
+                    viewExpense(category_id);
                 });
             });
 
-            function viewExpense(expense_id) {
-                $.get("{{ route('expenses.index') }}" + '/' + expense_id + '', function(data) {
-                    $('#modalHeading').html("Details of expense " + data.type_name + "");
-                    $('#addExpensesModal').modal('show');
-                    populateExpenseDetails(data);
+            function viewExpense(category_id) {
+                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '', function(data) {
+                    $('#modalHeading').html("Details of payment category " + data.name + "");
+                    $('#addPaymentCategoryModal').modal('show');
+                    populatePaymentCatDetails(data);
                     DisableFormFields(true);
                     HideBtns();
                 });
             }
 
-            function populateExpenseDetails(data){
-                    $('.expense_id').val(data.id);
-                    $('.expense').val(data.type_id);
-                    $('.amount').val(FormatNumber(data.amount));
-                    $('.date').val(data.date_of_expenditure);
+            function populatePaymentCatDetails(data){
+                    $('.category_id').val(data.id);
+                    $('.name').val(data.name);
+                    $('.transaction_type').val(data.transaction_type);
             }
 
 
-            $('#addExpensesBtn').click(function(e) {
+            $('#addPaymentCategoryBtn').click(function(e) {
 
                 e.preventDefault();
                 let isValidForm = validateForm();
 
                 if (isValidForm) {
 
-                    let id = $('.expense_id').val();
+                    let id = $('.category_id').val();
                     let url = "", method = "";
                     if(id){
-                        url = "{{ route('expenses.update', ':id') }}",
+                        url = "{{ route('payment-categories.update', ':id') }}",
                         url = url.replace(':id', id);
                         method = "PUT";
                     }else{
-                        url = "{{ route('expenses.store') }}";
+                        url = "{{ route('payment-categories.store') }}";
                         method = "POST";
                     }
 
@@ -288,14 +276,15 @@
 
                             let message = response.success || response.error;
                             let type = response.success ? 'success' : 'error';
+
                             if(response.success){
                                 let data = response.data;
 
-                                ResetTblInfo(data);
+                                resetTblInfo(data);
                                 let tbl = $('.payment-categories-table').DataTable();
                                 tbl.ajax.reload();
                                 $('#PaymentCategoriesForm').trigger("reset");
-                                $('#addExpensesModal').modal("hide");
+                                $('#addPaymentCategoryModal').modal("hide");
                             }
 
                             displayResponse(null, message, type);
@@ -303,7 +292,7 @@
                         error: function(data) {
                             console.log('Error:', data.error);
                             displayResponse(null, data.error, 'error');
-                            $('#addExpensesBtn').html('Save Changes');
+                            $('#addPaymentCategoryBtn').html('Save Changes');
                         }
                     });
                 } 
@@ -311,15 +300,15 @@
             });
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-expense', function(e) {
-                let expense_id = $(this).data("id");
+            $('body').on('click', '#delete-payment-category', function(e) {
+                let category_id = $(this).data("id");
                 e.preventDefault();
-                checkPermission(permissions.delete_expenses, function(expense) {
-                $.get("{{ route('expenses.index') }}" + '/' + expense_id + '/edit', function(data) {
+                checkPermission(permissions.delete_payments, function(payment_category) {
+                $.get("{{ route('payment-categories.index') }}" + '/' + category_id + '/edit', function(data) {
                     $("#deletePaymentCategoryModal").modal('show');
-                    $(".delete-alert-text").html(`Are you sure you want to delete expense ${data.type_name}?`);
+                    $(".delete-alert-text").html(`Are you sure you want to delete payment category ${data.name}?`);
                     $('.delete-ok-btn').on('click', function() {
-                        deleteRecord(expense_id);
+                        deleteRecord(category_id);
                     });
                 });
                 });
@@ -328,7 +317,7 @@
 
             function deleteRecord(id) {
 
-                let url = '{{ route('expenses.destroy', ':id') }}';
+                let url = '{{ route('payment-categories.destroy', ':id') }}';
                 url = url.replace(':id', id);
 
                 $('.delete-ok-btn').html('Deleting...');
@@ -343,7 +332,7 @@
                             let data = response.data;
                             $('.delete-ok-btn').html('Yes');
                             $('#deletePaymentCategoryModal').modal("hide");
-                            ResetTblInfo(data);
+                            resetTblInfo(data);
                             let tbl = $('.payment-categories-table').DataTable();
                             tbl.ajax.reload();
                         }
@@ -356,52 +345,41 @@
                 });
             }
 
-
-
-
             function DisableFormFields(bool) {
-                $('.expense').attr('disabled', bool);
-                $('.amount').attr('disabled', bool);
-                $('.date').attr('disabled', bool);
+                $('.category_name').attr('readonly', bool);
+                $('.transaction_type').attr('readonly', bool);
             }
 
             function HideBtns() {
-                $('#addExpensesBtn').hide();
+                $('#addPaymentCategoryBtn').hide();
                 $('.clearBtn').hide();
                 $('.closeBtn').hide();
             }
 
             function ShowBtns() {
-                $('#addExpensesBtn').show();
+                $('#addPaymentCategoryBtn').show();
                 $('.clearBtn').show();
                 $('.closeBtn').show();
             }
 
 
-            function ResetTblInfo(response) {
-                let totl_amt, totl_no;
-                totl_no = FormatNumber(response.total);
-                totl_amt = FormatNumber(response.value);
-                $('.totl_no').html(totl_no)
-                $('.totl_amt').html(totl_amt);
+            function resetTblInfo(response) {
+                if(response.total){
+                  $('.total_no').html(FormatNumber(response.total));
+                }
             }
 
             function validateForm() {
 
-                let expense = $('.expense').val();
-                let amt = $('.amount').val();
-                let date = $('.date').val();
+                let category_name = $('.category_name').val();
+                let transaction_type = $('.transaction_type').val();
                 let isValidForm = false;
                 
-                if (expense.length < 1) {
-                    displayResponse(null, "Please select expense type", 'error');
+                if (category_name.length < 1) {
+                    displayResponse(null, "Please enter payment category name", 'error');
                 }
-                else if (!amt) {
-                    displayResponse(null, "Please enter the amount", 'error');
-                }
-
-                else if (!Date.parse(date)) {
-                    displayResponse(null, "Please enter a valid date of expenditure", 'error');
+                else if (transaction_type.length < 1) {
+                    displayResponse(null, "Please select transaction type", 'error');
                 }
                 else{
                     isValidForm = true;
@@ -410,67 +388,6 @@
                 return isValidForm;
             }
 
-            function isValidDate(value) {
-                let re =
-                    /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-.\/])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/;
-                let flag = re.test(value);
-                return flag;
-            }
-
-
-            $("#removeAllExpenses").bind("click", function() {
-                RemoveAllExpenses();
-            });
-
-            function RemoveAllExpenses() {
-                $.confirm({
-                    boxWidth: '30%',
-                    icon: 'fa fa-warning',
-                    theme: 'light',
-                    closeIcon: true,
-                    draggable: true,
-                    closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all expenses',
-                    content: 'Are you sure you want to remove all expenses',
-                    buttons: {
-                        confirm: function() {
-                            let self = this;
-                            return $.ajax({
-                                data: {
-                                    "_token": "{{ csrf_token() }}",
-                                },
-                                url: '{{ Route('expenses.truncate') }}',
-                                type: 'POST',
-                                // dataType: 'json',
-                            }).done(function(data) {
-
-                                $.alert({
-                                    title: 'Message',
-                                    content: data.success,
-                                });
-                                $(".totl_no").text(data.totl_no);
-                                $(".totl_amt").text(data.totl_expenses);
-                                let tbl = $('.payment-categories-table').DataTable();
-                                tbl.ajax.reload();
-
-
-                            }).fail(function(data) {
-                                $.alert({
-                                    title: 'Response',
-                                    content: "Expenses not deleted:" + data.fail,
-                                });
-                                console.log(data);
-
-                            });
-
-                        },
-                        cancel: function() {
-
-                        }
-                    },
-                });
-
-            }
         });
     </script>
 @endsection

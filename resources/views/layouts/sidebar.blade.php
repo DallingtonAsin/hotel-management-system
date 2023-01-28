@@ -170,10 +170,7 @@
 
                 <ul class="nav-sub">
 
-                    @haspermission(config('permissions')['view_frequent_contacts'])
-                        <li class="nav-sub-item"><a href="{{ Route('frequent-contacts.index') }}"
-                                class="nav-sub-link">Frequent contacts</a> </li>
-                    @endhaspermission
+            
 
                     <li class="nav-item">
 
@@ -203,6 +200,11 @@
                             @haspermission(config('permissions')['view_guest_types'])
                                 <li class="nav-sub-item"><a href="{{ Route('guest_types.index') }}"
                                         class="nav-sub-link">Guest types</a></li>
+                            @endhaspermission
+
+                            @haspermission(config('permissions')['view_frequent_contacts'])
+                            <li class="nav-sub-item"><a href="{{ Route('frequent-contacts.index') }}"
+                                    class="nav-sub-link">Frequent contacts</a> </li>
                             @endhaspermission
 
                         </ul>
