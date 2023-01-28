@@ -35,27 +35,25 @@
 
                         <div class="row form-group">
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <span><span class="text-danger pr-1">*</span>Primary Tel No.</span>
                                 <input type="text" class="form-control phone_number " name="phone_number"
                                     placeholder="Enter primary telephone number" required autofocus>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <span>Other Tel No.</span>
-                                <input type="text" class="form-control other_phone_number "
-                                    name="other_phone_number" placeholder="Enter other telephone number">
+                                <input type="text" class="form-control other_phone_number " name="other_phone_number"
+                                    placeholder="Enter other phone number">
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <span><span class="text-danger pr-1">*</span>Address</span>
                                 <input type="text" class="form-control address " name="address"
                                     placeholder="Enter address" required autofocus>
                             </div>
-                        </div>
 
-                        <div class="row form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <span><span class="text-danger pr-1">*</span>Gender</span>
                                 <select class="form-control gender " name="gender">
                                     <option value="">Select gender</option>
@@ -64,12 +62,8 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-6">
-                                <span> Email</span>
-                                <input type="email" class="form-control email " name="email"
-                                    placeholder="Enter email">
-                            </div>
                         </div>
+
 
                         <div class="row form-group">
                             <div class="col-md-3">
@@ -99,8 +93,24 @@
                         </div>
 
                         <div class="row form-group">
+                            <div class="col-md-4">
+                                <span> Email</span>
+                                <input type="email" class="form-control email " name="email" placeholder="Enter email">
+                            </div>
 
+                            <div class="col-md-4">
+                                <span> Bank A/C No.</span>
+                                <input type="text" class="form-control bank_account_number" name="bank_account_number"
+                                    placeholder="Enter bank account number">
+                            </div>
+
+                            <div class="col-md-4">
+                                <span>Salary</span>
+                                <input type="text" class="form-control salary " name="salary"
+                                    placeholder="Enter salary">
+                            </div>
                         </div>
+
 
 
                         <div class="row form-group">
@@ -117,7 +127,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Designation</span>
-                                    <select class="form-control  designation_section" name="designation">
+                                    <select class="form-control designation_section" name="designation">
                                         <option value="">Select designation</option>
                                     </select>
                                 </div>
@@ -127,8 +137,8 @@
                                 <span><span class="text-danger pr-1">*</span>Staff Type</span>
                                 <select class="form-control staff_type " name="staff_type">
                                     <option value="">Select staff type</option>
-                                    <option value="permanent">Permanent</option>
-                                    <option value="temporary">Temporary</option>
+                                    <option value="Permanent">Permanent</option>
+                                    <option value="Temporary">Temporary</option>
                                 </select>
                             </div>
 
@@ -136,20 +146,17 @@
                                 <span><span class="text-danger pr-1">*</span>Status</span>
                                 <select class="form-control status " name="status">
                                     <option value="">Select status</option>
-                                    <option value="Available" selected="true">Available</option>
-                                    <option value="On Duty">On Duty</option>
-                                    <option value="On Leave">On Leave</option>
+                                    @foreach (config('staff-statuses') as $key => $value)
+                                    <option value="{{ ucwords($value) }}">{{ ucwords(str_replace('_', ' ', $value)) }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-
-                            <span class="errors-section text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <button type="button" class="btn btn-primary addStaffBtn" id="addStaffBtn"
                                 name="addStaffBtn"><i class="fa fa-plus-circle pr-1"></i>Save</button>
-                            <button type="reset" class="btn btn-danger"><i
-                                    class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
+                            <button type="reset" class="btn btn-danger clearBtn"><i class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
 
                             <span class="response"></span>
                         </div>
@@ -299,8 +306,7 @@
             let table = $('#staff-table');
             let title = "List of registered staff in the system";
             let columns = [0, 1];
-            let dataColumns = [
-                {
+            let dataColumns = [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,
@@ -356,6 +362,7 @@
             ];
 
             makeDataTable(table, title, columns, dataColumns);
+            Numberize('.salary');
 
             $('body').on('click', '#edit-permissions', function(event) {
                 let staff_id = $(this).data('id');
@@ -455,18 +462,7 @@
                     $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
                     $('.addStaffBtn').text("Edit staff");
                     $('#addStaffModal').modal('show');
-                    $('.userId').val(data.id);
-                    $('.first_name').val(data.first_name);
-                    $('.last_name').val(data.last_name);
-                    $('.address').val(data.address);
-                    $('.email').val(data.email);
-                    $('.employee_id').val(data.staff_id);
-                    $('.nin').val(data.nationalID_no);
-                    $('.phone_number').val(data.phone_number);
-                    $('.other_phone_number').val(data.other_phone_number);
-                    $('.designation_section').val(data.designation_id);
-                    $('.departments_section').val(data.department_id);
-                    $('.gender').val(data.gender);
+                    populateStaffDetails(data);
                     DisableTableFields(false);
                     ShowBtns();
                 });
@@ -487,22 +483,36 @@
 
                     $('#modalHeading').html(`Details of staff ${data.first_name} ${data.last_name} `);
                     $('#addStaffModal').modal('show');
-                    $('.userId').val(data.id);
-                    $('.first_name').val(data.first_name);
-                    $('.last_name').val(data.last_name);
-                    $('.address').val(data.address);
-                    $('.email').val(data.email);
-                    $('.employee_id').val(data.staff_id);
-                    $('.nin').val(data.nationalID_no);
-                    $('.phone_number').val(data.phone_number);
-                    $('.other_phone_number').val(data.other_phone_number);
-                    $('.designation_section').val(data.designation_id);
-                    $('.departments_section').val(data.department_id);
-                    $('.gender').val(data.gender);
+                    populateStaffDetails(data);
                     DisableTableFields(true);
                     HideBtns();
                 });
 
+            }
+
+            function populateStaffDetails(data) {
+                console.log('Staff details', data);
+                $('.userId').val(data.id);
+                $('.first_name').val(data.first_name);
+                $('.last_name').val(data.last_name);
+                $('.address').val(data.address);
+                $('.email').val(data.email);
+                $('.employee_id').val(data.staff_id);
+                $('.nin').val(data.nin);
+                $('.phone_number').val(data.phone_number);
+                $('.other_phone_number').val(data.other_phone_number);
+                $('.staff_type').val(data.type);
+                $('.status').val(data.status);
+                $('.tin_number').val(data.tin_number);
+                $('.nssf_number').val(data.nssf_number);
+                $('.next_of_kin').val(data.next_of_kin);
+                $('.bank_account_number').val(data.bank_account_number);
+                if (data.salary) {
+                    $('.salary').val(FormatNumber(data.salary));
+                }
+                $('.designation_section').val(data.designation_id);
+                $('.departments_section').val(data.department_id);
+                $('.gender').val(data.gender);
             }
 
             $('.addStaffBtn').click(function(e) {
@@ -631,7 +641,6 @@
             }
 
             function DisableTableFields(bool) {
-
                 $('.userId').attr('disabled', bool);
                 $('.first_name').attr('disabled', bool);
                 $('.last_name').attr('disabled', bool);
@@ -642,18 +651,25 @@
                 $('.other_phone_number').attr('disabled', bool);
                 $('.designation_section').attr('disabled', bool);
                 $('.gender').attr('disabled', bool);
+                $('.staff_type').attr('disabled', bool);
+                $('.tin_number').attr('disabled', bool);
+                $('.nssf_number').attr('disabled', bool);
+                $('.bank_account_number').attr('disabled', bool);
+                $('.next_of_kin').attr('disabled', bool);
+                $('.nin').attr('disabled', bool);
+                $('.salary').attr('disabled', bool);
+                $('.departments_section').attr('disabled', bool);
+                $('.status').attr('disabled', bool);
             }
 
             function HideBtns() {
                 $('.addStaffBtn').hide();
                 $('.clearBtn').hide();
-                $('.closeBtn').hide();
             }
 
             function ShowBtns() {
                 $('.addStaffBtn').show();
                 $('.clearBtn').show();
-                $('.closeBtn').show();
             }
 
             function ResetTblInfo(response) {
@@ -678,34 +694,23 @@
 
                 if (first_name.length < 1) {
                     displayResponse(null, "Please enter first name", 'error');
-                }
-                else if (last_name.length < 1) {
+                } else if (last_name.length < 1) {
                     displayResponse(null, "Please enter last name", 'error');
-                }
-                else if (phone_number.length < 1) {
+                } else if (phone_number.length < 1) {
                     displayResponse(null, "Please enter primary phone number", 'error');
-                }
-                else if (address.length < 1) {
+                } else if (address.length < 1) {
                     displayResponse(null, "Please enter address", 'error');
-                }
-                else if (gender.length < 1) {
+                } else if (gender.length < 1) {
                     displayResponse(null, "Please select gender", 'error');
-                }
-                else if (department.length < 1) {
+                } else if (department.length < 1) {
                     displayResponse(null, `Please select department`, 'error');
-                }
-                else if (designation.length < 1) {
+                } else if (designation.length < 1) {
                     displayResponse(null, "Please select staff member's designation", 'error');
-                }
-
-                else if (staff_type.length < 1) {
+                } else if (staff_type.length < 1) {
                     displayResponse(null, "Please select staff type", 'error');
-                }
-
-                else if (status.length < 1) {
+                } else if (status.length < 1) {
                     displayResponse(null, "Please select status", 'error');
-                }
-                else{
+                } else {
                     isValidForm = true;
                 }
 

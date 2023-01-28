@@ -52,7 +52,7 @@ class StaffPaymentsDataTable extends DataTable
             })->addColumn('payment_slip', function($data){
                 $btn = '<a href="javascript:void(0);" id="download-payment-slip" 
                          data-toggle="tooltip" data-original-title="payment slip"
-                         data-id="' . $data->id . '" class="px-3 py-1 border border-primary rounded mr-2 text-primary">Payment Slip</a>';
+                         data-id="' . $data->id . '" class="px-3 py-1 border border-primary rounded mr-2 text-primary"><i class="fa fa-download pr-2"></i>payment slip</a>';
                  return $btn;
             })->editColumn('amount', function ($data) {
                 return number_format($data->amount); 

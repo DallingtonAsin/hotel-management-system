@@ -294,6 +294,8 @@ class UserController extends Controller
       'tin_number' => 'sometimes|nullable',
       'nssf_number' => 'sometimes|nullable',
       'next_of_kin' => 'sometimes|nullable',
+      'bank_account_number' => 'sometimes|nullable',
+      'salary' => 'sometimes|nullable',
       'department' => 'required',
       'designation' => 'required',
       'gender' => 'required',
@@ -321,6 +323,13 @@ class UserController extends Controller
         $tin_number = $request->input('tin_number');
         $nssf_number = $request->input('nssf_number');
         $next_of_kin = $request->input('next_of_kin');
+        $bank_account_number = $request->input('bank_account_number');
+
+        $salary = null;
+        if($request->filled('salary')){
+         $salary = Helper::Numberize($request->input('salary'));
+        }
+
         $department_id = $request->input('department');
         $designation_id = $request->input('designation');
         $staff_type = ucfirst($request->input('staff_type'));
@@ -372,6 +381,8 @@ class UserController extends Controller
           $user->other_phone_number = $other_phone_number;
           $user->address = $address;
           $user->nin = $nin;
+          $user->bank_account_number = $bank_account_number;
+          $user->salary = $salary;
           $user->tin_number = $tin_number;
           $user->nssf_number = $nssf_number;
           $user->next_of_kin = $next_of_kin;
@@ -442,6 +453,12 @@ class UserController extends Controller
     }
   }
 
+
+  private function getUserDetails($id){
+    $user = Staff::find($id);
+    $user->type = ucfirst($user->type);
+    return response()->json($user);
+  }
   /**
    * Display the specified resource.
    *
@@ -450,8 +467,7 @@ class UserController extends Controller
    */
   public function show($id)
   {
-    $user = Staff::find($id);
-    return response()->json($user);
+     return $this->getUserDetails($id);
   }
 
   /**
@@ -462,8 +478,7 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-    $user = Staff::find($id);
-    return response()->json($user);
+    return $this->getUserDetails($id);
   }
 
   protected function getUserRoleId($role)

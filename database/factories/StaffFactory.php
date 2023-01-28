@@ -45,6 +45,8 @@ class StaffFactory extends Factory
       'tin_number'  => $this->faker->numberBetween(1000000, 2000000),
       'nssf_number'  => $this->faker->numberBetween(2000000, 7000000),
       'next_of_kin'  => $this->faker->name,
+      'bank_account_number' => $this->faker->numberBetween(10000000000, 20000000000),
+      'salary' => $this->faker->numberBetween(500000, 3000000),
       'email_verified_at' => now(),
       'image' => NULL,
       'password' => Hash::make($default_password),
