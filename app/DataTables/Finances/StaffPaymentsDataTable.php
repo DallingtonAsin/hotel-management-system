@@ -3,9 +3,11 @@
 namespace App\DataTables\Finances;
 
 use App\Models\StaffPayment;
+use App\Models\Staff;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
 use App\Helpers\Helper;
+use App\Models\PaymentCategory;
 
 class StaffPaymentsDataTable extends DataTable
 {
@@ -19,6 +21,9 @@ class StaffPaymentsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->order(function($query){
+                $query->orderBy('id', 'desc');
+            })
             ->addIndexColumn()
             ->addColumn('action', function ($payment) {
 
@@ -27,19 +32,34 @@ class StaffPaymentsDataTable extends DataTable
                 $btn .= '<a href="javascript:void(0);" id="view-payment" 
             data-toggle="tooltip" data-original-title="view details"
             data-id="' . $payment->id . '" data-status="{{$status}}"
-             class="px-3 py-1 border border-primary rounded mr-2 text-primary">view details</a>';
+             class="px-3 py-1 border border-secondary rounded mr-2 text-secondary">view</a>';
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
              data-id="' . $payment->id . '" data-original-title="Download Invoice" id="edit-payment"
-             class="px-3 py-1 border border-secondary rounded text-secondary ml-2">
-             invoice</a>';
+             class="px-3 py-1 border border-danger rounded text-danger ml-2">delete</a>';
 
                 return $btn;
+            })->addColumn('employee_name', function($data){
+                $staff = Staff::find($data->staff_id);
+                return $staff->first_name . ' '. $staff->last_name;
+            })->addColumn('employee_id', function($data){
+                $staff = Staff::find($data->staff_id);
+                return $staff->staff_id;
+            })->addColumn('payment_category', function($data){
+                $payment_category = PaymentCategory::find($data->payment_category_id);
+                return $payment_category->name;
+            })->addColumn('payment_slip', function($data){
+                $btn = '<a href="javascript:void(0);" id="download-payment-slip" 
+                         data-toggle="tooltip" data-original-title="payment slip"
+                         data-id="' . $data->id . '" class="px-3 py-1 border border-primary rounded mr-2 text-primary">Payment Slip</a>';
+                 return $btn;
+            })->editColumn('amount', function ($data) {
+                return number_format($data->amount); 
             })->editColumn('is_deleted', function ($data) {
                 return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>'; 
             })->editColumn('created_by', function($data){
                 return Helper::getUserNames($data->created_by);
-            })->rawColumns(['action', 'is_deleted']);
+            })->rawColumns(['action', 'payment_slip', 'is_deleted']);
     }
 
     /**

@@ -19,31 +19,33 @@ class PaymentCategoriesDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addIndexColumn()
-                    ->addColumn('action', function ($category) {
+            ->order(function($query){
+                $query->orderBy('id', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($category) {
 
-                        $btn = "";
+                $btn = "";
 
-                        $btn .= '<a href="javascript:void(0);" id="view-payment-category" 
+                $btn .= '<a href="javascript:void(0);" id="view-payment-category" 
                     data-toggle="tooltip" data-original-title="edit details"
                     data-id="' . $category->id . '" data-status="{{$status}}"
                      class="px-3 py-1 border border-primary rounded mr-2 text-primary"><i class="fa fa-pen"></i></a>';
 
-                    
-                     $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                      data-id="' . $category->id . '" data-original-title="View Payment Category" id="view-payment-category"
                      class="px-3 py-1 border border-secondary rounded text-secondary ml-2"><i class="fa fa-eye"></i></a>';
 
-                     $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                      data-id="' . $category->id . '" data-original-title="Delete Payment Category" id="delete-payment-category"
                      class="px-3 py-1 border border-danger rounded text-danger ml-2"><i class="fa fa-trash-alt"></i></a>';
 
-                        return $btn;
-                    })->editColumn('is_deleted', function ($data) {
-                        return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>'; 
-                    })->editColumn('created_by', function($data){
-                        return Helper::getUserNames($data->created_by);
-                    })->rawColumns(['action', 'is_deleted']);
+                return $btn;
+            })->editColumn('is_deleted', function ($data) {
+                return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>';
+            })->editColumn('created_by', function ($data) {
+                return Helper::getUserNames($data->created_by);
+            })->rawColumns(['action', 'is_deleted']);
     }
 
     /**
@@ -65,18 +67,18 @@ class PaymentCategoriesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('finances/paymentcategoriesdatatable-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('finances/paymentcategoriesdatatable-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -87,9 +89,9 @@ class PaymentCategoriesDataTable extends DataTable
     protected function getColumns()
     {
         return [
-         'name',
-         'transaction_type',
-         'created_by'
+            'name',
+            'transaction_type',
+            'created_by'
         ];
     }
 

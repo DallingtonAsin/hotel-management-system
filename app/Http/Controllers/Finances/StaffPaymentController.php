@@ -5,9 +5,17 @@ namespace App\Http\Controllers\Finances;
 use App\DataTables\Finances\StaffPaymentsDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Repositories\StaffPaymentRepository;
 
 class StaffPaymentController extends Controller
 {
+
+    protected $staffPaymentRepository;
+
+    public function __construct(StaffPaymentRepository $staffPaymentRepository)
+    {
+        $this->staffPaymentRepository = $staffPaymentRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,8 @@ class StaffPaymentController extends Controller
      */
     public function index()
     {
-        return view('pages.main.hr.finances.staff_payments');
+        $total_payments = $this->staffPaymentRepository->count();
+        return view('pages.main.hr.finances.staff_payments')->with(compact('total_payments'));
     }
 
     public function getStaffPaymentsDataTable(StaffPaymentsDataTable $datatable){
