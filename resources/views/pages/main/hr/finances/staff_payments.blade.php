@@ -242,6 +242,33 @@
 
             Numberize(".amount");
 
+
+              //Generate invoice
+              $('body').on('click', '#download-payment-slip', function(event) {
+                let payment_id = $(this).data('id');
+                event.preventDefault();
+                checkPermission(permissions.download_reservation_invoice, function(reservation) {
+                      downloadPaymentSlip(payment_id);
+                });
+            });
+
+            function downloadPaymentSlip(payment_id){
+                    let url = "{{ route('payment-slip.generate', ':payment_id') }}";
+                    url = url.replace(':payment_id', payment_id);
+
+                    event.preventDefault();
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(response) {
+                            let returned_url = response.url;
+                            console.log('Returned url is', response.url);
+                            window.open(returned_url, '_blank');
+                        }
+                    });
+            }
+
+
             //modal used to edit payment details [each row of the tbl]
             $('body').on('click', '#edit-staff-payment', function(event) {
                 let payment_id = $(this).data('id');

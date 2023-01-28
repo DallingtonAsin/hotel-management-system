@@ -12,7 +12,7 @@ class SessionTimeout
 {
 
   protected $session;
-      protected $timeout = 1800; // 30 minutes
+      protected $timeout = 3600; // 30 minutes
 
       public function __construct(Store $session)
       {

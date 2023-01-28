@@ -10,7 +10,10 @@ use App\Repositories\StaffRepository;
 use App\Repositories\PaymentCategoryRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Helpers\Helper;
+use PDF;
+
 
 class StaffPaymentController extends Controller
 {
@@ -302,4 +305,27 @@ class StaffPaymentController extends Controller
             throw $ex;
         }
     }
+
+ /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function generatePaymentSlip(Request $request, $payment_id){
+
+        $directory = 'payments/slips';
+        Helper::createInvoicesDirIfnotExists(($directory));
+        $filename = 'invoice-000.pdf';
+        $path = public_path('' . $directory . '/' . $filename);
+
+        // return view('pages.main.invoices.payment_slip');
+        $pdf = PDF::loadView('pages.main.invoices.payment_slip', []);
+        $pdf->save($path);
+        $subpath = '' . $directory . '/' . $filename;
+        $url = Storage::disk('invoices')->url($subpath);
+        return response()->json(['url' => $url]);
+    }
+
+
 }

@@ -130,8 +130,10 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('currencies/fetch/ajax', [CurrencyController::class, 'getCurrencyDataTable'])->name('currencies.index.ajax');
 	Route::get('currencies/ajax', [CurrencyController::class, 'fetchCurrenciesAjax'])->name('currencies.ajax.fetch');
 	Route::get('staff/payments/ajax', [StaffPaymentController::class, 'getStaffPaymentsDataTable'])->name('staff.payments.ajax.fetch');
+	Route::get('staff/payment-slip/{payment_id}', [StaffPaymentController::class, 'generatePaymentSlip'])->name('payment-slip.generate');
+	
 	Route::get('payment/categories/ajax', [PaymentCategoryController::class, 'getPaymentCategoriesDataTable'])->name('payments.categories.ajax.fetch');
-
+	
 	// Home Routes
 	Route::get('home', [HomeController::class, 'index'])->name('home');
 	Route::get('overview', [HomeController::class, 'overview'])->name('overview');

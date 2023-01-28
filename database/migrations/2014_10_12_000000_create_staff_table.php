@@ -32,6 +32,8 @@ class CreateStaffTable extends Migration
                 $table->string('tin_number')->nullable();
                 $table->string('nssf_number')->nullable();
                 $table->string('next_of_kin')->nullable();
+                $table->string('bank_account_number')->nullable();
+                $table->double('salary')->nullable();
                 $table->enum('type', ['Permanent', 'Temporary'])->default('Permanent');
                 $table->string('status')->nullable();
                 $table->timestamp('email_verified_at')->nullable();
