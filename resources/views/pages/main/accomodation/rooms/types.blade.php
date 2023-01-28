@@ -328,8 +328,9 @@
             $('.addRoomTypeBtn').click(function(e) {
                 e.preventDefault();
 
-                let Errors = validateForm();
-                if (Errors.length == 0) {
+                let isValidForm = validateForm();
+                
+                if (isValidForm) {
                     $(this).html('Sending..');
 
                     $.ajax({
@@ -354,16 +355,7 @@
                             $('.addRoomTypeBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
                 }
-
             });
 
             //this pops up confirm delete modal
@@ -440,21 +432,26 @@
             }
 
             function validateForm() {
+
                 let name = $('.name').val();
                 let s_rate = $('.single_occupancy_rate').val();
                 let d_rate = $('.double_occupancy_rate').val();
 
-                let errors = [];
+                let isValidForm = false;
+
                 if (name.length < 1) {
-                    errors.push("Please enter the name of the room type");
+                    displayResponse(null, "Please enter the name of the room type", "error");
                 }
-                if (s_rate.length < 1) {
-                    errors.push("Please enter single occupancy rate");
+                else if (s_rate.length < 1) {
+                    displayResponse(null, "Please enter single occupancy rate",  "error");
                 }
-                if (d_rate.length < 1) {
-                    errors.push("Please enter double occupancy rate");
+                else if (d_rate.length < 1) {
+                    displayResponse(null, "Please enter double occupancy rate",  "error");
                 }
-                return errors;
+                else{
+                    isValidForm = true;
+                }
+                return isValidForm;
 
             }
 
