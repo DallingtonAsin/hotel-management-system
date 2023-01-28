@@ -261,14 +261,14 @@
                                         class="nav-sub-link">Currencies</a></li>
                             @endhaspermission
 
-                            @haspermission(config('permissions')['view_salaries'])
-                                <li class="nav-sub-item"><a href="{{ Route('salary.index') }}"
-                                        class="nav-sub-link">Salaries</a></li>
-                            @endhaspermission
-
                             @haspermission(config('permissions')['view_payments'])
                                 <li class="nav-sub-item"><a href="{{ Route('payments.index') }}"
-                                        class="nav-sub-link">Payments</a></li>
+                                        class="nav-sub-link">Staff Payments</a></li>
+                            @endhaspermission
+
+                            @haspermission(config('permissions')['view_salaries'])
+                            <li class="nav-sub-item"><a href="{{ Route('salary.index') }}"
+                                    class="nav-sub-link">Payment Categories</a></li>
                             @endhaspermission
 
                         </ul>

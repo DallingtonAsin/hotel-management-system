@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\KitchenOrderInvoice;
-use App\Models\RoomStatusHistory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +18,6 @@ class DatabaseSeeder extends Seeder
 
             DepartmentTableSeeder::class,
             DesignationTableSeeder::class,
-          
             StaffTableSeeder::class,
           
             RoomTypeTableSeeder::class,
@@ -31,8 +28,6 @@ class DatabaseSeeder extends Seeder
             GuestTableSeeder::class,
             ReservationTableSeeder::class,
             ReservationInvoiceTableSeeder::class,
-            SalaryTableSeeder::class,
-            // PaymentTableSeeder::class,
 
             KitchenMenuItemCategoryTableSeeder::class,
             KitchenMenuItemTableSeeder::class,
@@ -41,7 +36,6 @@ class DatabaseSeeder extends Seeder
          
             CurrencyTableSeeder::class,
             FrequentContactTableSeeder::class,
-
             PermissionsTableSeeder::class,
             StaffPermissionsTableSeeder::class,
 
@@ -57,6 +51,8 @@ class DatabaseSeeder extends Seeder
             ExpensesTableSeeder::class,
             SalesTableSeeder::class,
 
+            PaymentCategoryTableSeeder::class,
+            StaffPaymentTableSeeder::class
         ]);
         
     }

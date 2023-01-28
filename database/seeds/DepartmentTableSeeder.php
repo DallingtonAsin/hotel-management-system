@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Department;
 use Faker\Generator;
 use Illuminate\Container\Container;
+
 class DepartmentTableSeeder extends Seeder
 {
 
@@ -35,6 +36,7 @@ class DepartmentTableSeeder extends Seeder
     {
         return Container::getInstance()->make(Generator::class);
     }
+
     /**
      * Run the database seeds.
      *
