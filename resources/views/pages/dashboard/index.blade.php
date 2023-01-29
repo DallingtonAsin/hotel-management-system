@@ -9,7 +9,7 @@
             </div>
           </div>
         </a>
-        <a href="{{ Route('rooms.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
+        <a href="{{ route('rooms.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
           <div class="widget-small info coloured-icon"><i class="icon fa fa-bed fa-3x"></i>
             <div class="info">
               <h4>Rooms</h4>
@@ -17,7 +17,7 @@
             </div>
           </div>
         </a>
-        <a href="{{ Route('reservations.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
+        <a href="{{ route('reservations.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
           <div class="widget-small warning coloured-icon"><i class="icon fa fa-landmark fa-3x"></i>
             <div class="info">
               <h4>Reservations</h4>
@@ -26,7 +26,7 @@
           </div>
         </a>
 
-        <a href="" class="col-md-6 col-lg-3 text-decoration-none">
+        <a href="{{ route('guests.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
           <div class="widget-small danger coloured-icon"><i class="icon fa fa-shopping-cart fa-3x"></i>
             <div class="info">
               <h4>Guests</h4>
