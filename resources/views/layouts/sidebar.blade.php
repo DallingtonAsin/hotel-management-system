@@ -122,10 +122,11 @@
                                 <li class="nav-sub-item"><a href="{{ route('stock.index') }}"
                                         class="nav-sub-link">Stock</a></li>
                             @endhaspermission
-                            @haspermission(config('permissions')['view_purchases'])
+
+                            {{-- @haspermission(config('permissions')['view_purchases'])
                                 <li class="nav-sub-item"><a href="{{ route('purchases.index') }}"
                                         class="nav-sub-link">Purchases</a></li>
-                            @endhaspermission
+                            @endhaspermission --}}
 
                             @haspermission(config('permissions')['view_damages'])
                                 <li class="nav-sub-item"><a href="{{ route('damaged-stock-items.index') }}"
