@@ -91,7 +91,7 @@
 
 
                   <div class="form-group">
-                      <button type="submit" class="btn btn-sm btn-primary editGuestBtn"
+                      <button type="submit" class="btn btn-primary btn-sm outline-none rounded-pill editGuestBtn"
                           name="editGuestBtn"><i class="fa fa-plus-circle pr-1"></i>Update</button>
                       <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
                   </div>

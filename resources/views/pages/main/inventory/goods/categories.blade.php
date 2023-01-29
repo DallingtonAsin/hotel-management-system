@@ -21,7 +21,7 @@
 
             <div class="col">
                 <div class="btn-group float-right justify-content-between mb-2">
-                    <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewStock"><i
+                    <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill mx-2" id="createNewStock"><i
                             class="fa fa-plus-circle pr-1"></i>Add commodity category</button>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-sm btn-primary addCommodityCatBtn"
+                                    <button type="submit" class="btn btn-primary btn-sm outline-none rounded-pill addCommodityCatBtn"
                                         name="AddItemBtn"><i></i>Save</button>
                                     <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
                                 </div>

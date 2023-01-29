@@ -103,7 +103,7 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" class="btn btn-sm btn-primary border-dark"
+                <input type="submit" class="btn btn-primary btn-sm outline-none rounded-pill border-dark"
                     value="<?= isset($company) ? 'Update' : 'Submit' ?>">
             </div>
 
