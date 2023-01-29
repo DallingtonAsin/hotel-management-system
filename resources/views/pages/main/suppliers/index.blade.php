@@ -32,7 +32,7 @@
                 </label>
             </h6>
 
-            <button type="button" class="btn btn-primary btn-sm outline-none ml-auto mb-2" id="createNewSupplier">
+            <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2" id="createNewSupplier">
                 <i class="fa fa-plus-circle pr-1"></i>Add supplier</button>
         </div>
 
