@@ -44,9 +44,7 @@
 a:hover{
   color: #009688 !important
 }
-.border-success,.border-primary {
-  border-color: #009688 !important
-}
+
 
 .chart-card {
   width: 600px;
@@ -92,25 +90,35 @@ input[type="radio"]:checked {
   color: #009688;
 }
 
-table tr:hover{
+.table-responsive table tr:hover{
   background-color: #80cccc !important;
   color: #fff !important;
 }
 
-table tr:hover a{
+
+
+.table-responsive table tr:hover a{
   border-color: #fff !important;
   color: #fff !important;
 }
 
-table tr:hover .fa{
+.bg-success{
+  background-color: #80cccc !important;
+}
+
+.border-success,.border-primary {
+  border-color: #80cccc !important
+}
+
+.table-responsive table tr:hover .fa{
   color: #fff !important;
 }
 
-table tr:hover a:hover{
+.table-responsive table tr:hover a:hover{
   color: #fff !important;
 }
 
-table tr a:hover .fa{
+.table-responsive table tr a:hover .fa{
   color: #fff !important;
 }
 

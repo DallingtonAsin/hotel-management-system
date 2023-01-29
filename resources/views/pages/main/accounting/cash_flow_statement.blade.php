@@ -1,31 +1,30 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <form>
-                <div class="form-row align-items-center">
-                    <div class="col-auto">
-                        <label class="sr-only" for="startDate">Start Date</label>
-                        <input type="date" class="form-control mb-2" id="startDate" placeholder="Start Date">
-                    </div>
-                    <div class="col-auto">
-                        <label class="sr-only" for="endDate">End Date</label>
-                        <input type="date" class="form-control mb-2" id="endDate" placeholder="End Date">
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary btn-sm mb-2">Filter Statement</button>
-                    </div>
-                </div>
-            </form>
 
+<form class="form">
+    <div class="row d-flex justify-content-between align-items-center">
+      <div class="form-group col">
+        <label for="startDate">Start Date</label>
+        <input type="date" class="form-control" id="startDate" placeholder="Start Date">
+      </div>
+      <div class="form-group col">
+        <label for="endDate">End Date</label>
+        <input type="date" class="form-control" id="endDate" placeholder="End Date">
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-primary float-right btn-sm rounded-pill">Search Results</button>
+      </div>
+    </div>
+  </form>
+  
             <div class="card">
                 <div class="card-body">
-                    <div class="container">
-                        <h5>Hotel Casa Miltu Cash Flow Statement</h5>
+                    <div class="container-fluid">
+                        <h5 class="mx-4">Hotel Casa Miltu Cash Flow Statement</h5>
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
+                                <tr class="bg-success text-white">
                                     <th colspan="2">Cash Flow from Operating Activities</th>
                                 </tr>
                             </thead>
@@ -79,7 +78,7 @@
                         <br>
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
+                                <tr class="bg-success text-white">
                                     <th colspan="2">Cash Flow from Investing Activities</th>
                                 </tr>
                             </thead>
@@ -101,7 +100,7 @@
                         <br>
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
+                                <tr class="bg-success text-white">
                                     <th colspan="2">Cash Flow from Financing Activities</th>
                                 </tr>
                             </thead>
@@ -118,6 +117,4 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 @endsection
