@@ -32,9 +32,9 @@
 
             <div class="col">
                 <div class="btn-group float-right justify-content-between mb-2">
-                    <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewpurchase"><i
+                    <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill mx-2" id="createNewpurchase"><i
                             class="fa fa-plus-circle pr-1"></i>Add purchase</button>
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill" data-bs-toggle="modal"
                         data-bs-target="#importPurchases"><i class="fa fa-file-import pr-1"></i>Import file</button>
                 </div>
             </div>

@@ -33,9 +33,9 @@
 
             <div class="col">
                 <div class="btn-group float-right justify-content-between mb-2">
-                    <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewStock"><i
+                    <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill mx-2" id="createNewStock"><i
                             class="fa fa-plus-circle pr-1"></i>Add stock</button>
-                    {{-- <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                    {{-- <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill" data-bs-toggle="modal"
                         data-bs-target="#importStock"><i class="fa fa-file-import pr-1"></i>Import file</button> --}}
                 </div>
             </div>
@@ -196,7 +196,7 @@
                                 <div class="form-group">
                                     <input type="hidden" class="form-control edit_stock_action"
                                         name="edit_stock_action">
-                                    <button type="submit" class="btn btn-sm btn-primary addStockBtn"
+                                    <button type="submit" class="btn btn-primary btn-sm outline-none rounded-pill addStockBtn"
                                         name="AddItemBtn"><i></i>Save</button>
                                     <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
                                 </div>

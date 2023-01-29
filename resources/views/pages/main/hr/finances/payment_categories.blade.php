@@ -19,7 +19,7 @@
 
             <div class="col">
                 <div class="btn-group float-right justify-content-between mb-2">
-                    <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewPaymentCategory"><i
+                    <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill mx-2" id="createNewPaymentCategory"><i
                             class="fa fa-plus-circle pr-1"></i>Add category</button>
                 </div>
             </div>

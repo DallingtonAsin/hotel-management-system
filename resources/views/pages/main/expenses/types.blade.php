@@ -18,7 +18,7 @@
 
             <div class="col">
                 <div class="btn-group float-right justify-content-between mb-2">
-                    <button type="button" class="btn btn-sm btn-primary mx-2" id="createNewExpenseType"><i
+                    <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill mx-2" id="createNewExpenseType"><i
                             class="fa fa-plus-circle pr-1"></i>Add expense type</button>
                 </div>
             </div>
