@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 class ChangeWholesalePriceInPurchases extends Migration
 {
@@ -16,6 +18,8 @@ class ChangeWholesalePriceInPurchases extends Migration
         Schema::table('purchases', function (Blueprint $table) {
             DB::statement('alter table purchases modify wholesale_price DOUBLE(15,2) DEFAULT NULL');
         });
+
+        
     }
 
     /**

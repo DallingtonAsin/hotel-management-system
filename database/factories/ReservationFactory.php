@@ -22,7 +22,7 @@ class ReservationFactory extends Factory
      */
     public function definition()
     {
-        $startDate =  $this->faker->dateTimeBetween('next Monday', 'next Monday +7 days');
+        $startDate =   $this->faker->dateTimeBetween('-30 years',  'now', 'Africa/Kampala');
         $endDate = $this->faker->dateTimeBetween($startDate, $startDate->format('Y-m-d H:i:s').' +2 days');
 
         return [

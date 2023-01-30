@@ -40,262 +40,274 @@
                 <li><a href="{{ route('home') }}" class="nav-link mt-3"><i class="fa fa-home"></i>Dashboard</a></li>
             @endhaspermission
 
-            <li class="nav-item">
-                <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i
-                        class="fa fa-wine-glass-alt ml-1"></i>Bar</a>
-                <ul class="nav-sub">
-                    @haspermission(config('permissions')['view_pos'])
-                        <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-laptop pr-1"></i>Point of Sale</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-cubes pr-1"></i>Sales</a></li>
-                    @endhaspermission
-                </ul>
-            </li>
+            @haspermission(config('permissions')['access_bar'])
+                <li class="nav-item">
+                    <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i
+                            class="fa fa-wine-glass-alt ml-1"></i>Bar</a>
+                    <ul class="nav-sub">
+                        @haspermission(config('permissions')['view_pos'])
+                            <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-laptop pr-1"></i>Point of Sale</a></li>
+                         @endhaspermission
 
-            <li class="nav-item">
-                <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i class="fa fa-coffee"></i>Restaurant</a>
+                         @haspermission(config('permissions')['view_sales'])
+                            <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-cubes pr-1"></i>Sales</a></li>
+                        @endhaspermission
+                    </ul>
+                </li>
+            @endhaspermission
 
-                <ul class="nav-sub">
 
-                    @haspermission(config('permissions')['view_kitchen_orders'])
+            @haspermission(config('permissions')['access_restaurant'])
+                <li class="nav-item">
+                    <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i class="fa fa-coffee"></i>Restaurant</a>
+
+                    <ul class="nav-sub">
+
+                        @haspermission(config('permissions')['view_kitchen_orders'])
+                            <li class="nav-item">
+                                <a href="" class="nav-link with-sub"><i class="fa fa-shopping-basket pr-1"></i>Kitchen
+                                    Orders</a>
+                                <ul class="nav-sub">
+                                    <li class="nav-sub-item"><a href="{{ route('kitchen-orders.index') }}"
+                                            class="nav-sub-link">New Order</a></li>
+                                    <li class="nav-sub-item"><a
+                                            href="{{ route('orders.status', ['status' => config('kitchen-order-statuses')['pending']]) }}"
+                                            class="nav-sub-link">Pending Orders</a></li>
+                                    <li class="nav-sub-item"><a
+                                            href="{{ route('orders.status', ['status' => config('kitchen-order-statuses')['completed']]) }}"
+                                            class="nav-sub-link">Completed Orders</a></li>
+                                    <li class="nav-sub-item"><a
+                                            href="{{ route('orders.status', ['status' => config('kitchen-order-statuses')['cancelled']]) }}"
+                                            class="nav-sub-link">Cancelled Orders</a></li>
+                                    <li class="nav-sub-item"><a href="{{ route('kitchen-order-history.index') }}"
+                                            class="nav-sub-link">All Orders</a></li>
+                                </ul>
+                            </li>
+                        @endhaspermission
+
+
                         <li class="nav-item">
-                            <a href="" class="nav-link with-sub"><i class="fa fa-shopping-basket pr-1"></i>Kitchen
-                                Orders</a>
+                            <a href="" class="nav-link with-sub"><i class="fa fa-list-alt pr-1"></i>Kitchen Menu</a>
                             <ul class="nav-sub">
-                                <li class="nav-sub-item"><a href="{{ route('kitchen-orders.index') }}"
-                                        class="nav-sub-link">New Order</a></li>
-                                <li class="nav-sub-item"><a
-                                        href="{{ route('orders.status', ['status' => config('kitchen-order-statuses')['pending']]) }}"
-                                        class="nav-sub-link">Pending Orders</a></li>
-                                <li class="nav-sub-item"><a
-                                        href="{{ route('orders.status', ['status' => config('kitchen-order-statuses')['completed']]) }}"
-                                        class="nav-sub-link">Completed Orders</a></li>
-                                <li class="nav-sub-item"><a
-                                        href="{{ route('orders.status', ['status' => config('kitchen-order-statuses')['cancelled']]) }}"
-                                        class="nav-sub-link">Cancelled Orders</a></li>
-                                <li class="nav-sub-item"><a href="{{ route('kitchen-order-history.index') }}"
-                                        class="nav-sub-link">All Orders</a></li>
+                                @haspermission(config('permissions')['view_kitchen_menu_items'])
+                                    <li class="nav-sub-item"><a href="{{ route('menu-items.index') }}"
+                                            class="nav-sub-link">Menu Items</a></li>
+                                @endhaspermission
+
+                                @haspermission(config('permissions')['view_kitchen_menu_item_categories'])
+                                    <li class="nav-sub-item"><a href="{{ route('menu-item-categories.index') }}"
+                                            class="nav-sub-link">Menu Item Categories</a></li>
+                                @endhaspermission
                             </ul>
                         </li>
-                    @endhaspermission
+                    </ul>
+                </li>
+            @endhaspermission
 
 
-                    <li class="nav-item">
-                        <a href="" class="nav-link with-sub"><i class="fa fa-list-alt pr-1"></i>Kitchen Menu</a>
-                        <ul class="nav-sub">
-                            @haspermission(config('permissions')['view_kitchen_menu_items'])
-                                <li class="nav-sub-item"><a href="{{ route('menu-items.index') }}"
-                                        class="nav-sub-link">Menu Items</a></li>
-                            @endhaspermission
+            @haspermission(config('permissions')['access_store'])
+                <li class="nav-item">
+                    <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Store & Procurement</a>
+                    <ul class="nav-sub">
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub"><i class="fa fa-cube pr-1"></i>Commodites</a>
+                            <ul class="nav-sub">
+                                @haspermission(config('permissions')['view_stock'])
+                                    <li class="nav-sub-item"><a href="{{ route('goods.index') }}"
+                                            class="nav-sub-link">Goods</a></li>
+                                @endhaspermission
+                                @haspermission(config('permissions')['view_stock'])
+                                    <li class="nav-sub-item"><a href="{{ route('commodity-categories.index') }}"
+                                            class="nav-sub-link">Commodity Categories</a></li>
+                                @endhaspermission
 
-                            @haspermission(config('permissions')['view_kitchen_menu_item_categories'])
-                                <li class="nav-sub-item"><a href="{{ route('menu-item-categories.index') }}"
-                                        class="nav-sub-link">Menu Item Categories</a></li>
-                            @endhaspermission
-                        </ul>
-                    </li>
-                </ul>
-            </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub"><i class="fa fa-database pr-1"></i>Inventory</a>
+                            <ul class="nav-sub">
+                                @haspermission(config('permissions')['view_stock'])
+                                    <li class="nav-sub-item"><a href="{{ route('stock.index') }}"
+                                            class="nav-sub-link">Stock</a></li>
+                                @endhaspermission
 
-            <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Store & Procurement</a>
-                <ul class="nav-sub">
-                    <li class="nav-item">
-                        <a href="" class="nav-link with-sub"><i class="fa fa-cube pr-1"></i>Commodites</a>
-                        <ul class="nav-sub">
-                            @haspermission(config('permissions')['view_stock'])
-                                <li class="nav-sub-item"><a href="{{ route('goods.index') }}"
-                                        class="nav-sub-link">Goods</a></li>
-                            @endhaspermission
-                            @haspermission(config('permissions')['view_stock'])
-                                <li class="nav-sub-item"><a href="{{ route('commodity-categories.index') }}"
-                                        class="nav-sub-link">Commodity Categories</a></li>
-                            @endhaspermission
-
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link with-sub"><i class="fa fa-database pr-1"></i>Inventory</a>
-                        <ul class="nav-sub">
-                            @haspermission(config('permissions')['view_stock'])
-                                <li class="nav-sub-item"><a href="{{ route('stock.index') }}"
-                                        class="nav-sub-link">Stock</a></li>
-                            @endhaspermission
-
-                            {{-- @haspermission(config('permissions')['view_purchases'])
+                                {{-- @haspermission(config('permissions')['view_purchases'])
                                 <li class="nav-sub-item"><a href="{{ route('purchases.index') }}"
                                         class="nav-sub-link">Purchases</a></li>
                             @endhaspermission --}}
 
-                            @haspermission(config('permissions')['view_damages'])
-                                <li class="nav-sub-item"><a href="{{ route('damaged-stock-items.index') }}"
-                                        class="nav-sub-link">Damaged Stock</a></li>
-                            @endhaspermission
-
-                            @haspermission(config('permissions')['view_product_categories'])
-                                <li class="nav-sub-item"><a href="{{ route('product-categories.index') }}"
-                                        class="nav-sub-link">Stock Categories</a></li>
-                            @endhaspermission
-
-                        </ul>
-                    </li>
-                    @haspermission(config('permissions')['view_suppliers'])
-                        <li class="nav-sub-item"><a href="{{ route('suppliers.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-users pr-1"></i>Suppliers</a> </li>
-                    @endhaspermission
-
-                    @haspermission(config('permissions')['view_expenses'])
-                        <li class="nav-item">
-                            <a href="" class="nav-link with-sub"><i
-                                    class="fa fa-times-circle pr-1"></i>Expenses</a>
-                            <ul class="nav-sub">
-                                @haspermission(config('permissions')['view_expenses'])
-                                    <li class="nav-sub-item"><a href="{{ route('expenses.index') }}"
-                                            class="nav-sub-link">Expenses</a></li>
+                                @haspermission(config('permissions')['view_damages'])
+                                    <li class="nav-sub-item"><a href="{{ route('damaged-stock-items.index') }}"
+                                            class="nav-sub-link">Damaged Stock</a></li>
                                 @endhaspermission
-                                @haspermission(config('permissions')['view_expenses'])
-                                    <li class="nav-sub-item"><a href="{{ route('expense-types.index') }}"
-                                            class="nav-sub-link">Expenses Categories</a></li>
+
+                                @haspermission(config('permissions')['view_product_categories'])
+                                    <li class="nav-sub-item"><a href="{{ route('product-categories.index') }}"
+                                            class="nav-sub-link">Stock Categories</a></li>
                                 @endhaspermission
 
                             </ul>
                         </li>
-                    @endhaspermission
-
-                </ul>
-            </li>
-
-            <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="fa fa-clipboard"></i>House Keeping</a>
-
-                <ul class="nav-sub">
-                    @haspermission(config('permissions')['view_expenses'])
-                        <li class="nav-sub-item"><a href="{{ route('expenses.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-times-circle pr-1"></i>Expenses</a>
-                        </li>
-                    @endhaspermission
-
-                </ul>
-
-            </li>
-
-            <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="fa fa-bed"></i>Accomodation</a>
-
-                <ul class="nav-sub">
-
-
-
-                    <li class="nav-item">
-
-                        @haspermission(config('permissions')['view_rooms'])
-                            <a href="" class="nav-link with-sub"><i class="fa fa-bed pr-1"></i>Rooms</a>
-                            <ul class="nav-sub">
-                                <li class="nav-sub-item"><a href="{{ route('rooms.index') }}"
-                                        class="nav-sub-link">Rooms</a></li>
-
-                                <li class="nav-sub-item"><a href="{{ route('room_types.index') }}"
-                                        class="nav-sub-link">Room types</a>
-                                </li>
-
-                            </ul>
+                        @haspermission(config('permissions')['view_suppliers'])
+                            <li class="nav-sub-item"><a href="{{ route('suppliers.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-users pr-1"></i>Suppliers</a> </li>
                         @endhaspermission
 
-                    </li>
+                        @haspermission(config('permissions')['view_expenses'])
+                            <li class="nav-item">
+                                <a href="" class="nav-link with-sub"><i
+                                        class="fa fa-times-circle pr-1"></i>Expenses</a>
+                                <ul class="nav-sub">
+                                    @haspermission(config('permissions')['view_expenses'])
+                                        <li class="nav-sub-item"><a href="{{ route('expenses.index') }}"
+                                                class="nav-sub-link">Expenses</a></li>
+                                    @endhaspermission
+                                    @haspermission(config('permissions')['view_expenses'])
+                                        <li class="nav-sub-item"><a href="{{ route('expense-types.index') }}"
+                                                class="nav-sub-link">Expenses Categories</a></li>
+                                    @endhaspermission
 
-                    <li class="nav-item">
-                        <a href="" class="nav-link with-sub"><i class="fa fa-users pr-1"></i>Guests</a>
-                        <ul class="nav-sub">
-                            @haspermission(config('permissions')['view_guests'])
-                                <li class="nav-sub-item"><a href="{{ route('guests.index') }}"
-                                        class="nav-sub-link">Guests</a></li>
+                                </ul>
+                            </li>
+                        @endhaspermission
+
+                    </ul>
+                </li>
+            @endhaspermission
+
+
+            @haspermission(config('permissions')['access_house_keeping'])
+                <li class="nav-item">
+                    <a href="" class="nav-link with-sub"><i class="fa fa-clipboard"></i>House Keeping</a>
+
+                    <ul class="nav-sub">
+                        @haspermission(config('permissions')['view_expenses'])
+                            <li class="nav-sub-item"><a href="{{ route('expenses.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-times-circle pr-1"></i>Expenses</a>
+                            </li>
+                        @endhaspermission
+                    </ul>
+                </li>
+            @endhaspermission
+
+
+            @haspermission(config('permissions')['access_accomodation'])
+                <li class="nav-item">
+                    <a href="" class="nav-link with-sub"><i class="fa fa-bed"></i>Accomodation</a>
+                    <ul class="nav-sub">
+                        <li class="nav-item">
+
+                            @haspermission(config('permissions')['view_rooms'])
+                                <a href="" class="nav-link with-sub"><i class="fa fa-bed pr-1"></i>Rooms</a>
+                                <ul class="nav-sub">
+                                    <li class="nav-sub-item"><a href="{{ route('rooms.index') }}"
+                                            class="nav-sub-link">Rooms</a></li>
+
+                                    <li class="nav-sub-item"><a href="{{ route('room_types.index') }}"
+                                            class="nav-sub-link">Room types</a>
+                                    </li>
+
+                                </ul>
                             @endhaspermission
 
-                            @haspermission(config('permissions')['view_guest_types'])
-                                <li class="nav-sub-item"><a href="{{ route('guest_types.index') }}"
-                                        class="nav-sub-link">Guest types</a></li>
-                            @endhaspermission
-
-                            @haspermission(config('permissions')['view_frequent_contacts'])
-                                <li class="nav-sub-item"><a href="{{ route('frequent-contacts.index') }}"
-                                        class="nav-sub-link">Frequent contacts</a> </li>
-                            @endhaspermission
-
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="" class="nav-link with-sub"><i class="fa fa-bold pr-1"></i>Reservations</a>
-                        <ul class="nav-sub">
-                            @haspermission(config('permissions')['view_reservations'])
-                                <li class="nav-sub-item"><a href="{{ route('reservations.index') }}"
-                                        class="nav-sub-link">All reservations</a></li>
-                            @endhaspermission
-
-                            @haspermission(config('permissions')['create_reservations'])
-                                <li class="nav-sub-item"><a href="{{ route('reservations.create') }}"
-                                        class="nav-sub-link">Add reservation</a></li>
-                            @endhaspermission
-
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-
-
-            <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="fa fa-users"></i>Human Resource</a>
-                <ul class="nav-sub">
-
-                    @haspermission(config('permissions')['view_departments'])
-                        <li class="nav-sub-item"><a href="{{ route('departments.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-user-plus pr-1"></i>Departments</a></li>
-                    @endhaspermission
-
-                    @haspermission(config('permissions')['view_designations'])
-                        <li class="nav-sub-item"><a href="{{ route('designations.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-user-circle pr-1"></i>Designations</a></li>
-                    @endhaspermission
-
-                    @haspermission(config('permissions')['view_staff'])
-                        <li class="nav-sub-item"><a href="{{ route('staff.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-users pr-1"></i>Staff</a>
                         </li>
-                    @endhaspermission
 
-                    @haspermission(config('permissions')['view_staff_permissions'])
-                        <li class="nav-sub-item"><a href="{{ route('staff-permissions.index') }}"
-                                class="nav-sub-link"><i class="fa fa-lock pr-1"></i>Staff Permissions</a>
+                        @haspermission(config('permissions')['view_guests'])
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub"><i class="fa fa-users pr-1"></i>Guests</a>
+                            <ul class="nav-sub">
+                                    <li class="nav-sub-item"><a href="{{ route('guests.index') }}" class="nav-sub-link">Guests</a></li>
+                                @haspermission(config('permissions')['view_guest_types'])
+                                    <li class="nav-sub-item"><a href="{{ route('guest_types.index') }}"  class="nav-sub-link">Guest types</a></li>
+                                @endhaspermission
+
+                                @haspermission(config('permissions')['view_frequent_contacts'])
+                                    <li class="nav-sub-item"><a href="{{ route('frequent-contacts.index') }}"  class="nav-sub-link">Frequent contacts</a> </li>
+                                @endhaspermission
+
+                            </ul>
                         </li>
-                    @endhaspermission
+                        @endhaspermission
+
+                        @haspermission(config('permissions')['view_reservations'])
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub"><i class="fa fa-bold pr-1"></i>Reservations</a>
+                            <ul class="nav-sub">
+                                    <li class="nav-sub-item"><a href="{{ route('reservations.index') }}" class="nav-sub-link">All reservations</a></li>
+
+                                @haspermission(config('permissions')['create_reservations'])
+                                    <li class="nav-sub-item"><a href="{{ route('reservations.create') }}"
+                                            class="nav-sub-link">Add reservation</a></li>
+                                @endhaspermission
+
+                            </ul>
+                        </li>
+                        @endhaspermission
+
+                    </ul>
+                </li>
+            @endhaspermission
 
 
-                    <li class="nav-item">
-                        <a href="" class="nav-link with-sub"><i
-                                class="fa fa-credit-card pr-1"></i>Finances</a>
-                        <ul class="nav-sub">
-                            @haspermission(config('permissions')['view_currencies'])
-                                <li class="nav-sub-item"><a href="{{ route('currencies.index') }}"
-                                        class="nav-sub-link">Currencies</a></li>
-                            @endhaspermission
+            @haspermission(config('permissions')['access_HR'])
+                <li class="nav-item">
+                    <a href="" class="nav-link with-sub"><i class="fa fa-users"></i>Human Resource</a>
+                    <ul class="nav-sub">
 
-                            @haspermission(config('permissions')['view_payments'])
-                                <li class="nav-sub-item"><a href="{{ route('staff-payments.index') }}"
-                                        class="nav-sub-link">Staff Payments</a></li>
-                            @endhaspermission
+                        @haspermission(config('permissions')['view_departments'])
+                            <li class="nav-sub-item"><a href="{{ route('departments.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-user-plus pr-1"></i>Departments</a></li>
+                        @endhaspermission
 
-                            @haspermission(config('permissions')['view_salaries'])
-                                <li class="nav-sub-item"><a href="{{ route('payment-categories.index') }}"
-                                        class="nav-sub-link">Payment Categories</a></li>
-                            @endhaspermission
+                        @haspermission(config('permissions')['view_designations'])
+                            <li class="nav-sub-item"><a href="{{ route('designations.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-user-circle pr-1"></i>Designations</a></li>
+                        @endhaspermission
 
-                        </ul>
-                    </li>
-                </ul>
-            </li>
+                        @haspermission(config('permissions')['view_staff'])
+                            <li class="nav-sub-item"><a href="{{ route('staff.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-users pr-1"></i>Staff</a>
+                            </li>
+                        @endhaspermission
 
-            @haspermission(config('permissions')['view_accounting'])
+                        @haspermission(config('permissions')['view_staff_permissions'])
+                            <li class="nav-sub-item"><a href="{{ route('staff-permissions.index') }}"
+                                    class="nav-sub-link"><i class="fa fa-lock pr-1"></i>Staff Permissions</a>
+                            </li>
+                        @endhaspermission
+
+
+                        @haspermission(config('permissions')['view_payments'])
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub"><i
+                                    class="fa fa-credit-card pr-1"></i>Finances</a>
+                            <ul class="nav-sub">
+                                @haspermission(config('permissions')['view_currencies'])
+                                    <li class="nav-sub-item"><a href="{{ route('currencies.index') }}"
+                                            class="nav-sub-link">Currencies</a></li>
+                                @endhaspermission
+
+                                @haspermission(config('permissions')['view_payments'])
+                                    <li class="nav-sub-item"><a href="{{ route('staff-payments.index') }}"
+                                            class="nav-sub-link">Staff Payments</a></li>
+                                @endhaspermission
+
+                                @haspermission(config('permissions')['view_salaries'])
+                                    <li class="nav-sub-item"><a href="{{ route('payment-categories.index') }}"
+                                            class="nav-sub-link">Payment Categories</a></li>
+                                @endhaspermission
+
+                            </ul>
+                        </li>
+                        @endhaspermission
+                        
+                    </ul>
+                </li>
+            @endhaspermission
+
+            @haspermission(config('permissions')['access_accounting'])
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="fa fa-balance-scale"></i>Accounting</a>
                     <ul class="nav-sub">
@@ -330,33 +342,26 @@
             @endhaspermission
 
 
-            <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="fa fa-cog"></i>Others</a>
+            @haspermission(config('permissions')['access_other_system_features'])
+                <li class="nav-item">
+                    <a href="" class="nav-link with-sub"><i class="fa fa-cog"></i>Others</a>
 
-                <ul class="nav-sub">
-                    @haspermission(config('permissions')['view_settings'])
-                        <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link"><i
-                                    class="fa fa-toggle-on pr-1"></i>Settings</a></li>
-                    @endhaspermission
+                    <ul class="nav-sub">
+                        @haspermission(config('permissions')['view_settings'])
+                            <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link"><i
+                                        class="fa fa-toggle-on pr-1"></i>Settings</a></li>
+                        @endhaspermission
 
-                    @haspermission(config('permissions')['view_audit_trail'])
-                        <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link"><i
-                                    class="fa fa-cloud pr-1"></i> Audit
-                                Trail</a></li>
-                    @endhaspermission
-                </ul>
-            </li>
+                        @haspermission(config('permissions')['view_audit_trail'])
+                            <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link"><i
+                                        class="fa fa-cloud pr-1"></i> Audit
+                                    Trail</a></li>
+                        @endhaspermission
+                    </ul>
+                </li>
+            @endhaspermission
+
+
         </ul>
     </div>
-</div>
-
-
-<div class="az-content az-content-dashboard-five">
-
-    @include('layouts.header')
-
-    <div class="az-content-body">
-        @yield('content')
-    </div>
-    @include('layouts.footer')
 </div>

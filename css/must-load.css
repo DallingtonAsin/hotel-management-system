@@ -1,3 +1,6 @@
+html, body {
+  max-width: 100%;
+}
 .az-header-center>div {
   text-align: center;
   display: block;
@@ -45,9 +48,8 @@ a:hover{
   color: #009688 !important
 }
 
-
 .chart-card {
-  width: 600px;
+  width: 800px;
   height: 400px;
 }
 
@@ -133,17 +135,25 @@ input[type="radio"]:checked {
   font-size: 15px;
 }
 
-table {
+/* table {
   overflow-x: scroll;
-}
+} */
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .table-responsive {
     display: block;
     width: 100%;
     overflow-x: auto;
   }
-}
+} */
+
+/* table{table-layout: fixed;}
+
+td{ 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+} */
 
 .az-header-center div a h6 {
   color: #fff !important
@@ -170,7 +180,7 @@ table {
 }
 
 
-tfoot tr {
+/* tfoot tr {
   display: flex;
   justify-content: flex-end;
 }
@@ -178,7 +188,7 @@ tfoot tr {
 tfoot {
   text-align: right;
   float: right;
-}
+} */
 
 #subtotal,
 #tax,
@@ -227,4 +237,9 @@ tfoot {
   padding-left: 20px !important;
   padding-right: 20px !important;
 }
+
+.table-responsive {
+  overflow-x: auto;
+}
+
 

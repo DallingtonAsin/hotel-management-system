@@ -44,7 +44,7 @@
     <script src="{{ asset('vendors/js/azia.js') }}"></script>
     <script src="{{ asset('js/custom/datatables.js') }}"></script>
     <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
-    <script src="{{ asset('vendors/custom/echarts.js') }}"></script>
+    <script src="{{ asset('js/custom/echarts.js') }}"></script>
     <script src="{{ asset('js/custom/common.js') }}"></script>
 
     <link href="{{ asset('css/nunito.css') }}" rel="stylesheet">
@@ -52,8 +52,8 @@
     <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-5.2.min.css') }}">
     <link href="{{ asset('css/css.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/css/notification.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/datatables/dtables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/datatables/dtables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('vendors/datatables/dtables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('vendors/datatables/dtables/css/jquery.dataTables.min.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('vendors/jquery-confirm/jquery-confirm.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendors/js/dataTables.jqueryui.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/js/jquery-ui.css') }}" rel="stylesheet">
@@ -82,8 +82,15 @@
     <body>
         <div class="az-body az-body-sidebar az-light">
             @include('layouts.sidebar')
+              <div class="az-content az-content-dashboard-five">
+                @include('layouts.header')
+            <div class="az-content-body">
+                @yield('content')
+            </div>
+            @include('layouts.footer')
         </div>
-
+        </div>
+      
     </body>
 @endauth
 

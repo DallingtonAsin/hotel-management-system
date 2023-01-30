@@ -21,7 +21,7 @@ class KitchenOrderFactory extends Factory
             'order_number' => $this->faker->unique()->numberBetween(1, 10000),
             'table_number' => $this->faker->numberBetween(1, 10),
             "status"  => $this->faker->randomElement($order_statuses),
-            'order_date' => $this->faker->dateTimeBetween('next Monday', 'next Monday +7 days'),
+            'order_date' => $this->faker->dateTimeBetween('-30 years',  'now', 'Africa/Kampala'),
             "created_by"  => $this->faker->randomElement([1,2,3,4,5]),
 
         ];
