@@ -10,8 +10,21 @@ return [
     // dashbaord
     'view_dashboard' => 'view_dashboard',
 
+    // access
+    'access_bar' => 'access_bar',
+    'access_restaurant' => 'access_restaurant',
+    'access_store' => 'access_store',
+    'access_house_keeping' => 'access_house_keeping',
+    'access_accomodation' => 'access_accomodation',
+    'access_HR' => 'access_HR',
+    'access_accounting' => 'access_accounting',
+    // reports
+    'view_reports' => 'view_reports',
+    'access_other_system_features' => 'access_other_system_features',
+
     // view pos
     'view_pos' => 'view_pos',
+    'view_sales' => 'view_sales',
     'issue_discounts' => 'issue_discounts',
 
     // kitchen orders
@@ -28,11 +41,11 @@ return [
     'edit_kitchen_menu_items' => 'edit_kitchen_menu_items',
     'cancel_kitchen_menu_items' => 'cancel_kitchen_menu_items',
 
-     // kitchen menu items categories
-     'view_kitchen_menu_item_categories' => 'view_kitchen_menu_item_categories',
-     'add_kitchen_menu_item_categories' => 'add_kitchen_menu_item_categories',
-     'edit_kitchen_menu_item_categories' => 'edit_kitchen_menu_item_categories',
-     'cancel_kitchen_menu_item_categories' => 'cancel_kitchen_menu_item_categories',
+    // kitchen menu items categories
+    'view_kitchen_menu_item_categories' => 'view_kitchen_menu_item_categories',
+    'add_kitchen_menu_item_categories' => 'add_kitchen_menu_item_categories',
+    'edit_kitchen_menu_item_categories' => 'edit_kitchen_menu_item_categories',
+    'cancel_kitchen_menu_item_categories' => 'cancel_kitchen_menu_item_categories',
 
     // stock 
     'view_stock' => 'view_stock',
@@ -148,9 +161,6 @@ return [
     'create_payments' => 'add_payments',
     'edit_payments' => 'edit_payments',
     'cancel_payments' => 'delete_payments',
-
-    // reports
-    'view_reports' => 'view_reports',
 
 
     // accounting

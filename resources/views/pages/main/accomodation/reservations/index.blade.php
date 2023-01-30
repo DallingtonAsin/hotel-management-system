@@ -18,31 +18,31 @@
 
             <div class="btn-group float-right justify-content-between mb-2">
                 <a href="{{ route('reservations.create') }}"
-                    class="btn btn-primary btn-sm mx-2 outline-none ml-auto mb-2 text-white" id="addNewDesignation">
+                    class="btn btn-primary btn-sm mx-2 rounded-pill outline-none ml-auto mb-2 text-white" id="addNewDesignation">
                     <i class="fa fa-plus-circle pr-1"></i>Add reservation</a>
             </div>
         </div>
 
         <div class="card-body">
-            <div class="table table-sm table-responsive">
+            <div class="table-responsive-lg">
 
                 <table class="table table-bordered table-hover reservations-table" id="reservations-table">
 
                     <thead>
                         <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Guest name</th>
-                            <th scope="col">Guest Type</th>
-                            <th scope="col">Arr. date</th>
+                            <th>#</th>
+                            <th>Guest name</th>
+                            <th>Guest Type</th>
+                            <th>Arr. date</th>
                             <th>Dept. date</th>
-                            <th scope="col">Days</th>
+                            <th>Days</th>
                             <th>Room</th>
                             <th>Invoice No.</th>
                             <th>Invoice Status</th>
                             <th>Amt</th>
                             <th>Tax</th>
                             <th>Total Amt</th>
-                            {{-- <th scope="col">Recorded By</th> --}}
+                            {{-- <th>Recorded By</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth;
 use App\Repositories\RoomRepository;
 
 class RoomService
