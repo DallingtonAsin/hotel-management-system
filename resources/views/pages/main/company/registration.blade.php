@@ -10,7 +10,7 @@
         </div>
 
         <div class="card-body">
-            {!! Form::open(['route' => ['companies.register', isset($company) ? $company['id'] : 0], 'method' => 'POST']) !!}
+            {!! Form::open(['route' => ['companies.register', $company->is_registered ? $company->id : 0], 'method' => 'POST']) !!}
 
             <div class="form-group">
                 <span><i class="text-danger pr-1">*</i>Name</span>
@@ -89,7 +89,7 @@
                     <option value="">Select services</option>
                     @if(count($services) > 0)
                     @foreach ($services as $service)
-                    <option value="{{ $service }}" {{ in_array($service, $company['services']) ? 'selected' : '' }}>{{ $service }}</option>
+                    <option value="{{ $service }}" {{ in_array($service, $company->services) ? 'selected' : '' }}>{{ $service }}</option>
                     @endforeach
                     @endif
                 </select>

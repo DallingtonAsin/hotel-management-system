@@ -23,15 +23,9 @@
 
 
       <div class="row justify-content-center">
-    <label class="col-form-label text-dark font-weight-bold text-md-center">
-      @if(isset($companyData))
-     {{ $companyData['company_name'] }}
-     @else
-     {{ env('APP_NAME') }}
-     @endif
-   </label>
-      </div>
-  </div>
+       <label class="col-form-label text-dark font-weight-bold text-md-center">{{ $company->name }} </label>
+        </div>
+       </div>
 
       <div class="form-group text-center">
                                 <h6 class="text-dark nunito-font ">Sign in to start your session</h6>

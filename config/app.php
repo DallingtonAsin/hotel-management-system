@@ -20,10 +20,14 @@ return [
     'MinimumQty' => env('STOCK_MIN_QTY'),
     'cipherKey' => env('APP_CIPHER'),
 
-    'HOTEL_NAME' => env('HOTEL_NAME' , 'CASA MILTU HOTEL'),
-    'HOTEL_ADDRESS' => env('HOTEL_ADDRESS', 'Plot 137/139 Ntinda-Nakawa Road, Kampala'),
+    'HOTEL_NAME' => env('HOTEL_NAME' , 'CASA MILTU HOTELSS'),
+    'HOTEL_STREET' => env('HOTEL_STREET', 'Ntinda-Nakawa Road'),
+    'HOTEL_CITY' => env('HOTEL_CITY', 'Kampala'),
+    'HOTEL_STATE' => env('HOTEL_STATE', 'Uganda'),
+
+    'HOTEL_ZIP' => env('HOTEL_ZIP', '00000'),
     'HOTEL_PHONE_NUMBER' => env('HOTEL_PHONE_NUMBER', '041 4288706'),
-    'HOTEL_EMAIL' => env('HOTEL_EMAIL', 'info@casamiltu.com'),
+    'HOTEL_EMAIL' => env('HOTEL_EMAIL', 'casamiltu@gmail.com'),
    
 
     /*

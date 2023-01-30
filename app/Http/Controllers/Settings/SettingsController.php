@@ -4,18 +4,12 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
-use App\DataTables\CompanyDataTable;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Helpers\Helper;
 
 class SettingsController extends Controller
 {
-
-
-    public function GetCompanies(CompanyDataTable $dataTable)
-    {
-        return $dataTable->render('pages.main.company.registration');
-    }
 
     public function index()
     {
@@ -86,9 +80,6 @@ class SettingsController extends Controller
     {
         //
     }
-
-
-
 
     public function addUpdateCompany(Request $request, $id)
     {

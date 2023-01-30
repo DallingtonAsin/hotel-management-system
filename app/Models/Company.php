@@ -21,7 +21,8 @@ class Company extends Model
         'website_url',
         'category',
         'services',
-        'logo'   
+        'logo',
+        'is_registered'  
     ];
 
         

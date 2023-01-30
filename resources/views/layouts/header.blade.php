@@ -9,11 +9,7 @@
 
       <div class="az-header-center">
         <h5 class="nav-label colored-icon-1 text-white text-uppercase text-bold" >
-          @if(isset($companyData))
-          {{ $companyData['company_name'] }}
-          @else
-          {{ config('app.name') }}
-          @endif
+          {{ $company->name }}
         </h5>
       </div>
       

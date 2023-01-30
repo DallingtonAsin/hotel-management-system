@@ -26,6 +26,7 @@ class CompanyDetails extends Migration
                 $table->string('category');
                 $table->text('services');
                 $table->string('logo')->nullable();
+                $table->boolean('is_registered')->default(true);
                 $table->timestamps();
         });
 
