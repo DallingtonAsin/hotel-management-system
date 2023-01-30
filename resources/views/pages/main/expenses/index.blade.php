@@ -204,7 +204,7 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -264,7 +264,7 @@
             $('#createNewExpense').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.add_expenses, function(expense) {
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     ShowBtns();
                     $('#addExpensesBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('.expense_id').val('');
@@ -296,7 +296,7 @@
                     $('#addExpensesBtn').text("Edit expense");
                     $('#addExpensesModal').modal('show');
                     populateExpenseDetails(data);
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     ShowBtns();
                 });
             }
@@ -316,7 +316,7 @@
                     $('#modalHeading').html("Details of expense " + data.type_name + "");
                     $('#addExpensesModal').modal('show');
                     populateExpenseDetails(data);
-                    DisableFormFields(true);
+                    disableFormFields(true);
                     HideBtns();
                 });
             }
@@ -429,7 +429,7 @@
 
 
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
                 $('.expense').attr('disabled', bool);
                 $('.amount').attr('disabled', bool);
                 $('.date').attr('disabled', bool);

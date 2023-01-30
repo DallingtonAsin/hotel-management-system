@@ -110,9 +110,9 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" id="addPaymentBtn"
+                            <button type="submit" class="btn btn-primary rounded-pill" id="addPaymentBtn"
                                 name="addPaymentBtn">Save</button>
-                            <button type="reset" class="btn btn-danger clearBtn">Clear</button>
+                            <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
                         </div>
 
                     </div>
@@ -150,8 +150,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn" name="ConfirmBtn">Yes</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -230,7 +230,7 @@
             $('#createNewPayment').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.create_payments, function(payment) {
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     ShowBtns();
                     $('#addPaymentBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('.payment_id').val('');
@@ -287,7 +287,7 @@
                         $('#addPaymentBtn').text("Update");
                         $('#addPaymentModal').modal('show');
                         populatePaymentDetails(data);
-                        DisableFormFields(false);
+                        disableFormFields(false);
                         ShowBtns();
                     } else {
                         displayResponse(null, response.error, 'error');
@@ -312,7 +312,7 @@
                         $('#modalHeading').html("Details of payment record for " + data.staff_name + "");
                         $('#addPaymentModal').modal('show');
                         populatePaymentDetails(data);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                         HideBtns();
 
                     } else {
@@ -436,7 +436,7 @@
                 });
             }
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
                 $('.staff_id').attr('disabled', bool);
                 $('.category_id').attr('disabled', bool);
                 $('.amount').attr('disabled', bool);

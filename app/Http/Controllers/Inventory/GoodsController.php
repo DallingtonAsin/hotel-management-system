@@ -190,6 +190,16 @@ class GoodsController extends Controller
         }
     }
 
+
+    private function getGoodDetails($id){
+        try{
+            $good = $this->goodsRepository->get($id);
+            $good->commodity_category_code = $this->goodsCategoryRepository->get($good->commodity_category_id)->code;
+            return response(['success' => 'OK', 'data' => $good]);
+        }catch(\Exception $ex){
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -198,7 +208,7 @@ class GoodsController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getGoodDetails($id);
     }
 
     /**
@@ -209,7 +219,7 @@ class GoodsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getGoodDetails($id);
     }
 
     /**

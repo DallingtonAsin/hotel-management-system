@@ -247,7 +247,7 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -325,12 +325,12 @@
             $('#createNewpurchase').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.add_purchases, function(purchase) {
-                    NullifyFields();
+                    nullifyFields();
                     ShowHideBtns('show');
                     $('.addPurchaseBtn').text("Record purchase");
                     $('#purchaseForm').trigger("reset");
                     $('#modalHeading').html("Record new purchase");
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     $('#addPurchaseModal').modal('show');
                 });
             });
@@ -375,8 +375,8 @@
                         $('.supplier_contact').val(data.supplier_contact);
                         $('.date_of_purchase').val(data.date_of_purchase);
                         $('.item-name').css('pointer-events', 'none');
-                        DisableFormFields(true);
-                        DisableFormFields(false);
+                        disableFormFields(true);
+                        disableFormFields(false);
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
@@ -491,7 +491,7 @@
                         $('.supplier').val(data.supplier);
                         $('.supplier_contact').val(data.supplier_contact);
                         $('.date_of_purchase').val(data.date_of_purchase);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                     },
                     error: function(data) {
                         console.log(data);
@@ -566,7 +566,7 @@
                 });
             }
 
-            function NullifyFields() {
+            function nullifyFields() {
 
                 $('.item_code').val('');
                 $('.item-name').val('');
@@ -578,7 +578,7 @@
             }
 
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
                 $('.purchaseId').attr('disabled', bool);
                 $('.item_code').attr('disabled', bool);
                 $('.item-name').attr('disabled', bool);

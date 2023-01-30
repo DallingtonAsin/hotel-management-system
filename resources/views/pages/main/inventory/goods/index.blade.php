@@ -51,7 +51,7 @@
             </div>
 
 
-            <!--Add new Stock -->
+            <!--Add new good -->
             <div class="modal fade nunito-font" id="addGoodModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog mx-auto modal-dialog-xlg">
@@ -125,8 +125,7 @@
 
                                     <div class=" col-md-4">
                                         <span><span class="text-danger pr-1">*</span>Unit Price</span>
-                                        <input type="text" class="form-control  unit_price" id="unit_price"
-                                            name="unit_price" placeholder="Enter unit price">
+                                        <input type="text" class="form-control  unit_price" id="unit_price" name="unit_price" placeholder="Enter unit price">
                                     </div>
 
                                     <div class="col-md-4">
@@ -196,7 +195,7 @@
 
                                     <div class="col-md-6">
                                         <span>Goods Type Code</span>
-                                        <select class="form-control package_scale_value" id="package_scale_value" name="package_scale_value">
+                                        <select class="form-control goods_type_code" id="goods_type_code" name="goods_type_code">
                                             <option value="101" selected="true">101: Goods</option>
                                             <option value="102">102: Fuel</option>
                                         </select>
@@ -239,7 +238,7 @@
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-sm outline-none rounded-pill addGoodBtn"
                                         name="AddItemBtn"><i></i>Save</button>
-                                    <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
+                                    <button type="reset" class="btn btn-sm btn-danger rounded-pill clearBtn">Clear</button>
                                 </div>
 
                                 <div class="form-group">
@@ -252,55 +251,8 @@
                 </div>
             </div>
 
-            <!--Import Stock -->
-            <div class="modal fade nunito-font" id="importStock" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-
-                        <form action="{{ Route('stock.import') }}" method="post" enctype="multipart/form-data"
-                            name="inportGoodsForm">
-                            @csrf
-
-                            <div class="modal-header text-center">
-                                <h6 class="modal-title w-100 font-weight-bold">
-                                    Import an excel file of stock items</h6>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-
-                                <div class="form-group">
-                                    <span>Select file for Upload</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="file"
-                                        class="form-control-file @error('select_file') is-invalid @enderror"
-                                        name="select_file">
-                                </div>
-
-                                @error('select_file')
-                                    <div class='alert alert-danger alert-dismissible text-center' role='alert'>
-                                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                            <span aria-hidden='true'>&times;</span></button>
-                                        <strong>Sorry!</strong> {{ $message }}
-                                    </div>
-                                @enderror
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" name="AddItemBtn">Upload</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!--Modal DeleteStock -->
+         
+            <!--Modal Delete Good -->
             <div class="modal fade" id="deleteGoodModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
                 aria-labelledby="ModalLabel">
@@ -324,13 +276,13 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary delete-ok-btn"
                                     name="ConfirmBtn">Yes</button>
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end of modal DeleteStock-->
+            <!-- end of modal Delete Good-->
         </div>
     </div>
  
@@ -442,31 +394,66 @@
             $('#createNewGood').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.add_stock, function(stock) {
-                    NullifyFields();
+                    nullifyFields();
                     ShowHideBtns('show');
                     $('.addGoodBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('#GoodsForm').trigger("reset");
                     $('#modalHeading').html("Add new good");
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     $('#addGoodModal').modal('show');
                 });
             });
 
-            //modal used to edit stock details [each row of the tbl]
-            $('body').on('click', '#edit-stock', function(event) {
-                let stock_id = $(this).data('id');
+
+            function populateGoodDetails(data) {
+                $('.goods_id').val(data.id);
+                $('.goods_name').val(data.goods_name);
+                $('.goods_code').val(data.goods_code);
+                $('.commodity_category').val(data.commodity_category_id);
+                $('.commodity_category_id').val(data.commodity_category_code);
+                $('.measure_unit').val(data.measure_unit);
+                if(data.unit_price){
+                    $('.unit_price').val(FormatNumber(data.unit_price));
+                }
+                $('.have_excise_tax').val(data.have_excise_tax);
+                $('.stock_prewarning').val(data.stock_prewarning);
+                $('.have_piece_unit').val(data.have_piece_unit);
+                $('.have_unit_price').val(data.have_unit_price)
+                $('.package_scale_value').val(data.package_scale_value);
+                $('.piece_scaled_value').val(data.piece_scaled_value);
+                $('.goods_type_code').val(data.goods_type_code);
+                $('.excise_duty_code').val(data.excise_duty_code);
+                $('.have_other_unit').val(data.have_other_unit);
+                $('.other_price').val(data.other_price);
+                $('.other_scale').val(data.other_scale)
+                $('.package_scale').val(data.package_scale);
+            }
+
+            //modal used to edit good details [each row of the tbl]
+            $('body').on('click', '#edit-good', function(event) {
+                let good_id = $(this).data('id');
                 event.preventDefault();
                 checkPermission(permissions.edit_stock, function(stock) {
-                    editStock(stock_id);
+                    editStock(good_id);
                 });
             });
 
-            function editStock(stock_id) {
+              //View Modal used to view each row
+              $('body').on('click', '#view-good', function(event) {
+                let good_id = $(this).data('id');
+                event.preventDefault();
+                checkPermission(permissions.view_stock, function(stock) {
+                    viewStock(good_id);
+                });
+            });
+
+
+            function editStock(good_id) {
                 ShowHideBtns('show');
                 $('.addGoodBtn').text("Update stock");
                 $('#addGoodModal').modal('show');
                 let Url = "{{ route('goods.show', ':id') }}";
-                Url = Url.replace(':id', stock_id);
+                Url = Url.replace(':id', good_id);
                 $.ajax({
 
                     url: Url,
@@ -478,7 +465,7 @@
                             $('#modalHeading').html("Edit details of good " + data.goods_name +
                                 "");
                             populateGoodDetails(data);
-                            DisableFormFields(false);
+                            disableFormFields(false);
                         } else {
                             $('.addGoodBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                             displayResponse(null, response.error, 'error');
@@ -493,12 +480,11 @@
                 });
             }
 
-            function updateGoods(stock_id) {
-
+            function updateGoods(good_id) {
                 $('.errors-section').html('');
                 $('.addGoodBtn').html('Updating item...');
                 let Url = "{{ route('goods.update', ':id') }}";
-                Url = Url.replace(':id', stock_id);
+                Url = Url.replace(':id', good_id);
 
                 $.ajax({
                     data: $('#GoodsForm').serialize(),
@@ -517,7 +503,6 @@
                             let tbl = $('#goods-table').DataTable();
                             tbl.ajax.reload();
                         }
-
                         displayResponse(null, message, type);
                     },
                     error: function(data) {
@@ -564,50 +549,25 @@
 
             }
 
-            //View Modal used to view each row [stock details]
-            $('body').on('click', '#view-stock', function(event) {
-                let stock_id = $(this).data('id');
-                event.preventDefault();
-                checkPermission(permissions.view_stock, function(stock) {
-                    viewStock(stock_id);
-                });
-            });
-
-            function viewStock(stock_id) {
+            function viewStock(good_id) {
                 ShowHideBtns('hide');
-                $.get("{{ route('goods.index') }}" + '/' + stock_id + '', function(response) {
+                $.get("{{ route('goods.index') }}" + '/' + good_id + '', function(response) {
                     if (response.success) {
                         let data = response.data;
+                        console.log(`Data is`, data);
                         $('#modalHeading').html("Details of stock " + data.goods_name + "");
                         $('#addGoodModal').modal('show');
                         populateGoodDetails(data);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                     } else {
                         displayResponse(null, response.error, 'error');
                     }
                 });
             }
 
-            function populateGoodDetails(data) {
-                $('.stockId').val(data.id);
-                $('.item_code').val(data.item_code);
-                $('.goods_type_code').val(data.goods_type_code);
-                $('.stockin_type_code').val(data.stockin_type_code);
-                $('.goods_name').val(data.goods_name);
-                $('.category').val(data.category_id);
-                $('#supplier').val(data.supplier_id);
-                $('.supplier_tin').val(data.supplier_tin);
-                $('.quantity').val(data.quantity);
-                $('.threshold_qty').val(data.threshold_qty)
-                $('.expiry_date').val(data.expiry_date);
-                $('.original_price').val(FormatNumber(data.buying_price));
-                $('.selling_price').val(FormatNumber(data.selling_price));
-            }
-
-
             function onClickSubmitBtn() {
                 $('.addGoodBtn').click(function(e) {
-                    let id = $(".stockId").val();
+                    let id = $(".goods_id").val();
                     e.preventDefault();
                     let isValidForm = validateForm();
                     if (isValidForm) {
@@ -625,10 +585,10 @@
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-good', function(e) {
-                let stock_id = $(this).data("id");
+                let good_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.delete_stock, function(stock) {
-                    $.get("{{ route('goods.index') }}" + '/' + stock_id + '', function(response) {
+                    $.get("{{ route('goods.index') }}" + '/' + good_id + '', function(response) {
                         if (response.success) {
                             let data = response.data;
                             $('.delete-confirm-text').html(
@@ -636,7 +596,7 @@
                             );
                             $("#deleteGoodModal").modal('show');
                             $('.delete-ok-btn').on('click', function() {
-                                deleteRecord(stock_id);
+                                deleteRecord(good_id);
                             });
                         } else {
                             displayResponse(null, response.error, 'error');
@@ -675,8 +635,8 @@
                 });
             }
 
-            function NullifyFields() {
-                $('.stockId').val('');
+            function nullifyFields() {
+                $('.goods_id').val('');
                 $('.item_code').val('');
                 $('.goods_name').val('');
                 $('.category').val('');
@@ -688,19 +648,26 @@
                 $('.supplier_tin').val();
             }
 
-
-
-            function DisableFormFields(bool) {
-
-                $('.stockId').attr('disabled', bool);
-                $('.item_code').attr('disabled', bool);
+            function disableFormFields(bool) {
+                $('.goods_id').attr('disabled', bool);
                 $('.goods_name').attr('disabled', bool);
-                $('.category').attr('disabled', bool);
-                $('#supplier').attr('disabled', bool);
-                $('.quantity').attr('disabled', bool);
-                $('.expiry_date').attr('disabled', bool);
-                $('.original_price').attr('disabled', bool);
-                $('.selling_price').attr('disabled', bool);
+                $('.goods_code').attr('disabled', bool);
+                $('.commodity_category').attr('disabled', bool);
+                $('.commodity_category_id').attr('disabled', bool);
+                $('.measure_unit').attr('disabled', bool);
+                $('.unit_price').attr('disabled', bool);
+                $('.have_excise_tax').attr('disabled', bool);
+                $('.stock_prewarning').attr('disabled', bool);
+                $('.have_piece_unit').attr('disabled', bool);
+                $('.have_unit_price').attr('disabled', bool);
+                $('.package_scale_value').attr('disabled', bool);
+                $('.piece_scaled_value').attr('disabled', bool);
+                $('.goods_type_code').attr('disabled', bool);
+                $('.excise_duty_code').attr('disabled', bool);
+                $('.have_other_unit').attr('disabled', bool);
+                $('.other_price').attr('disabled', bool);
+                $('.other_scale').attr('disabled', bool);
+                $('.package_scale').attr('disabled', bool);
             }
 
             function ShowHideBtns(action) {

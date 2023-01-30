@@ -19,28 +19,7 @@
 
         <div class="card-body">
 
-            <div class="col-lg-8 text-center nunito-font">
-
-                @if (session()->get('success'))
-                    <div class='alert alert-success alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                    </div>
-                @endif
-
-                @if (session()->get('fail'))
-                    <div class='alert alert-danger alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Oops!</strong> {{ session()->get('fail') }}
-                    </div>
-                @endif
-
-            </div>
-
             <div class="table table-sm table-responsive">
-
                 <table class="table table-bordered table-hover departments-table" id="departments-table">
 
                     <thead>
@@ -48,18 +27,15 @@
                             <th>#</th>
                             <th>Department Code</th>
                             <th>Department Name</th>
+                            <th>is deleted</th>
                             <th>Added By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                 </table>
-
-
             </div>
         </div>
     </div>
-
-
 
     <!--Add department -->
     <div class="modal fade nunito-font addDepartmentModal" id="addDepartmentModal" tabindex="-1"
@@ -81,26 +57,26 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control departmentId  departmentId" name="id"
-                                placeholder="Enter department id" required autofocus>
+                            <input type="hidden" class="form-control department_id  department_id" name="id"
+                                placeholder="Enter department id">
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Department Code</span>
                             <input type="text" class="form-control code " name="code"
-                                placeholder="Enter department code" required autofocus>
+                                placeholder="Enter department code">
                         </div>
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i>Department Name</span>
                             <input type="text" class="form-control name " name="name"
-                                placeholder="Enter department name" required autofocus>
+                                placeholder="Enter department name">
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addDepartmentBtn"
+                            <button type="submit" class="btn btn-primary rounded-pill addDepartmentBtn"
                                 name="addDepartmentBtn">Save</button>
-                            <button type="reset" class="btn btn-danger clearBtn">Clear</button>
+                            <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
                         </div>
 
                         <div class="form-group">
@@ -139,7 +115,7 @@
 
                         <div class="form-group">
                             <input type="file" class="form-control-file @error('select_file') is-invalid @enderror"
-                                name="select_file" required autofocus>
+                                name="select_file">
                         </div>
 
                         @error('select_file')
@@ -151,7 +127,7 @@
                         @enderror
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Upload</button>
+                            <button type="submit" class="btn btn-primary rounded-pill">Upload</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -188,8 +164,9 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn"
+                            name="ConfirmBtn">Yes</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -211,13 +188,15 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-
-            //code that displays results of the table index()
             let table = $('#departments-table');
             let title = "List of registered departments in the system";
             let columns = [1, 2, 3, 4];
-            let dataColumns = [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+            let dataColumns = [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
                 {
                     data: 'code',
                     name: 'code'
@@ -225,6 +204,10 @@
                 {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'is_deleted',
+                    name: 'is_deleted'
                 },
                 {
                     data: 'created_by',
@@ -240,13 +223,18 @@
 
             makeDataTable(table, title, columns, dataColumns);
 
+            $('.modal').on('hidden.bs.modal', function () {
+               $('.department_id').val('');
+            });
+
+
             $('#addNewDepartment').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.create_departments, function(department) {
                     DisableTableFields(false);
                     ShowBtns();
                     $('.addDepartmentBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                    $('.departmentId').val('');
+                    $('.department_id').val('');
                     $('#DepartmentsForm').trigger("reset");
                     $('#modalHeading').html("Register new department");
                     $('#addDepartmentModal').modal('show');
@@ -260,32 +248,43 @@
             $('.addDepartmentBtn').click(function(e) {
 
                 e.preventDefault();
+                let department_id = $('.department_id').val();
+                let method, url;
+
+                if(department_id){
+                  url = "{{ route('departments.update', ':id') }}";
+                  url = url.replace(":id", department_id);
+                  method = 'PUT';
+                }else{
+                    url = "{{ route('departments.store') }}";
+                    method = 'POST';
+                }
 
                 let isValidForm = validateForm();
+
                 if (isValidForm) {
                     $(this).html('Sending..');
 
                     $.ajax({
                         data: $('#DepartmentsForm').serialize(),
-                        url: "{{ route('departments.store') }}",
-                        type: "POST",
+                        url: url,
+                        type: method,
                         dataType: 'json',
-                        success: function(data) {
+                        success: function(response) {
 
-                            $('#DepartmentsForm').trigger("reset");
-                            $('#addDepartmentModal').modal("hide");
-                            let resp = data.success || data.error;
-                            let type = data.success ? 'success' : 'error';
+                            let message = response.success || response.error;
+                            let type = response.success ? 'success' : 'error';
 
-                            if (data.success) {
-                                ResetTblInfo(data);
+                            if(response.success){
+                                let data = response.data;
+                                $('#DepartmentsForm').trigger("reset");
+                                $('#addDepartmentModal').modal("hide");
+                                resetTblInfo(data);
                                 let tbl = $('#departments-table').DataTable();
                                 tbl.ajax.reload();
                             }
 
-                            displayResponse('.response', resp, type);
-
-
+                            displayResponse(null, message, type);
                         },
                         error: function(data) {
                             console.log('Error:', data.error);
@@ -307,19 +306,20 @@
             });
 
             function editDepartment(department_id) {
-                $.get("{{ route('departments.index') }}" + '/' + department_id + '/edit', function(data) {
-                    $('#modalHeading').html("Edit details of department " + data.name + "");
-                    $('.addDepartmentBtn').text("Edit department");
-                    $('#addDepartmentModal').modal('show');
-                    $('.departmentId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(false);
-                    ShowBtns();
+                $('.department_id').val(department_id);
+                $.get("{{ route('departments.index') }}" + '/' + department_id + '/edit', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Edit details of department " + data.name + "");
+                        $('.addDepartmentBtn').text("Edit department");
+                        $('#addDepartmentModal').modal('show');
+                        $('.department_id').val('');
+                        populateDepartmentDetails(data);
+                        DisableTableFields(false);
+                        ShowBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
             }
 
@@ -334,20 +334,24 @@
             });
 
             function viewDepartment(department_id) {
-                $.get("{{ route('departments.index') }}" + '/' + department_id + '', function(data) {
-
-                    $('#modalHeading').html("Details of department " + data.name + "");
-                    $('#addDepartmentModal').modal('show');
-                    $('.departmentId').val(data.id);
-                    $('.name').val(data.name);
-                    $('.address').val(data.address);
-                    $('.contact').val(data.contact);
-                    $('.email').val(data.email);
-                    $('.debt').val(data.debt);
-                    $('.credit').val(data.credit);
-                    DisableTableFields(true);
-                    HideBtns();
+                $.get("{{ route('departments.index') }}" + '/' + department_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('#modalHeading').html("Details of department " + data.name + "");
+                        $('#addDepartmentModal').modal('show');
+                        populateDepartmentDetails(data);
+                        DisableTableFields(true);
+                        HideBtns();
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
                 });
+            }
+
+            function populateDepartmentDetails(data) {
+                $('.department_id').val(data.id);
+                $('.code').val(data.code);
+                $('.name').val(data.name);
             }
 
             //this pops up confirm delete modal
@@ -355,12 +359,21 @@
                 let department_id = $(this).data("id");
                 e.preventDefault();
                 checkPermission(permissions.cancel_departments, function() {
+                    $.get("{{ route('departments.index') }}" + '/' + department_id + '', function(response) {
+                    if (response.success) {
+
+                    let data = response.data;
+                    let action = data.is_deleted == 1 ? 'undelete' : 'delete';
                     $("#deleteSuppliersModal").modal('show');
                     $(".delete-alert-text").html(
-                    "Are you sure you want to delete this department?");
+                        `Are you sure you want to ${action} department ${data.name}?`);
                     $('.delete-ok-btn').on('click', function() {
                         deleteRecord(department_id);
                     });
+                } else {
+                        displayResponse(null, response.error, 'error');
+                    }
+                });
                 });
             });
 
@@ -372,14 +385,22 @@
                 $.ajax({
                     type: "DELETE",
                     url: deleteUrl,
-                    success: function(data) {
-                        let resp = data.success;
+                    success: function(response) {
+
+                       let type = response.success ? 'success' : 'error';
+                       let message = response.success || response.error;
+
+                       if(response.success){
+
+                        let data = response.data;
                         $('.delete-ok-btn').html('Yes');
                         $('#deleteSuppliersModal').modal("hide");
-                        displayResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
+                        resetTblInfo(data);
                         let tbl = $('#departments-table').DataTable();
                         tbl.ajax.reload();
+
+                       }
+                       displayResponse(null, message, type);
                     },
                     error: function(data) {
                         console.log('Error:', data);
@@ -389,32 +410,27 @@
             }
 
             function DisableTableFields(bool) {
-
-                $('.departmentId').attr('disabled', bool);
+                $('.department_id').attr('disabled', bool);
                 $('.name').attr('disabled', bool);
-                $('.address').attr('disabled', bool);
-                $('.contact').attr('disabled', bool);
-                $('.email').attr('disabled', bool);
-                $('.debt').attr('disabled', bool);
-                $('.credit').attr('disabled', bool);
+                $('.code').attr('disabled', bool);
             }
 
             function HideBtns() {
                 $('.addDepartmentBtn').hide();
                 $('.clearBtn').hide();
-                $('.closeBtn').hide();
             }
 
             function ShowBtns() {
                 $('.addDepartmentBtn').show();
                 $('.clearBtn').show();
-                $('.closeBtn').show();
             }
 
 
-            function ResetTblInfo(response) {
-                let totl_number = FormatNumber(response.total);
-                $('.total_departments').html(totl_number);
+            function resetTblInfo(data) {
+                if(data.total){
+                    let total = FormatNumber(data.total);
+                    $('.total_departments').html(total);
+                }
             }
 
             function validateForm() {
@@ -425,10 +441,9 @@
 
                 if (code.length < 1) {
                     displayResponse(null, "Please enter department code", "error");
-                }
-                else if (name.length < 1) {
+                } else if (name.length < 1) {
                     displayResponse(null, "Please enter the name of the department", "error");
-                }else{
+                } else {
                     isValidForm = true;
                 }
 
@@ -436,60 +451,7 @@
 
             }
 
-            $("#removeAllSuppliers").bind("click", function() {
-                RemoveAllSuppliers();
-            });
-
-            function RemoveAllSuppliers() {
-                $.confirm({
-                    boxWidth: '30%',
-                    icon: 'fa fa-warning',
-                    theme: 'light',
-                    closeIcon: true,
-                    draggable: true,
-                    closeIconClass: 'fa fa-close text-danger',
-                    title: 'Delete all departments',
-                    content: 'Are you sure you want to remove all departments',
-                    buttons: {
-                        confirm: function() {
-                            let self = this;
-                            return $.ajax({
-                                data: {
-                                    "_token": "{{ csrf_token() }}",
-                                },
-                                url: '{{ Route('suppliers.truncate') }}',
-                                type: 'POST',
-                                // dataType: 'json',
-                            }).done(function(data) {
-
-                                $.alert({
-                                    title: 'Message',
-                                    content: data.success,
-                                });
-                                $(".total_departments").text(data.total);
-                                let tbl = $('#departments-table').DataTable();
-                                tbl.ajax.reload();
-
-
-                            }).fail(function(data) {
-                                $.alert({
-                                    title: 'Response',
-                                    content: "Suppliers not deleted:" + data.fail,
-                                });
-                                console.log(data);
-
-                            });
-
-                        },
-                        cancel: function() {
-
-                        }
-                    },
-                });
-
-            }
         });
     </script>
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
+
 @endsection

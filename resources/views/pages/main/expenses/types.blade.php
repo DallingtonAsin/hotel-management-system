@@ -115,7 +115,7 @@
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -176,7 +176,7 @@
             $('#createNewExpenseType').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.add_expenses, function(expense) {
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     ShowBtns();
                     $('#addExpenseTypeBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('.expense_type_id').val('');
@@ -210,7 +210,7 @@
                         $('#addExpenseTypeBtn').text("Edit expense");
                         $('#addExpenseTypesModal').modal('show');
                         populateExpenseTypeDetails(data);
-                        DisableFormFields(false);
+                        disableFormFields(false);
                         ShowBtns();
                     } else {
                         displayResponse(null, response.error, 'error');
@@ -235,7 +235,7 @@
                         $('#modalHeading').html("Details of expense type " + data.name + "");
                         $('#addExpenseTypesModal').modal('show');
                         populateExpenseTypeDetails(data);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                         HideBtns();
                     } else {
                         displayResponse(null, response.error, 'error');
@@ -359,7 +359,7 @@
             }
 
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
                 $('.name').attr('readonly', bool);
             }
 

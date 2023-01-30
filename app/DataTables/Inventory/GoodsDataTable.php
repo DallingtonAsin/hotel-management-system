@@ -38,7 +38,7 @@ class GoodsDataTable extends DataTable
               
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
               data-id="' . $good->id . '" data-original-title="Edit" id="edit-good"
-              class="px-3 py-1 border border-success rounded  edit-good mx-2 text-success">edit good</a>';
+              class="px-3 py-1 border border-success rounded edit-good mx-2 text-success">edit good</a>';
 
 
                 $btn .= '<a href="javascript:void(0);" id="view-good"

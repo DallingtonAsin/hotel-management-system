@@ -79,8 +79,8 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary addSalaryBtn" name="addSalaryBtn">Save</button>
-                            <button type="reset" class="btn btn-danger clearBtn">Clear</button>
+                            <button type="submit" class="btn btn-primary rounded-pill addSalaryBtn" name="addSalaryBtn">Save</button>
+                            <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
                         </div>
 
                         <div class="form-group">
@@ -131,7 +131,7 @@
                         @enderror
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Upload</button>
+                            <button type="submit" class="btn btn-primary rounded-pill">Upload</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -168,8 +168,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn" name="ConfirmBtn">Yes</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>

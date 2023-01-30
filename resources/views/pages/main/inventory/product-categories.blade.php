@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary delete-ok-btn" id="delete-ok-btn"
                                     name="ConfirmBtn">Yes</button>
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
 
                             </div>
                         </div>
@@ -239,12 +239,12 @@
             $('#createNewPdtCategory').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.add_product_categories, function(category) {
-                    NullifyFields();
+                    nullifyFields();
                     ShowHideBtns('show');
                     $('.addCategoryBtn').text("Submit");
                     $('#PdtCategoryForm').trigger("reset");
                     $('#modalHeading').html("Record New Pdt Category");
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     $('#addItemCategoryModal').modal('show');
                 });
             });
@@ -276,7 +276,7 @@
                                 "");
                             $('.category_id').val(data.id);
                             $('.name').val(data.name);
-                            DisableFormFields(false);
+                            disableFormFields(false);
                         } else {
                             displayResponse(null, response.error, 'error');
                         }
@@ -377,7 +377,7 @@
                         $('#addItemCategoryModal').modal('show');
                         $('.category_id').val(data.id);
                         $('.name').val(data.name);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                     } else {
                         displayResponse(null, response.error, 'error');
                     }
@@ -467,14 +467,14 @@
                 });
             }
 
-            function NullifyFields() {
+            function nullifyFields() {
                 $('.category_id').val('');
                 $('.name').val('');
             }
 
 
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
                 $('.name').attr('disabled', bool);
             }
 
