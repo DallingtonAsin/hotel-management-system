@@ -20,7 +20,7 @@ return [
     'MinimumQty' => env('STOCK_MIN_QTY'),
     'cipherKey' => env('APP_CIPHER'),
 
-    'HOTEL_NAME' => env('HOTEL_NAME' , 'CASA MILTU HOTELSS'),
+    'HOTEL_NAME' => env('HOTEL_NAME' , 'CASA MILTU HOTEL'),
     'HOTEL_STREET' => env('HOTEL_STREET', 'Ntinda-Nakawa Road'),
     'HOTEL_CITY' => env('HOTEL_CITY', 'Kampala'),
     'HOTEL_STATE' => env('HOTEL_STATE', 'Uganda'),
