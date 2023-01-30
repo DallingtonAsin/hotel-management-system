@@ -122,7 +122,7 @@
         </div>
 
         <div class="form-group mt-4">
-            <button type="submit" class="btn btn-primary btn-sm outline-none rounded-pill border-dark"><i
+            <button type="submit" class="btn btn-primary rounded-pill btn-sm outline-none rounded-pill border-dark"><i
                     class="fa fa-plus-circle pr-1"></i>Submit Reservation</button>
         </div>
 

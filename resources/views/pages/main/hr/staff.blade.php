@@ -156,7 +156,7 @@
                         <div class="form-group">
                             <button type="button" class="btn btn-primary addStaffBtn" id="addStaffBtn"
                                 name="addStaffBtn"><i class="fa fa-plus-circle pr-1"></i>Save</button>
-                            <button type="reset" class="btn btn-danger clearBtn"><i class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
+                            <button type="reset" class="btn btn-danger rounded-pill clearBtn"><i class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
 
                             <span class="response"></span>
                         </div>
@@ -193,8 +193,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn" name="ConfirmBtn">Yes</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -229,9 +229,9 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary confirm-changeAccount-ok-btn"
+                        <button type="submit" class="btn btn-primary rounded-pill confirm-changeAccount-ok-btn"
                             name="ConfirmChangeBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>

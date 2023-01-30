@@ -198,7 +198,7 @@
                                         name="edit_stock_action">
                                     <button type="submit" class="btn btn-primary btn-sm outline-none rounded-pill addStockBtn"
                                         name="AddItemBtn"><i></i>Save</button>
-                                    <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
+                                    <button type="reset" class="btn btn-sm btn-danger rounded-pill clearBtn">Clear</button>
                                 </div>
 
                                 <div class="form-group">
@@ -284,7 +284,7 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary delete-ok-btn"
                                     name="ConfirmBtn">Yes</button>
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                             </div>
                         </div>
                     </div>
@@ -454,7 +454,7 @@
                 $('.quantity_text').text('Quantity');
                 e.preventDefault();
                 checkPermission(permissions.add_stock, function(stock) {
-                    NullifyFields();
+                    nullifyFields();
                     ShowHideBtns('show');
                     $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('#StockForm').trigger("reset");
@@ -770,7 +770,7 @@
                 });
             }
 
-            function NullifyFields() {
+            function nullifyFields() {
                 $('.stockId').val('');
                 $('.item_code').val('');
                 $('.item_name').val('');

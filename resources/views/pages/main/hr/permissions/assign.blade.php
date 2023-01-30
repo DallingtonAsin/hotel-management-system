@@ -33,7 +33,7 @@
                             @endforeach
                         </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Assign Permissions</button>
+                        <button type="submit" class="btn btn-primary rounded-pill mt-3">Assign Permissions</button>
                     </form>
                 </div>
             </div>

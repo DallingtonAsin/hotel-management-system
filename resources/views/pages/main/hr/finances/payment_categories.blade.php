@@ -88,9 +88,9 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" id="addPaymentCategoryBtn"
+                            <button type="submit" class="btn btn-primary rounded-pill" id="addPaymentCategoryBtn"
                                 name="submit">Save</button>
-                            <button type="reset" class="btn btn-danger clearBtn">Clear</button>
+                            <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
                         </div>
 
                     </div>
@@ -131,8 +131,8 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn" name="ConfirmBtn">Yes</button>
+                        <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
             $('#createNewPaymentCategory').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.create_payments, function(payment_category) {
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     ShowBtns();
                     $('#addPaymentCategoryBtn').html(
                         "<i class='fa fa-plus-circle pr-1'></i>Submit");
@@ -228,7 +228,7 @@
                         $('#addPaymentCategoryBtn').text("Update");
                         $('#addPaymentCategoryModal').modal('show');
                         populatePaymentCatDetails(data);
-                        DisableFormFields(false);
+                        disableFormFields(false);
                         ShowBtns();
                     } else {
                         displayResponse(null, response.error, 'error');
@@ -253,7 +253,7 @@
                         $('#modalHeading').html("Details of payment category " + data.name + "");
                         $('#addPaymentCategoryModal').modal('show');
                         populatePaymentCatDetails(data);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                         HideBtns();
                     } else {
                         displayResponse(null, response.error, 'error');
@@ -377,7 +377,7 @@
                 });
             }
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
                 $('.category_name').attr('disabled', bool);
                 $('.transaction_type').attr('disabled', bool);
             }

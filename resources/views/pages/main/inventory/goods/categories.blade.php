@@ -85,7 +85,7 @@
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-sm outline-none rounded-pill addCommodityCatBtn"
                                         name="AddItemBtn"><i></i>Save</button>
-                                    <button type="reset" class="btn btn-sm btn-danger clearBtn">Clear</button>
+                                    <button type="reset" class="btn btn-sm btn-danger rounded-pill clearBtn">Clear</button>
                                 </div>
 
                                 <div class="form-group">
@@ -124,7 +124,7 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary delete-ok-btn"
                                     name="ConfirmBtn">Yes</button>
-                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                             </div>
                         </div>
                     </div>
@@ -195,12 +195,12 @@
             $('#createNewStock').click(function(e) {
                 e.preventDefault();
                 checkPermission(permissions.add_stock, function(commodity_category) {
-                    NullifyFields();
+                    nullifyFields();
                     ShowHideBtns('show');
                     $('.addCommodityCatBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                     $('#CommodityCategoryForm').trigger("reset");
                     $('#modalHeading').html("Add new commodity category");
-                    DisableFormFields(false);
+                    disableFormFields(false);
                     $('#addCommodityCategoryModal').modal('show');
                 });
             });
@@ -231,7 +231,7 @@
                             let data = response.data;
                             $('#modalHeading').html("Edit details of commodity category " + data.name + "");
                             populateProductDetails(data);
-                            DisableFormFields(false);
+                            disableFormFields(false);
                         } else {
                             $('.addCommodityCatBtn').html(
                                 "<i class='fa fa-plus-circle pr-1'></i>Submit");
@@ -335,7 +335,7 @@
                         $('#modalHeading').html("Details of commodity category " + data.name + "");
                         $('#addCommodityCategoryModal').modal('show');
                         populateProductDetails(data);
-                        DisableFormFields(true);
+                        disableFormFields(true);
                     } else {
                         displayResponse(null, response.error, 'error');
                     }
@@ -420,13 +420,13 @@
                 });
             }
 
-            function NullifyFields() {
+            function nullifyFields() {
                 $('.category_id').val('');
                 $('.category_name').val('');
                 $('.category_code').val('');
             }
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
 
                 $('.category_id').attr('disabled', bool);
                 $('.category_name').attr('disabled', bool);

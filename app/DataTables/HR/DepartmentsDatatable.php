@@ -43,9 +43,11 @@ class DepartmentsDatatable extends DataTable
             })->addColumn('checkbox', function ($department) {
             $checkBox = '<input type="checkbox" id="' . $department->id . '"/>';
             return $checkBox;
+        })->editColumn('is_deleted', function ($data) {
+            return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>'; 
         })->editColumn('created_by', function ($department) {
             return Helper::getUserNames($department->created_by);
-        })->rawColumns(['checkbox', 'action']);
+        })->rawColumns(['checkbox', 'is_deleted', 'action']);
     }
 
     /**

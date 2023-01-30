@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Room;
-use App\Models\RoomStatus;
 
 class RoomRepository
 {

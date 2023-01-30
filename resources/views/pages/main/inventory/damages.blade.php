@@ -154,7 +154,7 @@
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                         </div>
                     </div>
                 </div>
@@ -383,7 +383,7 @@
                             $('#addDamagesModal').modal('show');
                             $('.item_id').val(data.item_id);
                             $('.quantity').val(data.quantity);
-                            DisableFormFields(false);
+                            disableFormFields(false);
                             ShowHideBtns('show');
                             $('#addDamagesModal').modal('show');
                         } else {
@@ -416,7 +416,7 @@
                         $('.item_id').val(data.item_id);
                         $('.quantity').val(data.quantity);
                         ShowHideContent('show');
-                        DisableFormFields(true);
+                        disableFormFields(true);
                         ShowHideBtns('hide');
                     } else {
                         displayResponse(null, response.error, 'error');
@@ -594,7 +594,7 @@
             }
 
 
-            function DisableFormFields(bool) {
+            function disableFormFields(bool) {
 
                 $('.item-name').attr('disabled', bool);
                 $('.item-category').attr('disabled', bool);

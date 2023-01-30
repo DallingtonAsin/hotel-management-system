@@ -12,6 +12,7 @@ class Department extends Model
       'id',
       'code',
       'name',
+      'is_deleted',
       'created_by',
     ];
 }
