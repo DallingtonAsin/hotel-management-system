@@ -60,21 +60,20 @@ function ePieChart(elementId, title, data){
    let option = {
         title: {
           text: title,
-          subtext: 'Fake Data',
-          left: 'center'
+          left: 'left'
         },
         tooltip: {
           trigger: 'item'
         },
-        legend: {
-          orient: 'vertical',
-          left: 'left'
-        },
+        // legend: {
+        //   orient: 'bottom',
+        //   left: 'left'
+        // },
         series: [
           {
-            name: 'Access From',
+            name: title,
             type: 'pie',
-            radius: '50%',
+            radius: '70%',
             data: data,
             emphasis: {
               itemStyle: {
@@ -217,8 +216,8 @@ function titleConfig(title){
   const config = {
     text: title,
     textStyle: {
-      fontWeight: 'normal',
-      fontSize: 12.5,
+      fontWeight: 'bold',
+      // fontSize: 14.5,
     }
   }
   return config;

@@ -152,7 +152,7 @@
                         </li>
                         @haspermission(config('permissions')['view_suppliers'])
                             <li class="nav-sub-item"><a href="{{ route('suppliers.index') }}" class="nav-sub-link"><i
-                                        class="fa fa-users pr-1"></i>Suppliers</a> </li>
+                                        class="fa fa-users pr-2"></i>Suppliers</a> </li>
                         @endhaspermission
 
                         @haspermission(config('permissions')['view_expenses'])
