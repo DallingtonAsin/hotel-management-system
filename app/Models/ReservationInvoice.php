@@ -20,11 +20,13 @@ class ReservationInvoice extends Model
         'amount',
         'tax',
         'total_amount',
-        'ts_issued',
+        'issued_on',
         'issued_by',
+        'status',
+        'payment_method',
         'cancelled_by',
-        'ts_paid',
-        'ts_cancelled'
+        'paid_on',
+        'cancelled_on'
     ];
 
     public function reservation()

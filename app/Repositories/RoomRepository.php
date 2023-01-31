@@ -22,10 +22,13 @@ class RoomRepository
         }
     }
 
-    public function get($id)
+    public function get($id = null)
     {
         try {
-            return $this->room->find($id);
+            if($id){
+                return $this->room->find($id);
+            }
+            return $this->room->all();
         } catch (\Exception $ex) {
             throw $ex;
         }
@@ -70,5 +73,10 @@ class RoomRepository
         } catch (\Exception $ex) {
             throw $ex;
         }
+    }
+
+
+    public function findRoomByNumber($number){
+        return $this->room->where('number', $number);
     }
 }

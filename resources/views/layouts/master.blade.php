@@ -7,7 +7,7 @@
     <meta name="description" content="{{ config('app.name') }}">
     <meta name="author" content="PivoSoftLtd">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title><?= isset($companyData) ? $companyData['company_name'] : env('APP_NAME') ?></title>
+    <title>{{ $company->name }}</title>
 
     <script>
         window.Laravel = { csrfToken: 'csrf_token()' }

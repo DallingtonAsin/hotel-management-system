@@ -11,7 +11,30 @@
 
         populateRooms();
         onSelectGuestType();
-        populateFrequentContacts('.company_name');
+
+        let selectedRadioBtn = document.querySelector('input[name="guest_type"]:checked');
+        let selectedGuestType = selectedRadioBtn.value;
+        displayCardInfo(selectedGuestType);
+
+        $('input[name="guest_type"]').change(function() {
+            let selectedValue = $(this).val();
+            displayCardInfo(selectedValue);
+        });
+
+        function displayCardInfo(guestType) {
+            if (guestType == 'Corporate') {
+                $('.company_info_section').show();
+                $('.general_company_info').hide();
+            } else {
+                $('.company_info_section').hide();
+                $('.general_company_info').show();
+                $('.company_name').val('');
+                $('.company_contact').val('');
+                $('.company_email').val('');
+                $('.company_tin').val('');
+            }
+        }
+
 
         function onSelectGuestType() {
             $('.guest_types_section').on('change', function() {
@@ -77,9 +100,9 @@
 
                             $('.company_email').val(email);
                             $('.company_contact').val(phone_number);
-                            $('.tax_number').val(tin);
+                            $('.company_tin').val(tin);
                             $('.contact_person').val(contact_person);
-                            $('.company_price').val(FormatNumber(price));
+                            $('.daily_price').val(FormatNumber(price));
                         }
                     },
                     error: function(data) {
@@ -106,16 +129,19 @@
         Numberize('#discount');
 
         $('.occupancy_type').on('change', function() {
-            let occupancy_type = $(this).find(":selected").val();
-            if (occupancy_type) {
-                let room_number = $('#room_number').val();
-                if (room_number) {
-                    populateRoomPrice(room_number, occupancy_type);
+
+            if (selectedGuestType != 'Corporate') {
+                let occupancy_type = $(this).find(":selected").val();
+                if (occupancy_type) {
+                    let room_number = $('#room_number').val();
+                    if (room_number) {
+                        populateRoomPrice(room_number, occupancy_type);
+                    } else {
+                        alert("Enter room number first before select occupancy to see the price");
+                    }
                 } else {
-                    alert("Enter room number first before select occupancy to see the price");
+                    alert("Empty value");
                 }
-            } else {
-                alert("Empty value");
             }
         });
 
@@ -149,7 +175,11 @@
 
         function ComputeTotal() {
 
+            let selectedRadioButton = document.querySelector('input[name="guest_type"]:checked');
+            let selectedValue = selectedRadioButton.value;
+
             let price = $('.daily_price').val();
+
             let arrival_date = $('.arrival_date').val();
             let departure_date = $('.departure_date').val();
 
@@ -163,10 +193,10 @@
                     $('#total').val(total.toLocaleString());
 
                 } else {
-                    alert("No room price");
+                    // alert("No room price");
                 }
             } else {
-                alert("No dates captured");
+                // alert("No dates captured");
             }
         }
 
