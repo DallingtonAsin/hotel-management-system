@@ -59,5 +59,12 @@ class StaffRepository
         return $hasAccess;
     }
 
+    public function getSpecificStaff($designation){
+       return $this->staff->join('designations', 'staff.designation_id', '=', 'designations.id')
+                    ->where('designations.name', '=', $designation)
+                    ->select('staff.*', 'designations.name as designation_name')
+                    ->get();
+    }
+
     
 }

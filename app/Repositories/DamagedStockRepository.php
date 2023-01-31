@@ -40,20 +40,23 @@ class DamagedStockRepository
     }
 
 
-    public function getCostofDamages()
+    public function getCostofDamages($startDate= null, $endDate = null)
     {
         try {
 
             $damages = Damage::all();
-            $cost_of_damages  = 0;
+            if($startDate && $endDate){
+              $damages = Damage::whereDate('recorded_on', ">=", $startDate)->whereDate('recorded_on', "<=", $endDate)->get();
+            }
 
+            $total_cost  = 0;
             foreach ($damages as $item) {
                 $price = Stock::where('id', $item->item_id)->value('buying_price');
                 $cost = $item->quantity * $price;
-                $cost_of_damages += $cost;
+                $total_cost += $cost;
             }
 
-            return $cost_of_damages;
+            return $total_cost;
         } catch (\Exception $ex) {
             throw $ex;
         }
