@@ -15,9 +15,17 @@ use App\Models\RoomType;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\Helper;
 use Carbon\Carbon;
+use App\Repositories\RoomRepository;
 
 class ReservationController extends Controller
 {
+
+    protected $roomRepository;
+
+    public function __construct(RoomRepository $roomRepository)
+    {
+        $this->roomRepository = $roomRepository;
+    }
 
     public function index()
     {
@@ -36,8 +44,106 @@ class ReservationController extends Controller
      */
     public function create()
     {
+        $frequent_contacts =  FrequentContact::all();
         $guest_types = GuestType::all();
-        return view('pages.main.accomodation.reservations.add', ['guest_types' => $guest_types]);
+        return view('pages.main.accomodation.reservations.add', 
+        ['guest_types' => $guest_types, 'frequent_contacts' => $frequent_contacts]);
+    }
+
+    private function validateRegularGuestReq(){
+
+        $reqObj = [
+            'guest_type' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'job_title' => 'sometimes|nullable',
+            'guest_tin' => 'sometimes|nullable',
+            'company_name' => 'sometimes|nullable',
+            'company_contact' => 'sometimes|nullable',
+            'company_email' => 'sometimes|nullable',
+            'company_tin' => 'sometimes|nullable',
+            'daily_price' => 'sometimes|nullable',
+            'nationality' => 'required',
+            'phone_number' => 'required|min:10',
+            'email' => 'sometimes|nullable|email',
+            'passport_number' => 'sometimes|nullable',
+            'nin' => 'sometimes|nullable',
+            'card_issue_date' => 'sometimes|nullable',
+            'card_expiry_date' => 'sometimes|nullable',
+            'room_number' => 'required',
+            'occupancy_type' => 'required',
+            'arrival_date' => 'required',
+            'departure_date' => 'required',
+            'discount' => 'required',
+            'total' => 'required',
+            'purpose_of_visit' => 'required',
+            'payment_mode' => 'required'
+        ];
+        return $reqObj;
+    }
+
+    private function validateCorporateGuestReq(){
+
+        $reqObj = [
+            'guest_type' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'job_title' => 'sometimes|nullable',
+            'guest_tin' => 'sometimes|nullable',
+            'company_name' => 'required',
+            'company_contact' => 'required',
+            'company_email' => 'required',
+            'company_tin' => 'required',
+            'daily_price' => 'required',
+            'nationality' => 'required',
+            'phone_number' => 'required|min:10',
+            'email' => 'sometimes|nullable|email',
+            'passport_number' => 'sometimes|nullable',
+            'nin' => 'sometimes|nullable',
+            'card_issue_date' => 'sometimes|nullable',
+            'card_expiry_date' => 'sometimes|nullable',
+            'room_number' => 'required',
+            'occupancy_type' => 'required',
+            'arrival_date' => 'required',
+            'departure_date' => 'required',
+            'discount' => 'sometimes|nullable',
+            'total' => 'sometimes|nullable',
+            'purpose_of_visit' => 'required',
+            'payment_mode' => 'required'
+        ];
+        return $reqObj;
+    }
+
+    private function validateDailyUseGuestReq(){
+
+        $reqObj = [
+            'guest_type' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'sometimes|nullable',
+            'job_title' => 'sometimes|nullable',
+            'guest_tin' => 'sometimes|nullable',
+            'company_name' => 'sometimes|nullable',
+            'company_contact' => 'sometimes|nullable',
+            'company_email' => 'sometimes|nullable',
+            'company_tin' => 'sometimes|nullable',
+            'daily_price' => 'sometimes|nullable',
+            'nationality' => 'required',
+            'phone_number' => 'required|min:10',
+            'email' => 'sometimes|nullable|email',
+            'passport_number' => 'sometimes|nullable',
+            'nin' => 'sometimes|nullable',
+            'card_issue_date' => 'sometimes|nullable',
+            'room_number' => 'required',
+            'card_expiry_date' => 'sometimes|nullable',
+            'occupancy_type' => 'required',
+            'arrival_date' => 'required',
+            'departure_date' => 'required',
+            'discount' => 'required',
+            'total' => 'required',
+            'purpose_of_visit' => 'required',
+            'payment_mode' => 'required'
+        ];
+        return $reqObj;
     }
 
     /**
@@ -48,59 +154,21 @@ class ReservationController extends Controller
 
         $guest_type = $request->input('guest_type');
         if (stripos($guest_type, 'regular') !== false) {
-            $validator = Validator::make($request->all(), [
-                'guest_type' => 'required',
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'company_name' => 'sometimes|nullable',
-                'tax_number' => 'sometimes|nullable',
-                'company_contact' => 'sometimes|nullable',
-                'company_email' => 'sometimes|nullable',
-                'phone_number' => 'required|min:10',
-                'email' => 'sometimes|nullable|email',
-                'passport_number' => 'sometimes|nullable',
-                'passport_expiry_date' => 'sometimes|nullable',
-                'nin' => 'sometimes|nullable',
-                'occupancy_type' => 'required',
-                'room_number' => 'required',
-                'arrival_date' => 'required',
-                'departure_date' => 'required',
-                'other_details' => 'sometimes|nullable'
-            ]);
-            $tab = '?tab=regular-tab';
+
+            $validator = Validator::make($request->all(), $this->validateRegularGuestReq());
+
         } else if(stripos($guest_type, 'corporate') !== false){
-            $validator = Validator::make($request->all(), [
-                'guest_type' => 'required',
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'company_name' => 'required',
-                'tax_number' => 'required',
-                'company_contact' => 'required',
-                'company_email' => 'required',
-                'phone_number' => 'sometimes|nullable|min:10',
-                'email' => 'required|email',
-                'passport_number' => 'sometimes|nullable',
-                'passport_expiry_date' => 'sometimes|nullable',
-                'nin' => 'sometimes|nullable',
-                'occupancy_type' => 'required',
-                'room_number' => 'required',
-                'arrival_date' => 'required',
-                'departure_date' => 'required',
-                'other_details' => 'sometimes|nullable'
-            ]);
-            $tab = '?tab=corporate-tab';
+            $validator = Validator::make($request->all(), $this->validateCorporateGuestReq());
+      
         }else{
-            $validator = Validator::make($request->all(), [
-                'guest_type' => 'required',
-                'first_name' => 'required',
-            ]);
-            $tab = '?tab=day-use-tab';
+            $validator = Validator::make($request->all(), $this->validateDailyUseGuestReq());
+           
         }
 
         try {
             if ($validator->fails()) {
 
-                return redirect('reservations/create' . $tab)
+                return redirect('reservations/create')
                     ->withErrors($validator)
                     ->withInput();
 
@@ -112,19 +180,36 @@ class ReservationController extends Controller
                     return back()->withInput()->with(['error' => 'Departure date must be greater than arrival date']);
                 }
 
-
                 $first_name = ucfirst($request->input('first_name'));
                 $last_name = ucfirst($request->input('last_name'));
-             
-                $tax_number = $request->input('tax_number');
-                $company_contact = $request->input('company_contact');
-                $company_email = $request->input('company_email');
+                $guest_tin = $request->input('guest_tin');
+                $job_title = $request->input('job_title');
                 $phone_number = $request->input('phone_number');
                 $email = $request->input('email');
+
+                $company_contact = $request->input('company_contact');
+                $company_email = $request->input('company_email');
+                $company_tin = $request->input('company_tin');
+                $daily_price = Helper::Numberize($request->input('daily_price'));
+
+                $nationality = ucfirst($request->input('nationality'));
                 $passport_number = $request->input('passport_number');
+                $card_issue_date = $request->input('card_issue_date');
+                $card_expiry_date = $request->input('card_expiry_date');
+
                 $nin = $request->input('nin');
                 $occupancy_type = $request->input('occupancy_type');
-                $other_details = $request->input('other_details');
+
+                $room_number = $request->input('room_number');
+                $purpose_of_visit = $request->input('purpose_of_visit');
+                $payment_mode = $request->input('payment_mode');
+
+                if($request->filled('discount')){
+                    $discount = Helper::Numberize($request->input('discount'));
+                }else{
+                    $discount = 0;
+                }
+
                 $arrival_date = date('Y-m-d, H:i:s', strtotime($start_date));
                 $departure_date = date('Y-m-d, H:i:s', strtotime($end_date));
                 $created_by = Helper::getLoggedInUserId();
@@ -136,11 +221,10 @@ class ReservationController extends Controller
                 }
                
                 $guest_type_id = GuestType::where('name', 'like', "%" . $guest_type . "%")->value('id');
-                $room_number = $request->input('room_number');
 
-                $doesRoomExist = Room::where('number', $room_number)->exists();
-                if ($doesRoomExist) {
-                    $room_details = Room::where('number', $room_number)->first();
+                $room = $this->roomRepository->findRoomByNumber($room_number);
+                if ($room->exists()) {
+                    $room_details = $room->first();
                     $room_id = $room_details->id;
                     $room_type_id = $room_details->type_id;
                 } else {
@@ -149,30 +233,37 @@ class ReservationController extends Controller
 
                 $roomType = RoomType::find($room_type_id);
 
-                if (stripos($occupancy_type, 'single') !== false) {
-                    $price_rate = $roomType->single_occupancy_rate;
-                } else {
-                    $price_rate = $roomType->double_occupancy_rate;
-                }
+                 if(stripos($guest_type, 'corporate') !== false){
+                      $price_rate = $daily_price;
+                 }else{
+                        $price_rate = (stripos($occupancy_type, 'single') !== false)
+                        ?  $roomType->single_occupancy_rate
+                        : $roomType->double_occupancy_rate;
+                 }
 
                 $nights = floatval(Carbon::parse($arrival_date)->diffInDays(Carbon::parse($departure_date)));
                 $nights = $nights < 1 ? 1 : $nights;
                 $amount = $nights * floatval($price_rate);
+                $amount = $amount - $discount;
                 $tax_amount = 0.18 * $amount;
 
                 $guestData = [
                     'first_name' => $first_name,
                     'last_name' => $last_name,
-                    'email' => $email,
                     'phone_number' => $phone_number,
+                    'email' => $email,
+                    'job_title' => $job_title,
+                    'tin_number' => $guest_tin,
                     'company_name' => $company_name,
                     'company_contact' => $company_contact,
                     'company_email' => $company_email,
-                    'tax_number' => $tax_number,
+                    'company_tin' => $company_tin,
+                    'nationality' => $nationality,
                     'passport_number' => $passport_number,
                     'nin' => $nin,
-                    'other_details' => $other_details,
-                    'created_by' => $created_by,
+                    'card_issue_date' => $card_issue_date,
+                    'card_expiry_date' => $card_expiry_date,
+                    'created_by' => $created_by
                 ];
 
                 $exists = $this->checkIfGuestExists($phone_number, $email);
@@ -199,6 +290,7 @@ class ReservationController extends Controller
                     'guest_id' => $guest_id,
                     'guest_type_id' => $guest_type_id,
                     'occupancy_type' => $occupancy_type,
+                    'purpose_of_visit' => $purpose_of_visit,
                     'created_by' => $created_by,
                 ];
 
@@ -216,6 +308,7 @@ class ReservationController extends Controller
                         'discount_percent' => 0,
                         'amount' => $amount,
                         'tax' => $tax_amount,
+                        'payment_method' => $payment_mode,
                         'issued_on' => Carbon::now(),
                         'issued_by' => $created_by
                     ];
@@ -268,9 +361,7 @@ class ReservationController extends Controller
     private function addNewGuest($guest)
     {
         try {
-            $guest = Guest::create($guest);
-            return $guest;
-
+        return Guest::create($guest);
         } catch (\Exception $ex) {
             throw $ex;
         }

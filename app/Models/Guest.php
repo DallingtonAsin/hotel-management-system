@@ -15,16 +15,19 @@ class Guest extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'company_name',
-        'tin_number',
-        'company_contact',
-        'company_email',
         'phone_number',
         'email',
+        'job_title',
+        'tin_number',
+        'company_name',
+        'company_contact',
+        'company_email',
+        'company_tin',
+        'nationality',
         'passport_number',
-        'tax_number',
         'nin',
-        'other_details',
+        'card_issue_date',
+        'card_expiry_date',
         'created_by'
     ];
 

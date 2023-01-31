@@ -22,13 +22,13 @@ class CreateReservationsTable extends Migration
             $table->unsignedBigInteger('guest_id');
             $table->unsignedBigInteger('guest_type_id');
             $table->string('occupancy_type');
-             $table->unsignedBigInteger('created_by')->unsigned();
+            $table->string('purpose_of_visit')->nullable();
+            $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('guest_id')->references('id')->on('guests');
             $table->foreign('guest_type_id')->references('id')->on('guest_types');
             $table->foreign('room_id')->references('id')->on('rooms');
             $table->foreign('created_by')->references('id')->on('staff');
-
         });
     }
 

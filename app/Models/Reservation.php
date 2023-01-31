@@ -19,6 +19,7 @@ class Reservation extends Model
         'guest_id',
         'guest_type_id',
         'occupancy_type',
+        'purpose_of_visit',
         'created_by'
     ];
 
