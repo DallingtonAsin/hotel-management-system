@@ -7,9 +7,16 @@ use App\Models\Sale;
 use Illuminate\Support\Facades\Gate;
 use App\Helpers\Helper;
 use App\Models\Stock;
+use App\Repositories\StaffRepository;
 
 class SalesDataTable extends DataTable
 {
+
+    protected $staffRepository;
+    public function __construct(StaffRepository $staffRepository)
+    {
+       $this->staffRepository =  $staffRepository;
+    }
     /**
      * Build DataTable class.
      *
@@ -27,9 +34,6 @@ class SalesDataTable extends DataTable
 
             $btn = "";
 
-            
-            if(Gate::allows('isAdmin')){
-
             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$sale->id.'" data-item="'.$sale->item.'" data-original-title="Edit" id="edit-sale"
             class="px-3 py-1 border border-success rounded  edit-sale mx-2">
@@ -40,7 +44,6 @@ class SalesDataTable extends DataTable
              data-id="'.$sale->id.'" class="px-3 py-1 border border-danger rounded trash-btn mx-2">
             <span class="fa fa-trash-alt" ></span></a>';
 
-            }
 
             $btn .= '<a href="javascript:void(0);" id="view-sale"
             data-toggle="tooltip" data-original-title="View"
@@ -60,7 +63,10 @@ class SalesDataTable extends DataTable
              }
              return 'Test item '.$sale->item_id;
 
-      })->editColumn('quantity', function ($data) {
+      })->addColumn('cashier', function($sale){
+            $staff = $this->staffRepository->get($sale->cashier_id);
+            return $staff->first_name . ' ' . $staff->last_name;
+        })->editColumn('quantity', function ($data) {
             return Helper::convertNumber($data->quantity);
         })->editColumn('selling_price', function ($data) {
             return Helper::convertNumber($data->selling_price);

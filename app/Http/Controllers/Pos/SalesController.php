@@ -27,48 +27,101 @@ use App\Repositories\StaffRepository;
 class SalesController extends Controller
 {
 
-  protected $saleRepository, $stockRepository, $controller;
+  protected $saleRepository, $stockRepository, $controller, $cashiers;
   protected $staffRepository, $damagedStockRepository, $salesDataTable;
 
-  public function __construct(SaleRepository $saleRepository, StockRepository $stockRepository,
-                              StaffRepository $staffRepository,  DamagedStockRepository $damagedStockRepository,
-                               SalesDataTable $salesDataTable)
-  {
+  public function __construct(
+    SaleRepository $saleRepository,
+    StockRepository $stockRepository,
+    StaffRepository $staffRepository,
+    DamagedStockRepository $damagedStockRepository,
+    SalesDataTable $salesDataTable
+  ) {
     $this->controller = 'SalesController';
     $this->staffRepository = $staffRepository;
     $this->saleRepository = $saleRepository;
     $this->stockRepository =  $stockRepository;
     $this->damagedStockRepository = $damagedStockRepository;
     $this->salesDataTable = $salesDataTable;
+    $this->cashiers = $this->staffRepository->getSpecificStaff('Cashier');
+
   }
 
-  protected function GetCustomSalesReview($startDate, $endDate)
+
+  public function index(Request $request)
   {
 
 
-    $value1 = Sale::whereBetween('date', [$startDate, $endDate])->sum('total_buying_cost');
-    $total_sales = $value2 = Sale::whereBetween('date', [$startDate, $endDate])->sum('paid_amount');
+    $request->session()->forget('filtered_sales');
+    $arr = $this->GetSalesReview();
+    $today = Date('Y-m-d');
 
-    $total_expenses = Expense::whereBetween('date_of_expenditure', [$startDate, $endDate])->sum('amount');
-    $cost_of_damages = $this->damagedStockRepository->getCostofDamages();
+    $today_sales = Sale::whereDate('date', $today)->get();
+    $all_sales = Sale::where('fully_paid', 1)->where('balance', 0)->get();
 
-    $value3 = (Supplier::whereDate('created_at', ">=", $startDate)
-      ->whereDate('created_at', "<=", $endDate)
-      ->sum('credit'))
-      - (Supplier::whereDate('created_at', ">=", $startDate)
-        ->whereDate('created_at', "<=", $endDate)
-        ->sum('debt'));
+    $volume_of_todaysales = Sale::whereDate('date', $today)
+      ->sum('paid_amount');
 
-    $value4 = (Customer::whereDate('created_at', ">=", $startDate)
-      ->whereDate('created_at', "<=", $endDate)
-      ->sum('credit'))
-      - (Customer::whereDate('created_at', ">=", $startDate)
-        ->whereDate('created_at', "<=", $endDate)
-        ->sum('debt'));
+    $totl_no = $arr['totl_no'];
+    $total_sales = $arr['totl_sales'];
+    $netValue = $arr['NetWorth'];
 
-    $netValue = (($value2 - $value1) - ($total_expenses + $cost_of_damages) + ($value3 + $value4));
+    ($netValue > 0)
+      ? $net_title = "Net Profit made: shs"
+      : $net_title = "Losses made: shs";
+
+    if ($request->ajax()) {
+      $this->GetSales();
+    }
+
+    return view('pages.main.sales.index', ['cashiers' => $this->cashiers])->with(
+      compact(
+        'today_sales',
+        'totl_no',
+        'all_sales',
+        'netValue',
+        'volume_of_todaysales',
+        'total_sales'
+      )
+    );
+  }
+
+
+  protected function computeNetValue($startDate, $endDate, $cashier_id)
+  {
+
+    $sale = Sale::whereNotNull('id');
+    $expense = Expense::whereNotNull('id');
+    $supplier = Supplier::whereNotNull('id');
+    $customer = Customer::whereNotNull('id');
+    $costOfDamages = $this->damagedStockRepository->getCostofDamages();
+
+    if (($startDate && $endDate) || $cashier_id) {
+ 
+      if ($startDate && $endDate) {
+          $sale->whereBetween('date', [$startDate, $endDate]);
+          $expense->whereBetween('date_of_expenditure', [$startDate, $endDate]);
+          $supplier->whereDate('created_at', ">=", $startDate)->whereDate('created_at', "<=", $endDate);
+          $customer->whereDate('created_at', ">=", $startDate)->whereDate('created_at', "<=", $endDate);
+          $costOfDamages = $this->damagedStockRepository->getCostofDamages($startDate, $endDate);
+      }
+
+      if ($cashier_id) {
+          $sale->where('cashier_id', $cashier_id);
+      }
+    }
+
+    $totalCostPrice = $sale->sum('total_buying_cost');
+    $totalSaleAmount = $sale->sum('paid_amount');
+    $totalExpenses =   $expense->sum('amount');
+
+    $supplerDebtValue = $supplier->sum('credit') - $supplier->sum('debt');
+    $customerDebtValue = $customer->sum('credit')  - $customer->sum('debt');
+
+    $netValue = (($totalSaleAmount - $totalCostPrice) - ($totalExpenses + $costOfDamages) + ($supplerDebtValue + $customerDebtValue));
 
     return $netValue;
+
   }
 
 
@@ -76,31 +129,42 @@ class SalesController extends Controller
   public function filterSales(Request $request)
   {
 
-    if ($request->input('to')) {
+    if ($request->filled(['from', 'to']) || $request->filled('cashier_id')) {
+    
 
       $startDate = $request->input('from');
       $endDate = $request->input('to');
+      $cashier_id = $request->input('cashier_id');
 
-      $data = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->orderBy('date', 'desc')->get();
+      $sale = Sale::whereNotNull('id')->orderBy('date', 'desc');
 
-      $totl_filtered = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->count();
+      if (($startDate && $endDate) || $cashier_id) {
 
-      $volume_of_filteredsales = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->sum('paid_amount');
+        if ($startDate && $endDate) {
+            $sale->whereBetween('date', [$startDate, $endDate]);
+        }
 
-      $netValue = $this->GetCustomSalesReview($startDate, $endDate);
+        if ($cashier_id) {
+            $sale->where('cashier_id', $cashier_id);
+        }
+      }
+
+
+      $data = $sale->get();
+      $totl_filtered = $sale->count();
+      $volume_of_filteredsales = $sale->sum('paid_amount');
+
+      $netValue = $this->computeNetValue($startDate, $endDate, $cashier_id);
 
       return DataTable::of($data)->addIndexColumn()
         ->addColumn('checkbox', function ($sale) {
           $checkBox = '<input type="checkbox" id="' . $sale->id . '"/>';
           return $checkBox;
+        })->addColumn('cashier', function($sale){
+          $staff = $this->staffRepository->get($sale->cashier_id);
+          return $staff->first_name . ' ' . $staff->last_name;
         })->addColumn('item', function ($sale) {
-            return $this->stockRepository->get($sale->item_id)->item_name;
+          return $this->stockRepository->get($sale->item_id)->item_name;
         })->editColumn('quantity', function ($data) {
           return Helper::convertNumber($data->quantity);
         })->editColumn('selling_price', function ($data) {
@@ -117,20 +181,24 @@ class SalesController extends Controller
 
           $btn = "";
 
+          $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+          data-id="'.$sale->id.'" data-item="'.$sale->item.'" data-original-title="Edit" id="edit-sale"
+          class="px-3 py-1 border border-success rounded  edit-sale mx-2">
+           <span class="fa fa-pen text-success"></span></a>';
+
+          $btn .= '<a href="javascript:void(0);" id="delete-sale"
+          data-toggle="tooltip" data-original-title="Delete"
+           data-id="'.$sale->id.'" class="px-3 py-1 border border-danger rounded trash-btn mx-2">
+          <span class="fa fa-trash-alt" ></span></a>';
+
+
           $btn .= '<a href="javascript:void(0);" id="view-sale"
-            data-toggle="tooltip" data-original-title="View"
-             data-id="' . $sale->id . '" class="text-info bolded pl-4">
-            <i class="fa fa-eye" ></i></a>';
+          data-toggle="tooltip" data-original-title="View"
+           data-id="'.$sale->id.'" class="px-3 py-1 border border-secondary rounded text-secondary bolded pr-4">
+          <i class="fa fa-eye" ></i></a>';
 
-          if (Gate::allows('isAdmin')) {
+         return $btn;
 
-            $btn .= '<a href="javascript:void(0);" id="delete-sale"
-            data-toggle="tooltip" data-original-title="Delete"
-             data-id="' . $sale->id . '" class="trash-btn pl-4">
-            <span class="fa fa-trash-alt"></span></a>';
-          }
-
-          return $btn;
         })->rawColumns(['action', 'checkbox'])
         ->with([
           "totl_filtered" => $totl_filtered,
@@ -138,8 +206,9 @@ class SalesController extends Controller
           "netValue" => $netValue,
         ])
         ->make(true);
+        return view('pages.main.sales.index', ['cashiers' => $this->cashiers]);
     }
-    return view('pages.main.sales.index');
+   
   }
 
   public function filterSalesWithDebts(Request $request)
@@ -149,6 +218,8 @@ class SalesController extends Controller
 
       $startDate = $request->input('from');
       $endDate = $request->input('to');
+      $cashier_id = $request->input('cashier_id');
+
 
       $data = DB::table('sales')
         ->whereBetween('date', [$startDate, $endDate])
@@ -171,7 +242,7 @@ class SalesController extends Controller
         ->where('balance', '>', 0)
         ->sum('balance');
 
-      $netValue = $this->GetCustomSalesReview($startDate, $endDate);
+      $netValue = $this->computeNetValue($startDate, $endDate, $cashier_id);
 
       return DataTable::of($data)->addIndexColumn()
         ->addColumn('checkbox', function ($sale) {
@@ -301,47 +372,6 @@ class SalesController extends Controller
     );
   }
 
-
-
-  public function index(Request $request)
-  {
-
-    $request->session()->forget('filtered_sales');
-    $arr = $this->GetSalesReview();
-    $today = Date('Y-m-d');
-
-    $today_sales = Sale::whereDate('date', $today)->get();
-    $all_sales = Sale::where('fully_paid', 1)->where('balance', 0)->get();
-
-    $volume_of_todaysales = Sale::whereDate('date', $today)
-      ->sum('paid_amount');
-
-    $totl_no = $arr['totl_no'];
-    $total_sales = $arr['totl_sales'];
-    $netValue = $arr['NetWorth'];
-
-    ($netValue > 0)
-      ? $net_title = "Net Profit made: shs"
-      : $net_title = "Losses made: shs";
-
-    if ($request->ajax()) {
-      $this->GetSales();
-    }
-
-    return view('pages.main.sales.index')->with(
-      compact(
-        'today_sales',
-        'totl_no',
-        'all_sales',
-        'netValue',
-        'volume_of_todaysales',
-        'total_sales'
-      )
-    );
-  }
-
-
-
   public function salesWithDebtsIndex(Request $request)
   {
 
@@ -453,16 +483,17 @@ class SalesController extends Controller
   }
 
 
-  private function getSaleDetails($id){
-    try{
+  private function getSaleDetails($id)
+  {
+    try {
 
       $sale = Sale::find($id);
       $sale->item_name = $this->stockRepository->get($sale->item_id)->item_name;
       $staff = $this->staffRepository->get($sale->cashier_id);
-      $sale->cashier_name = $staff->first_name . ' '. $staff->last_name;
+      $sale->cashier_name = $staff->first_name . ' ' . $staff->last_name;
 
       return response()->json(['success' => 'OK', 'data' => $sale]);
-    }catch(\Exception $ex){
+    } catch (\Exception $ex) {
       return response()->json(['error' => $ex->getMessage()]);
     }
   }
@@ -475,7 +506,7 @@ class SalesController extends Controller
    */
   public function show($id)
   {
-     return $this->getSaleDetails($id);
+    return $this->getSaleDetails($id);
   }
 
   /**

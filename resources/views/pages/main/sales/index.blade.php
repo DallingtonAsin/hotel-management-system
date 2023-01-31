@@ -77,26 +77,29 @@
                     @cannot('Cashier')
                         <div class="form-group">
                             <label>Cashier</label>
-                            <select class="form-control">
-                                <option>Select cashier</option>
-                                <option>Charity Kansiime</option>
-                                <option>Dallington Asingwire</option>
+                            <select class="form-control cashier_id" name="cashier_id">
+                                <option value="">Select cashier</option>
+                                @foreach ($cashiers as $cashier)
+                                    <option value="{{ $cashier->id }}">{{ $cashier->first_name }} {{ $cashier->last_name }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     @endcannot
 
                     <div class="form-group mx-3">
                         <label>Start Date</label>
-                        <input type="date" name="start_date" class="form-control start_date">
+                        <input type="datetime-local" name="start_date" class="form-control start_date">
                     </div>
 
                     <div class="form-group mx-3">
                         <label>End Date</label>
-                        <input type="date" name="end_date" class="form-control end_date ">
+                        <input type="datetime-local" name="end_date" class="form-control end_date ">
                     </div>
 
                     <div class="form-group mx-3 mt-4">
                         <button type="button" class="btn btn-sm btn-success rounded-pill filterSalesBtn">Filter sales</button>
+                        <button type="reset" class="btn btn-danger rounded-pill clearBtn">Reset</button>
                     </div>
                 </div>
             </form>
@@ -155,7 +158,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn" name="ConfirmBtn">Yes</button>
+                                <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn"
+                                    name="ConfirmBtn">Yes</button>
                                 <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                             </div>
                         </div>
@@ -176,8 +180,7 @@
                                 <i class="fa fa-info-circle"></i>
                                 Details of the sale
                             </h6>
-                            <button type="button" class="close view-close" data-bs-dismiss="modal"
-                                aria-label="Close">
+                            <button type="button" class="close view-close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -242,11 +245,13 @@
 
                                     <div class="form-group">
                                         <span>Date of transaction</span>
-                                        <input type="datetime-local" name="date_of_sale" class="form-control date text-dark" value="">
+                                        <input type="datetime-local" name="date_of_sale"
+                                            class="form-control date text-dark" value="">
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary rounded-pill addSaleBtn" name="AddItemBtn">Save</button>
+                                        <button type="submit" class="btn btn-primary rounded-pill addSaleBtn"
+                                            name="AddItemBtn">Save</button>
                                         <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
                                     </div>
 
@@ -357,8 +362,8 @@
                     name: 'customer'
                 },
                 {
-                    data: 'cashier_id',
-                    name: 'cashier_id'
+                    data: 'cashier',
+                    name: 'cashier'
                 },
                 {
                     data: 'date',
@@ -466,22 +471,33 @@
 
             $('.filterSalesBtn').on('click', function() {
 
-                let datatable = $('.sales-table').DataTable();
                 let from = $('.start_date').val();
                 let to = $('.end_date').val();
-                let Url = "{{ route('filtersales') }}";
+                let cashier_id = $('.cashier_id').val();
+
+                let isValid = validateOnFiltering(from, to, cashier_id);
+
+               if(isValid){
+
+                let url  = "{{ route('filtersales') }}";
                 $.ajax({
 
-                    url: Url,
+                    url: url,
                     type: "POST",
                     data: {
                         _token: '{{ csrf_token() }}',
                         from: from,
                         to: to,
+                        cashier_id: cashier_id
                     },
                     success: function(resp) {
 
                         let data = resp.data;
+                        let datatable = $('.sales-table').DataTable();
+                        datatable.clear();
+                        datatable.rows.add(data);
+                        datatable.draw();
+
                         let totl_filtered = resp.totl_filtered;
                         let totl_volume = resp.volume;
                         let netValue = resp.netValue;
@@ -489,15 +505,14 @@
                         $('.totl_no').html(FormatNumber(totl_filtered));
                         $('.totl_sales').html(FormatNumber(totl_volume));
                         $('.net_value').html(FormatNumber(netValue));
+
                         changeNetValueClass();
                         console.log("Data", data);
                         console.log("Total filtered", totl_filtered);
                         console.log("Total volume", totl_volume);
                         console.log("Net value", netValue);
 
-                        datatable.clear();
-                        datatable.rows.add(data);
-                        datatable.draw();
+
                     },
                     drawCallback: function(extra) {
                         console.log("More data here", datatable.ajax.json());
@@ -507,7 +522,24 @@
 
                     }
                 });
+            }
             });
+
+            function validateOnFiltering(from, to, cashier_id){
+                let isValid = false;
+                if(from && !to){
+                   displayResponse(null, 'Please select end date', 'error');
+                }
+                else if(!from && to){
+                   displayResponse(null, 'Please select start date', 'error');
+                }
+                else if(!from && !to && !cashier_id){
+                    displayResponse(null, 'Please select cashier or duration to filter sales', 'error');
+                }else{
+                    isValid = true;
+                }
+                return isValid;
+            }
 
             //View Modal used to view each row [sale details]
             $('body').on('click', '#view-sale', function(event) {
@@ -563,7 +595,8 @@
                     success: function(response) {
                         if (response.success) {
                             let data = response.data;
-                            $('.modalHeading').html("Edit details of sale item " + data.item_name + "");
+                            $('.modalHeading').html("Edit details of sale item " + data
+                                .item_name + "");
                             $('#SalesModal').modal('show');
                             ShowHideBtns('show');
                             populateSaleDetails(data);
@@ -584,12 +617,13 @@
             //this pops up confirm delete modal
             $('body').on('click', '#delete-sale', function(e) {
                 let sale_id = $(this).data("id");
-          
+
                 e.preventDefault();
                 $.get("{{ route('sales.index') }}" + '/' + sale_id + '', function(response) {
                     if (response.success) {
                         let data = response.data;
-                        $('.delete-modalHeading').html("Are you sure you want to delete sale item " + data.item_name + "?");
+                        $('.delete-modalHeading').html(
+                            "Are you sure you want to delete sale item " + data.item_name + "?");
                         $("#deleteSaleModal").modal('show');
                     } else {
                         displayResponse(null, response.error, 'error');
