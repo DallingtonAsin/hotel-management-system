@@ -4,73 +4,73 @@
     <div class="card">
         @include('pages.main.messages.response')
         <div class="card-header card-header d-flex justify-content-between">
-                    <span class="response"></span>
+            <span class="response"></span>
 
-                    @can('isAdmin')
-                        <div class="col-lg-3">
-                            <label>Sales</label>
-                            <span class="badge badge-info totl_no">
-                                @isset($totl_no)
-                                    {{ number_format($totl_no) }}
-                                @endisset
-
-                                @isset($totl_filtered)
-                                    {{ number_format($totl_filtered) }}
-                                @endisset
-                            </span>
-                        </div>
-                    @endcan
-
-                    @can('isCashier')
-                        @isset($volume_of_todaysales)
-                            <div class="col-lg-3 today-amount">
-                                <span>
-                                    <h6>
-                                        Today: shs.
-                                        <strong class="text-success volume">{{ number_format($volume_of_todaysales) }}</strong>
-                                    </h6>
-                                </span>
-                            </div>
-                            <div class="col-lg-3 amount hidden">
-                                <label>Net Value:</label>
-                                <strong class="net_value">
-                                    {{ number_format(0) }}
-                                </strong>
-                            </div>
-                        @endisset
-                    @endcan
-
-                    @can('isAdmin')
-                        @isset($total_sales)
-                            <div class="col-lg-3 amount">
-                                <label>Sales made: shs.</label>
-                                <strong class="text-success totl_sales">{{ number_format($total_sales) }}</strong>
-                            </div>
+            @can('isAdmin')
+                <div class="col-lg-3">
+                    <label>Sales</label>
+                    <span class="badge badge-info totl_no">
+                        @isset($totl_no)
+                            {{ number_format($totl_no) }}
                         @endisset
 
-
-                        @isset($netValue)
-                            <div class="col-lg-3 amount">
-                                <label>Net Value:</label>
-                                <strong class="net_value">
-                                    {{ number_format($netValue) }}
-                                </strong>
-                            </div>
+                        @isset($totl_filtered)
+                            {{ number_format($totl_filtered) }}
                         @endisset
-                    @endcan
+                    </span>
+                </div>
+            @endcan
 
-                    @cannot('isCashier')
-                        <div class="col-lg-3">
-                            <small>
-                                <a href="{{ Route('sales.index') }}" class="outline-none ml-auto bolded">Load all sales</a>
-                            </small>
-                        </div>
-                    @endcannot
+            @can('isCashier')
+                @isset($volume_of_todaysales)
+                    <div class="col-lg-3 today-amount">
+                        <span>
+                            <h6>
+                                Today: shs.
+                                <strong class="text-success volume">{{ number_format($volume_of_todaysales) }}</strong>
+                            </h6>
+                        </span>
+                    </div>
+                    <div class="col-lg-3 amount hidden">
+                        <label>Net Value:</label>
+                        <strong class="net_value">
+                            {{ number_format(0) }}
+                        </strong>
+                    </div>
+                @endisset
+            @endcan
+
+            @can('isAdmin')
+                @isset($total_sales)
+                    <div class="col-lg-3 amount">
+                        <label>Sales made: shs.</label>
+                        <strong class="text-success totl_sales">{{ number_format($total_sales) }}</strong>
+                    </div>
+                @endisset
+
+
+                @isset($netValue)
+                    <div class="col-lg-3 amount">
+                        <label>Net Value:</label>
+                        <strong class="net_value">
+                            {{ number_format($netValue) }}
+                        </strong>
+                    </div>
+                @endisset
+            @endcan
+
+            @cannot('isCashier')
+                <div class="col-lg-3">
+                    <small>
+                        <a href="{{ Route('sales.index') }}" class="outline-none ml-auto bolded">Load all sales</a>
+                    </small>
+                </div>
+            @endcannot
 
         </div>
 
         <div class="card-body">
-            <form action="{{ Route('filtersales') }}" method="POST">
+            <form action="{{ route('filtersales') }}" method="POST">
 
                 <div class="d-flex justify-content-left mx-2 align-items-center">
 
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="form-group mx-3 mt-4">
-                        <button type="button" class="btn btn-sm btn-success filterSalesBtn">Filter sales</button>
+                        <button type="button" class="btn btn-sm btn-success rounded-pill filterSalesBtn">Filter sales</button>
                     </div>
                 </div>
             </form>
@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary delete-ok-btn" name="ConfirmBtn">Yes</button>
+                                <button type="submit" class="btn btn-primary rounded-pill delete-ok-btn" name="ConfirmBtn">Yes</button>
                                 <button type="button" class="btn btn-dark rounded-pill" data-bs-dismiss="modal">No</button>
                             </div>
                         </div>
@@ -171,12 +171,12 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-md">
 
                     <div class="modal-content nunito-font border border-custom-dark rounded-0">
-                        <div class="modal-header main-color-bg text-center">
-                            <h6 class="modal-title w-100 nunito-font text-white modalHeading  font-weight-bold">
+                        <div class="modal-header text-center">
+                            <h6 class="modal-title w-100 nunito-font modalHeading  font-weight-bold">
                                 <i class="fa fa-info-circle"></i>
                                 Details of the sale
                             </h6>
-                            <button type="button" class="close view-close text-white" data-bs-dismiss="modal"
+                            <button type="button" class="close view-close" data-bs-dismiss="modal"
                                 aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -190,8 +190,7 @@
                                     <div class="form-group">
                                         <span>Item</span>
                                         <input type="hidden" class="form-control item_id" name="item_id">
-                                        <input type="text" class="form-control item-name  text-dark"
-                                            value="">
+                                        <input type="text" class="form-control item_name  text-dark" value="">
                                     </div>
 
                                     <div class="form-group">
@@ -201,14 +200,12 @@
 
                                     <div class="form-group">
                                         <span>Selling Price</span>
-                                        <input type="text" class="form-control sprice  text-dark"
-                                            value="">
+                                        <input type="text" class="form-control sprice  text-dark" value="">
                                     </div>
 
                                     <div class="form-group">
                                         <span>Total cost</span>
-                                        <input type="text" class="form-control tcost  text-dark"
-                                            value="">
+                                        <input type="text" class="form-control tcost  text-dark" value="">
                                     </div>
 
                                     <div class="form-group row">
@@ -228,7 +225,6 @@
                                     </div>
 
 
-
                                     <div class="form-group row">
 
                                         <div class="col-lg-6">
@@ -239,24 +235,19 @@
 
                                         <div class="col-lg-6">
                                             <span>Cashier</span>
-                                            <input type="text" class="form-control cashier  text-dark"
-                                                value="">
+                                            <input type="text" class="form-control cashier text-dark" value="">
                                         </div>
 
                                     </div>
 
                                     <div class="form-group">
                                         <span>Date of transaction</span>
-                                        <input type="date" name="date_of_sale"
-                                            class="form-control date  text-dark" value="">
+                                        <input type="datetime-local" name="date_of_sale" class="form-control date text-dark" value="">
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary addSaleBtn"
-                                            name="AddItemBtn">Save</button>
-                                        <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                                        <button type="button" class="btn btn-dark closeBtn"
-                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary rounded-pill addSaleBtn" name="AddItemBtn">Save</button>
+                                        <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
                                     </div>
 
                                     <div class="form-group">
@@ -270,13 +261,9 @@
 
                     </div>
                 </div>
-            </div> <!-- end of modal ViewSale-->
+            </div> <!-- end of modal View Sale-->
         </div>
     </div>
-
-
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -527,37 +514,45 @@
                 let sale_id = $(this).data('id');
                 event.preventDefault();
                 ShowHideBtns('hide');
-                $.get("{{ route('sales.index') }}" + '/' + sale_id + '', function(data) {
-                    let bprice = data.buying_price;
-                    let sprice = data.selling_price;
-                    $('.modalHeading').html("Details of sale " + data.item + "");
-                    $('#SalesModal').modal('show');
-                    $('.item_id').val(data.id);
-                    $('.item-name').val(data.item);
-                    $('.qty').val(data.quantity);
-                    $('.sprice').val(FormatNumber(data.selling_price));
-                    $('.tcost').val(FormatNumber(data.total_cost));
-                    $('.discount').val(FormatNumber(data.discount));
-                    $('.amount').val(FormatNumber(data.amount));
-                    $('.customer').val(data.customer);
-                    $('.cashier').val(data.cashier);
-                    $('.date').val(data.date);
-                    DisableTableFields(true, true);
+                $.get("{{ route('sales.index') }}" + '/' + sale_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let bprice = data.buying_price;
+                        let sprice = data.selling_price;
+                        $('.modalHeading').html("Details of sale " + data.item_name + "");
+                        $('#SalesModal').modal('show');
+                        populateSaleDetails(data);
+                        DisableTableFields(true, true);
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
 
                 });
             });
 
+            function populateSaleDetails(data) {
+                console.log(`sale details`, data);
+                let bprice = data.buying_price;
+                let sprice = data.selling_price;
+                $('.item_id').val(data.id);
+                $('.item_name').val(data.item_name);
+                $('.qty').val(data.quantity);
+                $('.sprice').val(FormatNumber(data.selling_price));
+                $('.tcost').val(FormatNumber(data.total_cost));
+                $('.discount').val(FormatNumber(data.discount));
+                $('.amount').val(FormatNumber(data.amount));
+                $('.customer').val(data.customer);
+                $('.cashier').val(data.cashier_name);
+                $('.date').val(data.date);
+            }
+
             //modal used to edit sale
             $('body').on('click', '#edit-sale', function(event) {
+
                 let sale_id = $(this).data('id');
-                let itemName = $(this).data('item');
                 event.preventDefault();
 
-                $('.modalHeading').html("Edit details of stock item " + itemName + "");
-
-                ShowHideBtns('show');
                 $('.addSaleBtn').text("Update");
-                $('#SalesModal').modal('show');
                 let Url = "{{ route('sales.show', ':id') }}";
                 Url = Url.replace(':id', sale_id);
                 $.ajax({
@@ -565,21 +560,17 @@
                     url: Url,
                     type: "GET",
                     dataType: 'json',
-                    success: function(data) {
-                        $('#SalesModal').modal('show');
-                        let bprice = data.buying_price;
-                        let sprice = data.selling_price;
-                        $('.item_id').val(data.id);
-                        $('.item-name').val(data.item);
-                        $('.qty').val(data.quantity);
-                        $('.sprice').val(FormatNumber(data.selling_price));
-                        $('.tcost').val(FormatNumber(data.total_cost));
-                        $('.discount').val(FormatNumber(data.discount));
-                        $('.amount').val(FormatNumber(data.amount));
-                        $('.customer').val(data.customer);
-                        $('.cashier').val(data.cashier);
-                        $('.date').val(data.date);
-                        DisableTableFields(true, false);
+                    success: function(response) {
+                        if (response.success) {
+                            let data = response.data;
+                            $('.modalHeading').html("Edit details of sale item " + data.item_name + "");
+                            $('#SalesModal').modal('show');
+                            ShowHideBtns('show');
+                            populateSaleDetails(data);
+                            DisableTableFields(true, false);
+                        } else {
+                            displayResponse(null, response.error, 'error');
+                        }
                     },
 
                     error: function(data) {
@@ -593,9 +584,18 @@
             //this pops up confirm delete modal
             $('body').on('click', '#delete-sale', function(e) {
                 let sale_id = $(this).data("id");
-                let itemName = GetItemName(sale_id);
+          
                 e.preventDefault();
-                $("#deleteSaleModal").modal('show');
+                $.get("{{ route('sales.index') }}" + '/' + sale_id + '', function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $('.delete-modalHeading').html("Are you sure you want to delete sale item " + data.item_name + "?");
+                        $("#deleteSaleModal").modal('show');
+                    } else {
+                        displayResponse(null, response.error, 'error');
+                    }
+                });
+
                 $('.delete-ok-btn').on('click', function() {
                     deleteRecord(sale_id);
                 });
@@ -708,7 +708,7 @@
 
             function DisableTableFields(bool, boolx) {
 
-                $('.item-name').attr('disabled', bool);
+                $('.item_name').attr('disabled', bool);
                 $('.qty').attr('disabled', bool);
                 $('.sprice').attr('disabled', bool);
                 $('.tcost').attr('disabled', bool);
