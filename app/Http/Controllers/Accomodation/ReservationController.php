@@ -13,9 +13,12 @@ use App\Models\Guest;
 use App\Models\Room;
 use App\Models\RoomType;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use Carbon\Carbon;
 use App\Repositories\RoomRepository;
+use Yajra\DataTables\Facades\DataTables as DataTable;
+
 
 class ReservationController extends Controller
 {
@@ -33,6 +36,113 @@ class ReservationController extends Controller
         return view('pages.main.accomodation.reservations.index', ['total_reservations' => $total_reservations]);
     }
 
+    public function reservationStatusIndex(Request $request, $status)
+    {
+
+        $reservations = Reservation::join('reservation_invoices', 'reservations.id', '=', 'reservation_invoices.reservation_id');
+        $reservations->where('reservation_invoices.status', $status);
+        $total_reservations = $reservations->count();
+
+        $frequent_contacts =  FrequentContact::all();
+        $guest_types = GuestType::all();
+        return view(
+            'pages.main.accomodation.reservations.status',
+            [
+             'guest_types' => $guest_types,
+             'frequent_contacts' => $frequent_contacts,
+             'total_reservations' => $total_reservations,
+             'status' => $status,
+             ]);
+
+    }
+
+    public function getReservationsByStatus(Request $request, $status)
+    {
+
+        try {
+            if ($status) {
+
+                $reservations = Reservation::join('reservation_invoices', 'reservations.id', '=', 'reservation_invoices.reservation_id');
+                $reservations->where('reservation_invoices.status', $status);
+
+                return DataTable::of($reservations)
+                    ->addIndexColumn()
+                    ->addColumn('action', function ($reservation) {
+
+                        $btn = "";
+
+                        $btn .= '<a href="javascript:void(0);" id="view-reservation" 
+                                  data-toggle="tooltip" data-original-title="view reservation"
+                                  data-id="' . $reservation->id . '" data-status="{{$status}}"
+                                  class="px-3 py-1 border border-secondary rounded mr-2 text-secondary"><i class="fa fa-eye pr-1"></i>view</a>';
+
+                        if ($reservation->status == config('reservation-statuses')['pending']) {
+
+                            $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                                     data-id="' . $reservation->id . '" data-original-title="Update Reservation" id="update-reservation"
+                                     class="px-3 py-1 border border-secondary rounded text-secondary update-reservation mr-2"><i class="fa fa-clock pr-1"></i>update</a>';
+
+
+                            $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                                     data-id="' . $reservation->id . '" data-original-title="Generate Invoice" id="generate-invoice"
+                                     class="px-3 py-1 border border-success rounded text-success generate-invoice"><i class="fa fa-download pr-1"></i>invoice</a>';
+                        }
+
+                        return $btn;
+                    })->editColumn('created_by', function ($reservation) {
+                        return Helper::getUserNames($reservation->created_by);
+                    })->addColumn('guest_type', function ($reservation) {
+                        $guestTypeObj = GuestType::find($reservation->guest_type_id);
+                        return $guestTypeObj->name;
+                    })->addColumn('invoice_number', function ($reservation) {
+                        $ReservationInvoice = ReservationInvoice::find($reservation->id);
+                        if (isset($ReservationInvoice->invoice_number)) {
+                            $invoice_number = $ReservationInvoice->invoice_number;
+                        } else {
+                            $invoice_number = '00000';
+                        }
+                        return $invoice_number;
+                    })->addColumn('invoice_status', function ($reservation) {
+                        $invoice = ReservationInvoice::find($reservation->id);
+                        $status = !empty($invoice->status) ? ucfirst($invoice->status) : 'Pending';
+                        return $status;
+                    })->addColumn('amount', function ($reservation) {
+                        $invoice = ReservationInvoice::find($reservation->id);
+                        $amount = !empty($invoice->amount) ? number_format($invoice->amount) : 50;
+                        return $amount;
+                    })->addColumn('tax', function ($reservation) {
+                        $invoice = ReservationInvoice::find($reservation->id);
+                        $tax = !empty($invoice->tax) ? number_format($invoice->tax) : 50;
+                        return $tax;
+                    })->addColumn('discount_percent', function ($reservation) {
+                        $invoice = ReservationInvoice::find($reservation->id);
+                        $discount_percent = !empty($invoice->tadiscount_percentx) ? number_format($invoice->discount_percent) : 50;
+                        return $discount_percent;
+                    })->addColumn('total_amount', function ($reservation) {
+                        $invoice = ReservationInvoice::find($reservation->id);
+                        $total_amount = !empty($invoice->total_amount) ? number_format($invoice->total_amount) : 50;
+                        return $total_amount;
+                    })->addColumn('guest', function ($reservation) {
+                        $guest = Guest::find($reservation->guest_id);
+                        return $guest->first_name . ' ' . $guest->last_name;
+                    })->addColumn('room_number', function ($reservation) {
+                        $room_number = Room::where('id', $reservation->room_id)->value('number');
+                        return $room_number;
+                    })->addColumn('nights', function ($reservation) {
+                        $nights = Carbon::parse($reservation->arrival_date)->diffInDays(Carbon::parse($reservation->departure_date));
+                        return $nights;
+                    })->rawColumns(['action'])
+                    ->make(true);
+
+                return view('pages.main.accomodation.reservations.status');
+            } else {
+                return response()->json(['error' => 'No reservation status found']);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
+
     public function getReservations(ReservationsDataTable $dataTable)
     {
         return $dataTable->render('pages.main.accomodation.reservations.index');
@@ -46,11 +156,14 @@ class ReservationController extends Controller
     {
         $frequent_contacts =  FrequentContact::all();
         $guest_types = GuestType::all();
-        return view('pages.main.accomodation.reservations.add', 
-        ['guest_types' => $guest_types, 'frequent_contacts' => $frequent_contacts]);
+        return view(
+            'pages.main.accomodation.reservations.add',
+            ['guest_types' => $guest_types, 'frequent_contacts' => $frequent_contacts]
+        );
     }
 
-    private function validateRegularGuestReq(){
+    private function validateRegularGuestReq()
+    {
 
         $reqObj = [
             'guest_type' => 'required',
@@ -82,7 +195,8 @@ class ReservationController extends Controller
         return $reqObj;
     }
 
-    private function validateCorporateGuestReq(){
+    private function validateCorporateGuestReq()
+    {
 
         $reqObj = [
             'guest_type' => 'required',
@@ -114,7 +228,8 @@ class ReservationController extends Controller
         return $reqObj;
     }
 
-    private function validateDailyUseGuestReq(){
+    private function validateDailyUseGuestReq()
+    {
 
         $reqObj = [
             'guest_type' => 'required',
@@ -156,13 +271,10 @@ class ReservationController extends Controller
         if (stripos($guest_type, 'regular') !== false) {
 
             $validator = Validator::make($request->all(), $this->validateRegularGuestReq());
-
-        } else if(stripos($guest_type, 'corporate') !== false){
+        } else if (stripos($guest_type, 'corporate') !== false) {
             $validator = Validator::make($request->all(), $this->validateCorporateGuestReq());
-      
-        }else{
+        } else {
             $validator = Validator::make($request->all(), $this->validateDailyUseGuestReq());
-           
         }
 
         try {
@@ -171,12 +283,11 @@ class ReservationController extends Controller
                 return redirect('reservations/create')
                     ->withErrors($validator)
                     ->withInput();
-
             } else {
-                
+
                 $start_date = $request->input('arrival_date');
                 $end_date = $request->input('departure_date');
-                if($start_date >  $end_date){
+                if ($start_date >  $end_date) {
                     return back()->withInput()->with(['error' => 'Departure date must be greater than arrival date']);
                 }
 
@@ -204,9 +315,9 @@ class ReservationController extends Controller
                 $purpose_of_visit = $request->input('purpose_of_visit');
                 $payment_mode = $request->input('payment_mode');
 
-                if($request->filled('discount')){
+                if ($request->filled('discount')) {
                     $discount = Helper::Numberize($request->input('discount'));
-                }else{
+                } else {
                     $discount = 0;
                 }
 
@@ -215,11 +326,11 @@ class ReservationController extends Controller
                 $created_by = Helper::getLoggedInUserId();
 
                 $company_name = null;
-                if($request->filled('company_name')){
+                if ($request->filled('company_name')) {
                     $company_id = $request->input('company_name');
                     $company_name = FrequentContact::where('id', $company_id)->value('name');
                 }
-               
+
                 $guest_type_id = GuestType::where('name', 'like', "%" . $guest_type . "%")->value('id');
 
                 $room = $this->roomRepository->findRoomByNumber($room_number);
@@ -233,13 +344,13 @@ class ReservationController extends Controller
 
                 $roomType = RoomType::find($room_type_id);
 
-                 if(stripos($guest_type, 'corporate') !== false){
-                      $price_rate = $daily_price;
-                 }else{
-                        $price_rate = (stripos($occupancy_type, 'single') !== false)
+                if (stripos($guest_type, 'corporate') !== false) {
+                    $price_rate = $daily_price;
+                } else {
+                    $price_rate = (stripos($occupancy_type, 'single') !== false)
                         ?  $roomType->single_occupancy_rate
                         : $roomType->double_occupancy_rate;
-                 }
+                }
 
                 $nights = floatval(Carbon::parse($arrival_date)->diffInDays(Carbon::parse($departure_date)));
                 $nights = $nights < 1 ? 1 : $nights;
@@ -267,13 +378,12 @@ class ReservationController extends Controller
                 ];
 
                 $exists = $this->checkIfGuestExists($phone_number, $email);
-           
+
                 if ($exists) {
 
                     $findGuest = Guest::where('phone_number', $phone_number)->first();
                     Guest::where('phone_number', $phone_number)->update($guestData);
                     $guest_id = $findGuest->id;
-
                 } else {
                     $guest = $this->addNewGuest($guestData);
                     if ($guest) {
@@ -325,7 +435,6 @@ class ReservationController extends Controller
                         $execKey = "error";
                     }
                     return back()->with($execKey, $message);
-
                 } else {
                     return back()->with('error', "Technical error in adding reservation details");
                 }
@@ -352,7 +461,6 @@ class ReservationController extends Controller
             // }
             $exists = $obj->exists();
             return $exists;
-
         } catch (\Exception $ex) {
             throw $ex;
         }
@@ -361,7 +469,7 @@ class ReservationController extends Controller
     private function addNewGuest($guest)
     {
         try {
-        return Guest::create($guest);
+            return Guest::create($guest);
         } catch (\Exception $ex) {
             throw $ex;
         }
@@ -381,7 +489,6 @@ class ReservationController extends Controller
                 'execKey' => $isReservationInserted,
                 'data' => $reservation
             ];
-
         } catch (\Exception $ex) {
             throw $ex;
         }
@@ -397,6 +504,17 @@ class ReservationController extends Controller
         }
     }
 
+
+    private function getReservationDetails($id){
+        try{
+
+            $reservation = Reservation::join('guests', 'guests.id', '=', 'reservations.guest_id')->where('reservations.id', '=', $id)->first();
+            return response()->json(['success' => 'Ok', 'data' => $reservation]);
+
+        }catch(\Exception $ex){
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -405,7 +523,7 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getReservationDetails($id);
     }
 
     /**
@@ -416,7 +534,7 @@ class ReservationController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getReservationDetails($id);
     }
 
     /**
@@ -446,19 +564,81 @@ class ReservationController extends Controller
     {
         try {
 
-            $reservations = Reservation::all();
+            // $reservations = Reservation::all();
             $total_reservations = Reservation::count();
-
-            $data = array(
-                'data' => $reservations,
-                'total' => $total_reservations
-            );
-
-            return $data;
+            return ['total' => $total_reservations];
         } catch (\Exception $ex) {
             throw $ex;
         }
     }
 
+    public function updateReservationStatus(Request $request, $id)
+    {
 
+        if (!empty($id)) {
+
+            $reservation_statuses = config('reservation-statuses');
+            $validator = Validator::make($request->all(), [
+                'status' => 'required',
+            ]);
+
+            $status = $request->input('status');
+            if ($status == $reservation_statuses['completed']) {
+                $validator = Validator::make($request->all(), [
+                    'payment_method' => 'required',
+                    'payment_date' => 'required',
+                ]);
+            }
+
+            if ($status == $reservation_statuses['cancelled']) {
+                $validator = Validator::make($request->all(), [
+                    'reason' => 'required',
+                ]);
+            }
+
+            try {
+                if ($validator->fails()) {
+
+                    $message = $validator->errors()->all();
+                    return response()->json(['error' => $message]);
+                } else {
+
+                    $status = strtolower($status);
+                    $res_invoice['status'] = $status;
+
+                    if ($status == $reservation_statuses['completed']) {
+
+                        $res_invoice['payment_method'] = $request->input('payment_method');
+                        $res_invoice['paid_on'] = $request->input('payment_date');
+                        $res_invoice['completed_by'] = Auth::user()->id;
+                    } else if ($status == $reservation_statuses['cancelled']) {
+
+                        $res_invoice['cancelled_for'] = $request->input('reason');
+                        $res_invoice['cancelled_on'] = Carbon::now();
+                        $res_invoice['cancelled_by'] = Auth::user()->id;
+                    }
+
+                    $invoice = ReservationInvoice::where('reservation_id', $id);
+
+                    $is_updated = $invoice->update($res_invoice);
+
+                    if ($is_updated) {
+
+                        $message = "Reservation with number " . $invoice->value('invoice_number') . " has been marked " . lcfirst($status) . " successfully";
+                        $stats = $this->GetReservationStats();
+                        $data = ['success' => $message, 'data' => $stats];
+                    } else {
+                        $message = "Technical error in updating reservation invoice status";
+                        $data = ['error' => $message];
+                    }
+
+                    return response()->json($data);
+                }
+            } catch (\Exception $ex) {
+                return response()->json(['error' => $ex->getMessage()]);
+            }
+        } else {
+            return response()->json(['error' => 'System is unable to capture reservation id']);
+        }
+    }
 }

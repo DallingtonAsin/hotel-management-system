@@ -450,5 +450,4 @@
             }
         });
     </script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

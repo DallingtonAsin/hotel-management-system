@@ -56,7 +56,7 @@
 
                             <div class="col-md-6">
                                 <span class="text-muted">Email</span>
-                                <input type="text" class="form-control email" name="email" placeholder=""
+                                <input type="text" class="form-control email" name="email"
                                     value="{{ old('email') }}" autocomplete="on">
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                             <div class="col-md-2">
                                 <span class="text-muted"><span class="text-muted"><span
                                             class="text-danger">*</span>Nationality</span>
-                                    <input type="text" name="nationality" value="Ugandan" class="form-control nationality" placeholder="Enter nationality"/>
+                                    <input type="text" name="nationality" value="Ugandan" class="form-control nationality"/>
                             </div>
                             <div class="col-md-3">
                                 <span class="text-muted">Passport</span>
@@ -229,7 +229,7 @@
                                     name="departure_date" value="{{ old('departure_date') }}" autocomplete="on">
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <span class="text-muted">Price </span>
                                 <input type="text" name="daily_price" id="daily_price"
                                     class="form-control daily_price text-danger" value="{{ old('daily_price') }}"
@@ -274,7 +274,13 @@
                             <div class="col-md-6">
                                 <span class="text-muted mr-2"><span class="text-danger pr-1">*</span>Mode of Payment </span>
                                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                    <input type="radio" class="btn-check" name="payment_mode" value="Cash" id="mode_1" {{ old('payment_mode') == 'Cash' ? 'checked' : '' }}>
+                                   
+                                    @foreach (config('reservation-payment-methods') as $method)
+                                    <input type="radio" class="btn-check" name="payment_mode" value="{{$method}}" id="mode_{{$method}}" {{ old('payment_mode') == $method ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-secondary" for="mode_{{$method}}">{{$method}}</label>
+                                    @endforeach
+                                   
+                                    {{-- <input type="radio" class="btn-check" name="payment_mode" value="Cash" id="mode_1" {{ old('payment_mode') == 'Cash' ? 'checked' : '' }}>
                                     <label class="btn btn-outline-secondary" for="mode_1">Cash</label>
 
                                     <input type="radio" class="btn-check" name="payment_mode" value="Company" id="mode_2" {{ old('payment_mode') == 'Company' ? 'checked' : '' }}>
@@ -287,7 +293,7 @@
                                     <label class="btn btn-outline-secondary" for="mode_4">Airtel Money</label>
 
                                     <input type="radio" class="btn-check" name="payment_mode" value="Visa Card" id="mode_5" {{ old('payment_mode') == 'Visa Card' ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-secondary" for="mode_5">Visa Card</label>
+                                    <label class="btn btn-outline-secondary" for="mode_5">Visa Card</label> --}}
                                 </div>
                             </div>
                         </div>
@@ -298,9 +304,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit"
-                class="btn btn-primary rounded-pill btn-sm outline-none rounded-pill border-dark"><i
-                    class="fa fa-plus-circle pr-1"></i>Submit Reservation</button>
+            <button type="submit" class="btn btn-primary submit-btn rounded-pill btn-sm outline-none rounded-pill border-dark"><i class="fa fa-plus-circle pr-1"></i>Submit Reservation</button>
         </div>
 
     </div>

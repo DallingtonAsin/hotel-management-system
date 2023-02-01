@@ -13,7 +13,8 @@
                     @endisset
                 </span>
             </h6>
-            <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2" id="addNewKitchenOrder">
+            <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
+                id="addNewKitchenOrder">
                 <i class="fa fa-plus-circle pr-1"></i>Add Kitchen Order</button>
         </div>
 
@@ -183,10 +184,10 @@
                         </table>
 
 
-                        <div class="d-flex justify-content-between" id="menu-cart-footer">
-                            <div class="float-left">
-                                <button type="submit" class="btn btn-primary submit-order-btn"><i
-                                        class="fa fa-plus-circle pr-1"></i>Submit Order</button>
+                        <div id="menu-cart-footer" class="d-flex justify-content-between menu-cart-footer">
+                            <div class="float-left" id="submit-div">
+                                <button type="submit" class="btn btn-primary submit-order-btn">
+                                    <i class="fa fa-plus-circle pr-1"></i>Submit Order</button>
                             </div>
                             <div id="totals" class="float-right">
                                 <div class="d-flex">
@@ -293,8 +294,7 @@
 
                     <div class="form-group cancelled-option-fields">
                         <label><span class="text-danger pr-1">*</span> Reason for Cancelling</label>
-                        <textarea type="text" name="reason" class="form-control reason"
-                            placeholder="Enter reason for cancelling"></textarea>
+                        <textarea type="text" name="reason" class="form-control reason" placeholder="Enter reason for cancelling"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -308,7 +308,6 @@
     </div> <!-- end of modal Status - Kitchen Order-->
 
     @include('pages.main.kitchen.orders.modals.view_order')
-
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -345,18 +344,7 @@
         const cat = 'kitchen-orders';
         populateMenuItems();
 
-        hideCartFooterIfEmptyTable();
 
-        function hideCartFooterIfEmptyTable() {
-            let table = document.getElementById('menu-item-cart');
-            let rowCount = (table.rows.length - 1);
-            $("#menu-cart-footer").hide();
-            // if(rowCount > 0){
-            //     $("#menu-cart-footer").show();
-            // }else{
-            //     $("#menu-cart-footer").hide();
-            // }
-        }
 
         onTypingRoomNumber('.room_number', afterSelectingRoom);
 
@@ -451,6 +439,21 @@
             ];
 
             makeDataTable(table, title, columns, dataColumns);
+
+            hideCartFooterIfEmptyTable();
+
+            function hideCartFooterIfEmptyTable() {
+                let table = document.getElementById('menu-item-cart');
+                let rowCount = (table.rows.length - 1);
+
+                if (rowCount > 0) {
+                    $("#totals").show();
+                    $("#submit-div").show();
+                } else {
+                    $("#totals").hide();
+                    $("#submit-div").hide();
+                }
+            }
 
             $('#addNewKitchenOrder').click(function(e) {
                 e.preventDefault();
@@ -694,6 +697,7 @@
                             }
 
                         });
+                        hideCartFooterIfEmptyTable();
                     }
                 });
             }
@@ -772,6 +776,7 @@
             $(document).on("click", ".btn-delete-cart", function() {
                 $(this).parent().parent('tr').remove();
                 updateSubTotal();
+                hideCartFooterIfEmptyTable();
                 //   ComputeBalance();
             });
 
@@ -801,7 +806,6 @@
                 event.preventDefault();
 
                 $.get("{{ route('kitchen-orders.index') }}" + '/' + kot_id + '', function(data) {
-
                     $('#modalHeading').html("Details of kot " + data.name + "");
                     $('#addKitchenOrderModal').modal('show');
                     $('.kotId').val(data.id);
@@ -831,8 +835,8 @@
 
             $('.addKotBtn').click(function(e) {
                 e.preventDefault();
-                let Errors = validateForm();
-                if (Errors.length == 0) {
+                let isValid = validateForm();
+                if (isValid) {
                     $(this).html('Sending..');
 
                     $.ajax({
@@ -857,20 +861,8 @@
                             $('.addKotBtn').html('Save Changes');
                         }
                     });
-                } else {
-                    let i;
-                    let message = "";
-                    for (i = 0; i < Errors.length; i++) {
-                        message += Errors[i] + "<br>";
-                    }
-                    $('.errors-section').html(message);
-
                 }
-
             });
-
-
-
 
             $('body').on('click', '#change-order-status', function(e) {
                 let kot_id = $(this).data("id");
@@ -1026,28 +1018,23 @@
                 let quantity = $('.quantity').val();
                 let status = $('.status').val();
 
-                let errors = [];
+                let isValidForm = false;
                 if (table_number.length < 1) {
-                    errors.push(`Please enter table number`);
-                }
-                if (item.length < 1) {
-                    errors.push(`Please enter item`);
-                }
-                if (quantity.length < 1) {
-                    errors.push(`Please enter quantity`);
-                }
-                if (status.length < 1) {
-                    errors.push(`Please select status of the order`);
+                    displayResponse(null, `Please enter table number`, `error`);
+                } else if (item.length < 1) {
+                    displayResponse(null, `Please enter item`, `error`);
+                } else if (quantity.length < 1) {
+                    displayResponse(null, `Please enter quantity`, `error`);
+                } else if (status.length < 1) {
+                    displayResponse(null, `Please select status of the order`, `error`);
+                } else {
+                    isValidForm = true;
                 }
 
-                return errors;
+                return isValidForm;
 
             }
 
-          
-
         });
     </script>
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

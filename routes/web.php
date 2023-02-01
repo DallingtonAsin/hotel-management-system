@@ -106,6 +106,10 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('reservations/frequent-contacts/fetch/ajax', [FrequentContactController::class, 'getFrequentContactsDataTable'])->name('frequent-contacts.index.ajax');
 	Route::get('reservations/frequent-contacts/ajax', [FrequentContactController::class, 'fetchFrequentContactsAjax'])->name('frequent-contacts.ajax.fetch');
 	Route::get('reservations/fetch/{freq_contact_id}', [FrequentContactController::class, 'fetchFreqContactDetailsById'])->name('frequent-contact-details.ajax.fetch');
+	Route::put('reservations/status/update/{id}', [ReservationController::class, 'updateReservationStatus'])->name('reservation.status.update');
+	Route::get('reservations/status/{status}', [ReservationController::class, 'reservationStatusIndex'])->name('reservations.status');
+	Route::get('reservations/status/{status}/ajax', [ReservationController::class, 'getReservationsByStatus'])->name('reservations.status.ajax');
+
 
 	// Accounting Routes
 	Route::get('accounting/balance-sheet', [AccountingController::class, 'generateBalanceSheet'])->name('accounting.balance_sheet');
@@ -194,7 +198,7 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('kitchen/menu-item/price/{menu_item_id}', [MenuItemController::class, 'getMenuItemPrice'])->name('menu-item.price.ajax.fetch');
 	Route::get('kitchen/item/{menu_item_id}', [MenuItemController::class, 'getMenuItem'])->name('menu-item.get');
 	Route::get('kitchen/order/fetch/ajax', [KitchenOrderController::class, 'getKitchenOrdersDataTable'])->name('kitchen_orders.index.ajax');
-	Route::put('kitchen/order/update/{id}', [KitchenOrderController::class, 'changeKitchenOrderStatus'])->name('kitchen-order.status.update');
+	Route::put('kitchen/order/update/{id}', [KitchenOrderController::class, 'updateKitchenOrderStatus'])->name('kitchen-order.status.update');
 	Route::post('kitchen/order/post', [KitchenOrderController::class, 'store'])->name('kitchen-order.submit');
 	Route::get('kitchen/order/{status}', [KitchenOrderController::class, 'orderStatusIndex'])->name('orders.status');
 	Route::get('kitchen/order/{status}/ajax', [KitchenOrderController::class, 'getOrders'])->name('orders.status.ajax');

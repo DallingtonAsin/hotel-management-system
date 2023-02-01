@@ -15,8 +15,6 @@ use App\Helpers\Helper;
 class ReservationsDataTable extends DataTable
 {
 
-   
-
     /**
      * Build DataTable class.
      *
@@ -32,14 +30,14 @@ class ReservationsDataTable extends DataTable
             ->addColumn('action', function ($reservation) {
 
                 $btn = "";
+
+                $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
+                 data-id="' . $reservation->id . '" data-original-title="Update Reservation" id="update-reservation"
+                 class="px-3 py-1 border border-secondary rounded text-secondary update-reservation mr-2"><i class="fa fa-clock pr-1"></i>update</a>';
+
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                  data-id="' . $reservation->id . '" data-original-title="Generate Invoice" id="generate-invoice"
-                 class="px-3 py-1 border border-success rounded text-success generate-invoice">invoice</a>';
-
-                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
-                 data-id="' . $reservation->id . '" data-original-title="Cancel Reservation" id="cancel-reservation"
-                 class="px-3 py-1 border border-danger rounded text-danger cancel-reservation ml-2">cancel</a>';
-
+                 class="px-3 py-1 border border-success rounded text-success generate-invoice"><i class="fa fa-download pr-1"></i>invoice</a>';
 
                 return $btn;
 
