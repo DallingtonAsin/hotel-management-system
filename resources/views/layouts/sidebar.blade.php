@@ -143,10 +143,10 @@
                                             class="nav-sub-link">Damaged Stock</a></li>
                                 @endhaspermission
 
-                                @haspermission(config('permissions')['view_product_categories'])
+                                {{-- @haspermission(config('permissions')['view_product_categories'])
                                     <li class="nav-sub-item"><a href="{{ route('product-categories.index') }}"
                                             class="nav-sub-link">Stock Categories</a></li>
-                                @endhaspermission
+                                @endhaspermission --}}
 
                             </ul>
                         </li>

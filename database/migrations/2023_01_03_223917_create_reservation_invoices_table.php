@@ -25,10 +25,11 @@ class CreateReservationInvoicesTable extends Migration
             $table->timestamp('issued_on')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedBigInteger('issued_by')->unsigned();
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
-            $table->string('payment_method')->nullable();
-            $table->unsignedBigInteger('cancelled_by')->unsigned()->nullable();
             $table->timestamp('paid_on')->nullable();
+            $table->string('payment_method')->nullable();
             $table->timestamp('cancelled_on')->nullable();
+            $table->string('cancelled_for')->nullable();
+            $table->unsignedBigInteger('cancelled_by')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index('invoice_number');
