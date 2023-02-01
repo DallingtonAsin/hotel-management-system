@@ -155,7 +155,7 @@
 
                         <div class="form-group">
                             <button type="button" class="btn btn-primary addStaffBtn" id="addStaffBtn"
-                                name="addStaffBtn"><i class="fa fa-plus-circle pr-1"></i>Save</button>
+                                name="addStaffBtn"><i class="fa fa-plus-circle rounded-pill pr-1"></i>Save</button>
                             <button type="reset" class="btn btn-danger rounded-pill clearBtn"><i class="fas fa-f12d text-white fa-lg pr-1"></i>Clear</button>
 
                             <span class="response"></span>
