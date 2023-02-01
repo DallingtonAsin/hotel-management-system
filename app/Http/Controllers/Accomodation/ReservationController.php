@@ -594,7 +594,7 @@ class ReservationController extends Controller
                     } else if ($status == $reservation_statuses['cancelled']) {
 
                         $res_invoice['cancelled_for'] = $request->input('reason');
-                        $res_invoice['cancelled_at'] = Carbon::now();
+                        $res_invoice['cancelled_on'] = Carbon::now();
                         $res_invoice['cancelled_by'] = Auth::user()->id;
                     }
 
