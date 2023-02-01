@@ -27,6 +27,7 @@ class CreateReservationInvoicesTable extends Migration
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
             $table->timestamp('paid_on')->nullable();
             $table->string('payment_method')->nullable();
+            $table->unsignedBigInteger('completed_by')->unsigned()->nullable();
             $table->timestamp('cancelled_on')->nullable();
             $table->string('cancelled_for')->nullable();
             $table->unsignedBigInteger('cancelled_by')->unsigned()->nullable();
@@ -34,8 +35,10 @@ class CreateReservationInvoicesTable extends Migration
 
             $table->index('invoice_number');
             $table->foreign('issued_by')->references('id')->on('staff');
+            $table->foreign('completed_by')->references('id')->on('staff');
             $table->foreign('cancelled_by')->references('id')->on('staff');
             $table->foreign('reservation_id')->references('id')->on('reservations');
+            
 
         });
     }

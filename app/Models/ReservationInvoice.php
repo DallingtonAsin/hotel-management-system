@@ -24,6 +24,7 @@ class ReservationInvoice extends Model
         'issued_by',
         'status',
         'payment_method',
+        'completed_by',
         'cancelled_by',
         'paid_on',
         'cancelled_on'

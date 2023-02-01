@@ -221,7 +221,7 @@ class KitchenOrderController extends Controller
     }
 
 
-    public function changeKitchenOrderStatus(Request $request, $id)
+    public function updateKitchenOrderStatus(Request $request, $id)
     {
 
         if (!empty($id)) {

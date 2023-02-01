@@ -8,9 +8,9 @@ use App\Models\KitchenMenuItem;
 use App\Models\KitchenOrder;
 use App\Models\KitchenOrderItem;
 use App\Models\KitchenOrderInvoice;
-use Carbon\Carbon;
 use Faker\Generator;
 use Illuminate\Container\Container;
+use Carbon\Carbon;
 use App\Helpers\Helper;
 
 
@@ -70,9 +70,11 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
         }
 
         foreach ($order_numbers as $number) {
+
             $data = $this->getInvoiceDetails($number);
             $status = KitchenOrder::where('order_number', $number)->value('status');
             $payment_method = null;
+
             if ($status == config('kitchen-order-statuses')['completed']) {
                 $data['status'] = config('kitchen-order-statuses')['completed'];
                 $payment_method = Helper::getRandomValue(config('payment-methods'));
@@ -84,7 +86,6 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
                 $payment_method = null;
                 $payment_date = null;
                 $data['completed_by'] = null;
-
             }
 
             if ($status == config('kitchen-order-statuses')['cancelled']) {

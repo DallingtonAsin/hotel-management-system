@@ -7,21 +7,13 @@
 
             <h6 class="text-left text-dark">
                 <i class="fa fa-home text-success"> /</i>
-                <strong>Reservations</strong>
+                <strong>{{ ucwords($status) }} Reservations</strong>
                 <span class="badge badge-info total_departments">
                     @isset($total_reservations)
                         {{ number_format($total_reservations) }}
                     @endisset
                 </span>
             </h6>
-
-
-            <div class="btn-group float-right justify-content-between mb-2">
-                <a href="{{ route('reservations.create') }}"
-                    class="btn btn-primary btn-sm mx-2 rounded-pill outline-none ml-auto mb-2 text-white"
-                    id="addNewDesignation">
-                    <i class="fa fa-plus-circle pr-1"></i>Add reservation</a>
-            </div>
         </div>
 
         <div class="card-body">
@@ -54,85 +46,7 @@
         </div>
     </div>
 
-    <!--Add rooms -->
-    <div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
 
-                <form name="reservations" id="SuppliersForm">
-                    @csrf
-                    <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new reservation</h6>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-                            <input type="hidden" class="form-control reservationId  reservationId" name="id"
-                                placeholder="Enter reservation id" Required autofocus>
-                        </div>
-
-                        <div class="form-group">
-                            <span>Name</span>
-                            <input type="text" class="form-control name " name="name"
-                                placeholder="Enter reservation name" Required autofocus>
-                        </div>
-
-                        <div class="form-group">
-                            <span>Address</span>
-                            <input type="text" class="form-control address " name="address" placeholder="Enter address"
-                                Required autofocus>
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Contact</span>
-                            <input type="text" class="form-control contact " name="contact" placeholder="Enter contact"
-                                Required autofocus>
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Email</span>
-                            <input type="email" class="form-control email " name="email" placeholder="Email (optional)">
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Debt</span>
-                            <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Credit</span>
-                            <input type="text" class="form-control credit " name="credit" placeholder="Enter credit">
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary rounded-pill addReservationBtn"
-                                name="addReservationBtn">Save</button>
-                            <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
-                            <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
-                        </div>
-
-                        <div class="form-group">
-                            <span class="errors-section text-danger nunito-font"></span>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-  
     <!--Modal Status Reservation -->
     <div class="modal fade" id="changeReservationStatus" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
@@ -198,18 +112,19 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        const ajaxUrl = @json(route('reservations.index.ajax'));
-        const deletedSeletectedUrl = @json(route('reservations.index.ajax'));
-        const cat = 'reservation';
+        
+        const cat = 'reservations';
+        let ajaxUrl = "{{ route('reservations.status.ajax', ':status') }}";
+        ajaxUrl = ajaxUrl.replace(':status', "{{ request()->status }}");
+
         const token = "{{ csrf_token() }}";
         var reservation_statuses = <?php echo json_encode(config('reservation-statuses')); ?>;
 
 
         $(document).ready(function() {
 
-            //code that displays results of the table index()
             let table = $('#reservations-table');
-            let title = "List of registered departments in the system";
+            let title = "List of registered reservations in the system";
             let columns = [1, 2, 3, 4];
             let dataColumns = [{
                     data: 'DT_RowIndex',
