@@ -279,11 +279,6 @@
         </div>
     </div>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Action 1</a>
-        <a class="dropdown-item" href="#">Action 2</a>
-        <button class="dropdown-item" type="button">Action 3</button>
-    </div>
 
     <script>
         $.ajaxSetup({
@@ -458,7 +453,7 @@
             function editStaffDetails(staff_id) {
                 $.get("{{ route('users.index') }}" + '/' + staff_id + '/edit', function(data) {
                     $('#modalHeading').html(`Edit details of staff ${data.first_name} ${data.last_name} `);
-                    $('.addStaffBtn').text("Edit staff");
+                    $('.addStaffBtn').text("Update");
                     $('#addStaffModal').modal('show');
                     populateStaffDetails(data);
                     DisableTableFields(false);
