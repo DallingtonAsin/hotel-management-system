@@ -159,6 +159,4 @@
 
         });
     </script>
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

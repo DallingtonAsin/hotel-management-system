@@ -689,6 +689,4 @@
             document.getElementById('total').innerHTML = FormatNumber(subTotal.toFixed(2));
         }
     </script>
-
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
 @endsection

@@ -112,9 +112,6 @@
         </div>
     </div>
 
-
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
-
     @if (session()->get('success'))
         <script>
             $(document).ready(function() {

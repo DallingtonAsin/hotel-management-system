@@ -211,8 +211,6 @@
         </div>
     </div> <!-- end of modal DeleteExpenses-->
 
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
     <script>
         const ajaxUrl = @json(route('get-expenses'));
         const deletedSeletectedUrl = @json(route('selected-expenses.remove'));

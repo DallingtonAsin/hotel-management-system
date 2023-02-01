@@ -160,14 +160,7 @@ role="dialog" aria-labelledby="myModalLabel">
 </div>
 
 
-
-
-
-<script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-<script src="{{ asset('vendors/notify/notify.js') }}"></script>
 <script>
-
-
   $.ajaxSetup({
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

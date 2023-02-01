@@ -256,10 +256,6 @@
     <!-- end of modal Deletepurchase-->
 
 
-    <script src="{{ asset('vendors/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('vendors/notify/notify.js') }}"></script>
-
-
     <script type="text/javascript">
         const ajaxUrl = @json(route('get-purchases'));
         const deletedSeletectedUrl = @json(route('selected-purchases.remove'));
