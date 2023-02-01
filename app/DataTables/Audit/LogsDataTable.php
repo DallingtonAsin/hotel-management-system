@@ -28,7 +28,7 @@ class LogsDataTable extends DataTable
 
            $btn = '<a href="javascript:void(0);" id="view-log" 
            data-toggle="tooltip" data-original-title="View" 
-           data-id="'.$log->id.'" class="text-info bolded pl-3">
+           data-id="'.$log->id.'" class="px-3 py-1 border border-secondary rounded text-secondary">
            <i class="fa fa-eye" ></i></a>';
 
            return $btn;
