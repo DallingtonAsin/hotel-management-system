@@ -29,8 +29,8 @@ class CreateGuestsTable extends Migration
             $table->string('nationality')->nullable();
             $table->string('passport_number')->nullable();
             $table->string('nin')->nullable();
-            $table->string('card_issue_date')->nullable();
-            $table->string('card_expiry_date')->nullable();
+            $table->date('card_issue_date')->nullable();
+            $table->date('card_expiry_date')->nullable();
              $table->unsignedBigInteger('created_by')->unsigned();
             $table->timestamps();
             $table->foreign('created_by')->references('id')->on('staff');

@@ -79,7 +79,7 @@ class ReservationInvoiceTableSeeder extends Seeder
         if ($status == config('reservation-statuses')['completed']) {
 
             $data['status'] = config('reservation-statuses')['completed'];
-            $data['payment_method'] = Helper::getRandomValue(config('payment-methods'));
+            $data['payment_method'] = Helper::getRandomValue(config('reservation-payment-methods'));
             $data['paid_on'] = Carbon::now();
             $data['completed_by'] = $completed_by;
             

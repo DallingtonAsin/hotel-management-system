@@ -47,6 +47,9 @@
     </div>
 
 
+    @include('pages.main.accomodation.reservations.modals.view_reservation')
+
+
     <!--Modal Status Reservation -->
     <div class="modal fade" id="changeReservationStatus" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
@@ -215,8 +218,115 @@
                     e.preventDefault();
                     confirmReservationChange(reservation_id);
                 });
-
             });
+
+            $('body').on('click', '#view-reservation', function(e) {
+                let reservation_id = $(this).data("id");
+                $('.submit-btn').hide();
+                e.preventDefault();
+                checkPermission(permissions.view_reservations, function(reservation) {
+                    viewReservationDetails(reservation_id);
+                });
+            });
+
+            function viewReservationDetails(reservation_id) {
+                        $.get("{{ route('reservations.index') }}" + '/' + reservation_id + '', function(response) {
+                            if (response.success) {
+                                let data = response.data;
+                                console.log(`Details`, data);
+                                $('#viewReservationModal').modal("show");
+                                populateReservationDetails(data);
+                                disableTableFields(true);
+                                HideBtns();
+                            } else {
+                                displayResponse(null, response.error, 'error');
+                            }
+                        });
+                    }
+
+        function populateReservationDetails(data){
+              $('.guest_type').val(data.guest_type);
+              $('.first_name').val(data.first_name);
+              $('.last_name').val(data.last_name);
+              $('.phone_number').val(data.phone_number);
+              $('.email').val(data.email);
+              $('.job_title').val(data.job_title);
+              $('.guest_tin').val(data.tin_number);
+              $('.company_name').val(data.company_name);
+              $('.company_contact').val(data.company_contact);
+              $('.company_email').val(data.company_email);
+              $('.company_tin').val(data.company_tin);
+              $('.nationality').val(data.nationality);
+              $('.passport_number').val(data.passport_number);
+              $('.nin').val(data.nin);
+
+              $('.card_issue_date').val(data.card_issue_date);
+              $('.card_expiry_date').val(data.card_expiry_date);
+              $('.room_number').val(data.room_number);
+              $('.occupancy_type').val(data.occupancy_type);
+              $('.arrival_date').val(data.arrival_date);
+              $('.departure_date').val(data.departure_date);
+              $('.daily_price').val(data.daily_price);
+              $('.discount').val(data.discount);
+              $('.total').val(data.total);
+              $("input[name=purpose_of_visit][value=" + data.purpose_of_visit + "]").prop('checked', true);
+              $("input[name=payment_mode][value=" + data.payment_mode + "]").prop('checked', true);
+        }
+
+        function disableTableFields(bool) {
+
+            $('.guest_type').attr('disabled', bool);
+              $('.first_name').attr('disabled', bool);
+              $('.last_name').attr('disabled', bool);
+              $('.phone_number').attr('disabled', bool);
+              $('.email').attr('disabled', bool);
+              $('.job_title').attr('disabled', bool);
+              $('.guest_tin').attr('disabled', bool);
+              $('.company_name').attr('disabled', bool);
+              $('.company_contact').attr('disabled', bool);
+              $('.company_email').attr('disabled', bool);
+              $('.company_tin').attr('disabled', bool);
+              $('.nationality').attr('disabled', bool);
+              $('.passport_number').attr('disabled', bool);
+              $('.nin').attr('disabled', bool);
+
+              $('.card_issue_date').attr('disabled', bool);
+              $('.card_expiry_date').attr('disabled', bool);
+              $('.room_number').attr('disabled', bool);
+              $('.occupancy_type').attr('disabled', bool);
+              $('.arrival_date').attr('disabled', bool);
+              $('.departure_date').attr('disabled', bool);
+              $('.daily_price').attr('disabled', bool);
+              $('.discount').attr('disabled', bool);
+              $('.total').attr('disabled', bool);
+              $('.purpose_of_visit').attr('disabled', bool);
+              $('.payment_mode').attr('disabled', bool);
+
+      }
+
+        let selectedRadioBtn = document.querySelector('input[name="guest_type"]:checked');
+        let selectedGuestType = selectedRadioBtn.value;
+        displayCardInfo(selectedGuestType);
+
+        $('input[name="guest_type"]').change(function() {
+            let selectedValue = $(this).val();
+            displayCardInfo(selectedValue);
+        });
+
+        function displayCardInfo(guestType) {
+            if (guestType == 'Corporate') {
+                $('.company_info_section').show();
+                $('.general_company_info').hide();
+            } else {
+                $('.company_info_section').hide();
+                $('.general_company_info').show();
+                $('.company_name').val('');
+                $('.company_contact').val('');
+                $('.company_email').val('');
+                $('.company_tin').val('');
+            }
+        }
+
 
             function confirmReservationChange(reservation_id) {
                 $("#changeReservationStatus").modal('show');
@@ -358,7 +468,7 @@
                     $('.email').val(data.email);
                     $('.debt').val(data.debt);
                     $('.credit').val(data.credit);
-                    DisableTableFields(false);
+                    disableTableFields(false);
                     ShowBtns();
                 })
             });
@@ -378,33 +488,20 @@
                     $('.email').val(data.email);
                     $('.debt').val(data.debt);
                     $('.credit').val(data.credit);
-                    DisableTableFields(true);
+                    disableTableFields(true);
                     HideBtns();
                 })
             });
 
 
-            function DisableTableFields(bool) {
-
-                $('.reservationId').attr('disabled', bool);
-                $('.name').attr('disabled', bool);
-                $('.address').attr('disabled', bool);
-                $('.contact').attr('disabled', bool);
-                $('.email').attr('disabled', bool);
-                $('.debt').attr('disabled', bool);
-                $('.credit').attr('disabled', bool);
-            }
-
             function HideBtns() {
                 $('.addReservationBtn').hide();
                 $('.clearBtn').hide();
-                $('.closeBtn').hide();
             }
 
             function ShowBtns() {
                 $('.addReservationBtn').show();
                 $('.clearBtn').show();
-                $('.closeBtn').show();
             }
 
 

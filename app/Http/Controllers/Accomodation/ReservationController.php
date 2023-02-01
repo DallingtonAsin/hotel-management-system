@@ -43,8 +43,17 @@ class ReservationController extends Controller
         $reservations->where('reservation_invoices.status', $status);
         $total_reservations = $reservations->count();
 
-        return view('pages.main.accomodation.reservations.status')
-            ->with(compact('total_reservations', 'status'));
+        $frequent_contacts =  FrequentContact::all();
+        $guest_types = GuestType::all();
+        return view(
+            'pages.main.accomodation.reservations.status',
+            [
+             'guest_types' => $guest_types,
+             'frequent_contacts' => $frequent_contacts,
+             'total_reservations' => $total_reservations,
+             'status' => $status,
+             ]);
+
     }
 
     public function getReservationsByStatus(Request $request, $status)
@@ -62,7 +71,7 @@ class ReservationController extends Controller
 
                         $btn = "";
 
-                        $btn .= '<a href="javascript:void(0);" id="view-kitchen-reservation" 
+                        $btn .= '<a href="javascript:void(0);" id="view-reservation" 
                                   data-toggle="tooltip" data-original-title="view reservation"
                                   data-id="' . $reservation->id . '" data-status="{{$status}}"
                                   class="px-3 py-1 border border-secondary rounded mr-2 text-secondary"><i class="fa fa-eye pr-1"></i>view</a>';
@@ -495,6 +504,17 @@ class ReservationController extends Controller
         }
     }
 
+
+    private function getReservationDetails($id){
+        try{
+
+            $reservation = Reservation::join('guests', 'guests.id', '=', 'reservations.guest_id')->where('reservations.id', '=', $id)->first();
+            return response()->json(['success' => 'Ok', 'data' => $reservation]);
+
+        }catch(\Exception $ex){
+            return response()->json(['error' => $ex->getMessage()]);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -503,7 +523,7 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->getReservationDetails($id);
     }
 
     /**
@@ -514,7 +534,7 @@ class ReservationController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $this->getReservationDetails($id);
     }
 
     /**
