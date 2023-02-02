@@ -246,4 +246,13 @@ tfoot {
   color: #F29339 !important
 }
 
+/* .table thead tr{
+  background-color: #009688;
+  opacity: 0.6;
+} */
+
+.table thead tr td{
+  color: #ffffff
+}
+
 
