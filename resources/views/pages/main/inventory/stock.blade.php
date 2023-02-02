@@ -311,7 +311,7 @@
         //code that displays results of the table index()
         let table = $('#stock-table');
         let title = "List of stock items in the system";
-        let columns = [1, 2, 3, 4, 5];
+        let columns = [0, 1, 2, 3, 4, 5, 6, 7];
         let dataColumns = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',

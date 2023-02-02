@@ -209,8 +209,8 @@
 
             //code that displays results of the table index()
             let table = $('#reservations-table');
-            let title = "List of registered departments in the system";
-            let columns = [1, 2, 3, 4];
+            let title = "List of reservations in the system";
+            let columns =[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
             let dataColumns = [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',

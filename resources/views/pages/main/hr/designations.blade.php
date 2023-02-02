@@ -213,8 +213,8 @@
         $(document).ready(function() {
 
             let table = $('#designations-table');
-            let title = "List of registered departments in the system";
-            let columns = [1, 2, 3];
+            let title = "List of designations in the system";
+            let columns = [0, 1, 2, 3];
             let dataColumns = [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {

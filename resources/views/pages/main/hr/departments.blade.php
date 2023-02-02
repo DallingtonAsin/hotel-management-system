@@ -189,8 +189,8 @@
         $(document).ready(function() {
 
             let table = $('#departments-table');
-            let title = "List of registered departments in the system";
-            let columns = [1, 2, 3, 4];
+            let title = "List of departments in the system";
+            let columns = [0, 1, 2, 3, 4];
             let dataColumns = [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',

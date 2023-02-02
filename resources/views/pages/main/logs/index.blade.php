@@ -176,8 +176,8 @@ $(document).ready(function(){
 
 // code that displays results of the table index()
     var table = $('.logs-table');
-    var title = "List of logs in the system";
-    var columns = [0, 1, 2, 3 ,4];
+    var title = "List of activity logs in the system";
+    var columns = [0, 1, 2, 3 ,4, 5];
     var dataColumns = [
     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
      {data: 'name', name:'name'},

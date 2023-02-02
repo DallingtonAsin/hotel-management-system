@@ -404,7 +404,7 @@
 
             let table = $('#kitchen-orders-table');
             let title = "List of recorded kitchen orders in the system";
-            let columns = [1, 2, 3];
+            let columns = [0, 1, 2, 3, 4, 5];
             let dataColumns = [{
                     data: 'order_number',
                     name: 'order_number'

@@ -157,7 +157,7 @@
             //code that displays results of the table index()
             let table = $('.payment-categories-table');
             let title = "List of recorded payment categories in the system";
-            let columns = [0, 1, 2, 3];
+            let columns = [0, 1, 2, 3, 4];
             let dataColumns = [
 
                 {

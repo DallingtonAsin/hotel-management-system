@@ -56,7 +56,7 @@
             //code that displays results of the table index()
             let table = $('#permissions-table');
             let title = "List of assigned permissions in the system";
-            let columns = [1, 2, 3, 4];
+            let columns = [0, 1, 2, 3];
             let dataColumns = [
                 {
                     data: 'DT_RowIndex',
