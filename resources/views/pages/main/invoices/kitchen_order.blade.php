@@ -7,12 +7,8 @@
 
 <body>
     <header>
-        @if (isset($hotel->name))
-            <h1>{{ $hotel->name }}</h1>
-        @else
-            <h1>{{ config('app.HOTEL_NAME') }}</h1>
-        @endif
 
+        <h1>{{ $company->name }}</h1>
         <h2>Kitchen Order Invoice</h2>
     </header>
 
@@ -36,20 +32,20 @@
             </p>
 
             @if ($type === 'general')
-            <p>
-                @if ($kitchenOrder->status == config('kitchen-order-statuses')['completed'])
-                Payment Method:
-                    <span>{{ ucwords($invoice->payment_method) }}</span>
-                @endif
-            </p>
+                <p>
+                    @if ($kitchenOrder->status == config('kitchen-order-statuses')['completed'])
+                        Payment Method:
+                        <span>{{ ucwords($invoice->payment_method) }}</span>
+                    @endif
+                </p>
 
-            <p>
-              @if ($kitchenOrder->status == config('kitchen-order-statuses')['completed'])
-              Payment Date:
-                  <span>{{ date('Y-m-d H:i A', strtotime($invoice->paid_at)) }}</span>
-              @endif
-          </p>
-          @endif
+                <p>
+                    @if ($kitchenOrder->status == config('kitchen-order-statuses')['completed'])
+                        Payment Date:
+                        <span>{{ date('Y-m-d H:i A', strtotime($invoice->paid_at)) }}</span>
+                    @endif
+                </p>
+            @endif
 
 
             @if ($type === 'general')
@@ -73,8 +69,8 @@
                 <th>Item</th>
                 <th>Quantity</th>
                 @if ($type === 'general')
-                <th>Price (Ush)</th>
-                <th>Total (Ush)</th>
+                    <th>Price (Ush)</th>
+                    <th>Total (Ush)</th>
                 @endif
             </tr>
         </thead>
@@ -84,8 +80,8 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ number_format($item->quantity) }}</td>
                     @if ($type === 'general')
-                    <td>{{ number_format($item->price) }}</td>
-                    <td>{{ number_format($item->total) }}</td>
+                        <td>{{ number_format($item->price) }}</td>
+                        <td>{{ number_format($item->total) }}</td>
                     @endif
                 </tr>
             @endforeach
@@ -110,29 +106,10 @@
     @if ($type === 'general')
         <div class="footer"></div>
         <footer>
-            @if (isset($hotel->name))
-                <p>{{ $hotel->name }}</p>
-            @else
-                <p>{{ config('app.HOTEL_NAME') }}</p>
-            @endif
-
-            @if (isset($hotel->city))
-                <p>{{ $hotel->city }}</p>
-            @else
-                <p>{{ config('app.HOTEL_ADDRESS') }}</p>
-            @endif
-
-            @if (isset($hotel->phone_number))
-                <p>{{ $hotel->phone_number }}</p>
-            @else
-                <p>{{ config('app.HOTEL_PHONE_NUMBER') }}</p>
-            @endif
-
-            @if (isset($hotel->email))
-                <p>{{ $hotel->email }}</p>
-            @else
-                <p>{{ config('app.HOTEL_EMAIL') }}</p>
-            @endif
+            <p>{{ $company->name }}</p>
+            <p>{{ $company->city }}</p>
+            <p>{{ $company->phone_number }}</p>
+            <p>{{ $company->email }}</p>
         </footer>
     @endif
 </body>
