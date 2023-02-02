@@ -259,7 +259,7 @@
 
             let table = $('#suppliers-table');
             let title = "List of registered suppliers in the system";
-            let columns = [1, 2, 3, 4];
+            let columns = [0, 1, 2, 3, 4, 5, 6, 7];
             let dataColumns = [
                 // {
                 //     data: 'checkbox',

@@ -109,10 +109,10 @@
                     <thead>
                         <tr>
                             @can('isAdmin')
-                                <th></th>
+                                <th>#</th>
                             @endcan
                             @can('isCashier')
-                                <th>No</th>
+                                <th>#</th>
                             @endcan
                             <th>Item</th>
                             <th>Qty</th>
@@ -316,17 +316,18 @@
 
         let table = $('.sales-table');
         let title = "List of sales items in the system";
-        let columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     </script>
 
     @can('isAdmin')
         <script>
             const ajaxUrl = @json(route('get-sales'));
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
-                //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+            let dataColumns = [
+                // {
+                //     data: 'checkbox',
+                //     name: 'checkbox'
+                // },
+                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 // {data: 'id', name:'id'},
                 //  {data: 'item_id', name:'item_id'},
                 {

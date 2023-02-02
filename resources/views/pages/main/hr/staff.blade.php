@@ -298,7 +298,7 @@
             //code that displays results of the table index()
             let table = $('#staff-table');
             let title = "List of registered staff in the system";
-            let columns = [0, 1];
+            let columns = [0, 1, 2, 3, 4, 5, 6, 7];
             let dataColumns = [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',

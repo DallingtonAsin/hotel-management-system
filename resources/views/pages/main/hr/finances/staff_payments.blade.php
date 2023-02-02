@@ -40,9 +40,9 @@
                             <th>Payment Category</th>
                             <th>Amount</th>
                             <th>Payment Date</th>
-                            <th>PaymentSlip</th>
                             <th>is deleted</th>
                             <th>Created By</th>
+                            <th>PaymentSlip</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -176,7 +176,7 @@
             //code that displays results of the table index()
             let table = $('.staff-payments-table');
             let title = "List of recorded staff payments in the system";
-            let columns = [0, 1, 2, 3];
+            let columns = [0, 1, 2, 3, 4, 5, 6, 7];
             let dataColumns = [
 
                 {
@@ -205,10 +205,7 @@
                     data: 'payment_date',
                     name: 'payment_date'
                 },
-                {
-                    data: 'payment_slip',
-                    name: 'payment_slip'
-                },
+               
                 {
                     data: 'is_deleted',
                     name: 'is_deleted'
@@ -216,6 +213,10 @@
                 {
                     data: 'created_by',
                     name: 'created_by'
+                },
+                {
+                    data: 'payment_slip',
+                    name: 'payment_slip'
                 },
                 {
                     data: 'action',

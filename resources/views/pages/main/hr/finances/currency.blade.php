@@ -203,7 +203,7 @@
             //code that displays results of the table index()
             let table = $('#currencies-table');
             let title = "List of recorded currencies in the system";
-            let columns = [1, 2, 3, 4];
+            let columns = [0, 1, 2, 3, 4, 5];
             let dataColumns = [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {

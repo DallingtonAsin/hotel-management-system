@@ -49,10 +49,10 @@
                     <thead>
                         <tr>
                             @can('isAdmin')
-                                <th></th>
+                                <th>#</th>
                             @endcan
                             @can('isCashier')
-                                <th>No</th>
+                                <th>#</th>
                             @endcan
                             <th>item code</th>
                             <th>Item</th>
@@ -223,16 +223,17 @@
         const token = "{{ csrf_token() }}";
         let table = $('#damages-table');
         let title = "List of recorded damaged items in the system";
-        let columns = [0, 1, 2, 3, 4, 5, 6, 7];
+        let columns = [0, 1, 2, 3, 4, 5, 6];
     </script>
 
     @can('isAdmin')
         <script>
-            let dataColumns = [{
-                    data: 'checkbox',
-                    name: 'checkbox'
-                },
-                // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+            let dataColumns = [
+                // {
+                //     data: 'checkbox',
+                //     name: 'checkbox'
+                // },
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 // {data: 'id', name:'id'},
 
                 {

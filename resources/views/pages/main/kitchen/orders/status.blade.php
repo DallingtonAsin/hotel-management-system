@@ -92,7 +92,7 @@
 
             let table = $('#kitchen-orders-table');
             let title = "List of recorded kitchen orders in the system";
-            let columns = [1, 2, 3];
+            let columns = [0, 1, 2, 3, 4, 5, 6];
 
             makeDataTable(table, title, columns, dataColumns);
 

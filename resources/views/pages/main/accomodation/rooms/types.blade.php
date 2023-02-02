@@ -221,7 +221,7 @@
 
             let table = $('#room-types-table');
             let title = "List of registered room types in the system";
-            let columns = [1, 2, 3, 4];
+            let columns = [0, 1, 2, 3, 4];
             let dataColumns = [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
                 {
