@@ -16,9 +16,16 @@ use App\Models\Stock;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use App\Services\ReportService;
 
 class ReportsController extends Controller
 {
+
+  protected $reportService;
+  public function __construct(ReportService $reportService)
+  {
+    $this->reportService = $reportService;
+  }
 
   public function index(Request $request)
   {
@@ -73,7 +80,9 @@ class ReportsController extends Controller
 
   public function monthlyExpensesReportIndex()
   {
-    return view('pages.reports.expenses.monthly');
+    $monthly_expenses = $this->reportService->getMonthlyExpensesData();
+    $piechart_data = $this->reportService->getMonthlyExpensesPieChartData();
+    return view('pages.reports.expenses.monthly')->with(compact('monthly_expenses', 'piechart_data'));
   }
 
 
@@ -82,6 +91,8 @@ class ReportsController extends Controller
     $query = DB::select('CALL getMonthlyExpensesReport()');
     return $query;
   }
+
+  
 
   public function getMonthlyExpensesReport()
   {
