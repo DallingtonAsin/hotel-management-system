@@ -36,7 +36,7 @@ class StaffFactory extends Factory
       'gender' => 'Male',
       'email' => $this->faker->unique()->safeEmail,
       'staff_id' => $staff_id,
-      'designation_id' => $this->faker->randomElement([1, 2, 3]),
+      'designation_id' => $this->faker->randomElement([2, 3]),
       'department_id' => $department_id,
       'phone_number' => $this->faker->phoneNumber,
       'other_phone_number' => $this->faker->phoneNumber,
