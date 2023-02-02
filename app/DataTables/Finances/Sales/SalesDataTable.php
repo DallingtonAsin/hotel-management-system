@@ -5,6 +5,7 @@ namespace App\DataTables\Finances\Sales;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Sale;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helper;
 use App\Models\Stock;
 use App\Repositories\StaffRepository;
@@ -84,7 +85,15 @@ class SalesDataTable extends DataTable
 
     public function query(Sale $model)
     {
-        return $model->newQuery()->select('*')->where('fully_paid', 1)->where('balance', 0);
+        if (Gate::allows('is-cashier')) {
+            return $model->newQuery()->select('*')
+                            ->where('fully_paid', 1)
+                            ->where('balance', 0)
+                            ->where('cashier_id', Auth::user()->id);
+        } else {
+            return $model->newQuery()->select('*')->where('fully_paid', 1)->where('balance', 0);
+        }
+        
     }
 
     /**

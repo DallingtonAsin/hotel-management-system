@@ -4,14 +4,12 @@
     <div class="card">
         @include('pages.main.messages.response')
         <div class="card-header card-header d-flex justify-content-between">
-            <span class="response"></span>
-
-            @can('isAdmin')
-                <div class="col-lg-3">
+          
+                <div>
                     <label>Sales</label>
                     <span class="badge badge-info totl_no">
-                        @isset($totl_no)
-                            {{ number_format($totl_no) }}
+                        @isset($total_no)
+                            {{ number_format($total_no) }}
                         @endisset
 
                         @isset($totl_filtered)
@@ -19,30 +17,30 @@
                         @endisset
                     </span>
                 </div>
-            @endcan
 
-            @can('isCashier')
-                @isset($volume_of_todaysales)
-                    <div class="col-lg-3 today-amount">
+                @isset($sales_made_today)
+                    <div>
                         <span>
                             <h6>
                                 Today: shs.
-                                <strong class="text-success volume">{{ number_format($volume_of_todaysales) }}</strong>
+                                <strong class="text-success volume">{{ number_format($sales_made_today) }}</strong>
                             </h6>
                         </span>
                     </div>
-                    <div class="col-lg-3 amount hidden">
+                 @endisset
+
+            @cannot('is-cashier')
+                    <div>
                         <label>Net Value:</label>
                         <strong class="net_value">
                             {{ number_format(0) }}
                         </strong>
                     </div>
-                @endisset
-            @endcan
+            @endcannot
 
-            @can('isAdmin')
+            @cannot('is-cashier')
                 @isset($total_sales)
-                    <div class="col-lg-3 amount">
+                    <div>
                         <label>Sales made: shs.</label>
                         <strong class="text-success totl_sales">{{ number_format($total_sales) }}</strong>
                     </div>
@@ -50,17 +48,17 @@
 
 
                 @isset($netValue)
-                    <div class="col-lg-3 amount">
+                    <div>
                         <label>Net Value:</label>
                         <strong class="net_value">
                             {{ number_format($netValue) }}
                         </strong>
                     </div>
                 @endisset
-            @endcan
+            @endcannot
 
-            @cannot('isCashier')
-                <div class="col-lg-3">
+            @cannot('is-cashier')
+                <div>
                     <small>
                         <a href="{{ Route('sales.index') }}" class="outline-none ml-auto bolded">Load all sales</a>
                     </small>
@@ -69,12 +67,13 @@
 
         </div>
 
+
         <div class="card-body">
-            <form action="{{ route('filtersales') }}" method="POST">
+        
+                <form action="{{ route('filtersales') }}" method="POST">
+                    <div class="d-flex justify-content-left mx-2 align-items-center">
 
-                <div class="d-flex justify-content-left mx-2 align-items-center">
-
-                    @cannot('Cashier')
+                        @cannot('is-cashier')
                         <div class="form-group">
                             <label>Cashier</label>
                             <select class="form-control cashier_id" name="cashier_id">
@@ -85,35 +84,33 @@
                                 @endforeach
                             </select>
                         </div>
-                    @endcannot
+                        @endcannot
 
-                    <div class="form-group mx-3">
-                        <label>Start Date</label>
-                        <input type="datetime-local" name="start_date" class="form-control start_date">
-                    </div>
+                        <div class="form-group mx-3">
+                            <label>Start Date</label>
+                            <input type="datetime-local" name="start_date" class="form-control start_date">
+                        </div>
 
-                    <div class="form-group mx-3">
-                        <label>End Date</label>
-                        <input type="datetime-local" name="end_date" class="form-control end_date ">
-                    </div>
+                        <div class="form-group mx-3">
+                            <label>End Date</label>
+                            <input type="datetime-local" name="end_date" class="form-control end_date ">
+                        </div>
 
-                    <div class="form-group mx-3 mt-4">
-                        <button type="button" class="btn btn-sm btn-success rounded-pill filterSalesBtn">Filter sales</button>
-                        <button type="reset" class="btn btn-danger rounded-pill clearBtn">Reset</button>
+                        <div class="form-group mx-3 mt-4">
+                            <button type="button" class="btn btn-sm btn-success rounded-pill filterSalesBtn">Filter
+                                sales</button>
+                            <button type="reset" class="btn btn-danger rounded-pill clearBtn">Reset</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+           
+
 
             <div class="table-responsive">
                 <table class="table table-bordered sales-table" id="sales-table">
                     <thead>
                         <tr>
-                            @can('isAdmin')
-                                <th>#</th>
-                            @endcan
-                            @can('isCashier')
-                                <th>#</th>
-                            @endcan
+                            <th>#</th>
                             <th>Item</th>
                             <th>Qty</th>
                             <th>S. Price</th>
@@ -124,9 +121,9 @@
                             <th>Customer</th>
                             <th>Cashier</th>
                             <th>Date</th>
-                            @can('isAdmin')
+                            @cannot('is-cashier')
                                 <th>Action</th>
-                            @endcan
+                            @endcannot
                         </tr>
                     </thead>
                     <tbody>
@@ -310,6 +307,7 @@
             }
         });
 
+        const ajaxUrl = @json(route('get-sales'));
         const deletedSeletectedUrl = @json(route('selected-sales.remove'));
         const cat = 'sales';
         const token = "{{ csrf_token() }}";
@@ -319,123 +317,47 @@
         let columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     </script>
 
-    @can('isAdmin')
-        <script>
-            const ajaxUrl = @json(route('get-sales'));
-            let dataColumns = [
-                // {
-                //     data: 'checkbox',
-                //     name: 'checkbox'
-                // },
-                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-                // {data: 'id', name:'id'},
-                //  {data: 'item_id', name:'item_id'},
-                {
-                    data: 'item',
-                    name: 'item'
-                },
-                {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
-                {
-                    data: 'selling_price',
-                    name: 'selling_price'
-                },
-                {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
-                    data: 'amount',
-                    name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
-                },
-                {
-                    data: 'customer',
-                    name: 'customer'
-                },
-                {
-                    data: 'cashier',
-                    name: 'cashier'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ];
-            makeDataTable(table, title, columns, dataColumns);
-        </script>
-    @endcan
+@cannot('is-cashier')
+    <script>
+        let dataColumns = [
+            { data: 'DT_RowIndex', orderable: false,  searchable: false },
+            { data: 'item' },
+            { data: 'quantity' },
+            { data: 'selling_price' },
+            { data: 'discount' },
+            { data: 'amount'  },
+            { data: 'paid_amount' },
+            { data: 'balance' },
+            { data: 'customer' },
+            { data: 'cashier' },
+            {  data: 'date'  },
+            { data: 'action', orderable: false, searchable: false }
+        ];
+    </script>
+@endcannot
 
-    @can('isCashier')
-        <script>
-            const ajaxUrl = @json(route('get-daily-sales'));
-            let dataColumns = [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'item',
-                    name: 'item'
-                },
-                {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
-                {
-                    data: 'selling_price',
-                    name: 'selling_price'
-                },
-                {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
-                    data: 'amount',
-                    name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
-                },
-                {
-                    data: 'customer',
-                    name: 'customer'
-                },
-                {
-                    data: 'workedon_by',
-                    name: 'workedon_by'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-            ];
-            makeDataTable2(table, title, columns, dataColumns);
-        </script>
-    @endcan
+@can('is-cashier')
+    <script>
+        let dataColumns = [
+            { data: 'DT_RowIndex', orderable: false,  searchable: false },
+            { data: 'item' },
+            { data: 'quantity' },
+            { data: 'selling_price' },
+            { data: 'discount' },
+            { data: 'amount'  },
+            { data: 'paid_amount' },
+            { data: 'balance' },
+            { data: 'customer' },
+            { data: 'cashier' },
+            {  data: 'date'  }
+        ];
+    </script>
+@endcan
 
     <script type="text/javascript">
+
+        makeDataTable(table, title, columns, dataColumns);
+
         $(document).ready(function() {
 
             $.ajaxSetup({
@@ -478,65 +400,63 @@
 
                 let isValid = validateOnFiltering(from, to, cashier_id);
 
-               if(isValid){
+                if (isValid) {
 
-                let url  = "{{ route('filtersales') }}";
-                $.ajax({
+                    let url = "{{ route('filtersales') }}";
+                    $.ajax({
 
-                    url: url,
-                    type: "POST",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        from: from,
-                        to: to,
-                        cashier_id: cashier_id
-                    },
-                    success: function(resp) {
+                        url: url,
+                        type: "POST",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            from: from,
+                            to: to,
+                            cashier_id: cashier_id
+                        },
+                        success: function(resp) {
 
-                        let data = resp.data;
-                        let datatable = $('.sales-table').DataTable();
-                        datatable.clear();
-                        datatable.rows.add(data);
-                        datatable.draw();
+                            let data = resp.data;
+                            let datatable = $('.sales-table').DataTable();
+                            datatable.clear();
+                            datatable.rows.add(data);
+                            datatable.draw();
 
-                        let totl_filtered = resp.totl_filtered;
-                        let totl_volume = resp.volume;
-                        let netValue = resp.netValue;
+                            let totl_filtered = resp.totl_filtered;
+                            let totl_volume = resp.volume;
+                            let netValue = resp.netValue;
 
-                        $('.totl_no').html(FormatNumber(totl_filtered));
-                        $('.totl_sales').html(FormatNumber(totl_volume));
-                        $('.net_value').html(FormatNumber(netValue));
+                            $('.totl_no').html(FormatNumber(totl_filtered));
+                            $('.totl_sales').html(FormatNumber(totl_volume));
+                            $('.net_value').html(FormatNumber(netValue));
 
-                        changeNetValueClass();
-                        console.log("Data", data);
-                        console.log("Total filtered", totl_filtered);
-                        console.log("Total volume", totl_volume);
-                        console.log("Net value", netValue);
+                            changeNetValueClass();
+                            console.log("Data", data);
+                            console.log("Total filtered", totl_filtered);
+                            console.log("Total volume", totl_volume);
+                            console.log("Net value", netValue);
 
 
-                    },
-                    drawCallback: function(extra) {
-                        console.log("More data here", datatable.ajax.json());
-                    },
-                    error: function(xhr, status, error) {
-                        console.log('Error:', error);
+                        },
+                        drawCallback: function(extra) {
+                            console.log("More data here", datatable.ajax.json());
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error:', error);
 
-                    }
-                });
-            }
+                        }
+                    });
+                }
             });
 
-            function validateOnFiltering(from, to, cashier_id){
+            function validateOnFiltering(from, to, cashier_id) {
                 let isValid = false;
-                if(from && !to){
-                   displayResponse(null, 'Please select end date', 'error');
-                }
-                else if(!from && to){
-                   displayResponse(null, 'Please select start date', 'error');
-                }
-                else if(!from && !to && !cashier_id){
+                if (from && !to) {
+                    displayResponse(null, 'Please select end date', 'error');
+                } else if (!from && to) {
+                    displayResponse(null, 'Please select start date', 'error');
+                } else if (!from && !to && !cashier_id) {
                     displayResponse(null, 'Please select cashier or duration to filter sales', 'error');
-                }else{
+                } else {
                     isValid = true;
                 }
                 return isValid;
