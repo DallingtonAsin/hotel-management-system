@@ -47,7 +47,7 @@
         </div>
 
         <input id="password" type="password" class="password form-control  @error('pos_password') is-invalid @enderror nunito-font" name="pos_password" placeholder="Enter your password"
-        value="" autocomplete="off" required>
+        value="{{old('pos_password')}}" autocomplete="off" required>
           <small class="text-decoration-none text-info showPwd">
           </small>
 
