@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Designation;
 
 class StaffRepository
 {
@@ -64,6 +65,17 @@ class StaffRepository
                     ->where('designations.name', '=', $designation)
                     ->select('staff.*', 'designations.name as designation_name')
                     ->get();
+    }
+
+    public function isCashier($user_id){
+        $user = $this->staff->get($user_id);
+        $designation = Designation::find($user->designation_id);
+        $is_cashier = false;
+
+        if (stripos($designation->name, 'cashier') !== false) {
+           $is_cashier = true;
+        } 
+        return $is_cashier;
     }
 
     

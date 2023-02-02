@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\DataTables\Finances\Sales\SalesDataTable;
 use App\DataTables\Finances\Sales\SalesWithDebtsDataTable;
@@ -53,37 +54,21 @@ class SalesController extends Controller
 
 
     $request->session()->forget('filtered_sales');
-    $arr = $this->GetSalesReview();
-    $today = Date('Y-m-d');
+    $arr = $this->getSalesStatistics();
 
-    $today_sales = Sale::whereDate('date', $today)->get();
-    $all_sales = Sale::where('fully_paid', 1)->where('balance', 0)->get();
-
-    $volume_of_todaysales = Sale::whereDate('date', $today)
-      ->sum('paid_amount');
-
-    $totl_no = $arr['totl_no'];
-    $total_sales = $arr['totl_sales'];
+    $total_no = $arr['total_no'];
+    $total_sales = $arr['total_sales'];
     $netValue = $arr['NetWorth'];
+    $sales_made_today = $arr['sales_made_today'];
 
-    ($netValue > 0)
-      ? $net_title = "Net Profit made: shs"
-      : $net_title = "Losses made: shs";
+    $netValue > 0  ? $net_title = "Net Profit made: shs" : $net_title = "Losses made: shs";
 
     if ($request->ajax()) {
       $this->GetSales();
     }
 
-    return view('pages.main.sales.index', ['cashiers' => $this->cashiers])->with(
-      compact(
-        'today_sales',
-        'totl_no',
-        'all_sales',
-        'netValue',
-        'volume_of_todaysales',
-        'total_sales'
-      )
-    );
+    return view('pages.main.sales.index', ['cashiers' => $this->cashiers])
+    ->with(compact('total_no',  'netValue', 'sales_made_today', 'total_sales'));
   }
 
 
@@ -147,6 +132,10 @@ class SalesController extends Controller
         if ($cashier_id) {
             $sale->where('cashier_id', $cashier_id);
         }
+      }
+
+      if (Gate::allows('is-cashier')) {
+        $sale->where('cashier_id', Auth::user()->id);
       }
 
 
@@ -410,21 +399,31 @@ class SalesController extends Controller
   }
 
 
-  private function GetSalesReview()
+  private function getSalesStatistics()
   {
+
+    
     $total_number_of_sales = Sale::where('fully_paid', 1)->where('balance', 0)->count();
+    $sales_made_today = Sale::whereDate('date', date('Y-m-d'))->sum('paid_amount');
+
+    if (Gate::allows('is-cashier')) {
+      $total_number_of_sales = Sale::where('fully_paid', 1)->where('balance', 0)->where('cashier_id', Auth::user()->id)->count();
+      $sales_made_today = Sale::whereDate('date', date('Y-m-d'))->where('cashier_id', Auth::user()->id)->sum('paid_amount');
+    }
+
     $total_sales = Sale::sum('paid_amount');
     $total_expenses = Expense::sum('amount');
-    $cost_of_damages = 0; // Damage::sum('total_cost');
+    $cost_of_damages =  $this->damagedStockRepository->getCostofDamages();
     $total_initial_cost = Sale::sum('total_buying_cost');
     $supplier_debts = (Supplier::sum('credit')) - (Supplier::sum('debt'));
     $customer_debts = Sale::where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
     $netValue = (($total_sales - $total_initial_cost) - ($total_expenses + $cost_of_damages) + ($supplier_debts + $customer_debts));
 
     $data = array(
-      'totl_no' => $total_number_of_sales,
-      'totl_sales' => $total_sales,
-      'NetWorth' => $netValue
+      'total_no' => $total_number_of_sales,
+      'sales_made_today' => $sales_made_today,
+      'total_sales' => $total_sales,
+      'NetWorth' => $netValue,
     );
     return $data;
   }
@@ -438,7 +437,7 @@ class SalesController extends Controller
       $total_number_of_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->count();
       $total_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
       $total_expenses = Expense::sum('amount');
-      $cost_of_damages = 0; //  Damage::sum('total_cost');
+      $cost_of_damages = $this->damagedStockRepository->getCostofDamages();
       $total_initial_cost = Sale::sum('total_buying_cost');
       $supplier_debts = (Supplier::sum('credit')) - (Supplier::sum('debt'));
       $customer_debts = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
@@ -581,12 +580,12 @@ class SalesController extends Controller
       $responseInfo = Helper::FailedMessage($error);
     }
 
-    $arr = $this->GetSalesReview();
+    $arr = $this->getSalesStatistics();
     return response()
       ->json([
         $sessionVariable => $responseInfo,
-        'totl_no' => $arr['totl_no'],
-        'totl_sales' => $arr['totl_sales'],
+        'totl_no' => $arr['total_no'],
+        'totl_sales' => $arr['total_sales'],
         'net_worth' => $arr['NetWorth'],
       ]);
   }
@@ -628,7 +627,7 @@ class SalesController extends Controller
       $responseInfo = Helper::FailedMessage($error);
     }
 
-    $arr = $this->GetSalesReview();
+    $arr = $this->getSalesStatistics();
     return response()
       ->json([
         $sessionVariable => $responseInfo,
@@ -667,12 +666,12 @@ class SalesController extends Controller
       Helper::logger($request, $action, now());
       Helper::LogRequest($request, $dataArr);
 
-      $arr = $this->GetSalesReview();
+      $arr = $this->getSalesStatistics();
       return response()
         ->json([
           $sessionVariable => $response,
-          'totl_no' => $arr['totl_no'],
-          'totl_sales' => $arr['totl_sales'],
+          'totl_no' => $arr['total_no'],
+          'totl_sales' => $arr['total_sales'],
           'net_worth' => $arr['NetWorth'],
         ]);
     } catch (\Exception $ex) {
