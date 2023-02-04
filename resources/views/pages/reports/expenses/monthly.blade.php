@@ -81,7 +81,7 @@
                 },
             ];
 
-            makeDataTable2(table, title, columns, dataColumns);
+            reportDataTable(table, title, columns, dataColumns);
 
             let monthly_expenses = {!! json_encode($monthly_expenses) !!};
             let piechart_data = {!! json_encode($piechart_data) !!};
@@ -94,7 +94,7 @@
 
             if (monthly_expenses != undefined || monthly_expenses.length > 0) {
                 eLineGraph('monthly_expenses_line_chart', 'Linegraph', monthly_expenses.expenses,
-                    monthly_expenses.months, 'expenses', '#0dcaf0');
+                    monthly_expenses.months, 'expenses', '#198754');
             }
 
             if (piechart_data != undefined || piechart_data.length > 0) {

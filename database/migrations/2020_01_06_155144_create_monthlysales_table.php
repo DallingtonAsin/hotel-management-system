@@ -22,14 +22,14 @@ class CreateMonthlysalesTable extends Migration
         // count(`id`) AS total from `kitchen_orders` 
         // group by month_year,month_int, month, year order by year desc
 
-                DB::statement("CREATE OR REPLACE VIEW monthlysales AS
+                DB::statement("CREATE OR REPLACE VIEW monthly_sales AS
                 select 
                 date_format(`date`,'%m-%Y') AS `month_year`, 
                 year(`date`) AS SalesYear,
                 month(`date`) AS month_int,
                 monthname(`date`) AS SalesMonth, 
                 sum(`paid_amount`) AS TotalSales from `sales` 
-                group by month_year,month_int, SalesMonth, SalesYear order by SalesYear desc");
+                group by month_year,month_int, SalesMonth, SalesYear order by month_int, SalesYear desc");
 
 }
 
@@ -40,7 +40,7 @@ class CreateMonthlysalesTable extends Migration
      */
     public function down()
     {
-        DB::statement('DROP VIEW IF EXISTS monthlysales');
+        DB::statement('DROP VIEW IF EXISTS monthly_sales');
 
     }
 }

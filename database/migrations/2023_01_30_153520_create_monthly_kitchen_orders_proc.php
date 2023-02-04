@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 
@@ -29,7 +28,7 @@ class CreateMonthlyKitchenOrdersProc extends Migration
                 month(`order_date`) AS `month_int`,
                 monthname(`order_date`) AS `month`, 
                 count(`id`) AS total from `kitchen_orders` 
-                group by `month_year`,`month_int`, `month`, `year` order by `year` desc;
+                group by `month_year`,`month_int`, `month`, `year` order by `month_int`, `year` desc;
             
 
         ELSE
@@ -39,7 +38,7 @@ class CreateMonthlyKitchenOrdersProc extends Migration
                 month(`order_date`) AS `month_int`,
                 monthname(`order_date`) AS `month`, 
                 `status`, count(`id`) AS `total` from `kitchen_orders` WHERE `status` COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', @order_status, '%')
-                group by `month_year`,`month_int`, `month`, `status`, `year` order by `year` desc;
+                group by `month_year`,`month_int`, `month`, `status`, `year` order by `month_int`, `year` desc;
 
 
         END IF;
@@ -57,6 +56,6 @@ class CreateMonthlyKitchenOrdersProc extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('monthly_kitchen_orders_procedure');
+        DB::statement("DROP PROCEDURE IF EXISTS `monthly_kitchen_orders`");
     }
 }

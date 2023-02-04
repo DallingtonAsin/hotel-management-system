@@ -25,9 +25,9 @@
         </div>
 
         <div class="card-body">
-            <div class="table-responsive-lg">
+            <div class="table-responsive">
 
-                <table class="table table-bordered table-hover reservations-table" id="reservations-table">
+                <table  class="table table-bordered table-hover reservations-table" id="reservations-table">
 
                     <thead>
                         <tr>
@@ -54,85 +54,6 @@
         </div>
     </div>
 
-    <!--Add rooms -->
-    <div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-
-                <form name="reservations" id="SuppliersForm">
-                    @csrf
-                    <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new reservation</h6>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-                            <input type="hidden" class="form-control reservationId  reservationId" name="id"
-                                placeholder="Enter reservation id" Required autofocus>
-                        </div>
-
-                        <div class="form-group">
-                            <span>Name</span>
-                            <input type="text" class="form-control name " name="name"
-                                placeholder="Enter reservation name" Required autofocus>
-                        </div>
-
-                        <div class="form-group">
-                            <span>Address</span>
-                            <input type="text" class="form-control address " name="address" placeholder="Enter address"
-                                Required autofocus>
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Contact</span>
-                            <input type="text" class="form-control contact " name="contact" placeholder="Enter contact"
-                                Required autofocus>
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Email</span>
-                            <input type="email" class="form-control email " name="email" placeholder="Email (optional)">
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Debt</span>
-                            <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Credit</span>
-                            <input type="text" class="form-control credit " name="credit" placeholder="Enter credit">
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary rounded-pill addReservationBtn"
-                                name="addReservationBtn">Save</button>
-                            <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
-                            <button type="button" class="btn btn-dark closeBtn" data-bs-dismiss="modal">Close</button>
-                        </div>
-
-                        <div class="form-group">
-                            <span class="errors-section text-danger nunito-font"></span>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-  
     <!--Modal Status Reservation -->
     <div class="modal fade" id="changeReservationStatus" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"

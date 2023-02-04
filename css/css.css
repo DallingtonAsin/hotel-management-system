@@ -886,49 +886,4 @@ ul > li > a{
 	margin-top: 10px;
   }  
 
-.card-table{
-	margin-top: 30px !important;
-	margin-left: 40px !important;
-	margin-right: 40px !important;
-}
 
-table > tbody > tr > td{
-	text-align: left !important;
-	white-space: nowrap !important;
-}
-
-table > thead > tr > th {
-	text-align: left !important;
-}
-
-  .table tbody tr.even:hover {
-	background-color: #eeeeee;
-}
-
-.table tr.even:hover td.sorting_1 {
-	background-color: #eeeeee;
-}
-
-.table tbody tr.selected {
-	color: #000 !important;
-	background-color: #eeeeee !important;
-}
-
-.table{
-	font-size: 14px !important;
-}
-
-th{
-	white-space: nowrap;
-	overflow: hidden;
-}
-td {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-td {
-	max-width:100%;
-	white-space:nowrap;
-}

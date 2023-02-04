@@ -39,37 +39,28 @@
     <script src="{{ asset('vendors/js/jquery.flot.js') }}"></script>
     <script src="{{ asset('vendors/js/jquery.flot.resize.js') }}"></script>
     <script src="{{ asset('vendors/js/sidebar-dropdown.js') }}"></script>
-    <script src="{{ asset('vendors/bootstrap/js/bootstrap.bundle-5.0.2.min.js') }}"></script>
+    <script src="{{ asset('vendors/bootstrap/js/bootstrap.min.js') }}"></script>
 
     <script src="{{ asset('vendors/js/azia.js') }}"></script>
     <script src="{{ asset('js/custom/datatables.js') }}"></script>
     <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
     <script src="{{ asset('js/custom/echarts.js') }}"></script>
     <script src="{{ asset('js/custom/common.js') }}"></script>
+    <script src="{{ asset('vendors/toastr/js/toastr.min.js') }}"></script>
 
     <link href="{{ asset('css/nunito.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/css/azia.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap-5.2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendors/bootstrap/css/bootstrap.min.css') }}">
     <link href="{{ asset('css/css.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/css/notification.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset('vendors/datatables/dtables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet"> --}}
     {{-- <link href="{{ asset('vendors/datatables/dtables/css/jquery.dataTables.min.css') }}" rel="stylesheet"> --}}
-    <link href="{{ asset('vendors/jquery-confirm/jquery-confirm.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('vendors/js/dataTables.jqueryui.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/js/jquery-ui.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/fontawesome/css/all.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendors/toastr/css/toastr.min.css') }}">
-    <script src="{{ asset('vendors/toastr/js/toastr.min.js') }}"></script>
 
     <link href="{{ asset('vendors/ionicons/docs/css/ionicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/css/themify-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/css/typicons.font/typicons.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/css/morris.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/css/flag-icon.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/css/jqvmap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/wickedpicker/stylesheets/wickedpicker.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendors/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/must-load.css') }}" rel="stylesheet" media="all">
 
     <script>

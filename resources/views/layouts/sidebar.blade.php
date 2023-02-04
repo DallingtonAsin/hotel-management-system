@@ -330,10 +330,17 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales Report</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('reports.expenses.monthly') }}" class="nav-sub-link">Expense Report</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Revenue Report</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Occupancy Report</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('reports.expenses.monthly') }}" class="nav-sub-link">Expense</a></li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub">Revenue</a>
+                            <ul class="nav-sub">
+                                    <li class="nav-sub-item"><a href="{{ route('reports.revenue.accomodation.monthly') }}" class="nav-sub-link">Accomodation</a></li>
+                                    {{-- <li class="nav-sub-item"><a href="{{ route('staff-payments.index') }}" class="nav-sub-link">Staff Payments</a></li> --}}
+                            </ul>
+                        </li>
+                        {{-- <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Revenue</a></li> --}}
+                        {{-- <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Occupancy</a></li> --}}
                         {{-- <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Employee Performance</a></li> --}}
                     </ul>
                 </li>

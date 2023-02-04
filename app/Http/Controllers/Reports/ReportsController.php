@@ -85,18 +85,28 @@ class ReportsController extends Controller
     return view('pages.reports.expenses.monthly')->with(compact('monthly_expenses', 'piechart_data'));
   }
 
-
-  public function getQuery()
+  public function monthlyAccomodationReportIndex()
   {
-    $query = DB::select('CALL getMonthlyExpensesReport()');
-    return $query;
+    $report = $this->reportService->getMonthlyAccomodationData();
+    $piechart_data = $this->reportService->getMonthlyAccomdationPieChartData();
+    return view('pages.reports.revenue.accomodation.monthly')
+                 ->with(compact('report', 'piechart_data'));
   }
 
-  
+  public function getMonthlyAccomodationDT()
+  {
+    $query = DB::select('CALL monthly_accomodation_revenue_report()');
+    return DataTables::of($query)
+    ->editColumn('revenue', function ($report) {
+      return number_format($report->revenue);
+  })->addIndexColumn()
+      ->make(true);
+  }
+
 
   public function getMonthlyExpensesReport()
   {
-    $query = $this->getQuery();
+    $query = DB::select('CALL monthly_expenses_report()');
     return DataTables::of($query)
     ->editColumn('total', function ($report) {
       return number_format($report->total);
