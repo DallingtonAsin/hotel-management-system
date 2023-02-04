@@ -13,11 +13,18 @@ class CreateExpensesReportMigration extends Migration
      */
     public function up()
     {
-        
-        DB::unprepared('CREATE PROCEDURE IF NOT EXISTS monthly_expenses_report()
+
+        $procedure = "DROP PROCEDURE IF EXISTS `monthly_expenses_report`;
+        CREATE PROCEDURE `monthly_expenses_report`()
+   
         BEGIN
-          SELECT DATE_FORMAT(date_of_expenditure, "%m-%Y") AS month_year, year(date_of_expenditure) AS year,  Month(date_of_expenditure) as month_int, MonthNAME(date_of_expenditure)  as month_name, sum(amount) as total FROM expenses group by month_year, year, month_int, month_name ORDER BY month_int, year DESC;
-        END');
+        
+        SELECT DATE_FORMAT(date_of_expenditure, '%m-%Y') AS month_year, year(date_of_expenditure) AS year,  Month(date_of_expenditure) as month_int, MonthNAME(date_of_expenditure)  as month, sum(amount) as total FROM expenses
+         group by month_year, year, month_int, month ORDER BY month_int, year DESC;
+
+        END;";
+
+        DB::statement($procedure);
 
     }
 
@@ -28,7 +35,8 @@ class CreateExpensesReportMigration extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP PROCEDURE monthly_expenses_report');
+        DB::statement("DROP PROCEDURE IF EXISTS `monthly_expenses_report`");
+
 
     }
 }

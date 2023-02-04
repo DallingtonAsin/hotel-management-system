@@ -17,11 +17,11 @@ class CreateMonthlyAccomodationRevenueReport extends Migration
    
         BEGIN
         
-        select date_format(`paid_on`,'%m-%Y') AS `month_year`, 
-        year(`paid_on`) AS year,
-        month(`paid_on`) AS month_int,
-        monthname(`paid_on`) AS month, 
-        sum(`total_amount`) AS revenue from `reservation_invoices` where status='paid'
+        select date_format(`paid_at`,'%m-%Y') AS `month_year`, 
+        year(`paid_at`) AS year,
+        month(`paid_at`) AS month_int,
+        monthname(`paid_at`) AS month, 
+        sum(`total`) AS revenue from `kitchen_order_invoices` where status='paid'
         group by month_year,month_int, month, year order by month_int, year desc;
         
         END;";

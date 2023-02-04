@@ -67,6 +67,13 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
                 'price' => $price,
                 'total' => $total
             ]);
+
+            $paid_invoices = KitchenOrderInvoice::where('status', 'paid')->get();
+            foreach($paid_invoices as $invoice){
+                DB::update(
+                    "UPDATE kitchen_order_invoices SET paid_at=DATE_FORMAT(paid_at,'2023-%m-%d %T')"
+                );
+            }
         }
 
         foreach ($order_numbers as $number) {
@@ -78,7 +85,7 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
             if ($status == config('kitchen-order-statuses')['completed']) {
                 $data['status'] = config('kitchen-order-statuses')['completed'];
                 $payment_method = Helper::getRandomValue(config('payment-methods'));
-                $payment_date = Carbon::now();
+                $payment_date = $this->faker->dateTimeBetween('-30 years',  'now', 'Africa/Kampala');
                 $data['completed_by'] = 1;
                 
             } else {
