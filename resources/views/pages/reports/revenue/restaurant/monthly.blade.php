@@ -64,7 +64,7 @@
             const token = "{{ csrf_token() }}";
             var title = "Monthly Restaurant Revenue Report";
             var table = $('#monthly-restaurant-revenue-table');
-            var columns = [0, 1, 2, 3];
+            var columns = [0, 1, 2];
 
             var dataColumns = [
                 {

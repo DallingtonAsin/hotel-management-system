@@ -64,7 +64,7 @@
             const token = "{{ csrf_token() }}";
             var title = "Monthly Expenses Report";
             var table = $('#monthly-expenses-table');
-            var columns = [0, 1, 2, 3];
+            var columns = [0, 1, 2];
 
             var dataColumns = [
                 {

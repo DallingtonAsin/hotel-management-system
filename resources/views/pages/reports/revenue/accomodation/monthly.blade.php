@@ -64,7 +64,7 @@
             const token = "{{ csrf_token() }}";
             var title = "Monthly Accomodation Revenue Report";
             var table = $('#monthly-accomodation-revenue-table');
-            var columns = [0, 1, 2, 3];
+            var columns = [0, 1, 2];
 
             var dataColumns = [
                 {
