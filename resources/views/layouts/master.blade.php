@@ -54,7 +54,7 @@
     <link href="{{ asset('css/css.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/css/notification.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset('vendors/datatables/dtables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet"> --}}
-    {{-- <link href="{{ asset('vendors/datatables/dtables/css/jquery.dataTables.min.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('vendors/datatables/dtables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendors/toastr/css/toastr.min.css') }}">
 
