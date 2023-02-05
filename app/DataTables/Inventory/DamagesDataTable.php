@@ -34,13 +34,13 @@ class DamagesDataTable extends DataTable
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="' . $damage->id . '" data-original-title="Edit" id="edit-damage"
               class="px-3 py-1 border border-success rounded  edit-damage mx-2">
-             <span class="fa fa-pen text-success"></span></a>';
+             <span class="fa fa-pencil text-success"></span></a>';
 
 
                 // $btn .= '<a href="javascript:void(0);" id="delete-damage"
                 // data-toggle="tooltip" data-original-title="Delete" data-id="'.$damage->id.'" 
                 // class="trash-btn pr-4">
-                // <span class="fa fa-trash-alt" ></span></a>';
+                // <span class="fa fa-trash" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-damage"
             data-toggle="tooltip" data-original-title="View" data-id="' . $damage->id . '"

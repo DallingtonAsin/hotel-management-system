@@ -72,8 +72,8 @@
                     name: 'year'
                 },
                 {
-                    data: 'month_name',
-                    name: 'month_name'
+                    data: 'month',
+                    name: 'month'
                 },
                 {
                     data: 'total',

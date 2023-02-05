@@ -26,12 +26,12 @@ class KitchenMenuItemCategoryDataTable extends DataTable
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                     data-id="' . $menu_item_cat->id . '" data-original-title="Edit" id="edit-menu-item-cat"
                     class="px-3 py-1 border border-success rounded  edit-menu-item-cat mx-2">
-                    <span class="fa fa-pen text-success"></span></a>';
+                    <span class="fa fa-pencil text-success"></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="delete-menu-item-cat" 
                     data-toggle="tooltip" data-original-title="Delete"
                     data-id="' . $menu_item_cat->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2">
-                    <span class="fa fa-trash-alt" ></span></a>';
+                    <span class="fa fa-trash" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-menu-item-cat" 
                     data-toggle="tooltip" data-original-title="View"

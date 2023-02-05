@@ -15,13 +15,26 @@ class CreateExpensesReportMigration extends Migration
     {
 
         $procedure = "DROP PROCEDURE IF EXISTS `monthly_expenses_report`;
-        CREATE PROCEDURE `monthly_expenses_report`()
+        CREATE PROCEDURE `monthly_expenses_report`(IN `year` VARCHAR(4))
    
         BEGIN
-        
-        SELECT DATE_FORMAT(date_of_expenditure, '%m-%Y') AS month_year, year(date_of_expenditure) AS year,  Month(date_of_expenditure) as month_int, MonthNAME(date_of_expenditure)  as month, sum(amount) as total FROM expenses
-         group by month_year, year, month_int, month ORDER BY month_int, year DESC;
 
+        SET @year = year;
+
+        IF LENGTH(@year) > 1 THEN 
+
+        SELECT DATE_FORMAT(date_of_expenditure, '%m-%Y') AS month_year, year(date_of_expenditure) AS year,  Month(date_of_expenditure) as month_int, MonthNAME(date_of_expenditure)  as month, sum(amount) as total
+         FROM expenses WHERE year(date_of_expenditure)=@year
+         group by month_year, year, month_int, month ORDER BY month_int asc;
+
+        ELSE
+
+        SELECT DATE_FORMAT(date_of_expenditure, '%m-%Y') AS month_year, year(date_of_expenditure) AS year,  Month(date_of_expenditure) as month_int, MonthNAME(date_of_expenditure)  as month, sum(amount) as total FROM expenses
+        group by month_year, year, month_int, month ORDER BY month_int, year DESC;
+
+        END IF;
+        
+    
         END;";
 
         DB::statement($procedure);

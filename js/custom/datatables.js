@@ -171,8 +171,7 @@ function makeDataTable2(table, title, columnArray, dataColumns) {
 function reportDataTable(table, title, columnArray, dataColumns) {
 
     oTable = $(table).dataTable({
-        dom:
-            "<'row my-2'<'col-sm-6'B><'col-sm-6'f>>",
+        dom: "<'row my-2'<'col-sm-6'B><'col-sm-6'f>>",
         processing: true,
         stateSave: false,
         pageLength: 15,
@@ -186,7 +185,7 @@ function reportDataTable(table, title, columnArray, dataColumns) {
                 {
                     extend: "excelHtml5",
                     text: '<i class="fa fa-download "></i> Excel',
-                    className: "btn btn-sm btn-default border-secondary",
+                    className: "btn btn-xs btn-default border-secondary text-dark",
                     title: title,
                     exportOptions: {
                         columns: columnArray
@@ -200,7 +199,7 @@ function reportDataTable(table, title, columnArray, dataColumns) {
                 {
                     extend: "pdfHtml5",
                     text: '<i class="fa fa-download"></i> Pdf',
-                    className: "btn btn-default border-secondary btn-sm",
+                    className: "btn btn-xs btn-default border-secondary text-dark",
                     title: title,
                     exportOptions: {
                         columns: columnArray
@@ -220,7 +219,7 @@ function reportDataTable(table, title, columnArray, dataColumns) {
                         }
                     },
                     text: '<i class="fa fa-save"></i> Print',
-                    className: "btn btn-default border-secondary btn-sm",
+                    className: "btn btn-xs btn-default border-secondary text-dark",
                     title: title
                 }
             ),

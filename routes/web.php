@@ -260,6 +260,10 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 	Route::get('reports/revenue/accomodation/monthly', [ReportsController::class, 'monthlyAccomodationReportIndex'])->name('reports.revenue.accomodation.monthly');
 	Route::get('reports/revenue/accomodation/monthly/ajax', [ReportsController::class, 'getMonthlyAccomodationDT'])->name('reports.revenue.accomodation.monthly.ajax');
 
+	Route::get('reports/revenue/bar/monthly', [ReportsController::class, 'monthlyBarSalesReportIndex'])->name('reports.revenue.bar.monthly');
+	Route::get('reports/revenue/bar/monthly/ajax', [ReportsController::class, 'getMonthlyBarSalesDT'])->name('reports.revenue.bar.monthly.ajax');
+	Route::get('reports/revenue/restaurant/monthly', [ReportsController::class, 'monthlyRestaurantReportIndex'])->name('reports.revenue.restaurant.monthly');
+	Route::get('reports/revenue/restaurant/monthly/ajax', [ReportsController::class, 'getMonthlyRestaurantDT'])->name('reports.revenue.restaurant.monthly.ajax');
 	
 	Route::get('reports', [ReportsController::class, 'index'])->name('reports');
 

@@ -34,7 +34,7 @@
                 <div class="tile">
                     <div class="embed-responsive">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="monthly-accomodation-revenue-table">
+                            <table class="table" id="monthly-accomodation-revenue-table">
                                 <thead>
                                     <tr>
                                         <th>Year</th>
@@ -89,12 +89,12 @@
 
             if (report != undefined || report.length > 0) {
                 eBarGraph('bar_chart', 'Bargraph', report.revenue,
-                    report.months, 'revenue', '#198754');
+                    report.months, 'revenue', '#56c1df');
             }
 
             if (report != undefined || report.length > 0) {
                 eLineGraph('line_chart', 'Linegraph', report.revenue,
-                    report.months, 'revenue', '#0dcaf0');
+                    report.months, 'revenue', '#5a5dc7');
             }
 
             if (piechart_data != undefined || piechart_data.length > 0) {

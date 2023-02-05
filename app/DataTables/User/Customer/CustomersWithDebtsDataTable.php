@@ -27,12 +27,12 @@ class CustomersWithDebtsDataTable extends DataTable
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$sale->id.'" data-original-title="Edit" id="edit-sale"
               class=" edit-sale">
-             <span class="fa fa-pen text-success pr-4"></span></a>';
+             <span class="fa fa-pencil text-success pr-4"></span></a>';
             //   if(Gate::allows('isAdmin')){
             // $btn .= '<a href="javascript:void(0);" id="delete-sale" 
             // data-toggle="tooltip" data-original-title="Delete"
             //  data-id="'.$sale->id.'" class="trash-btn pr-4"">
-            // <span class="fa fa-trash-alt" ></span></a>';
+            // <span class="fa fa-trash" ></span></a>';
             //   }
            $btn .= '<a href="javascript:void(0);" id="view-sale" 
            data-toggle="tooltip" data-original-title="View"

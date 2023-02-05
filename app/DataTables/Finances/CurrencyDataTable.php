@@ -26,12 +26,12 @@ class CurrencyDataTable extends DataTable
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                         data-id="' . $currency->id . '" data-original-title="Edit" id="edit-currency"
                         class="px-3 py-1 border border-success rounded  edit-currency mx-2">
-                        <span class="fa fa-pen text-success"></span></a>';
+                        <span class="fa fa-pencil text-success"></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="delete-currency" 
                         data-toggle="tooltip" data-original-title="Delete"
                         data-id="' . $currency->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
-                        <span class="fa fa-trash-alt" ></span></a>';
+                        <span class="fa fa-trash" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-currency" 
                         data-toggle="tooltip" data-original-title="View"

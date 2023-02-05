@@ -29,11 +29,11 @@ class PaymentCategoriesDataTable extends DataTable
                 $btn .= '<a href="javascript:void(0);" id="edit-payment-category" 
                     data-toggle="tooltip" data-original-title="edit details"
                     data-id="' . $category->id . '" data-status="{{$status}}"
-                     class="px-3 py-1 border border-primary rounded mr-2 text-primary"><i class="fa fa-pen"></i></a>';
+                     class="px-3 py-1 border border-primary rounded mr-2 text-primary"><i class="fa fa-pencil"></i></a>';
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                      data-id="' . $category->id . '" data-original-title="Delete Payment Category" id="delete-payment-category"
-                     class="px-3 py-1 border border-danger rounded text-danger ml-2"><i class="fa fa-trash-alt"></i></a>';
+                     class="px-3 py-1 border border-danger rounded text-danger ml-2"><i class="fa fa-trash"></i></a>';
 
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" 
                      data-id="' . $category->id . '" data-original-title="View Payment Category" id="view-payment-category"
