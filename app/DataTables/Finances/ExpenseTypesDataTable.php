@@ -24,12 +24,12 @@ class ExpenseTypesDataTable extends DataTable
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                 data-id="'.$data->id.'" data-original-title="Edit" id="edit-expense-type"
                   class="px-3 py-1 border border-success rounded  edit-expense mx-2">
-                 <span class="fa fa-pen text-success pr-1"></span></a>';
+                 <span class="fa fa-pencil text-success pr-1"></span></a>';
               
                 $btn .= '<a href="javascript:void(0);" id="delete-expense-type" 
                 data-toggle="tooltip" data-original-title="Delete" data-id="'.$data->id.'"
                  class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
-                <span class="fa fa-trash-alt pr-1" ></span></a>';
+                <span class="fa fa-trash pr-1" ></span></a>';
     
                $btn .= '<a href="javascript:void(0);" id="view-expense-type" 
                data-toggle="tooltip" data-original-title="View" data-id="'.$data->id.'" 

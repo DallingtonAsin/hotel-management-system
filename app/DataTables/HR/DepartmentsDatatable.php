@@ -26,12 +26,12 @@ class DepartmentsDatatable extends DataTable
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="' . $department->id . '" data-original-title="Edit" id="edit-department"
               class="px-3 py-1 border border-success rounded  edit-department mx-2">
-             <span class="fa fa-pen text-success"></span></a>';
+             <span class="fa fa-pencil text-success"></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="delete-department" 
             data-toggle="tooltip" data-original-title="Delete"
              data-id="' . $department->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
-            <span class="fa fa-trash-alt" ></span></a>';
+            <span class="fa fa-trash" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-department" 
            data-toggle="tooltip" data-original-title="View"

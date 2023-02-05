@@ -27,12 +27,12 @@ class PaymentsDataTable extends DataTable
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
         data-id="' . $payment->id . '" data-original-title="Edit" id="edit-payment"
           class="px-3 py-1 border border-success rounded  edit-payment mx-2">
-         <span class="fa fa-pen text-success"></span></a>';
+         <span class="fa fa-pencil text-success"></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="delete-payment" 
         data-toggle="tooltip" data-original-title="Delete"
          data-id="' . $payment->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
-        <span class="fa fa-trash-alt" ></span></a>';
+        <span class="fa fa-trash" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-payment" 
        data-toggle="tooltip" data-original-title="View"

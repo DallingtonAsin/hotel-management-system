@@ -44,7 +44,7 @@ class CreateSalesOrdersTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-         Schema::table('orders', function (Blueprint $table) {
+         Schema::table('sales_orders', function (Blueprint $table) {
             $table->dropIndex(['order_number']);
         });
         Schema::dropIfExists('sales_orders');

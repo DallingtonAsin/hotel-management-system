@@ -27,7 +27,7 @@ class StaffMembersDataTable extends DataTable
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="' . $staff->id . '" data-original-title="Edit" id="edit-staff"
               class="px-3 py-1 border border-success rounded  edit-staff mx-2">
-             <span class="fa fa-pen text-success"></span></a>';
+             <span class="fa fa-pencil text-success"></span></a>';
 
         
 
@@ -39,7 +39,7 @@ class StaffMembersDataTable extends DataTable
         //    $btn .= '<a href="javascript:void(0);" id="delete-staff" 
         //    data-toggle="tooltip" data-original-title="Delete"
         //     data-id="' . $staff->id . '" class="trash-btn mx-2"">
-        //    <span class="fa fa-trash-alt" ></span></a>';
+        //    <span class="fa fa-trash" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="edit-permissions" 
            data-toggle="tooltip" data-original-title="Edit Permissions"

@@ -38,12 +38,12 @@ class SalesDataTable extends DataTable
             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$sale->id.'" data-item="'.$sale->item.'" data-original-title="Edit" id="edit-sale"
             class="px-3 py-1 border border-success rounded  edit-sale mx-2">
-             <span class="fa fa-pen text-success"></span></a>';
+             <span class="fa fa-pencil text-success"></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="delete-sale"
             data-toggle="tooltip" data-original-title="Delete"
              data-id="'.$sale->id.'" class="px-3 py-1 border border-danger rounded trash-btn mx-2">
-            <span class="fa fa-trash-alt" ></span></a>';
+            <span class="fa fa-trash" ></span></a>';
 
 
             $btn .= '<a href="javascript:void(0);" id="view-sale"

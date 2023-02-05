@@ -78,20 +78,20 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
             if ($status == config('kitchen-order-statuses')['completed']) {
                 $data['status'] = config('kitchen-order-statuses')['completed'];
                 $payment_method = Helper::getRandomValue(config('payment-methods'));
-                $payment_date = Carbon::now();
+                $data['paid_at'] = $this->faker->dateTimeBetween('-30 years',  'now', 'Africa/Kampala');
                 $data['completed_by'] = 1;
                 
             } else {
                 $data['status'] = $status;
                 $payment_method = null;
-                $payment_date = null;
+                $data['paid_at'] = null;
                 $data['completed_by'] = null;
             }
 
             if ($status == config('kitchen-order-statuses')['cancelled']) {
                 $reason = $this->faker->paragraph(4, true);
                 $data['cancelled_by'] = 1;
-                $data['cancelled_at'] = Carbon::now();
+                $data['cancelled_at'] = $this->faker->dateTimeBetween('-30 years',  'now', 'Africa/Kampala');
 
             } else {
                 $reason = null;
@@ -100,13 +100,24 @@ class KitchenOrderInvoiceTableSeeder extends Seeder
             }
 
             $data['payment_method'] = $payment_method;
-            $data['paid_at'] = $payment_date;
             $data['cancelled_for'] = $reason;
-
-
 
             KitchenOrderInvoice::create($data);
         }
+
+           $paid_invoices = KitchenOrderInvoice::where('status', 'paid')->get();
+            foreach($paid_invoices as $invoice){
+                DB::update(
+                    "UPDATE kitchen_order_invoices SET paid_at=DATE_FORMAT(paid_at,'2023-%m-%d %T')"
+                );
+            }
+
+            $cancelled_invoices = KitchenOrderInvoice::whereNotNull('cancelled_at')->get();
+            foreach($cancelled_invoices as $invoice){
+                DB::update(
+                    "UPDATE kitchen_order_invoices SET cancelled_at=DATE_FORMAT(cancelled_at,'2023-%m-%d %T')"
+                );
+            }
     }
 
     private function getInvoiceDetails($order_number)

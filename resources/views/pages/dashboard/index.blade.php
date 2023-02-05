@@ -104,7 +104,7 @@
         }
 
         if (cancelled_orders != undefined || cancelled_orders.length > 0) {
-            eLineGraph('cancelled_order_chart', 'Monthly Cancelled Kitchen Orders', cancelled_orders.orders, cancelled_orders.months, 'orders', '#dc3545');
+            eLineGraph('cancelled_order_chart', 'Monthly Cancelled Kitchen Orders', cancelled_orders.orders, cancelled_orders.months, 'orders', '#198754');
         }
 
       

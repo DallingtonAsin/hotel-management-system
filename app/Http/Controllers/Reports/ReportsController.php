@@ -85,22 +85,85 @@ class ReportsController extends Controller
     return view('pages.reports.expenses.monthly')->with(compact('monthly_expenses', 'piechart_data'));
   }
 
-
-  public function getQuery()
+  public function monthlyAccomodationReportIndex()
   {
-    $query = DB::select('CALL getMonthlyExpensesReport()');
-    return $query;
+    $report = $this->reportService->getMonthlyAccomodationData();
+    $piechart_data = $this->reportService->getMonthlyAccomdationPieChartData();
+    return view('pages.reports.revenue.accomodation.monthly')
+      ->with(compact('report', 'piechart_data'));
   }
 
-  
-
-  public function getMonthlyExpensesReport()
+  public function getMonthlyAccomodationDT()
   {
-    $query = $this->getQuery();
+    $year = date('Y');
+    $query = DB::select('CALL monthly_accomodation_revenue_report('.$year.')');
     return DataTables::of($query)
+      ->editColumn('revenue', function ($report) {
+        return number_format($report->revenue);
+      })->addIndexColumn()
+      ->make(true);
+  }
+
+
+
+  public function monthlyBarSalesReportIndex()
+  {
+    $report = $this->reportService->getMonthlyBarData();
+    $piechart_data = $this->reportService->getMonthlyBarPieChartData();
+    return view('pages.reports.revenue.bar.monthly')
+      ->with(compact('report', 'piechart_data'));
+  }
+
+  public function getMonthlyBarSalesDT()
+  {
+    $year = date('Y');
+    $query = DB::select('CALL monthly_sales_revenue_report('.$year.')');
+    return DataTables::of($query)
+      ->editColumn('total', function ($report) {
+        return number_format($report->total);
+      })->addIndexColumn()
+      ->make(true);
+  }
+
+  public function monthlyRestaurantReportIndex()
+  {
+    $report = $this->reportService->getMonthlyRestaurantData();
+    $piechart_data = $this->reportService->getMonthlyRestaurantPieChartData();
+    return view('pages.reports.revenue.restaurant.monthly')
+      ->with(compact('report', 'piechart_data'));
+  }
+
+  public function getMonthlyRestaurantDT()
+  {
+    $year = date('Y');
+    $query = DB::select('CALL monthly_kitchen_order_revenue_report('.$year.')');
+    return DataTables::of($query)
+      ->editColumn('revenue', function ($report) {
+        return number_format($report->revenue);
+      })->addIndexColumn()
+      ->make(true);
+  }
+
+
+
+
+
+
+
+
+  public function getMonthlyExpensesReport($year = null)
+  {
+
+    if ($year === null) {
+      $year = date('Y');
+    }
+
+    $query = DB::select('CALL monthly_expenses_report(' . $year . ')');
+    return DataTables::of($query)
+    // ->order('month_int', 'desc')
     ->editColumn('total', function ($report) {
-      return number_format($report->total);
-  })->addIndexColumn()
+        return number_format($report->total);
+      })->addIndexColumn()
       ->make(true);
   }
 
@@ -147,5 +210,4 @@ class ReportsController extends Controller
   {
     return view('pages.reports.debtors-suppliers');
   }
-
 }

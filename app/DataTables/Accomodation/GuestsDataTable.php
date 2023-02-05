@@ -26,12 +26,12 @@ class GuestsDataTable extends DataTable
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
                         data-id="' . $guest->id . '" data-original-title="Edit" id="edit-guest"
                         class="px-3 py-1 border border-success rounded  edit-guest mx-2">
-                        <span class="fa fa-pen text-success"></span></a>';
+                        <span class="fa fa-pencil text-success"></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="delete-guest" 
                         data-toggle="tooltip" data-original-title="Delete"
                         data-id="' . $guest->id . '" class="px-3 py-1 border border-danger rounded trash-btn mx-2"">
-                        <span class="fa fa-trash-alt" ></span></a>';
+                        <span class="fa fa-trash" ></span></a>';
 
                 $btn .= '<a href="javascript:void(0);" id="view-guest" 
                         data-toggle="tooltip" data-original-title="View"

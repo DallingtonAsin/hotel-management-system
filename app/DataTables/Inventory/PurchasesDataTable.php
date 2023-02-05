@@ -22,12 +22,12 @@ class PurchasesDataTable extends DataTable
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$purchase->id.'" data-original-title="Edit" id="edit-purchase"
               class="px-3 py-1 border border-success rounded  edit-purchase mx-2">
-             <span class="fa fa-pen text-success"></span></a>';
+             <span class="fa fa-pencil text-success"></span></a>';
 
             // $btn .= '<a href="javascript:void(0);" id="delete-purchase"
             // data-toggle="tooltip" data-original-title="Delete" data-id="'.$purchase->id.'"
             //  class="trash-btn pr-4"">
-            // <span class="fa fa-trash-alt" ></span></a>';
+            // <span class="fa fa-trash" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="view-purchase"
            data-toggle="tooltip" data-original-title="View" data-id="'.$purchase->id.'" 

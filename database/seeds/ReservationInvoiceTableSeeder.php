@@ -9,7 +9,7 @@ use Faker\Generator;
 use Illuminate\Container\Container;
 use App\Models\Staff;
 use App\Helpers\Helper;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 class ReservationInvoiceTableSeeder extends Seeder
@@ -53,6 +53,13 @@ class ReservationInvoiceTableSeeder extends Seeder
              $data = $this->generateData($reservation->id);
              ReservationInvoice::create($data);
         }
+
+        $paid_reservations = ReservationInvoice::where('status', 'paid')->get();
+        foreach($paid_reservations as $reservation){
+            DB::update(
+                "UPDATE reservation_invoices SET paid_on=DATE_FORMAT(paid_on,'2023-%m-%d %T')"
+            );
+        }
     }
 
     private function generateData($reservation_id){
@@ -80,7 +87,7 @@ class ReservationInvoiceTableSeeder extends Seeder
 
             $data['status'] = config('reservation-statuses')['completed'];
             $data['payment_method'] = Helper::getRandomValue(config('reservation-payment-methods'));
-            $data['paid_on'] = Carbon::now();
+            $data['paid_on'] = $this->faker->dateTimeBetween('-30 years',  'now', 'Africa/Kampala');
             $data['completed_by'] = $completed_by;
             
         } else if($status == config('reservation-statuses')['cancelled']) {

@@ -26,8 +26,8 @@ class BestCashiersTable extends Migration
 
         DB::statement("CREATE OR REPLACE VIEW `top_cashiers` AS
         select `cashier_id` AS `cashier_id`,sum(`amount`) AS `totalsales`,
-        round(((sum(`amount`) * 100) / (select sum(`monthlysales`.`TotalSales`)
-        from `monthlysales`)),2) AS `percent` 
+        round(((sum(`amount`) * 100) / (select sum(`monthly_sales`.`TotalSales`)
+        from `monthly_sales`)),2) AS `percent` 
        from `sales` group by `cashier_id` order by sum(`amount`) desc");
 
 

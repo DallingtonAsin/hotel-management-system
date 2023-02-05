@@ -43,7 +43,7 @@
             @haspermission(config('permissions')['access_bar'])
                 <li class="nav-item">
                     <a href="{{ route('pos.index') }}" class="nav-link with-sub"><i
-                            class="fa fa-wine-glass-alt ml-1"></i>Bar</a>
+                            class="fa fa-glass ml-1"></i>Bar</a>
                     <ul class="nav-sub">
                         @haspermission(config('permissions')['view_pos'])
                             <li class="nav-sub-item"><a href="{{ route('pos.index') }}" class="nav-sub-link"><i
@@ -315,7 +315,7 @@
                     <a href="" class="nav-link with-sub"><i class="fa fa-balance-scale"></i>Accounting</a>
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ route('accounting.balance_sheet') }}"
-                                class="nav-sub-link"><i class="fa fa-balance-scal pr-1"></i>Balance Sheet</a> </li>
+                                class="nav-sub-link"><i class="fa fa-table pr-1"></i>Balance Sheet</a> </li>
                         <li class="nav-sub-item"><a href="{{ route('accounting.general_ledger') }}"
                                 class="nav-sub-link"><i class="fa fa-bar-chart pr-1"></i>General Ledger</a></li>
                         <li class="nav-sub-item"><a href="{{ route('accounting.cash_flow_statement') }}"
@@ -328,13 +328,18 @@
 
             @haspermission(config('permissions')['view_reports'])
                 <li class="nav-item">
-                    <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
+                    <a href="" class="nav-link with-sub"><i class="fa fa-bar-chart"></i>Reports</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link">Sales Report</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('reports.expenses.monthly') }}" class="nav-sub-link">Expense Report</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Revenue Report</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Occupancy Report</a></li>
-                        {{-- <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Employee Performance</a></li> --}}
+                        <li class="nav-sub-item"><a href="{{ route('sales.index') }}" class="nav-sub-link"><i class="fa fa-truck pr-3"></i>Sales</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('reports.expenses.monthly') }}" class="nav-sub-link"><i class="fa fa-minus-circle pr-3"></i>Expenses</a></li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link with-sub"><i class="fa fa-money"></i>Revenue</a>
+                            <ul class="nav-sub">
+                                <li class="nav-sub-item"><a href="{{ route('reports.revenue.bar.monthly') }}" class="nav-sub-link"><i class="fa fa-bar-chart pr-1"></i>Bar</a></li>
+                                <li class="nav-sub-item"><a href="{{ route('reports.revenue.restaurant.monthly') }}" class="nav-sub-link"><i class="fa fa-pie-chart pr-1"></i>Restaurant</a></li>
+                                    <li class="nav-sub-item"><a href="{{ route('reports.revenue.accomodation.monthly') }}" class="nav-sub-link"><i class="fa fa-line-chart pr-1"></i>Accomodation</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             @endhaspermission

@@ -57,9 +57,14 @@ class ReportService
         return $data;
     }
 
-    public function getMonthlyExpensesData()
+    public function getMonthlyExpensesData($year = null)
     {
-        $monthly_expenses = DB::select('CALL getMonthlyExpensesReport()');
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $monthly_expenses = DB::select('CALL monthly_expenses_report(' . $year . ')');
         $months = $years = $expenses = [];
 
         foreach ($monthly_expenses as $row) {
@@ -72,17 +77,146 @@ class ReportService
         return $data;
     }
 
-    public function getMonthlyExpensesPieChartData()
+    public function getMonthlyExpensesPieChartData($year = null)
     {
-        $monthly_expenses = DB::select('CALL getMonthlyExpensesReport()');
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $monthly_expenses = DB::select('CALL monthly_expenses_report(' . $year . ')');
         $data = [];
         $row = [];
 
         foreach ($monthly_expenses as $item) {
-            $row['name'] = $item->month_name;
+            $row['name'] = $item->month;
             $row['value'] = $item->total;
             array_push($data, $row);
         }
         return $data;
     }
+
+
+    public function getMonthlyAccomodationData($year = null)
+    {
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $data = DB::select('CALL monthly_accomodation_revenue_report(' . $year . ')');
+        $months = $years = $revenue = [];
+
+        foreach ($data as $row) {
+            array_push($months, date("F", mktime(0, 0, 0, $row->month_int, 10)));
+            array_push($years, $row->year);
+            array_push($revenue, $row->revenue);
+        }
+
+        $report = ['months' => $months, 'years' => $years, 'revenue' => $revenue];
+        return $report;
+    }
+
+    public function getMonthlyAccomdationPieChartData($year = null)
+    {
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $data = DB::select('CALL monthly_accomodation_revenue_report(' . $year . ')');
+        $report = [];
+        $row = [];
+
+        foreach ($data as $r) {
+            $row['name'] = $r->month;
+            $row['value'] = $r->revenue;
+            array_push($report, $row);
+        }
+        return $report;
+    }
+
+
+    public function getMonthlyBarData($year = null)
+    {
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $data = DB::select('CALL monthly_sales_revenue_report(' . $year . ')');
+        $months = $years = $total = [];
+
+        foreach ($data as $row) {
+            array_push($months, date("F", mktime(0, 0, 0, $row->month_int, 10)));
+            array_push($years, $row->year);
+            array_push($total, $row->total);
+        }
+
+        $report = ['months' => $months, 'years' => $years, 'total' => $total];
+        return $report;
+    }
+
+    public function getMonthlyBarPieChartData($year = null)
+    {
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $data = DB::select('CALL monthly_sales_revenue_report(' . $year . ')');
+        $report = [];
+        $row = [];
+
+        foreach ($data as $r) {
+            $row['name'] = $r->month;
+            $row['value'] = $r->total;
+            array_push($report, $row);
+        }
+        return $report;
+    }
+
+
+    public function getMonthlyRestaurantData($year = null)
+    {
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $data = DB::select('CALL monthly_kitchen_order_revenue_report(' . $year . ')');
+        $months = $years = $revenue = [];
+
+        foreach ($data as $row) {
+            array_push($months, date("F", mktime(0, 0, 0, $row->month_int, 10)));
+            array_push($years, $row->year);
+            array_push($revenue, $row->revenue);
+        }
+
+        $report = ['months' => $months, 'years' => $years, 'revenue' => $revenue];
+        return $report;
+    }
+
+    public function getMonthlyRestaurantPieChartData($year = null)
+    {
+
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        $data = DB::select('CALL monthly_kitchen_order_revenue_report(' . $year . ')');
+        $report = [];
+        $row = [];
+
+        foreach ($data as $r) {
+            $row['name'] = $r->month;
+            $row['value'] = $r->revenue;
+            array_push($report, $row);
+        }
+        return $report;
+    }
+
+
+
+
 }

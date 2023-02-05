@@ -34,6 +34,7 @@ function eLineGraph(elementId, title, vs_data, hs_data, vs_label, color = '#1987
     title: {
       text: title,
     },
+    tooltip: {},
     xAxis: {
       type: 'category',
       data: hs_data
@@ -45,7 +46,8 @@ function eLineGraph(elementId, title, vs_data, hs_data, vs_label, color = '#1987
       {
         name:  vs_label,
         data: vs_data,
-        type: 'line'
+        type: 'line',
+        color: color
       }
     ]
   };

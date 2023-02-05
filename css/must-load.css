@@ -68,10 +68,6 @@ a:hover{
   font-size: 25px !important;
 }
 
-/* .table{
-    table-layout: fixed !important;
-  } */
-
 .guest-types-tab .nav-item .nav-link.active {
   background-color: #009688;
   border-color: #009688;
@@ -92,17 +88,6 @@ input[type="radio"]:checked {
   color: #009688;
 }
 
-.table-responsive table tr:hover{
-  background-color: #80cccc !important;
-  color: #fff !important;
-}
-
-
-
-.table-responsive table tr:hover a{
-  border-color: #fff !important;
-  color: #fff !important;
-}
 
 .bg-success{
   background-color: #80cccc !important;
@@ -112,17 +97,7 @@ input[type="radio"]:checked {
   border-color: #80cccc !important
 }
 
-.table-responsive table tr:hover .fa{
-  color: #fff !important;
-}
 
-.table-responsive table tr:hover a:hover{
-  color: #fff !important;
-}
-
-.table-responsive table tr a:hover .fa{
-  color: #fff !important;
-}
 
 .btn-sm {
   padding: .25rem .5rem;
@@ -238,21 +213,70 @@ tfoot {
   padding-right: 20px !important;
 }
 
-.table-responsive {
-  overflow-x: auto;
-}
-
 .text-warning{
   color: #F29339 !important
 }
 
-/* .table thead tr{
-  background-color: #009688;
-  opacity: 0.6;
-} */
+
+.table-responsive table tr:hover{
+  background-color: #80cccc !important;
+  color: #fff !important;
+}
+
+.table-responsive table tr:hover a{
+  border-color: #fff !important;
+  color: #fff !important;
+}
+
+.table-responsive table tr:hover .fa{
+  color: #fff !important;
+}
+
+.table-responsive table tr:hover a:hover{
+  color: #fff !important;
+}
+
+.table-responsive table tr a:hover .fa{
+  color: #fff !important;
+}
 
 .table thead tr td{
   color: #ffffff
 }
+
+.card{
+  width: 100% !important;
+  max-width: 100% !important
+}
+
+.az-body, .az-content, .az-content-body{
+  width: 100% !important;
+  max-width: 100% !important
+}
+
+.table-responsive {
+  overflow-x: auto !important;
+  width: 100% !important;
+  max-width: 100% !important
+  /* -webkit-overflow-scrolling: touch; */
+}
+
+.table{
+  /* table-layout:fixed; */
+  /* width: 100% !important; */
+	font-size: 14px !important;
+}
+
+table tr  td{
+	text-align: left !important;
+	white-space: nowrap !important;
+  /* word-wrap: break-word; */
+}
+
+table  thead  tr  th {
+	text-align: left !important;
+}
+
+
 
 
