@@ -12,7 +12,7 @@
 
 
         <a href="{{ route('reservations.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
-            <div class="widget-small warning coloured-icon"><i class="icon fa fa-landmark fa-3x"></i>
+            <div class="widget-small warning coloured-icon"><i class="icon fa fa-ticket fa-3x"></i>
                 <div class="info">
                     <h4>Reservations</h4>
                     <p><b>{{ $total_bookings }}</b></p>
