@@ -13,7 +13,7 @@
         </h5>
       </div>
       
-      <div class="az-header-center pr-5 row mt-2">
+      <div class="az-header-center d-none d-sm-block pr-5 row mt-2">
 
         @haspermission(config('permissions')['view_pos'])
         <div class="col-lg-3">
